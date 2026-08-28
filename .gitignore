@@ -1,0 +1,13 @@
+.next/
+node_modules/
+*.log
+.DS_Store
+.vercel
+
+# AI / editor
+.claude/
+.cursor/
+.windsurf/
+.copilot/
+.aider*
+.continue/
