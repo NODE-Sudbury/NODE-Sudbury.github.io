@@ -2,8 +2,8 @@
 
 Official website for NODE Sudbury. Built with Next.js 14.
 
-**Live site:** [node-sudbury-9mdqavkev-hannan-1170.vercel.app](https://node-sudbury-9mdqavkev-hannan-1170.vercel.app) *(custom domain coming soon)*
-**Dev preview:** coming once Vercel is connected to GitHub (see setup below)
+**Live site:** [node-sudbury.vercel.app](https://node-sudbury.vercel.app) *(custom domain coming soon)*
+**Dev preview:** [node-sudbury-dev.vercel.app](https://node-sudbury-dev.vercel.app)
 
 ---
 
@@ -11,8 +11,8 @@ Official website for NODE Sudbury. Built with Next.js 14.
 
 | Branch | Purpose | Auto-deploys to |
 |--------|---------|-----------------|
-| `main` | Production - protected | [node-sudbury-9mdqavkev-hannan-1170.vercel.app](https://node-sudbury-9mdqavkev-hannan-1170.vercel.app) |
-| `dev`  | Staging - test here first | auto-deploy URL once Vercel is connected to GitHub |
+| `main` | Production - protected | [node-sudbury.vercel.app](https://node-sudbury.vercel.app) |
+| `dev`  | Staging - test here first | [node-sudbury-dev.vercel.app](https://node-sudbury-dev.vercel.app) |
 
 **Rule:** `main` only accepts PRs from `dev`. Any PR from another branch is auto-closed.
 
