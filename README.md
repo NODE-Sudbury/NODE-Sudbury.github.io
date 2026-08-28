@@ -20,42 +20,66 @@ Official website for NODE Sudbury. Built with Next.js 14.
 
 ## How to Contribute
 
-### 1. Clone the repo
+NODE is open to community contributions. Everyone is welcome - you don't need to be a member to submit changes.
+
+---
+
+### Community members (fork-based)
+
+#### 1. Fork the repo
+
+Click **Fork** at the top right of the [GitHub repo](https://github.com/NODE-Sudbury/NODE-Sudbury.github.io) to create your own copy.
+
+#### 2. Clone your fork
 
 ```bash
-git clone https://github.com/NODE-Sudbury/NODE-Sudbury.github.io.git
+git clone https://github.com/YOUR-USERNAME/NODE-Sudbury.github.io.git
 cd NODE-Sudbury.github.io
 npm install
 ```
 
-### 2. Create a feature branch off `dev`
+#### 3. Create a branch off `dev`
 
 ```bash
 git checkout dev
-git pull origin dev
-git checkout -b feature/your-feature-name
+git checkout -b feature/your-change
 ```
 
-### 3. Make your changes and run locally
+#### 4. Make your changes and run locally
 
 ```bash
 npm run dev
 # Open http://localhost:3000
 ```
 
-### 4. Push and open a PR to `dev`
+#### 5. Push to your fork and open a PR
 
 ```bash
-git push origin feature/your-feature-name
+git push origin feature/your-change
 ```
 
-Then open a PR on GitHub: `feature/your-feature-name` → `dev`
+Then go to GitHub and open a Pull Request from your fork's branch into `dev` on the main repo. A maintainer will review and merge it - once merged it auto-deploys to the dev preview.
 
-### 5. Test on the dev preview URL
+---
 
-Once merged to `dev`, your changes auto-deploy to the dev preview URL. Share it with the team for review.
+### Core team members
 
-### 6. Promoting to production
+Same flow but you can push branches directly without forking:
+
+```bash
+git clone https://github.com/NODE-Sudbury/NODE-Sudbury.github.io.git
+cd NODE-Sudbury.github.io
+git checkout dev && git pull origin dev
+git checkout -b feature/your-change
+# make changes
+git push origin feature/your-change
+```
+
+Then open a PR on GitHub: `feature/your-change` → `dev`
+
+---
+
+### Promoting to production
 
 Only maintainers open the final PR: `dev` → `main`. Once merged, it auto-deploys to production.
 
