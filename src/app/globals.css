@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #1f1f1f;
+  --accent: #f0e6d3;
+  --muted: #6b6b6b;
+  --foreground: #f5f5f5;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+/* Center the NODE hero heading within the SVG foreignObject */
+.framer-3g6v7n h1.framer-text {
+  text-align: center !important;
+}
+
+/* Force scroll-reveal elements visible - reinitializes
+   appear animations on hydration, overriding our HTML opacity:1 patches.
+   CSS !important sits above WAAPI animations in the cascade. */
+[data-framer-appear-id] {
+  opacity: 1 !important;
+  animation: none !important;
+}
+/* Hide injected badge container */
+#__framer-badge-container {
+  display: none !important;
+}
+
+/* Replace hero person photo with NODE logo */
+[data-framer-name="Man"] img[alt="Header image"] {
+  content: url('/node-logo.svg') !important;
+  object-fit: contain !important;
+  background: transparent !important;
+}
+
+/* Hide original off-screen QR element (replaced via JS injection) */
+.framer-g66ize {
+  display: none !important;
+}
+
+/* Hide promo buttons */
+a[href*="polar.sh"],
+a[href*="holygrid.studio"],
+.framer-zhlkhb {
+  display: none !important;
+}
+
+/* Override footer logo: rendered as an SVG with
+   path data for the letters K-E-Y-N-O-T-E. Hide the SVG and replace with "NODE" text. */
+[data-framer-name="Keynote"] * {
+  display: none !important;
+}
+[data-framer-name="Keynote"]::after {
+  content: 'NODE';
+  display: block !important;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+[data-framer-name="Man"] {
+  opacity: 1 !important;
+  transform: none !important;
+  left: auto !important;
+  right: 80px !important;
+}
+
+[data-framer-name="Row"],
+[data-framer-name="Desktop"],
+[data-framer-name="No padding"],
+[data-framer-name="Padding"],
+[data-framer-name="Header"],
+[data-framer-name="Break"],
+[data-framer-name="Time"],
+[data-framer-name="Image"],
+[data-framer-name="Introduction"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Replace the 7 fan portrait cards in "An organization for developers" section */
+img[src*="DljMDcrMbUzKh3NAT0kfL4iE9uk"] { content: url('/images/1.jpg') !important; }
+img[src*="A1hGhWkYNaPuvqDXZqn8xTguQ"]    { content: url('/images/2.jpg') !important; }
+img[src*="vgDFLdiuNn0RhlgEjFknuIF2elM"]  { content: url('/images/3.jpg') !important; }
+img[src*="sSf9eVZTMcXk0FAN4AR7hA0yU"]    { content: url('/images/4.jpg') !important; }
+img[src*="Pp8IFnWhnWJOJcTr3KQnM16WGU"]   { content: url('/images/5.jpg') !important; }
+img[src*="9GhhUZ4HRBcRnJq3lSMan8nU4"]    { content: url('/images/6.jpg') !important; }
+img[src*="3QN96Yp2c2nSPQXxjKjDp3Cg0"]    { content: url('/images/7.jpg') !important; }
+img[src*="2eZveSOFu8UG7AR4v9p1r17uCM"]  { content: url('/images/1.jpg') !important; }
+img[src*="tpRGJrgzfzUXSJIxcsNRxBqAGRc"] { content: url('/images/4.jpg') !important; }
+img[src*="ZmXS5MTzboIQjEATLsbMB2uKYE8"] { content: url('/images/1.jpg') !important; }
+img[src*="SDPT0MVHGxaDgBQwMPCECx6oOc"]  { content: url('/images/2.jpg') !important; }
+img[src*="jm9UmwrHPWrfTyI7s9azKgD4i8"]  { content: url('/images/3.jpg') !important; }
+img[src*="83WqvpgGOYouepzBZeH4EPByzg"]  { content: url('/images/5.jpg') !important; }
+img[src*="klKN1SEm2dEsvuUsxSHEctQ218"]  { content: url('/images/6.jpg') !important; }
+img[src*="dTxNErqEII2A2fKgo9PDIkdXgo"]  { content: url('/images/7.jpg') !important; }
+
+/* Partner card logo sizing - framer-uwsy9 is the logo figure inside each card */
+/* Large hero card (LU Foundry - framer-1yx60u6-container, 1061x1061) */
+.framer-1yx60u6-container .framer-uwsy9 {
+  width: 85% !important;
+  height: 350px !important;
+  max-width: 85% !important;
+}
+/* Standard partner cards (523x523) */
+.framer-7s1b8d-container .framer-uwsy9,
+.framer-1i1hzjg-container .framer-uwsy9,
+.framer-87xwjb-container .framer-uwsy9,
+.framer-1p1iv4k-container .framer-uwsy9,
+.framer-12ld5xe-container .framer-uwsy9 {
+  width: 85% !important;
+  height: 200px !important;
+  max-width: 85% !important;
+}
+
+/* Partner card logo overrides - order: Foundry, Norcat, GDG, Cursor */
+/* rUxt = Catalog slot -> LU Foundry */
+img[src*="rUxt7DmM9TmTK4ORX9XpcgVAATw"] { content: url('/partners/lu-foundry.avif') !important; object-fit: contain !important; width: 100% !important; height: 100% !important; }
+/* lI8f = Circooles slot -> Norcat */
+img[src*="lI8fW72PTrD9f72DQDEYVbbZDs"]  { content: url('/partners/norcat.png') !important; object-fit: contain !important; width: 100% !important; height: 100% !important; }
+/* FwGF = Sisyphus slot -> GDG Sudbury (scale up since source has large whitespace padding) */
+img[src*="FwGFfHbgH315iCStLhh3STiVAbk"] { content: url('/partners/gdg.png') !important; object-fit: contain !important; width: 100% !important; height: 100% !important; transform: scale(2.2) !important; }
+/* Sgw9 = Hourglass slot -> Cursor Sudbury */
+img[src*="Sgw9Z9tJUrHaql7PXjhGe8uSbXo"] { content: url('/partners/cursor.png') !important; object-fit: contain !important; width: 100% !important; height: 100% !important; transform: scale(1.6) !important; }
+
+/* Hide 9th board member card (Remy Jacobs - only 8 board roles exist) */
+#remy-jacobs-w5m9d8 { display: none !important; }
+
+/* Hide default schedule section - replaced by custom #node-schedule-section */
+.framer-17r45a0-container { display: none !important; }
+.framer-hfmmhe { display: none !important; }
+
+/* Replace all board member photos with placeholder */
+.framer-w5m9d8-container img[src*="DljMDcrMbUzKh3NAT0kfL4iE9uk"],
+.framer-w5m9d8-container img[src*="2eZveSOFu8UG7AR4v9p1r17uCM"],
+.framer-w5m9d8-container img[src*="tpRGJrgzfzUXSJIxcsNRxBqAGRc"],
+.framer-w5m9d8-container img[src*="A1hGhWkYNaPuvqDXZqn8xTguQ"],
+.framer-w5m9d8-container img[src*="vgDFLdiuNn0RhlgEjFknuIF2elM"],
+.framer-w5m9d8-container img[src*="sSf9eVZTMcXk0FAN4AR7hA0yU"],
+.framer-w5m9d8-container img[src*="Pp8IFnWhnWJOJcTr3KQnM16WGU"],
+.framer-w5m9d8-container img[src*="9GhhUZ4HRBcRnJq3lSMan8nU4"],
+.framer-w5m9d8-container img[src*="3QN96Yp2c2nSPQXxjKjDp3Cg0"] {
+  content: url('/usercoming.jpg') !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+}
+
+/* Replace gallery ticker images - CSS content overrides src+srcset permanently */
+.framer-1ndzdex figure.framer-13g7wql img { content: url('/DSC01916.jpeg') !important; }
+.framer-1ndzdex figure.framer-mvyf1q img  { content: url('/DSC01933.jpeg') !important; }
+.framer-1ndzdex figure.framer-1qhqp2r img { content: url('/DSC01896.jpeg') !important; }
+.framer-1ndzdex figure.framer-1ouc377 img { content: url('/DSC01800.jpeg') !important; }
+.framer-1ndzdex figure.framer-1qmm35q img { content: url('/DSC01730.jpeg') !important; }
+.framer-1ndzdex figure.framer-p2j6tr img  { content: url('/DSC01534.jpeg') !important; }
+
+/* Replace hero section image with talk.jpeg */
+.framer-19xrlco-container img[src*="INf40BiO2Thj4mNNEgQPIfCpI"] {
+  content: url('/talk.jpeg') !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
