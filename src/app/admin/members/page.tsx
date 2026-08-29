@@ -7,14 +7,14 @@ import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
-type Role = 'member' | 'staff' | 'board'
+type Role = 'member' | 'checkin' | 'board'
 type MemberType = 'all' | 'professional' | 'student'
 
-const ROLES: Role[] = ['member', 'staff', 'board']
+const ROLES: Role[] = ['member', 'checkin', 'board']
 
 const ROLE_COLORS: Record<Role, string> = {
   member: 'text-muted-foreground border-border',
-  staff: 'text-blue-400 border-blue-400/40',
+  checkin: 'text-blue-400 border-blue-400/40',
   board: 'text-[#f0e6d3] border-[#f0e6d3]/40',
 }
 

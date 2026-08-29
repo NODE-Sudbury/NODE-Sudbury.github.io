@@ -43,7 +43,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 
-    if (isCheckinRoute && role === 'member') {
+    if (isCheckinRoute && !['checkin', 'board'].includes(role)) {
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
   }

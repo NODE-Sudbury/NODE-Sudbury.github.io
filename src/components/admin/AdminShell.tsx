@@ -13,7 +13,6 @@ const NAV = [
   { label: 'Events',   href: '/admin/events' },
   { label: 'Emails',   href: '/admin/emails' },
   { label: 'Members',  href: '/admin/members' },
-  { label: 'Check-in', href: '/admin/checkin' },
   { label: 'Settings', href: '/admin/settings' },
 ]
 
