@@ -32,12 +32,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) { window.location.href = '/auth/test'; return }
+      if (!data.session) { window.location.href = '/login'; return }
       setSession(data.session)
       fetchMember(data.session.user.id)
     })
     const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => {
-      if (!s) { window.location.href = '/auth/test'; return }
+      if (!s) { window.location.href = '/login'; return }
       setSession(s)
     })
     return () => listener.subscription.unsubscribe()

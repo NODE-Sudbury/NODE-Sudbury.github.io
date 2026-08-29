@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/'
+  const next = searchParams.get('next') ?? '/dashboard'
 
   if (code) {
     const cookieStore = cookies()
@@ -18,12 +18,11 @@ export async function GET(request: Request) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
       {
         cookies: {
-          get: (name) => cookieStore.get(name)?.value,
-          set: (name, value, options) => {
-            response.cookies.set({ name, value, ...options })
-          },
-          remove: (name, options) => {
-            response.cookies.set({ name, value: '', ...options })
+          getAll: () => cookieStore.getAll(),
+          setAll: (cookiesToSet) => {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              response.cookies.set(name, value, options)
+            })
           },
         },
       }
@@ -33,5 +32,5 @@ export async function GET(request: Request) {
     if (!error) return response
   }
 
-  return NextResponse.redirect(`${origin}/?auth_error=true`)
+  return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }
