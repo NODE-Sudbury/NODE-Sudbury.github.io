@@ -19,3 +19,29 @@ CREATE POLICY "board_members_update_any"
     )
     AND is_super_admin = false
   );
+
+-- Fix: replace recursive board RLS policies with SECURITY DEFINER helper
+-- (original policies caused infinite recursion on members table SELECT)
+CREATE OR REPLACE FUNCTION public.current_user_role()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT role FROM public.members WHERE id = auth.uid();
+$$;
+
+DROP POLICY IF EXISTS "board_members_read_all" ON public.members;
+DROP POLICY IF EXISTS "board_members_update_any" ON public.members;
+
+CREATE POLICY "board_members_read_all"
+  ON public.members FOR SELECT
+  USING (public.current_user_role() = 'board');
+
+CREATE POLICY "board_members_update_any"
+  ON public.members FOR UPDATE
+  USING (public.current_user_role() = 'board' AND is_super_admin = false);
+
+-- Fix: drop members_admin_select policy that referenced non-existent admins table
+DROP POLICY IF EXISTS "members_admin_select" ON public.members;
