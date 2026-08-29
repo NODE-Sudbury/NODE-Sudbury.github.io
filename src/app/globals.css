@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,10 +8,7 @@
 :root {
   --bg: #0a0a0a;
   --surface: #111111;
-  --border: #1f1f1f;
   --accent: #f0e6d3;
-  --muted: #6b6b6b;
-  --foreground: #f5f5f5;
 }
 
 * { box-sizing: border-box; }
@@ -17,7 +16,6 @@ html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--bg);
-  color: var(--foreground);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -199,4 +197,33 @@ img[src*="Sgw9Z9tJUrHaql7PXjhGe8uSbXo"] { content: url('/partners/cursor.png') !
   content: url('/talk.jpeg') !important;
   object-fit: cover !important;
   object-position: center !important;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 55%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 96%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 55%;
+    --radius: 0.5rem;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

@@ -1,5 +1,6 @@
 .next/
 node_modules/
+.env.local
 *.log
 .DS_Store
 .vercel
@@ -11,3 +12,4 @@ node_modules/
 .copilot/
 .aider*
 .continue/
+supabase/.temp/
