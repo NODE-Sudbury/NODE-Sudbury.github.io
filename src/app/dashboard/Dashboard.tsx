@@ -121,9 +121,9 @@ export default function Dashboard() {
             ))}
           </nav>
 
-          {/* Public profile link */}
-          {member?.is_public && (
-            <div className="mt-4 pt-4 border-t border-border">
+          {/* Role-based shortcuts */}
+          <div className="mt-4 pt-4 border-t border-border flex flex-col gap-1">
+            {member?.is_public && (
               <a
                 href={`/profile/${member.id}`}
                 target="_blank"
@@ -133,8 +133,26 @@ export default function Dashboard() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#f0e6d3] inline-block" />
                 View public profile
               </a>
-            </div>
-          )}
+            )}
+            {(member?.role === 'checkin' || member?.role === 'board') && (
+              <a
+                href="/checkin"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs text-blue-400 hover:underline"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block" />
+                Event check-in
+              </a>
+            )}
+            {member?.role === 'board' && (
+              <a
+                href="/admin"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs text-[#f0e6d3] hover:underline"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#f0e6d3] inline-block" />
+                Admin panel
+              </a>
+            )}
+          </div>
         </aside>
 
         {/* Main content */}
@@ -144,7 +162,7 @@ export default function Dashboard() {
               supabase={supabase}
               member={member}
               initials={initials}
-              onSave={(updated) => setMember(updated)}
+              onSave={(updated: any) => setMember(updated)}
             />
           )}
           {section === 'events' && (
