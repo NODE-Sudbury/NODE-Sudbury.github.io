@@ -144,7 +144,7 @@ export default function Dashboard() {
               supabase={supabase}
               member={member}
               initials={initials}
-              onSave={(updated) => setMember(updated)}
+              onSave={(updated: any) => setMember(updated)}
             />
           )}
           {section === 'events' && (
