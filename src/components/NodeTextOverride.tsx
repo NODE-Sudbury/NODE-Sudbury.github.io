@@ -868,9 +868,10 @@ export default function NodeTextOverride() {
         configurable: true,
       })
 
+      const PORTRAIT_IDS = ['DljMDcrMbUzKh3NAT0kfL4iE9uk','A1hGhWkYNaPuvqDXZqn8xTguQ','vgDFLdiuNn0RhlgEjFknuIF2elM','sSf9eVZTMcXk0FAN4AR7hA0yU','Pp8IFnWhnWJOJcTr3KQnM16WGU','9GhhUZ4HRBcRnJq3lSMan8nU4','3QN96Yp2c2nSPQXxjKjDp3Cg0','2eZveSOFu8UG7AR4v9p1r17uCM','tpRGJrgzfzUXSJIxcsNRxBqAGRc','ZmXS5MTzboIQjEATLsbMB2uKYE8','SDPT0MVHGxaDgBQwMPCECx6oOc','jm9UmwrHPWrfTyI7s9azKgD4i8','83WqvpgGOYouepzBZeH4EPByzg','klKN1SEm2dEsvuUsxSHEctQ218','dTxNErqEII2A2fKgo9PDIkdXgo']
+
       // Block srcset for any of our replaced portrait image IDs (checked on the incoming value)
       const srcsetDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'srcset')!
-      const PORTRAIT_IDS = ['DljMDcrMbUzKh3NAT0kfL4iE9uk','A1hGhWkYNaPuvqDXZqn8xTguQ','vgDFLdiuNn0RhlgEjFknuIF2elM','sSf9eVZTMcXk0FAN4AR7hA0yU','Pp8IFnWhnWJOJcTr3KQnM16WGU','9GhhUZ4HRBcRnJq3lSMan8nU4','3QN96Yp2c2nSPQXxjKjDp3Cg0','2eZveSOFu8UG7AR4v9p1r17uCM','tpRGJrgzfzUXSJIxcsNRxBqAGRc','ZmXS5MTzboIQjEATLsbMB2uKYE8','SDPT0MVHGxaDgBQwMPCECx6oOc','jm9UmwrHPWrfTyI7s9azKgD4i8','83WqvpgGOYouepzBZeH4EPByzg','klKN1SEm2dEsvuUsxSHEctQ218','dTxNErqEII2A2fKgo9PDIkdXgo']
       Object.defineProperty(HTMLImageElement.prototype, 'srcset', {
         get: srcsetDesc.get,
         set(val: string) {

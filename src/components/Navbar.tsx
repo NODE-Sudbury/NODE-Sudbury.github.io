@@ -31,6 +31,12 @@ export default function Navbar() {
               {item}
             </Link>
           ))}
+          <Link
+            href="/leaderboard"
+            className="text-sm text-muted hover:text-foreground transition-colors"
+          >
+            Leaderboard
+          </Link>
         </div>
         <Link
           href="#tickets"

@@ -8,13 +8,52 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
-const NAV = [
-  { label: 'Home',     href: '/admin' },
-  { label: 'Events',   href: '/admin/events' },
-  { label: 'Emails',   href: '/admin/emails' },
-  { label: 'Members',  href: '/admin/members' },
-  { label: 'Team',     href: '/admin/team' },
-  { label: 'Settings', href: '/admin/settings' },
+type NavItem =
+  | { type: 'link'; label: string; href: string }
+  | { type: 'section'; label: string }
+  | { type: 'divider' }
+
+const NAV: NavItem[] = [
+  // Primary - daily workflow
+  { type: 'link',    label: 'Home',       href: '/admin' },
+  { type: 'link',    label: 'Events',     href: '/admin/events' },
+  { type: 'link',    label: 'Members',    href: '/admin/members' },
+  { type: 'link',    label: 'Volunteers', href: '/admin/volunteers' },
+  { type: 'link',    label: 'Sponsors',   href: '/admin/sponsors' },
+  { type: 'link',    label: 'Emails',     href: '/admin/emails' },
+  { type: 'link',    label: 'Analytics',  href: '/admin/analytics' },
+
+  { type: 'divider' },
+
+  // Content tools - occasional
+  { type: 'section', label: 'Content' },
+  { type: 'link',    label: 'Series',     href: '/admin/series' },
+  { type: 'link',    label: 'CFP',        href: '/admin/cfp' },
+
+  { type: 'section', label: 'Organization' },
+  { type: 'link',    label: 'Chapters',   href: '/admin/chapters' },
+  { type: 'link',    label: 'Team',       href: '/admin/team' },
+
+  { type: 'section', label: 'Event Tools' },
+  { type: 'link',    label: 'Scav Hunt',  href: '/admin/hunt' },
+  { type: 'link',    label: 'Whiteboards', href: '/admin/whiteboard' },
+  { type: 'link',    label: 'Quiz',       href: '/admin/quiz' },
+  { type: 'link',    label: 'Gamification', href: '/admin/gamification' },
+
+  { type: 'divider' },
+
+  // Admin and settings - infrequent
+  { type: 'section', label: 'Admin' },
+  { type: 'link',    label: 'Promo Codes', href: '/admin/promo' },
+  { type: 'link',    label: 'Templates',   href: '/admin/templates' },
+  { type: 'link',    label: 'Moderation',  href: '/admin/moderation' },
+  { type: 'link',    label: 'Audit Log',   href: '/admin/audit' },
+
+  { type: 'section', label: 'Developer' },
+  { type: 'link',    label: 'Webhooks',    href: '/admin/webhooks' },
+  { type: 'link',    label: 'Embed Widget', href: '/embed' },
+
+  { type: 'link',    label: 'Settings',    href: '/admin/settings' },
 ]
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
@@ -60,9 +99,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             My dashboard
           </Link>
           <Button
-            variant="ghost" size="sm"
+            variant="outline" size="sm"
             onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
-            className="text-muted-foreground hover:text-foreground text-xs"
+            className="text-xs border-border hover:bg-muted"
           >
             Sign out
           </Button>
@@ -72,23 +111,36 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex flex-1 max-w-6xl mx-auto w-full">
         {/* Sidebar */}
         <aside className="w-52 shrink-0 border-r border-border flex flex-col py-6 px-3">
-          <nav className="flex flex-col gap-0.5 flex-1">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  isActive(item.href)
-                    ? 'bg-muted text-foreground'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
-              >
-                {isActive(item.href) && (
-                  <span className="w-1 h-4 rounded-full bg-[#f0e6d3] mr-2.5 shrink-0" />
-                )}
-                {item.label}
-              </Link>
-            ))}
+          <nav className="flex flex-col gap-0 flex-1">
+            {NAV.map((item, i) => {
+              if (item.type === 'divider') {
+                return <div key={i} className="my-3 border-t border-border" />
+              }
+              if (item.type === 'section') {
+                return (
+                  <p key={i} className="px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                    {item.label}
+                  </p>
+                )
+              }
+              const active = isActive(item.href)
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                    active
+                      ? 'bg-muted text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  }`}
+                >
+                  {active && (
+                    <span className="w-1 h-4 rounded-full bg-[#f0e6d3] mr-2.5 shrink-0" />
+                  )}
+                  {item.label}
+                </Link>
+              )
+            })}
           </nav>
 
           <Separator className="my-4" />

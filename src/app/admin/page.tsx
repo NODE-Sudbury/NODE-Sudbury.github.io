@@ -37,9 +37,9 @@ export default function AdminHome() {
         supabase.from('members').select('*', { count: 'exact', head: true }),
         supabase.from('members').select('*', { count: 'exact', head: true }).gte('created_at', monthStart),
         supabase.from('events').select('*', { count: 'exact', head: true }).gte('starts_at', now.toISOString()),
-        supabase.from('rsvps').select('*', { count: 'exact', head: true }).gte('created_at', monthStart),
-        supabase.from('rsvps').select('*', { count: 'exact', head: true }),
-        supabase.from('events').select('id, title, starts_at, capacity')
+        supabase.from('registrations').select('*', { count: 'exact', head: true }).gte('created_at', monthStart),
+        supabase.from('registrations').select('*', { count: 'exact', head: true }),
+        supabase.from('events').select('id, title, starts_at, max_capacity')
           .gte('starts_at', now.toISOString()).order('starts_at').limit(1).single(),
       ])
 
@@ -83,7 +83,7 @@ export default function AdminHome() {
                   {new Date(upcomingEvent.starts_at).toLocaleDateString('en-CA', {
                     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
                   })}
-                  {upcomingEvent.capacity && ` - capacity ${upcomingEvent.capacity}`}
+                  {upcomingEvent.max_capacity && ` - capacity ${upcomingEvent.max_capacity}`}
                 </p>
               </div>
               <Link

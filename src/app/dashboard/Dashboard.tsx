@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { MyRSVPs } from '@/components/dashboard/MyRSVPs'
 import { EditProfile } from '@/components/dashboard/EditProfile'
 import { Card, CardContent } from '@/components/ui/card'
+import NotificationBell from '@/components/dashboard/NotificationBell'
 
 type Section = 'profile' | 'events'
 
@@ -18,6 +19,33 @@ const PLACEHOLDER_LINKS = [
   { label: 'NORCAT Series', href: '#' },
   { label: 'Job Board', href: '#' },
   { label: 'Settings', href: '#' },
+]
+
+const FEATURE_LINKS = [
+  {
+    label: 'Leaderboard',
+    href: '/leaderboard',
+    description: 'See where you rank in the community',
+    icon: '🏆',
+  },
+  {
+    label: 'My Schedule',
+    href: '/dashboard/my-schedule',
+    description: 'View sessions you\'ve RSVPed to',
+    icon: '📅',
+  },
+  {
+    label: 'My Certificates',
+    href: '/dashboard/certificates',
+    description: 'Download your event certificates',
+    icon: '🎓',
+  },
+  {
+    label: 'Speaker Portal',
+    href: '/speaker',
+    description: 'Manage your speaker profile and upcoming talks',
+    icon: '🎤',
+  },
 ]
 
 export default function Dashboard() {
@@ -70,14 +98,17 @@ export default function Dashboard() {
           <span className="text-sm font-bold tracking-widest text-[#f0e6d3]">NODE</span>
           <span className="text-sm font-light tracking-wider text-muted-foreground"> Sudbury</span>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
-          className="text-muted-foreground hover:text-foreground"
-        >
-          Sign out
-        </Button>
+        <div className="flex items-center gap-1">
+          {member && <NotificationBell memberId={member.id} />}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
+            className="text-xs border-border hover:bg-muted"
+          >
+            Sign out
+          </Button>
+        </div>
       </div>
 
       <div className="flex max-w-5xl mx-auto min-h-[calc(100vh-49px)]">
@@ -104,6 +135,15 @@ export default function Dashboard() {
           <nav className="flex flex-col gap-0.5 flex-1">
             <NavItem label="Profile" active={section === 'profile'} onClick={() => setSection('profile')} />
             <NavItem label="My Events" active={section === 'events'} onClick={() => setSection('events')} />
+
+            <Separator className="my-3" />
+
+            {/* Feature links */}
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pb-1">Explore</p>
+            <NavLink label="Leaderboard" href="/leaderboard" />
+            <NavLink label="My Schedule" href="/dashboard/my-schedule" />
+            <NavLink label="My Certificates" href="/dashboard/certificates" />
+            <NavLink label="Speaker Portal" href="/speaker" />
 
             <Separator className="my-3" />
 
@@ -190,6 +230,17 @@ function NavItem({ label, active, onClick }: { label: string; active: boolean; o
   )
 }
 
+function NavLink({ label, href }: { label: string; href: string }) {
+  return (
+    <a
+      href={href}
+      className="flex items-center px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+    >
+      {label}
+    </a>
+  )
+}
+
 function ProfileSection({ supabase, member, initials, onSave }: any) {
   return (
     <div className="space-y-8 max-w-xl">
@@ -213,11 +264,31 @@ function ProfileSection({ supabase, member, initials, onSave }: any) {
               rel="noreferrer"
               className="text-xs text-[#f0e6d3] hover:underline shrink-0 font-medium"
             >
-              View →
+              View &rarr;
             </a>
           </CardContent>
         </Card>
       )}
+
+      {/* Quick-access feature cards */}
+      <div>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Quick Access</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {FEATURE_LINKS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="group flex flex-col gap-1.5 rounded-lg border border-[#252b3a] bg-[#13161f] px-4 py-3 hover:border-[#38bdf8]/40 hover:bg-[#0d1117] transition-colors"
+            >
+              <span className="text-lg leading-none">{item.icon}</span>
+              <span className="text-sm font-medium text-[#e2e8f0] group-hover:text-[#38bdf8] transition-colors">
+                {item.label}
+              </span>
+              <span className="text-xs text-[#8892a4] leading-snug">{item.description}</span>
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Edit profile (unified - shows current values + lets you edit) */}
       <EditProfile supabase={supabase} member={member} onSave={onSave} />

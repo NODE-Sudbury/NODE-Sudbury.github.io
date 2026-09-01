@@ -1,0 +1,18 @@
+{
+  "name": "NODE Sudbury",
+  "short_name": "NODE",
+  "description": "Northern Ontario Developer Exchange - tech community events in Greater Sudbury",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/node-logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Events", "url": "/events", "description": "Browse upcoming events" },
+    { "name": "Dashboard", "url": "/dashboard", "description": "My dashboard" }
+  ],
+  "categories": ["social", "education", "productivity"]
+}
