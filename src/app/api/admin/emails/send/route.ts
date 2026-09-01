@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -66,13 +67,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ sent: 1, failed: 0 })
   }
 
+  // Use service role to bypass RLS when fetching recipient emails
+  const admin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
   // Collect recipient emails
   let recipients: string[] = []
 
   if (event_id) {
     // Get confirmed registrations for this event
-    const { data: registrations } = await supabase
-      .from('event_registrations')
+    const { data: registrations } = await admin
+      .from('registrations')
       .select('member_id')
       .eq('event_id', event_id)
       .eq('status', 'confirmed')
@@ -84,23 +91,25 @@ export async function POST(request: Request) {
     const memberIds = registrations.map((r: any) => r.member_id).filter(Boolean)
 
     if (memberIds.length > 0) {
-      const { data: memberRows } = await supabase
-        .from('members')
-        .select('email')
-        .in('id', memberIds)
-        .not('email', 'is', null)
-
-      recipients = (memberRows ?? []).map((m: any) => m.email).filter(Boolean)
+      const { data: authUsers } = await admin.auth.admin.listUsers()
+      const userMap = Object.fromEntries((authUsers?.users ?? []).map((u: any) => [u.id, u.email]))
+      recipients = memberIds.map((id: string) => userMap[id]).filter(Boolean)
     }
   } else {
-    // All active members
-    const { data: memberRows } = await supabase
+    // All active members - get emails from auth.users via service role
+    const { data: memberRows } = await admin
       .from('members')
-      .select('email')
-      .eq('status', 'active')
-      .not('email', 'is', null)
+      .select('id, email')
 
-    recipients = (memberRows ?? []).map((m: any) => m.email).filter(Boolean)
+    const memberEmails = (memberRows ?? []).map((m: any) => m.email).filter(Boolean)
+
+    if (memberEmails.length > 0) {
+      recipients = memberEmails
+    } else {
+      // Fall back to auth.users if members table doesn't store email
+      const { data: authUsers } = await admin.auth.admin.listUsers()
+      recipients = (authUsers?.users ?? []).map((u: any) => u.email).filter(Boolean)
+    }
   }
 
   if (recipients.length === 0) {
