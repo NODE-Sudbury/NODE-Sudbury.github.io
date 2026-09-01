@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 
 export const dynamic = 'force-dynamic'
 
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
   if (guardian_relationship) stripeMetadata.guardian_relationship = String(guardian_relationship).slice(0, 50)
 
   // Create Stripe checkout session
-  const checkoutSession = await stripe.checkout.sessions.create({
+  const checkoutSession = await getStripe().checkout.sessions.create({
     mode: 'payment',
     line_items: [{
       price_data: {
