@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import RegisterModal from '@/components/events/RegisterModal'
 import { ShareButtons } from '@/components/events/ShareButtons'
-import VenueMap from '@/components/events/VenueMap'
 
 type TicketType = {
   id: string
@@ -598,15 +597,6 @@ export default function EventDetail({ event, searchParams, searchboards = [], ac
 
         <Separator className="mb-6 bg-[#252b3a]" />
 
-        {/* Feature BB - Venue map (physical locations only, full width before grid) */}
-        {hasPhysicalLocation && venueMapAddress && (
-          <div className="mb-6">
-            <VenueMap
-              address={venueMapAddress}
-              venueName={venueMapName}
-            />
-          </div>
-        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Description + content column */}
