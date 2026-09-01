@@ -9,7 +9,7 @@ interface VenueMapProps {
 
 export default function VenueMap({ address, venueName }: VenueMapProps) {
   const encodedAddress = encodeURIComponent(address)
-  const apiKey = 'REDACTED_MAPS_KEY'
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
 
   const staticMapUrl =
     `https://maps.googleapis.com/maps/api/staticmap` +
