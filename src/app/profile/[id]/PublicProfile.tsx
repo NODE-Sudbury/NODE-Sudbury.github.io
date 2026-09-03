@@ -1,70 +1,33 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
-interface Props { id: string }
-
-const SOCIAL_ICONS: Record<string, string> = {
-  linkedin_url: 'in',
-  github_url: 'gh',
-  twitter_url: 'x',
-  website_url: '↗',
+interface Member {
+  id: string
+  full_name: string
+  avatar_url: string | null
+  member_type: string
+  job_title: string | null
+  company: string | null
+  school: string | null
+  program: string | null
+  linkedin_url: string | null
+  github_url: string | null
+  twitter_url: string | null
+  website_url: string | null
+  created_at: string
+  is_public: boolean
 }
+
+interface Props { member: Member | null }
 
 function displayUrl(url: string) {
   return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
 }
 
-export default function PublicProfile({ id }: Props) {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-  const [member, setMember] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [notFound, setNotFound] = useState(false)
-
-  useEffect(() => {
-    supabase
-      .from('members')
-      .select('id, full_name, avatar_url, member_type, job_title, company, school, program, linkedin_url, github_url, twitter_url, website_url, created_at, is_public')
-      .eq('id', id)
-      .eq('is_public', true)
-      .single()
-      .then(({ data, error }) => {
-        if (error || !data) { setNotFound(true) }
-        else { setMember(data) }
-        setLoading(false)
-      })
-  }, [id])
-
-  const initials = member?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() ?? '?'
-
-  const socials = member ? [
-    { label: 'LinkedIn', key: 'linkedin_url', value: member.linkedin_url },
-    { label: 'GitHub', key: 'github_url', value: member.github_url },
-    { label: 'Twitter / X', key: 'twitter_url', value: member.twitter_url },
-    { label: 'Website', key: 'website_url', value: member.website_url },
-  ].filter((s) => s.value) : []
-
-  const workLine = member?.member_type === 'professional'
-    ? [member.job_title, member.company].filter(Boolean).join(' at ')
-    : [member?.program, member?.school].filter(Boolean).join(', ')
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <p className="text-sm text-muted-foreground">Loading...</p>
-      </div>
-    )
-  }
-
-  if (notFound) {
+export default function PublicProfile({ member }: Props) {
+  if (!member) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background gap-3">
         <p className="text-lg font-semibold">Profile not found</p>
@@ -73,6 +36,19 @@ export default function PublicProfile({ id }: Props) {
       </div>
     )
   }
+
+  const initials = member.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() ?? '?'
+
+  const socials = [
+    { label: 'LinkedIn', key: 'linkedin_url', value: member.linkedin_url },
+    { label: 'GitHub', key: 'github_url', value: member.github_url },
+    { label: 'Twitter / X', key: 'twitter_url', value: member.twitter_url },
+    { label: 'Website', key: 'website_url', value: member.website_url },
+  ].filter((s) => s.value) as { label: string; key: string; value: string }[]
+
+  const workLine = member.member_type === 'professional'
+    ? [member.job_title, member.company].filter(Boolean).join(' at ')
+    : [member.program, member.school].filter(Boolean).join(', ')
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -89,7 +65,7 @@ export default function PublicProfile({ id }: Props) {
         {/* Avatar + name */}
         <div className="flex flex-col items-center gap-4 mb-8">
           <Avatar className="h-20 w-20">
-            <AvatarImage src={member.avatar_url} />
+            <AvatarImage src={member.avatar_url ?? undefined} />
             <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
           </Avatar>
           <div className="text-center">

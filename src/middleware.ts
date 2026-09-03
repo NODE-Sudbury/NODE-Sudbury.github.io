@@ -12,9 +12,10 @@ export async function middleware(req: NextRequest) {
   const isApiRoute = pathname.startsWith('/api')
   const isAuthRoute = pathname.startsWith('/auth')
   const isLoginRoute = pathname.startsWith('/login')
+  const isPublicProfileRoute = pathname.startsWith('/profile')
 
   // Skip onboarding gate for static/public routes
-  const skipOnboarding = isOnboardingRoute || isApiRoute || isAuthRoute || isLoginRoute
+  const skipOnboarding = isOnboardingRoute || isApiRoute || isAuthRoute || isLoginRoute || isPublicProfileRoute
 
   if (isAdminRoute || isCheckinRoute || !skipOnboarding) {
     const supabase = createServerClient(
