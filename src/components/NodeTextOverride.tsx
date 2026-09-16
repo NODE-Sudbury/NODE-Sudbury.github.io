@@ -900,7 +900,7 @@ export default function NodeTextOverride() {
         if (this instanceof HTMLImageElement) {
           if (name === 'src') { origSetAttr.call(this, name, redirectUrl(val)); return }
           if (name === 'srcset') {
-            if (val && PORTRAIT_IDS.some(id => val.includes(id))) { origSetAttr.call(this, name, ''); return }
+            if (val && PORTRAIT_IDS_SWEEP.some(id => val.includes(id))) { origSetAttr.call(this, name, ''); return }
           }
         }
         origSetAttr.call(this, name, val)

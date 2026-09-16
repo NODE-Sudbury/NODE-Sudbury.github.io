@@ -92,8 +92,8 @@ export default function AboutPage() {
           <h2 className="text-xl font-semibold text-white mb-3">Contact</h2>
           <p className="text-[#8892a4] leading-relaxed">
             General inquiries:{' '}
-            <a href="mailto:hello@nodesudbury.com" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">
-              hello@nodesudbury.com
+            <a href="mailto:hannan@nodesudbury.com" className="text-sky-400 hover:text-sky-300 underline underline-offset-2">
+              hannan@nodesudbury.com
             </a>
           </p>
           <p className="text-[#8892a4] leading-relaxed mt-2">
