@@ -310,6 +310,14 @@ function fillFooter() {
   ].join('')
 
   col1.appendChild(fill)
+
+  const legal = document.createElement('div')
+  legal.className = 'node-footer-legal'
+  legal.style.cssText = 'width:100%;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);'
+  legal.innerHTML = '<p style="color:rgba(255,255,255,0.22);font-size:11px;line-height:1.6;margin:0;">' +
+    'nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).' +
+    '</p>'
+  col1.appendChild(legal)
 }
 
 
