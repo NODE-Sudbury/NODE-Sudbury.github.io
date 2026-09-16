@@ -310,6 +310,14 @@ function fillFooter() {
   ].join('')
 
   col1.appendChild(fill)
+
+  const legal = document.createElement('div')
+  legal.className = 'node-footer-legal'
+  legal.style.cssText = 'width:100%;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);'
+  legal.innerHTML = '<p style="color:rgba(255,255,255,0.22);font-size:11px;line-height:1.6;margin:0;">' +
+    'nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).' +
+    '</p>'
+  col1.appendChild(legal)
 }
 
 
@@ -868,9 +876,10 @@ export default function NodeTextOverride() {
         configurable: true,
       })
 
+      const PORTRAIT_IDS = ['DljMDcrMbUzKh3NAT0kfL4iE9uk','A1hGhWkYNaPuvqDXZqn8xTguQ','vgDFLdiuNn0RhlgEjFknuIF2elM','sSf9eVZTMcXk0FAN4AR7hA0yU','Pp8IFnWhnWJOJcTr3KQnM16WGU','9GhhUZ4HRBcRnJq3lSMan8nU4','3QN96Yp2c2nSPQXxjKjDp3Cg0','2eZveSOFu8UG7AR4v9p1r17uCM','tpRGJrgzfzUXSJIxcsNRxBqAGRc','ZmXS5MTzboIQjEATLsbMB2uKYE8','SDPT0MVHGxaDgBQwMPCECx6oOc','jm9UmwrHPWrfTyI7s9azKgD4i8','83WqvpgGOYouepzBZeH4EPByzg','klKN1SEm2dEsvuUsxSHEctQ218','dTxNErqEII2A2fKgo9PDIkdXgo']
+
       // Block srcset for any of our replaced portrait image IDs (checked on the incoming value)
       const srcsetDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'srcset')!
-      const PORTRAIT_IDS = ['DljMDcrMbUzKh3NAT0kfL4iE9uk','A1hGhWkYNaPuvqDXZqn8xTguQ','vgDFLdiuNn0RhlgEjFknuIF2elM','sSf9eVZTMcXk0FAN4AR7hA0yU','Pp8IFnWhnWJOJcTr3KQnM16WGU','9GhhUZ4HRBcRnJq3lSMan8nU4','3QN96Yp2c2nSPQXxjKjDp3Cg0','2eZveSOFu8UG7AR4v9p1r17uCM','tpRGJrgzfzUXSJIxcsNRxBqAGRc','ZmXS5MTzboIQjEATLsbMB2uKYE8','SDPT0MVHGxaDgBQwMPCECx6oOc','jm9UmwrHPWrfTyI7s9azKgD4i8','83WqvpgGOYouepzBZeH4EPByzg','klKN1SEm2dEsvuUsxSHEctQ218','dTxNErqEII2A2fKgo9PDIkdXgo']
       Object.defineProperty(HTMLImageElement.prototype, 'srcset', {
         get: srcsetDesc.get,
         set(val: string) {
@@ -891,7 +900,7 @@ export default function NodeTextOverride() {
         if (this instanceof HTMLImageElement) {
           if (name === 'src') { origSetAttr.call(this, name, redirectUrl(val)); return }
           if (name === 'srcset') {
-            if (val && PORTRAIT_IDS.some(id => val.includes(id))) { origSetAttr.call(this, name, ''); return }
+            if (val && PORTRAIT_IDS_SWEEP.some(id => val.includes(id))) { origSetAttr.call(this, name, ''); return }
           }
         }
         origSetAttr.call(this, name, val)

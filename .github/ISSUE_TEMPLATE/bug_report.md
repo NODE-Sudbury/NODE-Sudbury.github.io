@@ -1,26 +1,25 @@
 ---
 name: Bug Report
 about: Something is broken or not working as expected
-title: "[BUG] "
 labels: bug
-assignees: ''
 ---
 
-## What happened?
-A clear description of the bug.
+## What happened
+
+<!-- Describe the bug clearly. What did you expect vs what actually happened? -->
 
 ## Steps to reproduce
-1. Go to ...
-2. Click on ...
-3. See error
 
-## Expected behaviour
-What should have happened?
+1.
+2.
+3.
 
-## Screenshots / console errors
-If applicable, add screenshots or paste any error messages.
+## Environment
 
-## Device & browser
-- OS: (e.g. Windows 11, macOS 15)
-- Browser: (e.g. Chrome 126, Safari 17)
-- Screen size: (e.g. mobile, desktop)
+- Browser:
+- Device (desktop / mobile):
+- URL where the bug appears:
+
+## Screenshots
+
+<!-- If applicable, add screenshots to help explain the problem -->

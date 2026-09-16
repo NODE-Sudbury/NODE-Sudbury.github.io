@@ -1,21 +1,54 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
 import './framer.css'
 import { FramerErrorSuppressor } from '../components/FramerErrorSuppressor'
+import { InstallPrompt } from '../components/pwa/InstallPrompt'
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+
+export const viewport: Viewport = {
+  themeColor: '#0b1120',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
-  title: 'NODE - Northern Ontario Dev Exchange',
-  description: "Career, growth, and connection for devs in Northern Ontario. Professional advancement for software developers.",
+  title: {
+    default: 'NODE Sudbury - Northern Ontario Dev Exchange',
+    template: '%s | NODE Sudbury - Northern Ontario Dev Exchange',
+  },
+  description: 'Northern Ontario Dev Exchange (NODE) - tech community events, hackathons, and networking in Greater Sudbury. Incorporated in Ontario as a not-for-profit (OCN 1001716490).',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://nodesudbury.com'),
+  manifest: '/manifest.json',
   icons: {
     icon: 'https://framerusercontent.com/images/pbpLLf9olTf1CmG5IqdddUkc0fQ.png',
     apple: 'https://framerusercontent.com/images/pbpLLf9olTf1CmG5IqdddUkc0fQ.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'NODE Sudbury - Northern Ontario Dev Exchange',
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
+  openGraph: {
+    siteName: 'Northern Ontario Dev Exchange (NODE Sudbury)',
+    locale: 'en_CA',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@nodesudbury',
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("dark font-sans", inter.variable)}>
       <head>
         {/* Disable appear animations before any scripts run */}
         <script dangerouslySetInnerHTML={{ __html: 'window.__framer_disable_appear_effects_optimization__=true' }} />
@@ -34,9 +67,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="modulepreload" href="/content_chunk.mjs?v=14" />
       </head>
       <body suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-sky-500 focus:text-black focus:font-bold focus:px-4 focus:py-2 focus:rounded-lg focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <FramerErrorSuppressor />
-        {children}
-        {/* Analytics script removed - not needed */}
+        <main id="main-content">{children}</main>
+        <InstallPrompt />
       </body>
     </html>
   )

@@ -1,19 +1,17 @@
 ---
 name: Feature Request
-about: Suggest a new feature or improvement for the NODE site
-title: "[FEATURE] "
+about: Suggest a new feature or improvement
 labels: feature
-assignees: ''
 ---
 
-## What do you want to add or change?
-A clear description of the feature you're proposing.
+## What would you like to see
 
-## Why is this needed?
-What problem does it solve or what value does it add to the NODE community?
+<!-- Describe the feature or improvement clearly -->
 
-## Proposed solution
-How do you think it should work? (sketches, links, examples welcome)
+## Why is this useful
 
-## Anything else?
-Screenshots, references, or context that might help.
+<!-- Who benefits from this and how? -->
+
+## Any examples or references
+
+<!-- Links, screenshots, or similar implementations elsewhere -->

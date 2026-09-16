@@ -6,18 +6,20 @@ Thanks for wanting to contribute. NODE is a community-driven org and the site is
 
 ## Branch structure
 
-| Branch | Purpose | URL |
-|--------|---------|-----|
+| Branch | Purpose | Auto-deploys to |
+|--------|---------|-----------------|
 | `main` | Production - protected | [node-sudbury.vercel.app](https://node-sudbury.vercel.app) |
 | `dev` | Staging - test here first | [node-sudbury-dev.vercel.app](https://node-sudbury-dev.vercel.app) |
 
-**Rule:** PRs to `main` only come from `dev`. Any PR from another branch is auto-closed by the bot.
+- All feature work goes into `dev`
+- `main` only accepts PRs from `dev` - any PR from another branch is auto-closed by the bot
+- Only maintainers promote `dev` to `main`
 
 ---
 
 ## Community contributors (fork-based)
 
-You don't need to be a NODE member to contribute. Fork the repo and open a PR.
+You don't need to be a NODE member to contribute.
 
 ### 1. Fork the repo
 
@@ -51,13 +53,13 @@ npm run dev
 git push origin feature/your-change
 ```
 
-Go to GitHub and open a PR from your fork's branch into `dev` on the main repo. A maintainer will review it. Once merged it auto-deploys to the dev preview URL.
+Open a PR on GitHub from your fork's branch into `dev`. A maintainer will review it. Once merged it auto-deploys to the dev preview URL.
 
 ---
 
 ## Core team members
 
-Same flow but you can push branches directly without forking.
+Same flow but without forking - push directly to the repo.
 
 ```bash
 git clone https://github.com/NODE-Sudbury/NODE-Sudbury.github.io.git
@@ -68,28 +70,34 @@ git checkout -b feature/your-change
 git push origin feature/your-change
 ```
 
-Open a PR on GitHub: `feature/your-change` → `dev`
+Open a PR: `feature/your-change` -> `dev`
 
 ---
 
 ## Promoting to production
 
-Only maintainers open the final PR: `dev` → `main`. Once merged it auto-deploys to production.
+Only maintainers open the final PR: `dev` -> `main`. Once merged it auto-deploys to production.
+
+---
+
+## Security - no secrets in code
+
+This repo has GitHub push protection enabled. If you accidentally include an API key, token, or any credential in a commit, the push will be blocked automatically before it reaches GitHub.
+
+Never hardcode secrets. Use environment variables and add them through the Vercel dashboard or ask a maintainer.
 
 ---
 
 ## Opening an issue
 
-Found a bug? Have a feature idea? Want to request a content change?
-
-Use the issue templates at [github.com/NODE-Sudbury/NODE-Sudbury.github.io/issues/new/choose](https://github.com/NODE-Sudbury/NODE-Sudbury.github.io/issues/new/choose)
+Found a bug or have a feature idea? Open an issue:
 
 - **Feature Request** - new functionality or improvement
-- **Bug Report** - something broken or not working
+- **Bug Report** - something broken
 - **Content Update** - text, image, or copy change
 
 ---
 
 ## Questions?
 
-Join the NODE Discord or open an issue and tag a maintainer.
+Open an issue and tag a maintainer, or reach out through the NODE community channels.
