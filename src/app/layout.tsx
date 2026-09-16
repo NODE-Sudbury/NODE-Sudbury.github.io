@@ -17,10 +17,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'NODE Sudbury',
-    template: '%s | NODE Sudbury',
+    default: 'NODE Sudbury - Northern Ontario Dev Exchange',
+    template: '%s | NODE Sudbury - Northern Ontario Dev Exchange',
   },
-  description: 'Northern Ontario Developer Exchange - tech community events, hackathons, and networking in Greater Sudbury.',
+  description: 'Northern Ontario Dev Exchange (NODE) - tech community events, hackathons, and networking in Greater Sudbury. Incorporated in Ontario as a not-for-profit (OCN 1001716490).',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://nodesudbury.com'),
   manifest: '/manifest.json',
   icons: {
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'NODE Sudbury',
+    title: 'NODE Sudbury - Northern Ontario Dev Exchange',
   },
   other: {
     'mobile-web-app-capable': 'yes',
   },
   openGraph: {
-    siteName: 'NODE Sudbury',
+    siteName: 'Northern Ontario Dev Exchange (NODE Sudbury)',
     locale: 'en_CA',
     type: 'website',
   },
