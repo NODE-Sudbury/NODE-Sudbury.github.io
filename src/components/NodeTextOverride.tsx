@@ -299,6 +299,7 @@ function fillFooter() {
 
 }
 
+// Same block is baked into framerBody.ts; this re-adds it if Framer re-renders the footer
 function fillFooterLegal() {
   const footer = document.querySelector('.framer-b8450f')
   if (!footer || footer.querySelector('.node-footer-legal')) return
@@ -792,6 +793,7 @@ function applyOverrides() {
   patchPartnerLinks()
   fillFooter()
   fillFooterLegal()
+  patchSocialLinks()
   hideNinthSpeakerCard()
 }
 
@@ -804,8 +806,6 @@ export default function NodeTextOverride() {
 
     // Run for 30s - covers lazy-loaded scroll sections
     const timer = setTimeout(() => observer.disconnect(), 90000)
-    setTimeout(patchSocialLinks, 500)
-    setTimeout(patchSocialLinks, 1500)
     setTimeout(injectNorcatTab, 700)
     setTimeout(injectNorcatTab, 2000)
     setTimeout(injectCustomSchedule, 600)
