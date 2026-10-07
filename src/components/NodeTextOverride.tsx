@@ -45,7 +45,6 @@ const REPLACEMENTS: [string, string][] = [
 
   // "An organization for developers" - accent word
   ['An event for', 'An organization for'],
-  ['makers', 'developers'],
 
   // Tickets section
   ['00:00:00:00', 'Join the network'],
@@ -108,7 +107,6 @@ const REPLACEMENTS: [string, string][] = [
   ['Head of Community Design', 'President'],
   ['Creative Developer', 'Events Coordinator'],
   ['Lead Product Designer', 'Membership Leader'],
-  ['Framer Expert & Interface Architect', 'Marketing'],
   ['Indie Maker & Designer of “Plantastic”', ''],
 
   // Session/talk descriptions
@@ -161,23 +159,10 @@ const REPLACEMENTS: [string, string][] = [
 
 
   // Board Members section - title, subtitle, roles, names
-  ['Meet our community', 'Board Members'],
   ['Developers, founders, and designers from across Northern Ontario.', "NODE's founding board shaping the future of tech in Northern Ontario."],
   ['Northern Ontario Developer', 'President'],
-  ['UX Designer & Accessibility Advocate', 'Secretary'],
-  ['Brand Designer & Creative Director', 'Treasurer'],
-  ['Full-Stack Developer & OSS Contributor', 'Marketing'],
-  ['CTO & Co-founder', 'Promotion/Sponsorship'],
   ['CTO & co-founder', 'Promotion/Sponsorship'],
   // Board member names (TBD until roles are assigned)
-  ['Ava Morales', 'TBD'],
-  ['Juniper Walsh', 'TBD'],
-  ['Hana Okabe', 'TBD'],
-  ['Felix Strom', 'TBD'],
-  ['Omar Kalidi', 'TBD'],
-  ['Lotte Swaan', 'TBD'],
-  ['Elias Mendez', 'TBD'],
-  ['Nova Renfield', 'TBD'],
   ['Remy Jacobs', 'TBD'],
 
   // Additional speaker role not yet replaced
@@ -249,6 +234,7 @@ function fixExactTextNodes() {
   while ((node = walker.nextNode())) nodes.push(node as Text)
   for (const textNode of nodes) {
     if (textNode.nodeValue === 'design') textNode.nodeValue = 'tech'
+    if (textNode.nodeValue === 'makers') textNode.nodeValue = 'developers'
   }
 }
 
@@ -311,13 +297,34 @@ function fillFooter() {
 
   col1.appendChild(fill)
 
+}
+
+// Same block is baked into framerBody.ts; this re-adds it if Framer re-renders the footer
+function fillFooterLegal() {
+  const footer = document.querySelector('.framer-b8450f')
+  if (!footer || footer.querySelector('.node-footer-legal')) return
+  const divider = footer.querySelector('.framer-smhe4p')
+
   const legal = document.createElement('div')
   legal.className = 'node-footer-legal'
-  legal.style.cssText = 'width:100%;margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);'
-  legal.innerHTML = '<p style="color:rgba(255,255,255,0.22);font-size:11px;line-height:1.6;margin:0;">' +
-    'nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).' +
-    '</p>'
-  col1.appendChild(legal)
+  legal.style.cssText = 'align-self:stretch;width:100%;box-sizing:border-box;margin:40px 0;'
+  const sep = '<span style="opacity:0.35;margin:0 12px;">|</span>'
+  legal.innerHTML = '<div style="background:#f0e6d3;color:#0a0a0a;text-align:center;padding:36px 40px;border-radius:16px;font-family:Inter,system-ui,sans-serif;">' +
+    '<div style="font-size:26px;font-weight:700;line-height:1.3;margin-bottom:14px;">Northern Ontario Dev Exchange (NODE)</div>' +
+    '<p style="font-size:18px;font-weight:500;line-height:1.55;margin:0 auto 14px;max-width:820px;">' +
+      'Our mission: NODE is an Ontario not-for-profit supporting careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners.' +
+    '</p>' +
+    '<p style="font-size:16px;line-height:1.55;margin:0 auto 20px;max-width:820px;">' +
+      'Programs: 4 hackathons a year' + sep + 'monthly speaker series' + sep + 'community meetups with Cursor Sudbury and GDG Sudbury' +
+    '</p>' +
+    '<div style="font-size:17px;font-weight:600;line-height:1.6;margin-bottom:6px;">' +
+      'Ontario Corporation Number (OCN): 1001716490' + sep + '73 Elm St Ste 203, Sudbury, ON P3C 1R6' +
+    '</div>' +
+    '<p style="font-size:15px;line-height:1.55;margin:0;opacity:0.8;">' +
+      'nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).' +
+    '</p>' +
+  '</div>'
+  footer.insertBefore(legal, divider || null)
 }
 
 
@@ -593,21 +600,6 @@ function injectCustomSchedule() {
   }, 150)
 }
 
-function norcatRow(date: string, title: string, location: string): string {
-  return [
-    '<div style="display:grid;grid-template-columns:100px 1fr 200px;gap:16px;',
-    'padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.07);align-items:center;">',
-      '<span style="color:rgba(255,255,255,0.4);font-size:13px;font-family:Inter,sans-serif;">' + date + '</span>',
-      '<span style="color:rgba(255,255,255,0.85);font-size:14px;font-family:Inter,sans-serif;">' + title + '</span>',
-      '<span style="color:rgba(255,255,255,0.35);font-size:12px;font-family:Inter,sans-serif;text-align:right;">' + location + '</span>',
-    '</div>',
-  ].join('')
-}
-
-
-
-
-
 function patchBottomPill() {
   var pill = document.querySelector('.framer-MCKAi')
   if (!pill || pill.dataset.nodePillPatched) return
@@ -699,8 +691,8 @@ function patchTicker() {
     var sep = sepTemplate.cloneNode(true)
     var li = textTemplate.cloneNode(true)
     li.textContent = text
-    ul.appendChild(sep)
     ul.appendChild(li)
+    ul.appendChild(sep)
   })
 
   ul.classList.add('node-ticker-patched')
@@ -800,6 +792,8 @@ function applyOverrides() {
   patchBoardImages()
   patchPartnerLinks()
   fillFooter()
+  fillFooterLegal()
+  patchSocialLinks()
   hideNinthSpeakerCard()
 }
 
@@ -812,8 +806,6 @@ export default function NodeTextOverride() {
 
     // Run for 30s - covers lazy-loaded scroll sections
     const timer = setTimeout(() => observer.disconnect(), 90000)
-    setTimeout(patchSocialLinks, 500)
-    setTimeout(patchSocialLinks, 1500)
     setTimeout(injectNorcatTab, 700)
     setTimeout(injectNorcatTab, 2000)
     setTimeout(injectCustomSchedule, 600)
