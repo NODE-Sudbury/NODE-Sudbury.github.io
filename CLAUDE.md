@@ -34,7 +34,7 @@ Or use Bash with a heredoc + `printf` (no `echo`). Never use the Write/Edit tool
 | `public/content_chunk.mjs` | Framer bundle - patched for OFFSCREEN and STUDIO DRAADLOOS strings |
 | `public/node-logo.svg` | NODE SVG logo (replaces hero person photo) |
 | `public/nodesudbury-qr.svg` | QR code pointing to nodesudbury.com |
-| `public/script_main.mjs` | Framer entry point - contains `import('/content_chunk.mjs?v=4')` |
+| `public/script_main.mjs` | Framer entry point - contains `import('/content_chunk.mjs?v=14')` |
 
 ## NodeTextOverride.tsx Architecture
 
@@ -67,7 +67,7 @@ When patching `public/content_chunk.mjs`, bump the version query string in TWO p
 1. `public/script_main.mjs`: `import('/content_chunk.mjs?v=N')`
 2. `src/app/layout.tsx`: `<link rel="modulepreload" href="/content_chunk.mjs?v=N" />`
 
-Current version: `?v=4`
+Current version: `?v=14`
 
 ## Framer Scroll Behaviour
 
@@ -82,7 +82,7 @@ Current version: `?v=4`
 ## Dev Server
 
 ```bash
-cd /Users/hannanmax/Downloads/Wastewise/website-downloader/keynote_nextjs
+cd /Users/hannanmax/NorthCipherValley/NODE
 npm run dev
 # Server at localhost:3000
 ```
@@ -107,8 +107,30 @@ a[href*="polar.sh"], a[href*="holygrid.studio"], .framer-zhlkhb { display: none 
 [data-framer-appear-id] { opacity: 1 !important; animation: none !important; }
 ```
 
+## Git Branching Rules
+
+- NEVER push directly to `main`. Main is protected and only accepts PRs from `dev`.
+- Always create feature branches off `dev`, then PR into `dev`. Maintainer opens `dev` -> `main` for production.
+- Branch flow: `git checkout dev` -> `git checkout -b feat/your-feature` -> PR to `dev`.
+- Never force-push to any branch.
+
 ## Writing Rules (inherited from parent CLAUDE.md)
 
 - NEVER use em-dashes (---) in any output. Use a regular hyphen or rewrite.
 - NEVER include Claude session links in commit messages.
 - NEVER push to `https://github.com/NODE-Sudbury/NODE-Sudbury.github.io` unless the user explicitly says "push" in that specific message.
+
+## Completed Work (as of Oct 2026)
+
+All original rebranding tasks are complete:
+- Social media: x.com/nodesudbury, Instagram nodesudbury, LinkedIn company/nodesudbury
+- Copyright: "NODE - Northern Ontario Dev Exchange"
+- Board members: 8 names set to TBD, 9th card hidden
+- Tabs: Hackathons, Community Events, Norcat Series (12 monthly sessions)
+- Scrolling ticker: hackathons, Norcat sessions, meetups text added
+- Schedule section: replaced Framer section with custom CSS/JS (1:1 visual match)
+- Partner logos: LU Foundry (hero), Norcat, GDG Sudbury, Cursor Sudbury
+- HQ address + venue section updated to Norcat Innovation Hub
+- framerBody.ts: 16 static strings patched for zero-flicker SSR
+- setTimeout delays reduced (social links 500/1500ms, Norcat tab 700/2000ms)
+- Partner logo sizing via MutationObserver per-figure with busy flag
