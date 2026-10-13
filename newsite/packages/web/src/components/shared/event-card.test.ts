@@ -33,10 +33,9 @@ describe('event-card', () => {
     expect(text).toContain('DevFest Sudbury');
     expect(text).toContain('A day of talks.');
     expect(text).toContain('44 people signed up');
-    expect([...card.shadowRoot!.querySelectorAll('hb-chip')].map((chip) => chip.textContent!.trim())).toEqual([
-      'AI',
-      'DevFest',
-    ]);
+    expect(
+      [...card.shadowRoot!.querySelectorAll('hb-chip')].map((chip) => chip.textContent!.trim()),
+    ).toEqual(['AI', 'DevFest']);
   });
 
   it('shows only the tags the provider gives', async () => {
@@ -57,10 +56,12 @@ describe('eventDate', () => {
 
 describe('eventPlace', () => {
   it('names the venue, online, or both for a hybrid event', () => {
-    expect(eventPlace({ ...(event.venue && { venue: event.venue }), online: false })).toBe('Collège Boréal, Greater Sudbury');
-    expect(eventPlace({ online: true })).toBe('Online');
-    expect(eventPlace({ ...(event.venue && { venue: event.venue }), online: false, format: 'Hybrid' })).toBe(
-      'Collège Boréal, Greater Sudbury and online',
+    expect(eventPlace({ ...(event.venue && { venue: event.venue }), online: false })).toBe(
+      'Collège Boréal, Greater Sudbury',
     );
+    expect(eventPlace({ online: true })).toBe('Online');
+    expect(
+      eventPlace({ ...(event.venue && { venue: event.venue }), online: false, format: 'Hybrid' }),
+    ).toBe('Collège Boréal, Greater Sudbury and online');
   });
 });

@@ -78,7 +78,9 @@ const structuredData = [
     absoluteUrl('images/icon.png', site.url),
   ),
   websiteStructuredData(site, resources.title, resources.description),
-  ...(breadcrumbs ? [breadcrumbStructuredData([{ name: 'Home', path: '/' }, ...breadcrumbs], site.url)] : []),
+  ...(breadcrumbs
+    ? [breadcrumbStructuredData([{ name: 'Home', path: '/' }, ...breadcrumbs], site.url)]
+    : []),
   ...jsonLd,
 ];
 
@@ -122,7 +124,9 @@ await demoBanner;
     />
     <meta content={description} name="description" />
     <meta
-      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'}
+      content={
+        noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'
+      }
       name="robots"
     />
     <meta content={resources.keywords} name="keywords" />

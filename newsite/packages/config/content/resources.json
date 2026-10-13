@@ -105,9 +105,7 @@
   },
   "codeOfConductBlock": {
     "form": "mailto:admin@nodesudbury.com",
-    "contacts": [
-      "NODE organizers, [admin@nodesudbury.com](mailto:admin@nodesudbury.com)"
-    ]
+    "contacts": ["NODE organizers, [admin@nodesudbury.com](mailto:admin@nodesudbury.com)"]
   },
   "footerRelBlock": [
     {

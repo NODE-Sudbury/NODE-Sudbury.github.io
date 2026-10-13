@@ -53,10 +53,7 @@ describe('connectFirestore', () => {
     vi.stubEnv('FIRESTORE_EMULATOR_HOST', host);
 
     await expect(connectFirestore()).resolves.toBe('firestore');
-    expect(initializeApp).toHaveBeenCalledWith(
-      { projectId: 'demo-node-site' },
-      'node-site-build',
-    );
+    expect(initializeApp).toHaveBeenCalledWith({ projectId: 'demo-node-site' }, 'node-site-build');
     expect(getFirestore).toHaveBeenCalledWith('app');
     await close(server);
   });

@@ -52,7 +52,10 @@ describe('schedule-page', () => {
   it('sets the page metadata and titles the page', async () => {
     const { shadowRoot } = await render();
 
-    expect(updateMetadata).toHaveBeenCalledWith('Events', 'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.');
+    expect(updateMetadata).toHaveBeenCalledWith(
+      'Events',
+      'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
+    );
     expect(shadowRoot.querySelector('simple-hero')).toHaveAttribute('page', 'schedule');
   });
 
@@ -62,7 +65,10 @@ describe('schedule-page', () => {
   ])('gives %s its own title', async (pathname, params, title) => {
     await render({ location: { pathname, search: '', params } });
 
-    expect(updateMetadata).toHaveBeenLastCalledWith(title, 'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.');
+    expect(updateMetadata).toHaveBeenLastCalledWith(
+      title,
+      'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
+    );
   });
 
   it('shows the progress indicator while the schedule is pending', async () => {

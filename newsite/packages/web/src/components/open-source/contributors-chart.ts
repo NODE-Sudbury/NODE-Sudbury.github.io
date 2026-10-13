@@ -86,32 +86,47 @@ export class ContributorsChart extends ThemedComponent {
   accessor contributors: Contributor[] = [];
 
   override render() {
-    const ranked = [...this.contributors].sort((a, b) => b.contributions - a.contributions).slice(0, 10);
+    const ranked = [...this.contributors]
+      .sort((a, b) => b.contributions - a.contributions)
+      .slice(0, 10);
     const most = ranked[0]?.contributions ?? 1;
     if (!ranked.length) return nothing;
     return html`
       <ol aria-label="Contributors ranked by commits">
         ${ranked.map(
-          (person) => html`<li>
-            ${
-              person.avatar
-                ? html`<img class="avatar" src="${person.avatar}" alt="" width="40" height="40" loading="lazy" />`
-                : html`<span class="avatar"></span>`
-            }
-            <a href="${person.url}" target="_blank" rel="noopener noreferrer">${person.login}</a>
-            <div class="track" aria-hidden="true">
-              <div class="bar" style="inline-size: ${Math.max(2, (person.contributions / most) * 100)}%"></div>
-            </div>
-            <span class="count"
-              >${person.contributions} ${person.contributions === 1 ? 'commit' : 'commits'}${
-                person.projects
-                  ? html`<small
-                      >across ${person.projects} ${person.projects === 1 ? 'repo' : 'repos'}</small
-                    >`
-                  : nothing
-              }</span
-            >
-          </li>`,
+          (person) =>
+            html`<li>
+              ${
+                person.avatar
+                  ? html`<img
+                      class="avatar"
+                      src="${person.avatar}"
+                      alt=""
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    />`
+                  : html`<span class="avatar"></span>`
+              }
+              <a href="${person.url}" target="_blank" rel="noopener noreferrer">${person.login}</a>
+              <div class="track" aria-hidden="true">
+                <div
+                  class="bar"
+                  style="inline-size: ${Math.max(2, (person.contributions / most) * 100)}%"
+                ></div>
+              </div>
+              <span class="count"
+                >${person.contributions}
+                ${person.contributions === 1 ? 'commit' : 'commits'}${
+                  person.projects
+                    ? html`<small
+                        >across ${person.projects}
+                        ${person.projects === 1 ? 'repo' : 'repos'}</small
+                      >`
+                    : nothing
+                }</span
+              >
+            </li>`,
         )}
       </ol>
     `;

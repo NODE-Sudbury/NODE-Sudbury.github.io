@@ -74,6 +74,7 @@ export class ProjectCard extends ThemedComponent {
       font-size: var(--hb-text-sm);
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
     }
 
     @container (width < 480px) {

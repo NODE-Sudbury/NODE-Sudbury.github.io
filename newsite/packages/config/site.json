@@ -88,10 +88,7 @@
     ]
   },
   "auth": {
-    "providers": [
-      "emailLink",
-      "google"
-    ]
+    "providers": ["emailLink", "google"]
   },
   "theme": {
     "tagColors": {

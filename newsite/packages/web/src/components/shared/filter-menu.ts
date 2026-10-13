@@ -137,8 +137,7 @@ export class FilterMenu extends ThemedComponent {
           @click="${this.toggleBoard}"
         >
           ${msg('Filters', { id: 'shared.filter-menu.title' })}
-          <node-icon slot="icon" name="${this.opened ? 'close' : 'filter-list'}">
-          </node-icon>
+          <node-icon slot="icon" name="${this.opened ? 'close' : 'filter-list'}"> </node-icon>
         </hb-button>
         ${
           selected.length

@@ -16,7 +16,12 @@ let client: SupabaseClient | undefined;
 export const getSupabase = (): SupabaseClient => {
   if (!url || !anonKey) throw new Error('Supabase is not configured for this build.');
   client ??= createClient(url, anonKey, {
-    auth: { flowType: 'pkce', detectSessionInUrl: true, persistSession: true, autoRefreshToken: true },
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+    },
   });
   return client;
 };

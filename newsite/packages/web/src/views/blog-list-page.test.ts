@@ -65,7 +65,10 @@ describe('blog-list-page', () => {
     const { element } = await fixture<BlogListPage>(html`<blog-list-page></blog-list-page>`);
 
     expect(element.posts).toBeInstanceOf(Pending);
-    expect(mockUpdateMetadata).toHaveBeenCalledWith('Blog', 'News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.');
+    expect(mockUpdateMetadata).toHaveBeenCalledWith(
+      'Blog',
+      'News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.',
+    );
   });
 
   it('shows every post in the featured card grid', async () => {

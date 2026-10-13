@@ -15,13 +15,13 @@ The site opens at http://localhost:4321 and reads its content from `packages/con
 
 ## Where things are
 
-| Path                                | What it holds                                                          |
-| ----------------------------------- | ---------------------------------------------------------------------- |
-| `packages/config/site.json`         | Site settings, navigation and features                                 |
-| `packages/config/content/`          | Home page text, FAQ, code of conduct and the open source data          |
-| `packages/config/sample-data/`      | Board, partners, gallery, blog, events and membership                  |
-| `packages/config/public/images/`    | Logos and photos                                                       |
-| `packages/web/`                     | The website itself                                                     |
+| Path                             | What it holds                                                 |
+| -------------------------------- | ------------------------------------------------------------- |
+| `packages/config/site.json`      | Site settings, navigation and features                        |
+| `packages/config/content/`       | Home page text, FAQ, code of conduct and the open source data |
+| `packages/config/sample-data/`   | Board, partners, gallery, blog, events and membership         |
+| `packages/config/public/images/` | Logos and photos                                              |
+| `packages/web/`                  | The website itself                                            |
 
 ## Open source data
 

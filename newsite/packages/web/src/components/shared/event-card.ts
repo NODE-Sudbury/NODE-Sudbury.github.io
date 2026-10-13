@@ -91,6 +91,7 @@ export class EventCard extends ThemedComponent {
       font-size: var(--hb-text-sm);
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
     }
 
     .category {
@@ -153,7 +154,9 @@ export class EventCard extends ThemedComponent {
     const meta = [eventDate(event, this.zone), place].filter(Boolean).join(' · ');
     const tags = [...new Set(event.tags)].slice(0, MAX_TAGS);
     const stats = [
-      event.rsvpCount ? `${event.rsvpCount} ${event.rsvpCount === 1 ? 'person' : 'people'} signed up` : '',
+      event.rsvpCount
+        ? `${event.rsvpCount} ${event.rsvpCount === 1 ? 'person' : 'people'} signed up`
+        : '',
       event.host ? `Hosted by ${event.host}` : '',
     ]
       .filter(Boolean)
@@ -175,7 +178,14 @@ export class EventCard extends ThemedComponent {
                 ? html`<ul class="tags">
                     ${tags.map(
                       (tag) =>
-                        html`<li><hb-chip style="${Object.entries(tagChipStyle(tag)).map(([key, value]) => `${key}:${value}`).join(';')}">${tag}</hb-chip></li>`,
+                        html`<li>
+                          <hb-chip
+                            style="${Object.entries(tagChipStyle(tag))
+                              .map(([key, value]) => `${key}:${value}`)
+                              .join(';')}"
+                            >${tag}</hb-chip
+                          >
+                        </li>`,
                     )}
                   </ul>`
                 : nothing

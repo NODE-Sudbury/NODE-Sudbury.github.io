@@ -546,14 +546,7 @@
           "percent": 0.3
         }
       ],
-      "topics": [
-        "face-tracking",
-        "grok",
-        "mediapipe",
-        "motion-capture",
-        "svg",
-        "vue"
-      ],
+      "topics": ["face-tracking", "grok", "mediapipe", "motion-capture", "svg", "vue"],
       "license": "MIT",
       "stars": 1,
       "forks": 0,

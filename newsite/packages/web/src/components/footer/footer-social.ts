@@ -70,7 +70,11 @@ export class FooterSocial extends ThemedComponent {
           ${this.socialNetwork.follow.map(
             (socFollow) => html`
               <li>
-                <hb-icon-button label="${FOLLOW_LABELS[socFollow.name] ?? socFollow.name}" href="${socFollow.url}" target="_blank">
+                <hb-icon-button
+                  label="${FOLLOW_LABELS[socFollow.name] ?? socFollow.name}"
+                  href="${socFollow.url}"
+                  target="_blank"
+                >
                   <node-icon name="${socFollow.name}"></node-icon>
                 </hb-icon-button>
               </li>
@@ -92,11 +96,7 @@ export class FooterSocial extends ThemedComponent {
             </hb-icon-button>
           </li>
           <li>
-            <hb-icon-button
-              label="${this.shareLabel('X')}"
-              share="x"
-              @click="${this.share}"
-            >
+            <hb-icon-button label="${this.shareLabel('X')}" share="x" @click="${this.share}">
               <node-icon name="x"></node-icon>
             </hb-icon-button>
           </li>

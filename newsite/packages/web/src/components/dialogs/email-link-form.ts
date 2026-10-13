@@ -1,5 +1,5 @@
 import { msg } from '@lit/localize';
-import { css, html, nothing } from 'lit';
+import { css, html } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { fromStore } from '../../controllers/from-store';
 import { sendSignInLink } from '../../store/auth';

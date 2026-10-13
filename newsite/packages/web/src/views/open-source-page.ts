@@ -127,8 +127,7 @@ export class OpenSourcePage extends ThemedComponent {
                 <dl class="stats">
                   ${this.stat('Projects', this.projects.length)}
                   ${this.stat('Contributors', this.contributors.length)}
-                  ${this.stat('Total commits', this.totalCommits)}
-                  ${this.stat('Stars', this.stars)}
+                  ${this.stat('Total commits', this.totalCommits)} ${this.stat('Stars', this.stars)}
                   ${this.stat('Languages', this.languages)}
                   ${this.stat('Last activity', this.lastActivity)}
                 </dl>
@@ -136,13 +135,17 @@ export class OpenSourcePage extends ThemedComponent {
                 <ul class="projects">
                   ${this.projects.map(
                     (project) =>
-                      html`<li><project-card .project="${project}" heading-level="3"></project-card></li>`,
+                      html`<li>
+                        <project-card .project="${project}" heading-level="3"></project-card>
+                      </li>`,
                   )}
                 </ul>
                 ${
                   this.contributors.length
                     ? html`<h2 class="section-title">Top contributors</h2>
-                        <contributors-chart .contributors="${this.contributors}"></contributors-chart>
+                        <contributors-chart
+                          .contributors="${this.contributors}"
+                        ></contributors-chart>
                         <p class="note">
                           Commits across all projects, ranked on GitHub. Bots are left out.
                         </p>`
@@ -161,7 +164,10 @@ export class OpenSourcePage extends ThemedComponent {
   }
 
   private stat(label: string, value: string | number) {
-    return html`<div class="stat"><dt>${label}</dt><dd>${value}</dd></div>`;
+    return html`<div class="stat">
+      <dt>${label}</dt>
+      <dd>${value}</dd>
+    </div>`;
   }
 
   /** Each person once, with their commits added up across every project. */
@@ -190,11 +196,15 @@ export class OpenSourcePage extends ThemedComponent {
   }
 
   private get languages() {
-    return new Set(this.projects.flatMap(({ languages }) => languages.map(({ name }) => name))).size;
+    return new Set(this.projects.flatMap(({ languages }) => languages.map(({ name }) => name)))
+      .size;
   }
 
   private get lastActivity() {
-    const latest = this.projects.map(({ pushedAt }) => pushedAt).sort().at(-1);
+    const latest = this.projects
+      .map(({ pushedAt }) => pushedAt)
+      .sort()
+      .at(-1);
     return latest ? formatDate(latest) : '';
   }
 }

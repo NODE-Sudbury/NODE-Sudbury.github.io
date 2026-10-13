@@ -186,7 +186,9 @@ export class EventsPage extends ThemedComponent {
     const chosen = this.selectedFilters
       .filter(({ group }) => group === FilterGroupKey.tags)
       .map(({ tag }) => tag);
-    return chosen.length ? this.categories.filter((category) => chosen.includes(category)) : this.categories;
+    return chosen.length
+      ? this.categories.filter((category) => chosen.includes(category))
+      : this.categories;
   }
 
   private columns(zone: string) {
@@ -198,8 +200,12 @@ export class EventsPage extends ThemedComponent {
           <h3 class="column-title">${category}</h3>
           ${
             events.length
-              ? events.map((event) => html`<event-card .event="${event}" zone="${zone}"></event-card>`)
-              : html`<p class="column-empty">${msg('Nothing planned yet.', { id: 'events.page.column-empty' })}</p>`
+              ? events.map(
+                  (event) => html`<event-card .event="${event}" zone="${zone}"></event-card>`,
+                )
+              : html`<p class="column-empty">
+                  ${msg('Nothing planned yet.', { id: 'events.page.column-empty' })}
+                </p>`
           }
         </section>`;
       })}
@@ -209,8 +215,7 @@ export class EventsPage extends ThemedComponent {
   private cards(events: CommunityEvent[], zone: string) {
     return html`<ul class="events">
       ${events.map(
-        (event) =>
-          html`<li><event-card .event="${event}" zone="${zone}"></event-card></li>`,
+        (event) => html`<li><event-card .event="${event}" zone="${zone}"></event-card></li>`,
       )}
     </ul>`;
   }
@@ -247,7 +252,6 @@ export class EventsPage extends ThemedComponent {
         </div>
 
         ${this.columns(shownZone)}
-
         ${
           this.past.length
             ? html`<h2 class="title past">${msg('Past events', { id: 'events.page.past' })}</h2>

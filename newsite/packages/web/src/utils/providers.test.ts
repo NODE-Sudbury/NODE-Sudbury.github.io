@@ -14,7 +14,9 @@ describe('supabaseProvider', () => {
   });
 
   it('refuses a provider it does not know', () => {
-    expect(() => supabaseProvider('https://example.com' as PROVIDER)).toThrow('Unsupported provider');
+    expect(() => supabaseProvider('https://example.com' as PROVIDER)).toThrow(
+      'Unsupported provider',
+    );
   });
 });
 

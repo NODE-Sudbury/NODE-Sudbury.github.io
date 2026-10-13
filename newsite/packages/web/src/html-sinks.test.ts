@@ -18,7 +18,8 @@ const ALLOWED: Record<string, string> = {
   './components/home/about-organizer-block.ts': 'markdown sanitized by renderMarkdown()',
   './components/attending/content.ts': 'markdown sanitized by renderMarkdown()',
   './illustrations/illustration.ts': 'built-in SVG files',
-  './layouts/base.astro': 'build-time scripts, styles, JSON escaped by serializeContent() and JSON-LD escaped by serializeJsonLd()',
+  './layouts/base.astro':
+    'build-time scripts, styles, JSON escaped by serializeContent() and JSON-LD escaped by serializeJsonLd()',
   './routes/blog/rss.xml.ts': 'markdown sanitized by renderMarkdown(), in a build-time template',
   './routes/design.astro': 'the development-only design gallery',
   './design/Icon.astro': 'built-in icon paths, in the development-only design gallery',

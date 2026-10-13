@@ -50,7 +50,9 @@ export class TicketsBlock extends ThemedComponent {
     return html`
       <div class="inner">
         <div class="band-header">
-          <h2 class="band-title">${msg('Membership Plans\u00a0- Join the Network', { id: 'home.tickets-block.title' })}</h2>
+          <h2 class="band-title">
+            ${msg('Membership Plans\u00a0- Join the Network', { id: 'home.tickets-block.title' })}
+          </h2>
         </div>
         ${
           soldOut

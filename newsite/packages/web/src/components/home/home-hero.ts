@@ -17,13 +17,11 @@ import {
   stream,
   timeZone,
   title,
-  url,
 } from '../../config/site';
 import { fromStore } from '../../controllers/from-store';
 import type { Ticket } from '../../models/ticket';
 import { type TicketsState, selectTickets } from '../../store/tickets';
 import { openVideoDialog } from '../../store/ui';
-import { eventToCalendarEvent } from '../../utils/calendar';
 import { currentTime } from '../../utils/clock';
 import { type ContentPresence, hasContent } from '../../utils/content-presence';
 import { getScheduleDay } from '../../utils/dates';

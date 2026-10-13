@@ -12,6 +12,10 @@ import type { CommunityEvent } from '../models/event';
 import { profile } from '../styles/profile';
 import { ThemedComponent } from '../components/themed-component';
 
+/** A Google Maps search for an address. */
+const mapsUrl = (address: string) =>
+  `https://www.google.com/maps/search/?${new URLSearchParams({ api: '1', query: address })}`;
+
 const PROVIDER_NAMES = { gdg: 'GDG', luma: 'Luma' } as const;
 
 /** Paragraphs the sync saved on single lines, as markdown needs them: separated by a blank line. */
@@ -249,10 +253,7 @@ export class EventPage extends ThemedComponent {
           address
             ? html`<h2 class="section-title">Where</h2>
                 <address class="address">${address}</address>
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}"
-                  target="_blank"
-                  rel="noopener"
+                <a href="${mapsUrl(address)}" target="_blank" rel="noopener"
                   >Open in Google Maps</a
                 >`
             : nothing

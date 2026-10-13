@@ -32,10 +32,7 @@ describe('sync-status', () => {
     const status = screen.getByShadowRole('button');
 
     expect(deepQuerySelector(status, '[aria-hidden="true"]')).toHaveTextContent(/^2$/);
-    expect(deepQuerySelector(shadowRoot, 'node-icon')).toHaveAttribute(
-      'name',
-      'cloud-upload',
-    );
+    expect(deepQuerySelector(shadowRoot, 'node-icon')).toHaveAttribute('name', 'cloud-upload');
     expect(deepQuerySelector(status, '.visually-hidden')).toHaveTextContent(
       'Offline · 2 changes to sync',
     );

@@ -183,10 +183,7 @@ export class HomePage extends ThemedComponent {
       <about-block class="band" data-tone="${tone('about-block')}"></about-block>
       ${
         __HB_FEATURES__.team && this.has('team')
-          ? html`<board-block
-              class="band"
-              data-tone="${tone('board-block')}"
-            ></board-block>`
+          ? html`<board-block class="band" data-tone="${tone('board-block')}"></board-block>`
           : nothing
       }
       ${__HB_FEATURES__.subscribe ? html`<subscribe-block id="subscribe"></subscribe-block>` : nothing}

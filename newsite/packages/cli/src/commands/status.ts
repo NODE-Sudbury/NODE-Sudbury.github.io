@@ -258,9 +258,7 @@ export const runStatus = async (): Promise<CommandResult> => {
 
   const changes = forkChanges(repoRoot, nodeSite);
   if (changes === undefined) {
-    console.log(
-      `Your changes: unknown, without the v${nodeSite} tag (git fetch --tags upstream)`,
-    );
+    console.log(`Your changes: unknown, without the v${nodeSite} tag (git fetch --tags upstream)`);
   } else {
     console.log(`Your changes to NODE site's files, outside ${CONFIG_DIR}: ${changes.length}`);
     for (const path of changes.slice(0, MAX_LISTED)) console.log(`  ${path}`);

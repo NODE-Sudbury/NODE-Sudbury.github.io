@@ -143,7 +143,12 @@ export class OpenSourceProjectPage extends ThemedComponent {
           </hb-button>
           ${
             project.homepage
-              ? html`<hb-button href="${project.homepage}" target="_blank" variant="outlined" size="l">
+              ? html`<hb-button
+                  href="${project.homepage}"
+                  target="_blank"
+                  variant="outlined"
+                  size="l"
+                >
                   <node-icon slot="icon" name="website"></node-icon>
                   Live site
                 </hb-button>`
@@ -154,8 +159,7 @@ export class OpenSourceProjectPage extends ThemedComponent {
 
       <div class="inner">
         <dl class="stats">
-          ${this.stat('Stars', project.stars)}
-          ${this.stat('Forks', project.forks)}
+          ${this.stat('Stars', project.stars)} ${this.stat('Forks', project.forks)}
           ${this.stat('Open issues', project.openIssues)}
           ${this.stat('Contributors', project.contributors.length)}
           ${this.stat('Last update', formatDate(project.pushedAt))}
@@ -169,16 +173,13 @@ export class OpenSourceProjectPage extends ThemedComponent {
                 <p class="note">Ranked by commits on GitHub. Bots are left out.</p>`
             : nothing
         }
-
         ${
           project.commitActivity.length
             ? html`<h2 class="section-title">Commit activity</h2>
                 <commit-activity-chart .weeks="${project.commitActivity}"></commit-activity-chart>`
             : nothing
         }
-
         ${project.languages.length ? this.renderLanguages(project) : nothing}
-
         ${
           project.readme
             ? html`<h2 class="section-title">About this project</h2>
@@ -190,23 +191,35 @@ export class OpenSourceProjectPage extends ThemedComponent {
   }
 
   private stat(label: string, value: string | number) {
-    return html`<div class="stat"><dt>${label}</dt><dd>${value}</dd></div>`;
+    return html`<div class="stat">
+      <dt>${label}</dt>
+      <dd>${value}</dd>
+    </div>`;
   }
 
   private renderLanguages(project: OpenSourceProject) {
     return html`
       <h2 class="section-title">Languages</h2>
-      <div class="languages" role="img" aria-label="${project.languages.map(({ name, percent }) => `${name} ${percent}%`).join(', ')}">
+      <div
+        class="languages"
+        role="img"
+        aria-label="${project.languages.map(({ name, percent }) => `${name} ${percent}%`).join(', ')}"
+      >
         ${project.languages.map(
           ({ percent }, index) =>
-            html`<span style="inline-size: ${percent}%; background-color: ${LANGUAGE_COLORS[index % LANGUAGE_COLORS.length]}"></span>`,
+            html`<span
+              style="inline-size: ${percent}%; background-color: ${LANGUAGE_COLORS[index % LANGUAGE_COLORS.length]}"
+            ></span>`,
         )}
       </div>
       <ul class="legend">
         ${project.languages.map(
           ({ name, percent }, index) =>
             html`<li>
-              <span class="dot" style="background-color: ${LANGUAGE_COLORS[index % LANGUAGE_COLORS.length]}"></span>
+              <span
+                class="dot"
+                style="background-color: ${LANGUAGE_COLORS[index % LANGUAGE_COLORS.length]}"
+              ></span>
               ${name} ${percent}%
             </li>`,
         )}

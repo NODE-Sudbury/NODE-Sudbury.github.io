@@ -15,7 +15,10 @@ describe('PageMetadataController', () => {
     const controller = new PageMetadataController(host, 'team');
 
     controller.hostConnected();
-    expect(updateMetadata).toHaveBeenCalledWith('Board', 'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.');
+    expect(updateMetadata).toHaveBeenCalledWith(
+      'Board',
+      'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
+    );
 
     localeStatus('loading');
     expect(updateMetadata).toHaveBeenCalledTimes(1);

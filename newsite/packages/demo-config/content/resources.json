@@ -86,9 +86,7 @@
   },
   "nfpBlock": {
     "title": "About the organizer",
-    "lines": [
-      "Describe your organization here."
-    ]
+    "lines": ["Describe your organization here."]
   },
   "galleryBlock": {
     "title": "#dfua16 highlights",

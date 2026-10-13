@@ -70,10 +70,7 @@ describe('app-header', () => {
   it("marks the navigation link of the page's path as the current page", async () => {
     const { nav } = await render('/sessions/101');
 
-    expect(nav.getByShadowRole('link', { name: 'Events' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    );
+    expect(nav.getByShadowRole('link', { name: 'Events' })).toHaveAttribute('aria-current', 'page');
     expect(nav.getByShadowRole('link', { name: 'Speakers' })).not.toHaveAttribute('aria-current');
   });
 

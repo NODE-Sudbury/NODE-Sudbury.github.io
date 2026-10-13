@@ -2,99 +2,73 @@
   "sessions/norcat-2026-09": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "AI Tools for Developers - Using LLMs in Your Workflow",
     "day": "2026-09-16",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-1"
-    ]
+    "speakers": ["tbd-1"]
   },
   "sessions/norcat-2026-10": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Building a Career in Northern Ontario Tech",
     "day": "2026-10-21",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-2"
-    ]
+    "speakers": ["tbd-2"]
   },
   "sessions/norcat-2026-11": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Open Source Contribution Workshop",
     "day": "2026-11-18",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-3"
-    ]
+    "speakers": ["tbd-3"]
   },
   "sessions/norcat-2026-12": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Year in Review - Tech in the North",
     "day": "2026-12-16",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-4"
-    ]
+    "speakers": ["tbd-4"]
   },
   "sessions/norcat-2027-01": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Remote-First: Working from Northern Ontario",
     "day": "2027-01-20",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-5"
-    ]
+    "speakers": ["tbd-5"]
   },
   "sessions/norcat-2027-02": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "From Side Project to Product",
     "day": "2027-02-17",
     "startTime": "18:00",
     "endTime": "19:00",
     "track": "norcat-series",
-    "speakers": [
-      "tbd-6"
-    ]
+    "speakers": ["tbd-6"]
   },
   "sessions/norcat-2027-03": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "Web"
-    ],
+    "tags": ["Web"],
     "title": "Accessibility in Modern Web Dev",
     "day": "2027-03-17",
     "startTime": "18:00",
@@ -104,9 +78,7 @@
   "sessions/norcat-2027-04": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "Cloud"
-    ],
+    "tags": ["Cloud"],
     "title": "DevOps for Small Teams",
     "day": "2027-04-21",
     "startTime": "18:00",
@@ -116,9 +88,7 @@
   "sessions/norcat-2027-05": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "Web"
-    ],
+    "tags": ["Web"],
     "title": "Mobile First: Building for Northern Ontario",
     "day": "2027-05-19",
     "startTime": "18:00",
@@ -128,9 +98,7 @@
   "sessions/norcat-2027-06": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Security Basics Every Developer Should Know",
     "day": "2027-06-16",
     "startTime": "18:00",
@@ -140,9 +108,7 @@
   "sessions/norcat-2027-07": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Building with AI APIs",
     "day": "2027-07-21",
     "startTime": "18:00",
@@ -152,9 +118,7 @@
   "sessions/norcat-2027-08": {
     "description": "Details coming soon.",
     "language": "English",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "title": "Freelancing and Consulting in Tech",
     "day": "2027-08-18",
     "startTime": "18:00",
@@ -164,81 +128,61 @@
   "sessions/hackathon-fall-2026": {
     "description": "Details coming soon. Stay tuned for theme and registration.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Fall Hackathon - Title TBD"
   },
   "sessions/hackathon-winter-2027": {
     "description": "Details coming soon. Stay tuned for theme and registration.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Winter Hackathon - Title TBD"
   },
   "sessions/hackathon-spring-2027": {
     "description": "Details coming soon. Stay tuned for theme and registration.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Spring Hackathon - Title TBD"
   },
   "sessions/hackathon-summer-2027": {
     "description": "Details coming soon. Stay tuned for theme and registration.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Summer Hackathon - Title TBD"
   },
   "sessions/cursor-2026-09": {
     "description": "Monthly meetup for Cursor editor users. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Cursor Sudbury - Title TBD"
   },
   "sessions/gdg-2026-10": {
     "description": "Google Developer Group monthly meetup. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "GDG Sudbury - Title TBD"
   },
   "sessions/cursor-2026-11": {
     "description": "Monthly meetup for Cursor editor users. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Cursor Sudbury - Title TBD"
   },
   "sessions/gdg-2026-12": {
     "description": "Google Developer Group monthly meetup. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "GDG Sudbury - Title TBD"
   },
   "sessions/cursor-2027-01": {
     "description": "Monthly meetup for Cursor editor users. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "Cursor Sudbury - Title TBD"
   },
   "sessions/gdg-2027-02": {
     "description": "Google Developer Group monthly meetup. Details coming soon.",
     "language": "English",
-    "tags": [
-      "Community"
-    ],
+    "tags": ["Community"],
     "title": "GDG Sudbury - Title TBD"
   }
 }

@@ -104,9 +104,7 @@ describe('node-icon', () => {
 
     const missing = [];
     for (const name of names) {
-      const { shadowRoot } = await fixture(
-        html`<node-icon name="${name}"></node-icon>`,
-      );
+      const { shadowRoot } = await fixture(html`<node-icon name="${name}"></node-icon>`);
       if (!shadowRoot.querySelector('svg')) missing.push(name);
     }
     expect(missing).toEqual([]);

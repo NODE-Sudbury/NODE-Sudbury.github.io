@@ -5,7 +5,9 @@
 // Only public information is read, with no login. Add an event by adding its link to the sources.
 // Run it with `npm --prefix packages/web run sync:events`. `--if-requested` (used by the build)
 // does nothing unless SYNC_EVENTS=1. When a page can't be reached, that event's last saved data stays.
+import { Buffer } from 'node:buffer';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const SOURCES = fileURLToPath(new URL('../../config/content/event-sources.json', import.meta.url));
@@ -18,7 +20,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Both services answer 429 when asked too fast, so a request waits and tries again.
 const fetchJson = async (url, attempts = 4) => {
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    const response = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': AGENT } });
+    const response = await fetch(url, {
+      headers: { Accept: 'application/json', 'User-Agent': AGENT },
+    });
     if (response.status === 429 && attempt < attempts) {
       await sleep(attempt * 15000);
       continue;
@@ -49,7 +53,9 @@ const treeText = (node) => {
   if (node.type === 'text') return node.text ?? '';
   if (node.type === 'hard_break') return '\n';
   const inner = (node.content ?? []).map(treeText).join('');
-  return ['paragraph', 'heading', 'list_item', 'bullet_list', 'ordered_list'].includes(node.type) ? `${inner}\n` : inner;
+  return ['paragraph', 'heading', 'list_item', 'bullet_list', 'ordered_list'].includes(node.type)
+    ? `${inner}\n`
+    : inner;
 };
 
 // A short readable address for the event page: its title up to a colon or dash.
@@ -131,7 +137,9 @@ const luma = async ({ url, category }) => {
     capacity: ticket.max_capacity ?? undefined,
   }));
   const online = event.location_type === 'online';
-  const description = treeText(data.description_mirror).replace(/\n{3,}/g, '\n\n').trim();
+  const description = treeText(data.description_mirror)
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
   return {
     id: `luma-${event.api_id ?? slug}`,
     provider: 'luma',
@@ -172,7 +180,13 @@ const saveImage = async (id, url) => {
     const response = await fetch(url, { headers: { 'User-Agent': AGENT } });
     if (!response.ok) return url;
     const type = response.headers.get('content-type') ?? '';
-    const extension = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : type.includes('gif') ? 'gif' : 'jpg';
+    const extension = type.includes('png')
+      ? 'png'
+      : type.includes('webp')
+        ? 'webp'
+        : type.includes('gif')
+          ? 'gif'
+          : 'jpg';
     mkdirSync(IMAGES, { recursive: true });
     writeFileSync(`${IMAGES}${id}.${extension}`, Buffer.from(await response.arrayBuffer()));
     return `/images/events/${id}.${extension}`;
@@ -183,7 +197,8 @@ const saveImage = async (id, url) => {
 
 const PROVIDERS = { gdg, luma };
 
-const readJson = (file, fallback) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback);
+const readJson = (file, fallback) =>
+  existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback;
 
 const main = async () => {
   const { sources, categories = [] } = readJson(SOURCES, { sources: [] });
@@ -201,7 +216,9 @@ const main = async () => {
       events.push({ ...event, image: await saveImage(event.id, event.image) });
     } catch (error) {
       console.warn(`  ${error.message}`);
-      const kept = previous.find((event) => event.url === source.url || event.rsvpUrl === source.url);
+      const kept = previous.find(
+        (event) => event.url === source.url || event.rsvpUrl === source.url,
+      );
       if (kept) {
         console.warn('  Keeping the last saved data for this event.');
         events.push(kept);
@@ -209,7 +226,10 @@ const main = async () => {
     }
   }
   events.sort((a, b) => (a.start ?? '').localeCompare(b.start ?? ''));
-  writeFileSync(OUT, `${JSON.stringify({ generatedAt: new Date().toISOString(), categories, events }, null, 2)}\n`);
+  writeFileSync(
+    OUT,
+    `${JSON.stringify({ generatedAt: new Date().toISOString(), categories, events }, null, 2)}\n`,
+  );
   console.log(`Wrote ${events.length} event(s) to packages/config/content/events.json`);
 };
 
