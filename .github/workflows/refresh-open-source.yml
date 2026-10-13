@@ -1,0 +1,26 @@
+name: Refresh open source data
+
+# Rebuilds the site every day so the Open Source page shows current repositories, commits and
+# contributors. The build fetches them from GitHub (SYNC_GITHUB=1 in the build command).
+# Add a repository secret named SITE_DEPLOY_HOOK_URL with your host's deploy hook URL
+# (Vercel, Netlify, Cloudflare Pages and others each give you one).
+
+on:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a site rebuild
+        env:
+          HOOK: ${{ secrets.SITE_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "SITE_DEPLOY_HOOK_URL is not set, so no rebuild was requested."
+            exit 0
+          fi
+          curl --fail --silent --show-error -X POST "$HOOK"
+          echo "Rebuild requested."
