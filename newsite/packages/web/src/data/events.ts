@@ -14,7 +14,36 @@ export const loadEvents = (): EventsData => {
 export const splitEvents = (events: CommunityEvent[], now = new Date()) => {
   const endsAt = (event: CommunityEvent) => new Date(event.end ?? event.start).getTime();
   return {
-    upcoming: events.filter((event) => endsAt(event) >= now.getTime()).sort((a, b) => a.start.localeCompare(b.start)),
-    past: events.filter((event) => endsAt(event) < now.getTime()).sort((a, b) => b.start.localeCompare(a.start)),
+    upcoming: events
+      .filter((event) => endsAt(event) >= now.getTime())
+      .sort((a, b) => a.start.localeCompare(b.start)),
+    past: events
+      .filter((event) => endsAt(event) < now.getTime())
+      .sort((a, b) => b.start.localeCompare(a.start)),
   };
+};
+
+/** The title up to a colon or dash: "DevFest Sudbury 2026: Build, Secure…" becomes "DevFest Sudbury 2026". */
+export const shortTitle = (title: string): string =>
+  title.split(/\s[:–—-]\s|:\s/)[0]?.trim() || title;
+
+const clip = (value: string, length: number) => {
+  const clean = value.replace(/\s+/g, ' ').trim();
+  return clean.length <= length ? clean : `${clean.slice(0, length - 1).trimEnd()}…`;
+};
+
+/**
+ * The meta description of an event: when and where, then what it is, within the 155 characters
+ * search results show.
+ */
+export const eventDescription = (event: CommunityEvent): string => {
+  const date = new Date(event.start).toLocaleDateString('en-CA', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: event.timezone,
+  });
+  const place = event.online ? 'online' : (event.venue?.name ?? event.venue?.city);
+  const lead = [date, place].filter(Boolean).join(', ');
+  return clip(event.summary ? `${lead}. ${event.summary}` : lead, 155);
 };
