@@ -20,7 +20,8 @@
     "localize:extract": "node build/localize-extract.mjs",
     "prebuild": "node build/github-sync.mjs --if-requested",
     "start:astro": "npm run localize:build && astro dev",
-    "sync:github": "node build/github-sync.mjs"
+    "sync:github": "node build/github-sync.mjs",
+    "sync:events": "node build/events-sync.mjs"
   },
   "dependencies": {
     "@abraham/remotedata": "1.4.0",
