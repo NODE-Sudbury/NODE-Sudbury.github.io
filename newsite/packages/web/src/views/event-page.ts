@@ -45,8 +45,11 @@ export class EventPage extends ThemedComponent {
         inline-size: 100%;
         margin: 0 0 var(--hb-space-4);
         padding: var(--hb-space-1) var(--hb-space-4);
-        border: var(--hb-border-width) solid currentColor;
+        /* A soft red that warns without shouting, readable on every theme's hero. */
+        border: var(--hb-border-width) solid #d9776d;
         border-radius: 999px;
+        background-color: #b5483f;
+        color: #fff;
         font-size: var(--hb-text-sm);
         font-weight: 700;
         letter-spacing: 0.04em;
