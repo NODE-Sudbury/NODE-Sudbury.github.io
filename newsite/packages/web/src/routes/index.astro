@@ -27,7 +27,10 @@ const content = seedPage({
 const now = new Date();
 ---
 
-<Base content={content}>
+<Base
+  title="NODE - Northern Ontario Dev Exchange | Developer Community in Sudbury"
+  content={content}
+>
   <HomePage
     eventState={eventState(now, site.event)}
     daysToGo={daysUntilStart(now, site.event)}
