@@ -23,6 +23,17 @@ The site opens at http://localhost:4321 and reads its content from `packages/con
 | `packages/config/public/images/` | Logos and photos                                              |
 | `packages/web/`                  | The website itself                                            |
 
+## Sign-in and the two Supabase projects
+
+Members sign in with an emailed link or Google, through Supabase. The site talks to one of two Supabase projects, chosen by the env file Vite reads:
+
+| Command         | Env file                        | Supabase project   |
+| --------------- | ------------------------------- | ------------------ |
+| `npm start`     | `packages/web/.env.development` | `Node Website Dev` |
+| `npm run build` | `packages/web/.env.production`  | `Node Website`     |
+
+Copy `packages/web/.env.example` to both files and fill in each project's URL and public anon key (Project Settings, API). The files are gitignored. Never put the service role key in them. Each project must list the site's address under Authentication, URL Configuration, for example `http://localhost:4321/**` for development, or sign-in sends members to the project's default Site URL instead.
+
 ## Open source data
 
 The Open Source page lists the public repositories of the organization, with contributors and activity. Refresh it with:

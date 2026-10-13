@@ -1,15 +1,13 @@
 # Security policy
 
-## Supported versions
-
-Only the latest major version gets security fixes. See [docs/releases.md](../docs/releases.md#supported-versions).
-
 ## Reporting a vulnerability
 
-Report vulnerabilities privately through [GitHub's private vulnerability reporting](https://github.com/gdg-x/hoverboard/security/advisories/new). Don't open a public issue or pull request.
+Report vulnerabilities privately by emailing **admin@nodesudbury.com**. Do not open a public issue or pull request.
 
-Include what is affected, how to reproduce it, and the impact you expect. Maintainers are volunteers, so replies can take a few days. Once a fix is released, the advisory is published with credit to you, unless you'd rather not be named.
+Include what is affected, how to reproduce it, and the impact you expect. NODE is run by volunteers, so replies can take a few days.
 
-## Your own site
+## Secrets
 
-NODE site is a template, and each site runs in its organizer's own Firebase project. A problem with a single site, such as its content, its Firebase settings or a change made in a fork, belongs to that site's organizers, not to this repository.
+Never commit credentials. The Supabase keys for this site live in gitignored `.env.development` and `.env.production` files in `packages/web`, and in the host's environment settings. If a key reaches the repository by mistake, rotate it in Supabase first, then tell admin@nodesudbury.com.
+
+The site's own contact for security reports is also published at `/.well-known/security.txt`.

@@ -1,6 +1,17 @@
 # AGENTS.md
 
-NODE site is a conference website template. Organizers fork it, configure it and deploy it to their own Firebase project. The web app is Lit components that Astro renders to static pages at build time, from the site's content in Firestore. The pages then hydrate in the browser and keep the content live. Cloud Functions send notifications.
+This is the NODE website, the new site of the Northern Ontario Dev Exchange. It lives in `newsite/` of the `NODE-Sudbury.github.io` repository, next to the older Next.js app at the repository root. The web app is Lit components that Astro renders to static pages at build time. Most of the code and the conventions below come from the conference website template it started from, so some sections still describe Firebase, which NODE does not use for sign-in anymore.
+
+## NODE specifics
+
+- **Content** comes from `packages/config`: `site.json`, `content/` (text, FAQ, events, open source data) and `sample-data/` (board, partners, blog, gallery). Run the site with `FIRESTORE_TARGET=sample NODE_ENV=development npm --prefix packages/web run start:astro`. Events come from GDG and Luma pages (`npm --prefix packages/web run sync:events`) and open source data from GitHub (`sync:github`).
+- **Sign-in** uses Supabase Auth: an emailed sign-in link and Google. It is the same Supabase project as the older app's member dashboard, so the same members table and roles (`member`, `staff`, `board`) apply. `src/supabase.ts` makes the client and `src/store/auth` holds the sign-in state.
+- **Two Supabase projects.** `Node Website Dev` is for development and previews, and `Node Website` is production. Vite reads `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` from `packages/web/.env.development` (for `npm start`) or `.env.production` (for builds). Both files are gitignored, and `packages/web/.env.example` shows the names. On Vercel, the Production environment points at the production project and Preview points at the dev one. Use only the public anon key in the browser, never the service role key.
+- **Each Supabase project lists the addresses it may send members back to** (Authentication, URL Configuration). A site that is not on the list gets sent to the project's default Site URL instead. Add `http://localhost:4321/**` to the dev project and the live site's address to the production one.
+- **The two databases are not at the same migration.** The dev project has the full schema (`supabase/migrations` at the repository root). Check the production project before relying on a table, and apply migrations to it only when asked.
+- **Branches.** `main` is production and only takes pull requests from `dev`. Work goes on a feature branch off `dev` and into `dev` with a pull request. Never push to `main`, and never force-push.
+- **Commits** say what changed in plain words, as Conventional Commits (`feat:`, `fix:`, `docs:`), with no co-author lines and no links to AI sessions.
+- **Never commit** `.env*` files (except `.env.example`), keys or service account files.
 
 ## Layout
 

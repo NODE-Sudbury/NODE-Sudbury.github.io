@@ -1,63 +1,29 @@
-## Guide for Contributors
+## Contributing to the NODE website
 
-NODE site are built in the open, and the GDG[x] team eagerly encourage any and all forms of community contribution. When contributing, please follow these guidelines:
+The NODE website is built in the open, and anyone is welcome to help. You don't need to be a NODE member.
 
-### Filing Issues
+### Branches
 
-**If you are filing an issue to request a feature**, please provide a clear description of the feature. It can be helpful to describe answers to the following questions:
+- `main` is production and protected. It only accepts pull requests from `dev`.
+- `dev` is staging. Work for the site goes into `dev` first.
+- Branch off `dev` (`feat/your-change`), push it, and open a pull request into `dev`. Maintainers promote `dev` to `main`.
 
-1.  **Who will use the feature?** _“As someone filling out a form…”_
-2.  **When will they use the feature?** _“When I enter an invalid value…”_
-3.  **What is the user’s goal?** _“I want to be visually notified that the value needs to be corrected…”_
+### Before you open a pull request
 
-**If you are filing an issue to report a bug**, please provide:
+1. Run `npm run lint` and `npm test`, or at least the Vitest project and type check for what you changed. See [AGENTS.md](../AGENTS.md) for the commands and conventions.
+2. Add a test for every feature or bug fix.
+3. After changing text in `msg()`, run `npm --prefix packages/web run localize:extract` and commit `packages/translations/source/en.xlf`.
+4. Use theme color tokens, never hex colors, outside `src/themes/`.
+5. Keep keys out of the code: no `.env` files, API keys or service role keys.
 
-1.  **A clear description of the bug and related expectations.** Consider using the following example template for reporting a bug:
+### Commit messages and pull request titles
 
-```markdown
-The `paper-foo` element causes the page to turn pink when clicked.
+Use [Conventional Commits](https://www.conventionalcommits.org/): `feat: add an events page`, `fix: show the right time zone`, `docs: describe the sitemap`. Say what changed and why in plain words.
 
-## Expected outcome
+### Filing issues
 
-The page stays the same color.
+For a bug, tell us what you expected, what happened, the steps to reproduce it and your browser. For a feature, tell us who it is for and what they want to do.
 
-## Actual outcome
+### Conduct
 
-The page turns pink.
-
-## Steps to reproduce
-
-1. Put a `paper-foo` element in the page.
-2. Open the page in a web browser.
-3. Click the `paper-foo` element.
-```
-
-3.  **A list of browsers where the problem occurs.** This can be skipped if the problem is the same across all browsers.
-
-### Submitting Pull Requests
-
-**Before creating a pull request**, please ensure that an issue exists for the corresponding change in the pull request that you intend to make. **If an issue does not exist, please create one per the guidelines above**. The goal is to discuss the design and necessity of the proposed change with Polymer authors and community before diving into a pull request.
-
-When submitting pull requests, please provide:
-
-1.  **A reference to the corresponding issue** or issues that will be closed by the pull request. Please refer to these issues in the pull request description using the following syntax:
-
-```markdown
-(For a single issue)
-Fixes #20
-
-(For multiple issues)
-Fixes #32, fixes #40
-```
-
-2.  **A succinct description of the design** used to fix any related issues. For example:
-
-```markdown
-This fixes #20 by removing styles that leaked which would cause the page to turn pink whenever `paper-foo` is clicked.
-```
-
-3.  **At least one test for each bug fixed or feature added** as part of the pull request. Pull requests that fix bugs or add features without accompanying tests will not be considered.
-
-4.  **A [Conventional Commits](https://www.conventionalcommits.org/) title**, for example `fix(web): show session times in the event time zone`. Pull requests are squash merged and the title becomes the release note, so mark breaking changes with `!` and explain them in the description. See [docs/releases.md](../docs/releases.md#pull-requests).
-
-_Copied from [Polymer Elements contributing guide](https://github.com/PolymerElements/ContributionGuide)_
+Everyone taking part follows the [Code of Conduct](./CODE_OF_CONDUCT.md). Report problems to admin@nodesudbury.com.
