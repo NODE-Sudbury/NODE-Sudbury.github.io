@@ -1,4 +1,6 @@
 import { html, type TemplateResult } from 'lit';
+import type { CommunityEvent } from '../../src/models/event';
+import type { Member } from '../../src/models/member';
 import type { Post } from '../../src/models/post';
 import type { PreviousSpeaker } from '../../src/models/previous-speaker';
 import type { Session } from '../../src/models/session';
@@ -58,6 +60,37 @@ const post = {
   published: '2026-10-01',
   image: 'https://example.com/post.jpg',
 } as never as Post;
+
+const communityEvent: CommunityEvent = {
+  id: 'gdg-1',
+  provider: 'gdg',
+  slug: 'devfest-sudbury',
+  category: 'Community Events',
+  title: 'DevFest Sudbury',
+  summary: 'A day of talks.',
+  start: '2026-11-28T08:30:00-05:00',
+  end: '2026-11-28T17:30:00-05:00',
+  timezone: 'America/Toronto',
+  online: false,
+  venue: { name: 'Collège Boréal', city: 'Greater Sudbury' },
+  host: 'GDG Sudbury',
+  url: 'https://gdg.community.dev/events/details/devfest/',
+  rsvpUrl: 'https://gdg.community.dev/events/details/devfest/',
+  tags: ['AI', 'DevFest'],
+  rsvpCount: 44,
+  tickets: [{ title: 'In person', capacity: 350, claimed: 42 }],
+};
+
+const boardMember: Member = {
+  id: '0',
+  parentId: '0',
+  name: 'Dean Lupini',
+  order: 0,
+  photo: '',
+  photoUrl: 'https://example.com/dean.jpg',
+  socials: [{ icon: 'linkedin', link: 'https://linkedin.com/in/dean', name: 'LinkedIn' }],
+  title: 'President',
+};
 
 const location: RouteLocation = {
   pathname: '/schedule/2026-10-08',
@@ -177,6 +210,36 @@ export const HYDRATION_PAGES: Record<string, HydrationPage> = {
     } as never,
     load: () => import('../../src/views/team-page'),
     template: () => html`<team-page></team-page>`,
+  },
+  'events page': {
+    content: {},
+    load: () => import('../../src/views/events-page'),
+    template: () =>
+      html`<events-page
+        .upcoming=${[communityEvent]}
+        .past=${[{ ...communityEvent, id: 'luma-1', slug: 'meetup', title: 'Meetup' }]}
+        .categories=${['Hackathons', 'Community Events', 'Norcat Series']}
+      ></events-page>`,
+  },
+  'event page': {
+    content: {},
+    load: () => import('../../src/views/event-page'),
+    template: () => html`<event-page .event=${communityEvent}></event-page>`,
+  },
+  'board member page': {
+    content: {},
+    load: () => import('../../src/views/member-page'),
+    template: () => html`<member-page .member=${boardMember}></member-page>`,
+  },
+  'account page': {
+    content: {},
+    load: () => import('../../src/views/account-page'),
+    template: () => html`<account-page></account-page>`,
+  },
+  'public profile page': {
+    content: {},
+    load: () => import('../../src/views/public-profile-page'),
+    template: () => html`<public-profile-page></public-profile-page>`,
   },
   'session page': {
     content: { sessions: [session], speakers: speakers.slice(0, 1) },

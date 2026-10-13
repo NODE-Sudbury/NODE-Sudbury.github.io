@@ -1,7 +1,13 @@
 import { ChangeFreqEnum, type SitemapItem } from '@astrojs/sitemap';
 
 /** Pages that stay out of search results, so they stay out of the sitemap and robots.txt too. */
-export const NOINDEX_PATHS = ['/offline', '/events/my-schedule', '/design'] as const;
+export const NOINDEX_PATHS = [
+  '/offline',
+  '/events/my-schedule',
+  '/design',
+  '/account',
+  '/members',
+] as const;
 
 const pathOf = (page: string) => new URL(page).pathname.replace(/\/$/, '') || '/';
 

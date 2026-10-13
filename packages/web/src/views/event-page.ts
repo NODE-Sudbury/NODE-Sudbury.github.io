@@ -152,10 +152,11 @@ export class EventPage extends ThemedComponent {
   ];
 
   @property({ attribute: false })
-  accessor event!: CommunityEvent;
+  accessor event: CommunityEvent | undefined;
 
   override render() {
     const { event } = this;
+    if (!event) return nothing;
     const provider = PROVIDER_NAMES[event.provider];
     const place = eventPlace(event);
     const past = new Date(event.end ?? event.start).getTime() < Date.now();

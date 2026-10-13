@@ -21,6 +21,7 @@ export default defineConfig([
   includeIgnoreFile(resolve(import.meta.dirname, '.gitignore')),
   {
     ignores: [
+      'archive/**', // The old Next.js site, kept for reference
       'packages/web/public/**',
       '**/package-lock.json', // Auto-generated lockfiles
       '**/.vscode/**', // VS Code settings (often contain comments)

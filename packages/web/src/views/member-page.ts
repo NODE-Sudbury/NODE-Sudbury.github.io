@@ -27,11 +27,10 @@ export class MemberPage extends ThemedComponent {
   ];
 
   @property({ attribute: false })
-  accessor member!: Member;
+  accessor member: Member | undefined;
 
   /** The bio the member wrote, or a line that says who they are. */
-  private get bio(): string {
-    const { member } = this;
+  private bio(member: Member): string {
     return (
       member.bio ??
       msg(str`${member.name} is ${member.title} of the NODE board of directors.`, {
@@ -42,6 +41,7 @@ export class MemberPage extends ThemedComponent {
 
   override render() {
     const { member } = this;
+    if (!member) return nothing;
     return html`
       <hero-block tone="${PAGE_TONES.team}">
         <a class="back" href="/team">
@@ -70,7 +70,7 @@ export class MemberPage extends ThemedComponent {
               ></social-links>`
             : nothing
         }
-        <short-markdown class="bio" .content="${this.bio}"></short-markdown>
+        <short-markdown class="bio" .content="${this.bio(member)}"></short-markdown>
       </div>
     `;
   }

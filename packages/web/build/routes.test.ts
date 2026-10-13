@@ -35,8 +35,12 @@ describe('routes', () => {
     expect(enabledRoutes(allFeatures(true))).toEqual(ROUTES);
   });
 
-  it('builds only the home page when all features are off', () => {
-    expect(enabledRoutes(allFeatures(false)).map(({ pattern }) => pattern)).toEqual(['/']);
+  it('builds only the home page and the member pages when all features are off', () => {
+    expect(enabledRoutes(allFeatures(false)).map(({ pattern }) => pattern)).toEqual([
+      '/',
+      '/account',
+      '/members',
+    ]);
   });
 
   it('leaves out the pages of a feature that is off', () => {
@@ -69,6 +73,8 @@ describe('routes', () => {
 
     expect(injectRoute.mock.calls).toEqual([
       [{ pattern: '/', entrypoint: './src/routes/index.astro' }],
+      [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
+      [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -81,12 +87,16 @@ describe('routes', () => {
     await setup?.({ command: 'build', injectRoute } as never);
     expect(injectRoute.mock.calls).toEqual([
       [{ pattern: '/', entrypoint: './src/routes/index.astro' }],
+      [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
+      [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
     ]);
 
     injectRoute.mockClear();
     await setup?.({ command: 'dev', injectRoute } as never);
     expect(injectRoute.mock.calls).toEqual([
       [{ pattern: '/', entrypoint: './src/routes/index.astro' }],
+      [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
+      [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });

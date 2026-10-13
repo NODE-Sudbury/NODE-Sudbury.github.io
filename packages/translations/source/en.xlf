@@ -161,9 +161,6 @@
 <trans-unit id="home.partners-block.form-title">
   <source>Become a partner!</source>
 </trans-unit>
-<trans-unit id="common.general-error">
-  <source>An error has occurred. Please, try again later.</source>
-</trans-unit>
 <trans-unit id="home.partners-block.submit">
   <source>Submit</source>
 </trans-unit>
@@ -470,9 +467,6 @@
 <trans-unit id="shared.add-to-calendar.google">
   <source>Google Calendar</source>
 </trans-unit>
-<trans-unit id="common.sign-in">
-  <source>Sign in</source>
-</trans-unit>
 <trans-unit id="shared.filter-menu.tags">
   <source>Tags</source>
 </trans-unit>
@@ -567,7 +561,7 @@
   <source>Account of <x id="0" equiv-text="${name}"/></source>
 </trans-unit>
 <trans-unit id="shell.account-menu.profile">
-  <source>Public profile</source>
+  <source>My profile</source>
 </trans-unit>
 <trans-unit id="shell.header.sign-out">
   <source>Sign out</source>
@@ -863,6 +857,111 @@
 <trans-unit id="common.your-time">
   <source><x id="0" equiv-text="${time}"/> (your time)</source>
 </trans-unit>
+<trans-unit id="pages.account.handle-short">
+  <source>Use at least 3 characters.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-long">
+  <source>Use at most 30 characters.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-characters">
+  <source>Use only lowercase letters, numbers and hyphens.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-edges">
+  <source>Start and end with a letter or number.</source>
+</trans-unit>
+<trans-unit id="pages.account.title">
+  <source>My profile</source>
+</trans-unit>
+<trans-unit id="pages.account.description">
+  <source>Your NODE member profile and public page.</source>
+</trans-unit>
+<trans-unit id="common.general-error">
+  <source>An error has occurred. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.account.lede">
+  <source>Tell other members who you are, and choose your public page.</source>
+</trans-unit>
+<trans-unit id="pages.account.sign-in-needed">
+  <source>Sign in to edit your profile.</source>
+</trans-unit>
+<trans-unit id="common.sign-in">
+  <source>Sign in</source>
+</trans-unit>
+<trans-unit id="pages.account.about">
+  <source>About you</source>
+</trans-unit>
+<trans-unit id="pages.account.name">
+  <source>Name</source>
+</trans-unit>
+<trans-unit id="pages.account.pronouns">
+  <source>Pronouns</source>
+</trans-unit>
+<trans-unit id="pages.account.student">
+  <source>I'm a student</source>
+</trans-unit>
+<trans-unit id="pages.account.program">
+  <source>Program</source>
+</trans-unit>
+<trans-unit id="pages.account.school">
+  <source>School</source>
+</trans-unit>
+<trans-unit id="pages.account.job-title">
+  <source>Job title</source>
+</trans-unit>
+<trans-unit id="pages.account.company">
+  <source>Company</source>
+</trans-unit>
+<trans-unit id="pages.account.bio">
+  <source>About</source>
+</trans-unit>
+<trans-unit id="pages.account.links">
+  <source>Links</source>
+</trans-unit>
+<trans-unit id="pages.account.website">
+  <source>Website</source>
+</trans-unit>
+<trans-unit id="pages.account.discord-hint">
+  <source>Shown only to you for now.</source>
+</trans-unit>
+<trans-unit id="pages.account.public">
+  <source>Your public page</source>
+</trans-unit>
+<trans-unit id="pages.account.handle">
+  <source>Handle</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-hint">
+  <source>Your page will be at /members/ followed by this.</source>
+</trans-unit>
+<trans-unit id="pages.account.visible">
+  <source>Show my profile to everyone</source>
+</trans-unit>
+<trans-unit id="pages.account.your-page">
+  <source>Your page:</source>
+</trans-unit>
+<trans-unit id="pages.account.saving">
+  <source>Saving...</source>
+</trans-unit>
+<trans-unit id="pages.account.save">
+  <source>Save profile</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-needed">
+  <source>Choose a handle to show your profile to everyone.</source>
+</trans-unit>
+<trans-unit id="pages.account.name-needed">
+  <source>Add your name to show your profile to everyone.</source>
+</trans-unit>
+<trans-unit id="pages.account.link-host">
+  <source>This link is for a different site.</source>
+</trans-unit>
+<trans-unit id="pages.account.link-invalid">
+  <source>Enter a web address, such as example.com.</source>
+</trans-unit>
+<trans-unit id="pages.account.saved">
+  <source>Profile saved.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-taken">
+  <source>The handle <x id="0" equiv-text="${result.profile.handle}"/> is taken. Try another.</source>
+</trans-unit>
 <trans-unit id="attending.where">
   <source>Where it is</source>
 </trans-unit>
@@ -964,6 +1063,15 @@
 </trans-unit>
 <trans-unit id="pages.previous-speaker.talks">
   <source>Talks</source>
+</trans-unit>
+<trans-unit id="pages.members.back">
+  <source>NODE members</source>
+</trans-unit>
+<trans-unit id="pages.members.not-found">
+  <source>Profile not found</source>
+</trans-unit>
+<trans-unit id="pages.members.missing">
+  <source>This profile is private, or there is no member with this handle.</source>
 </trans-unit>
 <trans-unit id="schedule.page.coming-soon">
   <source>The schedule is coming soon.</source>
