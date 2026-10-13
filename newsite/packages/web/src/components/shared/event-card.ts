@@ -2,6 +2,7 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { CommunityEvent } from '../../models/event';
 import { displayFont } from '../../styles/shared';
+import { eventPath } from '../../utils/navigation';
 import { tagChipStyle } from '../../utils/styles';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-card';
@@ -51,7 +52,10 @@ export class EventCard extends ThemedComponent {
 
     .cover {
       flex: none;
+      outline: none;
+      border-radius: var(--hb-radius-l) var(--hb-radius-l) 0 0;
       inline-size: 100%;
+      block-size: auto;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       background-color: var(--hb-color-accent-1-container);
@@ -89,6 +93,21 @@ export class EventCard extends ThemedComponent {
       -webkit-line-clamp: 3;
     }
 
+    .category {
+      justify-self: start;
+      margin: var(--hb-space-1) 0 0;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: var(--hb-space-1) var(--hb-space-4);
+      border-radius: 999px;
+      background-color: var(--hb-color-accent-1-container);
+      color: var(--hb-color-on-accent-1-container);
+      font-size: var(--hb-text-sm);
+      font-weight: 700;
+    }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -106,7 +125,9 @@ export class EventCard extends ThemedComponent {
 
       .cover {
         inline-size: 7rem;
+        block-size: auto;
         aspect-ratio: 1;
+        border-radius: var(--hb-radius-l) 0 0 var(--hb-radius-l);
       }
 
       .text {
@@ -138,9 +159,9 @@ export class EventCard extends ThemedComponent {
       .filter(Boolean)
       .join(' · ');
     return html`
-      <hb-card href="${event.url}" label="${event.title}">
+      <hb-card href="${eventPath(event)}" label="${event.title}">
         <div class="content">
-          ${event.image ? html`<img class="cover" src="${event.image}" alt="" loading="lazy" />` : nothing}
+          ${event.image ? html`<img class="cover" src="${event.image}" alt="${event.title}" width="640" height="360" loading="lazy" />` : nothing}
           <div class="text">
             ${
               this.headingLevel === 2
@@ -159,6 +180,7 @@ export class EventCard extends ThemedComponent {
                   </ul>`
                 : nothing
             }
+            <p class="category"><span class="pill">${event.category}</span></p>
             ${stats ? html`<p class="stats">${stats}</p>` : nothing}
           </div>
         </div>
