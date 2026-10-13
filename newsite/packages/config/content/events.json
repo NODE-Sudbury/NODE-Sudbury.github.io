@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T17:49:24.638Z",
+  "generatedAt": "2026-10-13T17:50:38.395Z",
   "events": [
     {
       "id": "luma-evt-M666SdY340S4vk8",
@@ -22,7 +22,9 @@
       "url": "https://luma.com/cursor-nmzu",
       "rsvpUrl": "https://luma.com/cursor-nmzu",
       "image": "/images/events/luma-evt-M666SdY340S4vk8.png",
-      "tags": [],
+      "tags": [
+        "AI"
+      ],
       "format": "In person",
       "rsvpCount": 0,
       "tickets": [
