@@ -1,27 +1,57 @@
-import { addDoc, collection } from 'firebase/firestore';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { saveSubscriber } from './subscribers';
-import { db } from '../firebase';
 
-vi.mock('firebase/firestore');
+const insert = vi.fn();
+const from = vi.fn(() => ({ insert }));
+
+vi.mock('../supabase', () => ({
+  isSupabaseConfigured: true,
+  getSupabase: () => ({ from }),
+}));
+
+const subscriber = {
+  email: ' ada.lovelace+subscribe@example.com ',
+  firstName: 'Ada',
+  lastName: 'Lovelace',
+};
 
 describe('db/subscribers', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('saves a subscriber under a random id', () => {
-    vi.mocked(collection).mockReturnValue('collection-ref' as never);
-    vi.mocked(addDoc).mockResolvedValue({ id: 'random-id' } as never);
-    const subscriber = {
+  it('adds the subscriber to the subscribers table', async () => {
+    insert.mockResolvedValue({ error: null });
+    const onRejected = vi.fn();
+
+    saveSubscriber(subscriber, onRejected);
+
+    expect(from).toHaveBeenCalledWith('subscribers');
+    expect(insert).toHaveBeenCalledWith({
       email: 'ada.lovelace+subscribe@example.com',
-      firstName: 'Ada',
-      lastName: 'Lovelace',
-    };
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+    });
+    await vi.waitFor(() => expect(insert).toHaveBeenCalled());
+    expect(onRejected).not.toHaveBeenCalled();
+  });
 
-    saveSubscriber(subscriber, vi.fn());
+  it('counts an email that is already subscribed as subscribed', async () => {
+    insert.mockResolvedValue({ error: { code: '23505', message: 'duplicate key' } });
+    const onRejected = vi.fn();
 
-    expect(collection).toHaveBeenCalledWith(db, 'subscribers');
-    expect(addDoc).toHaveBeenCalledWith('collection-ref', subscriber);
+    saveSubscriber(subscriber, onRejected);
+    await new Promise((resolve) => setTimeout(resolve));
+
+    expect(onRejected).not.toHaveBeenCalled();
+  });
+
+  it('reports any other failure', async () => {
+    insert.mockResolvedValue({ error: { code: '42501', message: 'permission denied' } });
+    const onRejected = vi.fn();
+
+    saveSubscriber(subscriber, onRejected);
+
+    await vi.waitFor(() => expect(onRejected).toHaveBeenCalledWith(new Error('permission denied')));
   });
 });
