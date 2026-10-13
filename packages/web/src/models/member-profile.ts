@@ -2,6 +2,12 @@ export type MemberType = 'professional' | 'student';
 
 /** What a member can say about themselves. All of it is optional except their type. */
 export interface MemberProfile {
+  /** The member's account id. Old `/profile/<id>` links use it. */
+  id: string;
+  /** When they joined, for "Member since". An ISO date. */
+  createdAt: string;
+  /** Exclusive membership, which only the board can grant. */
+  isExclusiveMember: boolean;
   /** The short name in their public address, `/members/<handle>`. */
   handle: string;
   fullName: string;

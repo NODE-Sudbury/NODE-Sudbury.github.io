@@ -72,3 +72,21 @@ export const profileHeadline = (
   profile.memberType === 'student'
     ? [profile.program, profile.school].filter(Boolean).join(', ')
     : [profile.jobTitle, profile.company].filter(Boolean).join(' at ');
+
+/**
+ * Where a member's public page is: `/members/<handle>`, or, with no handle yet, the address older
+ * links use, `/profile/<id>`. Nothing when their profile is private.
+ */
+export const publicPath = (profile: Pick<MemberProfile, 'id' | 'handle' | 'isPublic'>): string => {
+  if (!profile.isPublic) return '';
+  if (profile.handle) return `/members/${profile.handle}`;
+  return profile.id ? `/profile/${profile.id}` : '';
+};
+
+/** "October 2026", for when someone joined. */
+export const memberSince = (createdAt: string): string =>
+  new Date(createdAt).toLocaleDateString('en-CA', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });

@@ -4,7 +4,10 @@ import {
   fetchOwnProfile,
   fetchPublicProfile,
   HandleTakenError,
+  isHandleAvailable,
+  removeAvatar,
   saveOwnProfile,
+  uploadAvatar,
 } from './member-profiles';
 
 const query = {
@@ -14,9 +17,21 @@ const query = {
   maybeSingle: vi.fn(),
 };
 const from = vi.fn(() => query);
-vi.mock('../supabase', () => ({ getSupabase: () => ({ from }) }));
+const rpc = vi.fn();
+const storage = {
+  upload: vi.fn(),
+  getPublicUrl: vi.fn(() => ({
+    data: { publicUrl: 'https://x.supabase.co/storage/avatars/u/avatar.jpg' },
+  })),
+};
+vi.mock('../supabase', () => ({
+  getSupabase: () => ({ from, rpc, storage: { from: () => storage } }),
+}));
 
 const profile: MemberProfile = {
+  id: 'user-1',
+  createdAt: '2026-08-29T01:11:00Z',
+  isExclusiveMember: false,
   handle: 'ada',
   fullName: 'Ada Lovelace',
   avatarUrl: '',
@@ -118,7 +133,7 @@ describe('fetchPublicProfile', () => {
   it('reads the public view by handle', async () => {
     query.maybeSingle.mockResolvedValue({ data: { handle: 'ada', full_name: 'Ada' }, error: null });
 
-    const found = await fetchPublicProfile('ada');
+    const found = await fetchPublicProfile({ handle: 'ada' });
 
     expect(from).toHaveBeenCalledWith('public_profiles');
     expect(query.eq).toHaveBeenCalledWith('handle', 'ada');
@@ -126,9 +141,75 @@ describe('fetchPublicProfile', () => {
     expect(found).not.toHaveProperty('discordTag');
   });
 
+  it('finds a profile by the id older links use', async () => {
+    query.maybeSingle.mockResolvedValue({
+      data: { id: 'user-1', handle: null, full_name: 'Ada', is_exclusive_member: true },
+      error: null,
+    });
+
+    const found = await fetchPublicProfile({ id: 'user-1' });
+
+    expect(query.eq).toHaveBeenCalledWith('id', 'user-1');
+    expect(found).toMatchObject({ id: 'user-1', handle: '', isExclusiveMember: true });
+  });
+
   it('is nothing for a private or unknown handle', async () => {
     query.maybeSingle.mockResolvedValue({ data: null, error: null });
 
-    await expect(fetchPublicProfile('nobody')).resolves.toBeUndefined();
+    await expect(fetchPublicProfile({ handle: 'nobody' })).resolves.toBeUndefined();
+  });
+});
+
+describe('isHandleAvailable', () => {
+  it('asks the database function, which counts private profiles too', async () => {
+    rpc.mockResolvedValue({ data: true, error: null });
+
+    await expect(isHandleAvailable('ada')).resolves.toBe(true);
+    expect(rpc).toHaveBeenCalledWith('handle_available', { candidate: 'ada' });
+  });
+
+  it('is false when the handle is taken', async () => {
+    rpc.mockResolvedValue({ data: false, error: null });
+
+    await expect(isHandleAvailable('ada')).resolves.toBe(false);
+  });
+
+  it('throws when the question fails', async () => {
+    rpc.mockResolvedValue({ data: null, error: new Error('Not signed in') });
+
+    await expect(isHandleAvailable('ada')).rejects.toThrow('Not signed in');
+  });
+});
+
+describe('uploadAvatar and removeAvatar', () => {
+  it("saves the photo in the member's own folder and makes it their profile photo", async () => {
+    storage.upload.mockResolvedValue({ error: null });
+    query.eq.mockResolvedValue({ error: null });
+    const photo = new Blob(['x'], { type: 'image/jpeg' });
+
+    const url = await uploadAvatar('user-1', photo);
+
+    expect(storage.upload).toHaveBeenCalledWith('user-1/avatar.jpg', photo, {
+      upsert: true,
+      contentType: 'image/jpeg',
+      cacheControl: '3600',
+    });
+    expect(url).toMatch(/^https:\/\/x\.supabase\.co\/storage\/avatars\/u\/avatar\.jpg\?v=\d+$/);
+    expect(query.update).toHaveBeenCalledWith({ avatar_url: url });
+  });
+
+  it('does not save the address when the upload fails', async () => {
+    storage.upload.mockResolvedValue({ error: new Error('Too big') });
+
+    await expect(uploadAvatar('user-1', new Blob(['x']))).rejects.toThrow('Too big');
+    expect(query.update).not.toHaveBeenCalled();
+  });
+
+  it('takes the photo off the profile', async () => {
+    query.eq.mockResolvedValue({ error: null });
+
+    await removeAvatar('user-1');
+
+    expect(query.update).toHaveBeenCalledWith({ avatar_url: null });
   });
 });

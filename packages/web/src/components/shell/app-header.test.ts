@@ -8,6 +8,7 @@ import { fixture } from '../../../__tests__/helpers/fixtures';
 import { setStoreState } from '../../../__tests__/helpers/store';
 import { eventDates, featuredVideos } from '../../config/site';
 import type { Ticket } from '../../models/ticket';
+import type { User } from '../../models/user';
 import type { HbDialog } from '../ui/hb-dialog';
 import { demoBanner, type AppHeader } from './app-header';
 import './app-header';
@@ -113,6 +114,14 @@ describe('app-header', () => {
     expect(callToAction()).toHaveTextContent('Become a member');
     expect(callToAction()).toHaveAttribute('variant', 'cta');
     expect(callToAction()).toHaveAttribute('href', 'https://example.com/regular');
+  });
+
+  it('has no call to become a member for someone who is signed in', async () => {
+    setStoreState({ tickets, user: new Success({ uid: 'user-1' } as User) });
+    const { callToAction, element } = await render();
+    await element.updateComplete;
+
+    expect(callToAction()).toBeNull();
   });
 
   it('calls to watch the videos once the event is over', async () => {

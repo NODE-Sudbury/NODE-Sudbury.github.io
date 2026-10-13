@@ -6,7 +6,9 @@ const rules = () =>
 
 describe('missingAlt', () => {
   it('outlines images without alt text, or with an empty one, once the site turns it on', () => {
-    expect(missingAlt.cssText).toContain("img:not([alt]),\n  img[alt=''] {");
+    expect(missingAlt.cssText).toContain(
+      "img:not([alt]):not([aria-hidden='true']),\n  img[alt='']:not([aria-hidden='true']) {",
+    );
     expect(missingAlt.cssText).toContain('outline: var(--hb-missing-alt-outline, none);');
   });
 });
@@ -29,7 +31,7 @@ describe('highlightMissingAlt', () => {
         /^:root \{.*--hb-missing-alt-outline: var\(--hb-missing-alt-width\) solid var\(--hb-color-error\);/,
       ),
       expect.stringMatching(
-        /^img:not\(\[alt\]\),\s+img\[alt=''\] \{ outline: var\(--hb-missing-alt-outline/,
+        /^img:not\(\[alt\]\):not\(\[aria-hidden='true'\]\),\s+img\[alt=''\]:not\(\[aria-hidden='true'\]\) \{ outline: var\(--hb-missing-alt-outline/,
       ),
     ]);
   });

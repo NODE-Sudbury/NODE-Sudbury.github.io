@@ -1,4 +1,4 @@
-import { msg } from '@lit/localize';
+import { msg, str } from '@lit/localize';
 import { css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '../components/hero/hero-block';
@@ -8,24 +8,37 @@ import '../components/markdown/short-markdown';
 import '../components/shared/node-icon';
 import '../components/shared/social-links';
 import '../components/shared/speaker-profile';
+import '../components/ui/hb-chip';
 import '../components/ui/hb-progress';
-import { fetchPublicProfile } from '../db/member-profiles';
+import { fetchPublicProfile, type ProfileKey } from '../db/member-profiles';
 import type { PublicProfile } from '../models/member-profile';
 import { profile as profileStyles } from '../styles/profile';
-import { profileHeadline, profileSocials } from '../utils/member-profile';
+import { memberSince, profileHeadline, profileSocials } from '../utils/member-profile';
 import { updateTextMetadata } from '../utils/metadata';
 import { ThemedComponent } from '../components/themed-component';
 
 type Load = 'loading' | 'found' | 'missing' | 'failed';
 
-/** The handle in `/members/<handle>`. The site serves this one page for every handle. */
-export const handleFromPath = (pathname: string): string => {
-  const [, , handle = ''] = pathname.split('/');
+const ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const safeDecode = (value: string): string | undefined => {
   try {
-    return decodeURIComponent(handle).toLowerCase();
+    return decodeURIComponent(value);
   } catch {
-    return '';
+    return undefined;
   }
+};
+
+/**
+ * Which profile an address asks for: `/members/<handle>`, or `/profile/<id>` as links from the
+ * older site had it. The site serves this one page for both.
+ */
+export const profileKeyFromPath = (pathname: string): ProfileKey | undefined => {
+  const [, kind = '', value = ''] = pathname.split('/');
+  const text = safeDecode(value);
+  if (text === undefined) return undefined;
+  if (kind === 'profile') return ID_PATTERN.test(text) ? { id: text.toLowerCase() } : undefined;
+  return text ? { handle: text.toLowerCase() } : undefined;
 };
 
 /** A member's public page: their photo, name, headline, links and what they wrote about themselves. */
@@ -39,6 +52,16 @@ export class PublicProfilePage extends ThemedComponent {
         display: block;
         background-color: var(--hb-section-background);
         color: var(--hb-color-on-surface);
+      }
+
+      .facts {
+        align-items: center;
+        margin-block-end: var(--hb-space-4);
+      }
+
+      .since {
+        color: var(--hb-color-on-surface-variant);
+        font-size: var(--hb-text-sm);
       }
 
       .missing {
@@ -55,19 +78,23 @@ export class PublicProfilePage extends ThemedComponent {
   private accessor member: PublicProfile | undefined;
 
   override async firstUpdated() {
-    const handle = handleFromPath(window.location.pathname);
-    if (!handle) {
+    const key = profileKeyFromPath(window.location.pathname);
+    if (!key) {
       this.load = 'missing';
       return;
     }
     try {
-      this.member = await fetchPublicProfile(handle);
+      this.member = await fetchPublicProfile(key);
       this.load = this.member ? 'found' : 'missing';
     } catch {
       this.load = 'failed';
     }
     if (this.member) {
       updateTextMetadata(this.member.fullName, profileHeadline(this.member));
+      // Someone who opened an older /profile/<id> link lands on the nicer address.
+      if ('id' in key && this.member.handle) {
+        window.history.replaceState(null, '', `/members/${this.member.handle}`);
+      }
     }
   }
 
@@ -130,6 +157,35 @@ export class PublicProfilePage extends ThemedComponent {
   private renderProfile(member: PublicProfile) {
     const socials = profileSocials(member);
     return html`
+      <ul class="facts">
+        <li>
+          <hb-chip>
+            ${
+              member.memberType === 'student'
+                ? msg('Student', { id: 'pages.members.student' })
+                : msg('Professional', { id: 'pages.members.professional' })
+            }
+          </hb-chip>
+        </li>
+        ${
+          member.isExclusiveMember
+            ? html`<li>
+                <hb-chip accent="1">
+                  ${msg('Exclusive member', { id: 'pages.account.exclusive' })}
+                </hb-chip>
+              </li>`
+            : nothing
+        }
+        ${
+          member.createdAt
+            ? html`<li class="since">
+                ${msg(str`Member since ${memberSince(member.createdAt)}`, {
+                  id: 'pages.account.member-since',
+                })}
+              </li>`
+            : nothing
+        }
+      </ul>
       ${
         socials.length
           ? html`<social-links

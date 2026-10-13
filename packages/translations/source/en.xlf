@@ -887,6 +887,33 @@
 <trans-unit id="common.sign-in">
   <source>Sign in</source>
 </trans-unit>
+<trans-unit id="pages.account.photo">
+  <source>Photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-saving">
+  <source>Saving photo...</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-change">
+  <source>Change photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-remove">
+  <source>Remove photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-note">
+  <source>JPG, PNG or WebP, up to 5 MB. It is cut to a square.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-choose">
+  <source>Choose a photo</source>
+</trans-unit>
+<trans-unit id="pages.account.membership">
+  <source>Membership</source>
+</trans-unit>
+<trans-unit id="pages.account.member-since">
+  <source>Member since <x id="0" equiv-text="${memberSince(form.createdAt)}"/></source>
+</trans-unit>
+<trans-unit id="pages.account.exclusive">
+  <source>Exclusive member</source>
+</trans-unit>
 <trans-unit id="pages.account.about">
   <source>About you</source>
 </trans-unit>
@@ -929,14 +956,20 @@
 <trans-unit id="pages.account.handle">
   <source>Handle</source>
 </trans-unit>
-<trans-unit id="pages.account.handle-hint">
-  <source>Your page will be at /members/ followed by this.</source>
-</trans-unit>
 <trans-unit id="pages.account.visible">
   <source>Show my profile to everyone</source>
 </trans-unit>
 <trans-unit id="pages.account.your-page">
   <source>Your page:</source>
+</trans-unit>
+<trans-unit id="pages.account.copied">
+  <source>Copied</source>
+</trans-unit>
+<trans-unit id="pages.account.copy">
+  <source>Copy link</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-suggest">
+  <source>Choose a handle for a short address like /members/your-name.</source>
 </trans-unit>
 <trans-unit id="pages.account.saving">
   <source>Saving...</source>
@@ -956,11 +989,32 @@
 <trans-unit id="pages.account.link-invalid">
   <source>Enter a web address, such as example.com.</source>
 </trans-unit>
-<trans-unit id="pages.account.saved">
-  <source>Profile saved.</source>
+<trans-unit id="pages.account.handle-checking">
+  <source>Checking if it is free...</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-available">
+  <source><x id="0" equiv-text="${handle}"/> is available.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-hint">
+  <source>Your page will be at /members/ followed by this.</source>
 </trans-unit>
 <trans-unit id="pages.account.handle-taken">
-  <source>The handle <x id="0" equiv-text="${result.profile.handle}"/> is taken. Try another.</source>
+  <source>The handle <x id="0" equiv-text="${this.form.handle.trim().toLowerCase()}"/> is taken. Try another.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-type">
+  <source>Choose a JPG, PNG or WebP photo.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-size">
+  <source>That photo is over 5 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-saved">
+  <source>Photo saved.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-removed">
+  <source>Photo removed.</source>
+</trans-unit>
+<trans-unit id="pages.account.saved">
+  <source>Profile saved.</source>
 </trans-unit>
 <trans-unit id="attending.where">
   <source>Where it is</source>
@@ -1072,6 +1126,12 @@
 </trans-unit>
 <trans-unit id="pages.members.missing">
   <source>This profile is private, or there is no member with this handle.</source>
+</trans-unit>
+<trans-unit id="pages.members.student">
+  <source>Student</source>
+</trans-unit>
+<trans-unit id="pages.members.professional">
+  <source>Professional</source>
 </trans-unit>
 <trans-unit id="schedule.page.coming-soon">
   <source>The schedule is coming soon.</source>

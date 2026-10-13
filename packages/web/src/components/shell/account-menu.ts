@@ -66,7 +66,13 @@ export class AccountMenu extends ThemedComponent {
         >
           ${
             photoURL
-              ? html`<img class="avatar" src="${photoURL}" alt="" referrerpolicy="no-referrer" />`
+              ? html`<img
+                  class="avatar"
+                  src="${photoURL}"
+                  alt=""
+                  aria-hidden="true"
+                  referrerpolicy="no-referrer"
+                />`
               : html`<node-icon name="account"></node-icon>`
           }
         </hb-icon-button>

@@ -19,6 +19,7 @@ import { fromStore } from '../../controllers/from-store';
 import type { Ticket } from '../../models/ticket';
 import { signInAvailable } from '../../store/auth';
 import { type TicketsState, selectTickets } from '../../store/tickets';
+import type { UserState } from '../../store/user';
 import { type EventState, eventState } from '../../utils/event-state';
 import { type ContentPresence, hasContent } from '../../utils/content-presence';
 import { callForPapersOpen, headerStep, ticketOnSale } from '../../utils/next-step';
@@ -225,6 +226,13 @@ export class AppHeader extends ThemedComponent {
   @fromStore(selectTickets)
   private accessor tickets!: TicketsState;
 
+  @fromStore((state) => state.user)
+  private accessor user!: UserState;
+
+  // False on the server and in the first render, so hydration matches whoever is signed in.
+  @state()
+  private accessor hydrated = false;
+
   // Site.json's on the server and in the first render, so hydration matches. A demo can change it.
   @state()
   private accessor attending = siteAttendance;
@@ -244,6 +252,7 @@ export class AppHeader extends ThemedComponent {
 
   // The event may have started or ended since the build.
   override firstUpdated() {
+    this.hydrated = true;
     this.time = currentTime();
     this.eventState = eventState(new Date(this.time), {
       startDate: eventDates.start,
@@ -339,6 +348,8 @@ export class AppHeader extends ThemedComponent {
       stream,
     });
     if (!step) return nothing;
+    // A member who is signed in has already joined, so the button that asks them to join goes.
+    if (step === 'tickets' && this.hydrated && this.user instanceof Success) return nothing;
     if (step === 'schedule' || step === 'onNow') {
       const inNav = this.links.some((nav) => nav.route === 'schedule');
       if (inNav && inSheet) return nothing;

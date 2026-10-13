@@ -5,22 +5,40 @@ import { customElement, state } from 'lit/decorators.js';
 import '../components/hero/hero-block';
 import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
+import '../components/shared/speaker-photo';
 import '../components/ui/hb-button';
+import '../components/ui/hb-chip';
 import '../components/ui/hb-progress';
 import '../components/ui/hb-switch';
 import '../components/ui/hb-text-field';
 import type { HbSwitch } from '../components/ui/hb-switch';
 import type { HbTextField } from '../components/ui/hb-text-field';
 import { fromStore } from '../controllers/from-store';
-import { fetchOwnProfile, HandleTakenError, saveOwnProfile } from '../db/member-profiles';
+import {
+  AVATAR_MAX_BYTES,
+  fetchOwnProfile,
+  HandleTakenError,
+  isHandleAvailable,
+  removeAvatar,
+  saveOwnProfile,
+  uploadAvatar,
+} from '../db/member-profiles';
 import type { MemberProfile } from '../models/member-profile';
 import { store } from '../store';
+import { sessionRestored } from '../store/auth';
 import { openSigninDialog } from '../store/dialogs';
 import { queueSnackbar } from '../store/snackbars';
 import type { UserState } from '../store/user';
 import { profile as profileStyles } from '../styles/profile';
 import { displayFont } from '../styles/shared';
-import { handleProblem, type HandleProblem, normalizeProfileUrl } from '../utils/member-profile';
+import { avatarProblem, cropToSquare } from '../utils/avatar';
+import {
+  handleProblem,
+  type HandleProblem,
+  memberSince,
+  normalizeProfileUrl,
+  publicPath,
+} from '../utils/member-profile';
 import { updateTextMetadata } from '../utils/metadata';
 import { ThemedComponent } from '../components/themed-component';
 
@@ -28,6 +46,9 @@ type Field = keyof MemberProfile;
 type Errors = Partial<Record<Field, string>>;
 
 const EMPTY: MemberProfile = {
+  id: '',
+  createdAt: '',
+  isExclusiveMember: false,
   handle: '',
   fullName: '',
   avatarUrl: '',
@@ -119,6 +140,43 @@ export class AccountPage extends ThemedComponent {
         color: inherit;
       }
 
+      .photo {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--hb-space-4);
+      }
+
+      .photo-actions {
+        display: grid;
+        gap: var(--hb-space-2);
+        justify-items: start;
+      }
+
+      .photo-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--hb-space-2);
+      }
+
+      .note {
+        margin: 0;
+        color: var(--hb-color-on-surface-variant);
+        font-size: var(--hb-text-sm);
+      }
+
+      .membership {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--hb-space-3);
+        margin: 0;
+      }
+
+      input[type='file'] {
+        display: none;
+      }
+
       .signed-out {
         display: grid;
         justify-items: start;
@@ -139,18 +197,33 @@ export class AccountPage extends ThemedComponent {
   @state()
   private accessor errors: Errors = {};
   @state()
-  private accessor savedHandle = '';
+  private accessor savedPath = '';
+  // False on the server and in the first render, so hydration matches whoever is signed in.
+  @state()
+  private accessor ready = false;
+  @state()
+  private accessor uploading = false;
+  // Whether the handle in the box is free. It is checked a moment after typing stops.
+  @state()
+  private accessor handleStatus: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
+  @state()
+  private accessor copied = false;
 
   private loadedFor: string | undefined;
+  private savedHandle = '';
+  private handleTimer: ReturnType<typeof setTimeout> | undefined;
 
-  override firstUpdated() {
+  override async firstUpdated() {
     updateTextMetadata(
       msg('My profile', { id: 'pages.account.title' }),
       msg('Your NODE member profile and public page.', { id: 'pages.account.description' }),
     );
+    await sessionRestored;
+    this.ready = true;
   }
 
   override updated(_changed: PropertyValues) {
+    if (!this.ready) return;
     const uid = this.user instanceof Success ? this.user.data.uid : undefined;
     if (uid && uid !== this.loadedFor) {
       this.loadedFor = uid;
@@ -166,7 +239,8 @@ export class AccountPage extends ThemedComponent {
     try {
       const own = await fetchOwnProfile(uid);
       this.form = own ?? EMPTY;
-      this.savedHandle = own?.isPublic ? own.handle : '';
+      this.savedPath = own ? publicPath(own) : '';
+      this.savedHandle = own?.handle ?? '';
     } catch {
       store.dispatch(queueSnackbar(this.generalError()));
     } finally {
@@ -189,7 +263,13 @@ export class AccountPage extends ThemedComponent {
       </hero-block>
 
       <div class="inner">
-        ${this.user instanceof Success ? this.renderForm() : this.renderSignedOut()}
+        ${
+          !this.ready
+            ? html`<hb-progress></hb-progress>`
+            : this.user instanceof Success
+              ? this.renderForm()
+              : this.renderSignedOut()
+        }
       </div>
     `;
   }
@@ -210,7 +290,7 @@ export class AccountPage extends ThemedComponent {
       label="${label}"
       name="${field}"
       .value="${String(this.form[field])}"
-      error="${this.errors[field] ?? ''}"
+      error="${extra['error'] || this.errors[field] || ''}"
       ?disabled="${this.saving}"
       @input="${(event: Event) => this.set(field, (event.target as HbTextField).value)}"
       hint="${extra['hint'] ?? ''}"
@@ -224,6 +304,70 @@ export class AccountPage extends ThemedComponent {
     return html`
       <hb-progress ?hidden="${!this.loading}"></hb-progress>
       <form @submit="${(event: Event) => event.preventDefault()}" ?inert="${this.loading}">
+        <fieldset>
+          <legend>${msg('Photo', { id: 'pages.account.photo' })}</legend>
+          <div class="photo">
+            <speaker-photo size="l" src="${form.avatarUrl}"></speaker-photo>
+            <div class="photo-actions">
+              <div class="photo-buttons">
+                <hb-button
+                  variant="outlined"
+                  ?disabled="${this.uploading}"
+                  @click="${this.choosePhoto}"
+                >
+                  ${
+                    this.uploading
+                      ? msg('Saving photo...', { id: 'pages.account.photo-saving' })
+                      : msg('Change photo', { id: 'pages.account.photo-change' })
+                  }
+                </hb-button>
+                ${
+                  form.avatarUrl
+                    ? html`<hb-button
+                        variant="text"
+                        ?disabled="${this.uploading}"
+                        @click="${this.removePhoto}"
+                      >
+                        ${msg('Remove photo', { id: 'pages.account.photo-remove' })}
+                      </hb-button>`
+                    : nothing
+                }
+              </div>
+              <p class="note">
+                ${msg('JPG, PNG or WebP, up to 5 MB. It is cut to a square.', {
+                  id: 'pages.account.photo-note',
+                })}
+              </p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                aria-label="${msg('Choose a photo', { id: 'pages.account.photo-choose' })}"
+                @change="${this.onPhotoChosen}"
+              />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>${msg('Membership', { id: 'pages.account.membership' })}</legend>
+          <p class="membership">
+            ${
+              form.createdAt
+                ? msg(str`Member since ${memberSince(form.createdAt)}`, {
+                    id: 'pages.account.member-since',
+                  })
+                : nothing
+            }
+            ${
+              form.isExclusiveMember
+                ? html`<hb-chip accent="1">
+                    ${msg('Exclusive member', { id: 'pages.account.exclusive' })}
+                  </hb-chip>`
+                : nothing
+            }
+          </p>
+        </fieldset>
+
         <fieldset>
           <legend>${msg('About you', { id: 'pages.account.about' })}</legend>
           <div class="row">
@@ -278,9 +422,8 @@ export class AccountPage extends ThemedComponent {
         <fieldset>
           <legend>${msg('Your public page', { id: 'pages.account.public' })}</legend>
           ${this.text('handle', msg('Handle', { id: 'pages.account.handle' }), {
-            hint: msg('Your page will be at /members/ followed by this.', {
-              id: 'pages.account.handle-hint',
-            }),
+            hint: this.handleHint(),
+            error: this.handleStatus === 'taken' ? this.handleTakenMessage() : '',
           })}
           <hb-switch
             .checked="${form.isPublic}"
@@ -290,10 +433,26 @@ export class AccountPage extends ThemedComponent {
             ${msg('Show my profile to everyone', { id: 'pages.account.visible' })}
           </hb-switch>
           ${
-            this.savedHandle
+            this.savedPath
               ? html`<p class="address">
                   ${msg('Your page:', { id: 'pages.account.your-page' })}
-                  <a href="/members/${this.savedHandle}">/members/${this.savedHandle}</a>
+                  <a href="${this.savedPath}">${this.savedPath}</a>
+                  <hb-button variant="text" @click="${this.copyLink}">
+                    ${
+                      this.copied
+                        ? msg('Copied', { id: 'pages.account.copied' })
+                        : msg('Copy link', { id: 'pages.account.copy' })
+                    }
+                  </hb-button>
+                </p>`
+              : nothing
+          }
+          ${
+            form.isPublic && !form.handle
+              ? html`<p class="note">
+                  ${msg('Choose a handle for a short address like /members/your-name.', {
+                    id: 'pages.account.handle-suggest',
+                  })}
                 </p>`
               : nothing
           }
@@ -318,6 +477,7 @@ export class AccountPage extends ThemedComponent {
 
   private set(field: Field, value: string) {
     this.setForm({ [field]: value });
+    if (field === 'handle') this.checkHandleSoon();
     if (this.errors[field]) this.errors = { ...this.errors, [field]: undefined };
   }
 
@@ -352,8 +512,113 @@ export class AccountPage extends ThemedComponent {
     return Object.keys(errors).length ? { errors } : { profile };
   }
 
+  /** Looks up the handle once typing stops, so each key press is not a request. */
+  private checkHandleSoon() {
+    clearTimeout(this.handleTimer);
+    const handle = this.form.handle.trim().toLowerCase();
+    if (!handle || handleProblem(handle) || handle === this.savedHandle) {
+      this.handleStatus = 'idle';
+      return;
+    }
+    this.handleStatus = 'checking';
+    this.handleTimer = setTimeout(() => void this.lookUpHandle(handle), 400);
+  }
+
+  private async lookUpHandle(handle: string) {
+    try {
+      const free = await isHandleAvailable(handle);
+      // Typing may have moved on while the answer came back.
+      if (handle === this.form.handle.trim().toLowerCase()) {
+        this.handleStatus = free ? 'available' : 'taken';
+      }
+    } catch {
+      this.handleStatus = 'idle';
+    }
+  }
+
+  private handleHint() {
+    const handle = this.form.handle.trim().toLowerCase();
+    if (this.handleStatus === 'checking') {
+      return msg('Checking if it is free...', { id: 'pages.account.handle-checking' });
+    }
+    if (this.handleStatus === 'available') {
+      return msg(str`${handle} is available.`, { id: 'pages.account.handle-available' });
+    }
+    return msg('Your page will be at /members/ followed by this.', {
+      id: 'pages.account.handle-hint',
+    });
+  }
+
+  private handleTakenMessage() {
+    return msg(str`The handle ${this.form.handle.trim().toLowerCase()} is taken. Try another.`, {
+      id: 'pages.account.handle-taken',
+    });
+  }
+
+  private readonly choosePhoto = () => {
+    this.shadowRoot?.querySelector<HTMLInputElement>('input[type="file"]')?.click();
+  };
+
+  private readonly onPhotoChosen = async (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || !(this.user instanceof Success)) return;
+    const problem = avatarProblem(file, AVATAR_MAX_BYTES);
+    if (problem) {
+      store.dispatch(
+        queueSnackbar(
+          problem === 'type'
+            ? msg('Choose a JPG, PNG or WebP photo.', { id: 'pages.account.photo-type' })
+            : msg('That photo is over 5 MB. Choose a smaller one.', {
+                id: 'pages.account.photo-size',
+              }),
+        ),
+      );
+      return;
+    }
+    this.uploading = true;
+    try {
+      const url = await uploadAvatar(this.user.data.uid, await cropToSquare(file));
+      this.form = { ...this.form, avatarUrl: url };
+      store.dispatch(queueSnackbar(msg('Photo saved.', { id: 'pages.account.photo-saved' })));
+    } catch {
+      store.dispatch(queueSnackbar(this.generalError()));
+    } finally {
+      this.uploading = false;
+    }
+  };
+
+  private readonly removePhoto = async () => {
+    if (!(this.user instanceof Success)) return;
+    this.uploading = true;
+    try {
+      await removeAvatar(this.user.data.uid);
+      this.form = { ...this.form, avatarUrl: '' };
+      store.dispatch(queueSnackbar(msg('Photo removed.', { id: 'pages.account.photo-removed' })));
+    } catch {
+      store.dispatch(queueSnackbar(this.generalError()));
+    } finally {
+      this.uploading = false;
+    }
+  };
+
+  private readonly copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(new URL(this.savedPath, window.location.origin).href);
+      this.copied = true;
+      setTimeout(() => (this.copied = false), 2000);
+    } catch {
+      store.dispatch(queueSnackbar(this.generalError()));
+    }
+  };
+
   private readonly save = async () => {
     if (!(this.user instanceof Success) || this.saving) return;
+    if (this.handleStatus === 'taken') {
+      this.errors = { ...this.errors, handle: this.handleTakenMessage() };
+      return;
+    }
     const result = this.checked();
     if ('errors' in result) {
       this.errors = result.errors;
@@ -364,7 +629,9 @@ export class AccountPage extends ThemedComponent {
     try {
       await saveOwnProfile(this.user.data.uid, result.profile);
       this.form = result.profile;
-      this.savedHandle = result.profile.isPublic ? result.profile.handle : '';
+      this.savedPath = publicPath(result.profile);
+      this.savedHandle = result.profile.handle;
+      this.handleStatus = 'idle';
       store.dispatch(queueSnackbar(msg('Profile saved.', { id: 'pages.account.saved' })));
     } catch (error) {
       if (error instanceof HandleTakenError) {

@@ -16,3 +16,9 @@ The connection strings and passwords live in a gitignored env file, never in the
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `20261014000001_member_profiles.sql`    | Adds the member `handle`, a `public_profiles` view that never shows email or role, and a guard on who can set a role. |
 | `20261014000002_hide_member_emails.sql` | Closes the leak that lets the public key read every member's email. Not additive.                                     |
+| `20261014000003_exclusive_members.sql`  | Adds `is_exclusive_member` (only the board can change it) and the member id to the public view.                       |
+
+| `20261014000004_handle_available.sql` | Adds `handle_available()`, so a member can check a handle before saving it. |
+| `20261014000005_clean_slate.sql` | Drops every table, view, function and type from the old dashboard except what the new site uses. Cannot be undone. |
+
+All five are applied to both projects, in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).

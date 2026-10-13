@@ -36,10 +36,12 @@ export default defineConfig({
     {
       name: 'node-site-members-address',
       hooks: {
-        // Vercel rewrites /members/<handle> to /members (see vercel.json); the dev server does it here.
+        // Vercel rewrites /members/<handle> and /profile/<id> to one page each (see vercel.json); the
+        // dev server does it here.
         'astro:server:setup': ({ server }) => {
           server.middlewares.use((request, _response, next) => {
             if (request.url?.startsWith('/members/')) request.url = '/members';
+            if (request.url?.startsWith('/profile/')) request.url = '/profile';
             next();
           });
         },
