@@ -84,6 +84,9 @@ const structuredData = [
   ...jsonLd,
 ];
 
+// Only a site on Firebase Hosting has /__/firebase/init.js. NODE is on Vercel, with a demo project.
+const hostedOnFirebase = !site.firebase.projectId.startsWith('demo-');
+
 // Local development always uses the demo project on the emulators, and `astro dev` has no `/__/`.
 const demoFirebaseConfig = {
   apiKey: 'demo-api-key',
@@ -226,7 +229,7 @@ await demoBanner;
       <script is:inline define:vars={{ demoFirebaseConfig }}>
         window.firebaseConfig = demoFirebaseConfig;
       </script>
-    ) : (
+    ) : hostedOnFirebase ? (
       <Fragment>
         <script is:inline>
           // Capture the config object from /__/firebase/init.js for src/firebase.ts
@@ -239,7 +242,7 @@ await demoBanner;
         </script>
         <script is:inline src="/__/firebase/init.js" />
       </Fragment>
-    )}
+    ) : null}
 
     {import.meta.env.DEV && <script is:inline define:vars={{ features: site.features }}>
       // The build inlines the flags. In development Vite sets them in /@vite/env, which loads too late.

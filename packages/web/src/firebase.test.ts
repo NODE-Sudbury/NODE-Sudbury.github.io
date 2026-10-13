@@ -1,4 +1,5 @@
 import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from 'firebase/app';
 import {
   connectFirestoreEmulator,
   initializeFirestore,
@@ -24,6 +25,22 @@ const load = async (projectId: string) => {
 afterEach(() => {
   vi.clearAllMocks();
   delete window.firebaseConfig;
+});
+
+describe('firebase without a project', () => {
+  it('starts as an inert app instead of failing, with no analytics or emulator', async () => {
+    vi.resetModules();
+    delete window.firebaseConfig;
+
+    const { analytics, isDemoProject } = await import('./firebase');
+
+    expect(initializeApp).toHaveBeenCalledWith(expect.objectContaining({ projectId: 'not-used' }));
+    expect(isDemoProject).toBe(false);
+    expect(analytics).toBeUndefined();
+    expect(getAnalytics).not.toHaveBeenCalled();
+    expect(getPerformance).not.toHaveBeenCalled();
+    expect(connectFirestoreEmulator).not.toHaveBeenCalled();
+  });
 });
 
 describe('firebase', () => {

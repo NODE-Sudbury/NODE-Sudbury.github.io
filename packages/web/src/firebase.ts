@@ -28,11 +28,19 @@ declare global {
   }
 }
 
-const start = (firebaseConfig: FirebaseOptions | undefined) => {
-  if (!firebaseConfig) {
-    throw new Error('window.firebaseConfig is not defined');
-  }
+/**
+ * What Firebase starts with when the site has no Firebase project, as NODE does not. Nothing
+ * reaches the network until a Firestore feature is used, and those features are off.
+ */
+const INERT_CONFIG: FirebaseOptions = {
+  apiKey: 'not-used',
+  appId: 'not-used',
+  projectId: 'not-used',
+};
 
+const start = (givenConfig: FirebaseOptions | undefined) => {
+  const inert = !givenConfig;
+  const firebaseConfig = givenConfig ?? INERT_CONFIG;
   const firebaseApp = initializeApp(firebaseConfig);
   // Every tab shares one cache and one queue of writes, so a change in one tab shows in the others.
   const db: Firestore = initializeFirestore(firebaseApp, {
@@ -51,10 +59,12 @@ const start = (firebaseConfig: FirebaseOptions | undefined) => {
     highlightMissingAlt();
   }
 
-  // Demo projects have no app ID, which Analytics and Performance Monitoring need.
-  const analytics = isDemoProject ? undefined : getAnalytics(firebaseApp);
+  // Demo projects have no app ID, which Analytics and Performance Monitoring need, and a site
+  // with no Firebase project has nothing to report to.
+  const measured = !isDemoProject && !inert;
+  const analytics = measured ? getAnalytics(firebaseApp) : undefined;
 
-  if (!isDemoProject) {
+  if (measured) {
     getPerformance(firebaseApp);
     initializePerformance(firebaseApp);
   }
