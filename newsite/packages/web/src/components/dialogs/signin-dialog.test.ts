@@ -1,25 +1,25 @@
-import { Failure } from '@abraham/remotedata';
+import { Success } from '@abraham/remotedata';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { html } from 'lit';
 import { fixture } from '../../../__tests__/helpers/fixtures';
 import { setStoreState } from '../../../__tests__/helpers/store';
-import { hasSignInLink, mergeAccounts, signIn } from '../../store/auth';
+import { signIn } from '../../store/auth';
 import { closeDialog, openSigninDialog } from '../../store/dialogs';
-import { queueSnackbar } from '../../store/snackbars';
 import { signInProviders } from '../../config/site';
-import { PROVIDER } from '../../utils/providers';
+import type { User } from '../../models/user';
+import type { PROVIDER } from '../../utils/providers';
 import type { EmailLinkForm } from './email-link-form';
 import type { SigninDialog } from './signin-dialog';
 import './signin-dialog';
 
-const GENERAL_ERROR = 'An error has occurred. Please, try again later.';
+vi.mock('../../supabase', () => ({
+  isSupabaseConfigured: true,
+  getSupabase: vi.fn(),
+}));
 
 vi.mock('../../store/auth', async (importOriginal) => ({
   __esModule: true,
   ...(await importOriginal<typeof import('../../store/auth')>()),
-  finishSignInWithLink: vi.fn(),
-  hasSignInLink: vi.fn(() => false),
-  mergeAccounts: vi.fn(),
   sendSignInLink: vi.fn(),
   signIn: vi.fn(),
 }));
@@ -28,25 +28,14 @@ vi.mock('../../store/dialogs', async (importOriginal) => ({
   __esModule: true,
   ...(await importOriginal<typeof import('../../store/dialogs')>()),
   closeDialog: vi.fn(),
-  openSigninDialog: vi.fn(),
 }));
 
-vi.mock('../../store/snackbars', async (importOriginal) => ({
-  __esModule: true,
-  ...(await importOriginal<typeof import('../../store/snackbars')>()),
-  queueSnackbar: vi.fn((label: string) => ({ type: 'snackbars/queueSnackbar', payload: label })),
-}));
-
-const mockMergeAccounts = vi.mocked(mergeAccounts);
 const mockSignIn = vi.mocked(signIn);
 const mockCloseDialog = vi.mocked(closeDialog);
-const mockOpenSigninDialog = vi.mocked(openSigninDialog);
-const mockQueueSnackbar = vi.mocked(queueSnackbar);
 
 describe('signin-dialog', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(hasSignInLink).mockReturnValue(false);
   });
   afterEach(() => {
     vi.restoreAllMocks();
@@ -88,85 +77,6 @@ describe('signin-dialog', () => {
     }
   });
 
-  it('shows the merge-account prompt and merges on click', async () => {
-    const { element, shadowRoot } = await fixture<SigninDialog>(
-      html`<signin-dialog></signin-dialog>`,
-    );
-    element['auth'] = new Failure({
-      code: 'auth/account-exists-with-different-credential',
-      credential: { providerId: 'google.com' },
-      email: 'attendee@example.com',
-      providerId: PROVIDER['google.com'],
-    } as never);
-    element['isMergeState'] = true;
-    element['email'] = 'attendee@example.com';
-    element['providerCompanyName'] = 'Google';
-    await element.updateComplete;
-
-    expect(shadowRoot.querySelector('.merge-content')).toHaveTextContent(
-      'You already have an account',
-    );
-    expect(shadowRoot.querySelector('.explanation')).toHaveTextContent(
-      "You've already used attendee@example.com. Sign in with Google to continue.",
-    );
-    expect(shadowRoot.querySelector('.merge-button')).toHaveTextContent('Sign in with Google');
-
-    shadowRoot.querySelector<HTMLElement>('.merge-button')!.click();
-
-    expect(mockMergeAccounts).toHaveBeenCalledWith(
-      PROVIDER['google.com'],
-      expect.objectContaining({ providerId: 'google.com' }),
-    );
-    expect(mockCloseDialog).toHaveBeenCalled();
-  });
-
-  it('closes and reopens with merge data when auth becomes mergeable', async () => {
-    const { element } = await fixture<SigninDialog>(html`<signin-dialog></signin-dialog>`);
-    element['auth'] = new Failure({
-      code: 'auth/account-exists-with-different-credential',
-      credential: { providerId: 'google.com' },
-      email: 'attendee@example.com',
-      providerId: PROVIDER['google.com'],
-    } as never);
-
-    setStoreState({ auth: element['auth'] });
-
-    expect(mockCloseDialog).toHaveBeenCalled();
-    expect(mockOpenSigninDialog).toHaveBeenCalled();
-  });
-
-  it('queues an error snackbar and does not reopen dialog if email is missing', async () => {
-    const { element } = await fixture<SigninDialog>(html`<signin-dialog></signin-dialog>`);
-    element['auth'] = new Failure({
-      code: 'auth/account-exists-with-different-credential',
-      credential: { providerId: 'google.com' },
-      email: undefined,
-      providerId: PROVIDER['google.com'],
-    } as never);
-
-    setStoreState({ auth: element['auth'] });
-
-    expect(mockCloseDialog).toHaveBeenCalled();
-    expect(mockOpenSigninDialog).not.toHaveBeenCalled();
-    expect(mockQueueSnackbar).toHaveBeenCalledWith(GENERAL_ERROR);
-  });
-
-  it('queues an error snackbar and does not reopen dialog if providerId is missing', async () => {
-    const { element } = await fixture<SigninDialog>(html`<signin-dialog></signin-dialog>`);
-    element['auth'] = new Failure({
-      code: 'auth/account-exists-with-different-credential',
-      credential: { providerId: 'google.com' },
-      email: 'attendee@example.com',
-      providerId: undefined,
-    } as never);
-
-    setStoreState({ auth: element['auth'] });
-
-    expect(mockCloseDialog).toHaveBeenCalled();
-    expect(mockOpenSigninDialog).not.toHaveBeenCalled();
-    expect(mockQueueSnackbar).toHaveBeenCalledWith(GENERAL_ERROR);
-  });
-
   it('dispatches closeDialog when the dialog is closed', async () => {
     const { shadowRoot } = await fixture<SigninDialog>(html`<signin-dialog></signin-dialog>`);
 
@@ -193,20 +103,13 @@ describe('signin-dialog', () => {
     expect(reset).toHaveBeenCalledTimes(1);
   });
 
-  it('says to sign in with an email link when the account was made with one', async () => {
+  it('closes when a member signs in', async () => {
     const { element } = await fixture<SigninDialog>(html`<signin-dialog></signin-dialog>`);
-    element['auth'] = new Failure({
-      code: 'auth/account-exists-with-different-credential',
-      credential: { providerId: 'google.com' },
-      email: 'attendee@example.com',
-      providerId: 'emailLink',
-    } as never);
+    openSigninDialog();
+    await element.updateComplete;
 
-    setStoreState({ auth: element['auth'] });
+    setStoreState({ user: new Success({ uid: 'user-1' } as User) });
 
-    expect(mockOpenSigninDialog).not.toHaveBeenCalled();
-    expect(mockQueueSnackbar).toHaveBeenCalledWith(
-      'attendee@example.com signed in with an email link before. Sign in that way.',
-    );
+    expect(mockCloseDialog).toHaveBeenCalled();
   });
 });

@@ -1,17 +1,15 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html, nothing, render as litRender } from 'lit';
 import { deepQuerySelector, screen } from 'shadow-dom-testing-library';
 import { fixture } from '../../../__tests__/helpers/fixtures';
-import { finishSignInWithLink, hasSignInLink, sendSignInLink } from '../../store/auth';
+import { sendSignInLink } from '../../store/auth';
 import type { HbTextField } from '../ui/hb-text-field';
 import type { EmailLinkForm } from './email-link-form';
 import './email-link-form';
 
 vi.mock('../../store/auth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../store/auth')>()),
-  finishSignInWithLink: vi.fn(),
-  hasSignInLink: vi.fn(() => false),
   sendSignInLink: vi.fn(),
 }));
 
@@ -28,14 +26,9 @@ const typeEmail = async (email: string) => {
 const field = (shadowRoot: ShadowRoot) =>
   deepQuerySelector<HbTextField>(shadowRoot, 'hb-text-field');
 
-const emailButton = (name = 'Email me a sign-in link') =>
-  screen.findByShadowRole('button', { name });
+const emailButton = () => screen.findByShadowRole('button', { name: 'Email me a sign-in link' });
 
 describe('email-link-form', () => {
-  beforeEach(() => {
-    vi.mocked(hasSignInLink).mockReturnValue(false);
-  });
-
   afterEach(() => {
     litRender(nothing, document.body);
     vi.clearAllMocks();
@@ -96,7 +89,7 @@ describe('email-link-form', () => {
   });
 
   it('shows an error when the link cannot be sent', async () => {
-    vi.mocked(sendSignInLink).mockRejectedValue(new Error('auth/operation-not-allowed'));
+    vi.mocked(sendSignInLink).mockRejectedValue(new Error('Rate limited'));
     const { shadowRoot } = await render();
 
     await typeEmail('ada@example.com');
@@ -106,27 +99,6 @@ describe('email-link-form', () => {
       expect(field(shadowRoot)).toHaveAttribute(
         'error',
         'Could not send the link. Please try again.',
-      ),
-    );
-  });
-
-  it('finishes signing in from a link opened in another browser', async () => {
-    vi.mocked(hasSignInLink).mockReturnValue(true);
-    vi.mocked(finishSignInWithLink).mockResolvedValue('wrong-email');
-    const { shadowRoot } = await render();
-
-    expect(shadowRoot).toHaveTextContent('Enter your email address again to finish signing in.');
-    const button = await emailButton('Sign in');
-
-    await typeEmail('grace@example.com');
-    fireEvent.click(button);
-
-    expect(finishSignInWithLink).toHaveBeenCalledWith('grace@example.com');
-    expect(sendSignInLink).not.toHaveBeenCalled();
-    await waitFor(() =>
-      expect(field(shadowRoot)).toHaveAttribute(
-        'error',
-        'Use the email address the link was sent to.',
       ),
     );
   });

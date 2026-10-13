@@ -2,17 +2,14 @@ import { msg } from '@lit/localize';
 import { css, html, nothing } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { fromStore } from '../../controllers/from-store';
-import { finishSignInWithLink, hasSignInLink, sendSignInLink } from '../../store/auth';
+import { sendSignInLink } from '../../store/auth';
 import { selectOnline } from '../../store/sync';
 import '../ui/hb-button';
 import '../ui/hb-text-field';
 import type { HbTextField } from '../ui/hb-text-field';
 import { ThemedComponent } from '../themed-component';
 
-/**
- * Signs in by email: it sends a link to the address, or, on a page opened from a link in a browser
- * that doesn't know the address, asks for it again to finish signing in.
- */
+/** Signs in by email: it sends a link to the address, and opening the link signs the member in. */
 @customElement('email-link-form')
 export class EmailLinkForm extends ThemedComponent {
   static override styles = css`
@@ -58,17 +55,7 @@ export class EmailLinkForm extends ThemedComponent {
         </p>
       `;
     }
-    const confirming = hasSignInLink();
     return html`
-      ${
-        confirming
-          ? html`<p>
-              ${msg('Enter your email address again to finish signing in.', {
-                id: 'dialogs.signin.confirm-email',
-              })}
-            </p>`
-          : nothing
-      }
       <hb-text-field
         type="email"
         name="email"
@@ -85,11 +72,7 @@ export class EmailLinkForm extends ThemedComponent {
         ?disabled="${this.sending || !this.online}"
         @click="${this.submit}"
       >
-        ${
-          confirming
-            ? msg('Sign in', { id: 'common.sign-in' })
-            : msg('Email me a sign-in link', { id: 'dialogs.signin.send-link' })
-        }
+        ${msg('Email me a sign-in link', { id: 'dialogs.signin.send-link' })}
       </hb-button>
     `;
   }
@@ -112,17 +95,8 @@ export class EmailLinkForm extends ThemedComponent {
     this.sending = true;
     this.error = '';
     try {
-      if (hasSignInLink()) {
-        // Signing in closes the dialog. Other errors show a message and leave the email form.
-        if ((await finishSignInWithLink(email)) === 'wrong-email') {
-          this.error = msg('Use the email address the link was sent to.', {
-            id: 'dialogs.signin.wrong-email',
-          });
-        }
-      } else {
-        await sendSignInLink(email);
-        this.linkSentTo = email;
-      }
+      await sendSignInLink(email);
+      this.linkSentTo = email;
     } catch {
       this.error = msg('Could not send the link. Please try again.', {
         id: 'dialogs.signin.send-error',
