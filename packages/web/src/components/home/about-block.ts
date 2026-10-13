@@ -1,10 +1,11 @@
 import { msg } from '@lit/localize';
 import { css, html, nothing } from 'lit';
 import { displayFont } from '../../styles/shared';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { aboutBlock } from '../../config/site';
 import { openVideoDialog } from '../../store/ui';
 import { band } from '../../styles/band';
+import { fetchDiscordMemberCount, memberCountLabel } from '../../utils/discord';
 import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -78,9 +79,18 @@ export class AboutBlock extends ThemedComponent {
       }
 
       .stat:nth-child(4) {
-        grid-column: span 2;
         background-color: var(--hb-color-accent-4-container);
         color: var(--hb-color-on-accent-4-container);
+      }
+
+      /* Alone in the last row, it takes the whole row. */
+      .stat:nth-child(4):last-child {
+        grid-column: span 2;
+      }
+
+      .stat:nth-child(5) {
+        background-color: var(--hb-color-accent-1-container);
+        color: var(--hb-color-on-accent-1-container);
       }
 
       /* The display font is wide, so numbers also scale with their tile. */
@@ -116,6 +126,14 @@ export class AboutBlock extends ThemedComponent {
     `,
   ];
 
+  // Undefined until Discord answers, and when it can't, so the tile is only there with a number.
+  @state()
+  private accessor discordMembers: number | undefined;
+
+  override async firstUpdated() {
+    this.discordMembers = await fetchDiscordMemberCount();
+  }
+
   override render() {
     const { callToAction, statisticsBlock } = aboutBlock;
     const stats: Statistic[] = [
@@ -123,6 +141,14 @@ export class AboutBlock extends ThemedComponent {
       statisticsBlock.days,
       statisticsBlock.sessions,
       statisticsBlock.tracks,
+      ...(this.discordMembers === undefined
+        ? []
+        : [
+            {
+              number: memberCountLabel(this.discordMembers),
+              label: msg('Members', { id: 'home.about-block.members' }),
+            },
+          ]),
     ];
     return html`
       <div class="inner layout">

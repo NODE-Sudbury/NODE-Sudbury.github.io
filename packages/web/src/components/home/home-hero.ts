@@ -39,11 +39,11 @@ import '../shared/node-icon';
 import { nextStepLink } from '../shared/next-step-link';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
+import { DISCORD_URL } from '../../utils/discord';
 import '../ui/hb-chip';
 import '../ui/hb-sticker';
 
 /** NODE's community on Discord. */
-const DISCORD_URL = 'https://discord.gg/MtBcHMbkgB';
 
 /**
  * The top of the home page: the event state, the event name, dates and place, and the calls to

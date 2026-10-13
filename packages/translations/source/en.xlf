@@ -251,6 +251,9 @@
 <trans-unit id="footer.locale-picker.label">
   <source>Language</source>
 </trans-unit>
+<trans-unit id="home.about-block.members">
+  <source>Members</source>
+</trans-unit>
 <trans-unit id="home.about-block.title">
   <source>About</source>
 </trans-unit>
