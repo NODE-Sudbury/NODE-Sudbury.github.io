@@ -108,6 +108,7 @@
   },
   "features": {
     "demo": false,
+    "notifications": false,
     "forkMe": false
   },
   "navigation": [
