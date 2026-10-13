@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T17:52:44.582Z",
+  "generatedAt": "2026-10-13T18:01:32.924Z",
   "categories": [
     "Hackathons",
     "Community Events",
@@ -9,6 +9,7 @@
     {
       "id": "luma-evt-M666SdY340S4vk8",
       "provider": "luma",
+      "slug": "grok-bot-meetup-sudbury-1",
       "category": "Community Events",
       "title": "Grok Bot Meetup Sudbury #1",
       "summary": "Join us for a Grok Bot meetup in Sudbury. An evening to try Grok Bot, see what it can do, and hang with the Cursor community. Participants will be provided with credit to purchase 1 month of Cursor Pro+ so you can get a…",
@@ -41,6 +42,7 @@
     {
       "id": "gdg-131246",
       "provider": "gdg",
+      "slug": "devfest-sudbury-2026",
       "category": "Community Events",
       "title": "DevFest Sudbury 2026: Build, Secure, Scale – Developers and Builders in the Agentic Era",
       "summary": "Northern Ontario's biggest developer conference is back, hosted by GDG Sudbury in partnership with NODE (Northern Ontario Dev Exchange). A full day of talks from Google Developer Experts and local industry leaders, a hands-on hackathon, a free lunch, start-up booths, and networking at Collège Boréal.",

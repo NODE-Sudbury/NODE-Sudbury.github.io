@@ -18,6 +18,8 @@ export interface EventTicket {
 export interface CommunityEvent {
   id: string;
   provider: 'gdg' | 'luma';
+  /** The event's address on this site: /events/<slug>. */
+  slug: string;
   category: string;
   title: string;
   summary?: string;

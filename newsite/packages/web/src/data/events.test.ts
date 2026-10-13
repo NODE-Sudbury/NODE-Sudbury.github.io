@@ -5,6 +5,7 @@ import { splitEvents } from './events';
 const event = (id: string, start: string, end?: string): CommunityEvent => ({
   id,
   provider: 'gdg',
+  slug: id,
   category: 'Community Events',
   title: id,
   start,

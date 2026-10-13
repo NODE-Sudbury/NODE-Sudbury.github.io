@@ -52,6 +52,17 @@ const treeText = (node) => {
   return ['paragraph', 'heading', 'list_item', 'bullet_list', 'ordered_list'].includes(node.type) ? `${inner}\n` : inner;
 };
 
+// A short readable address for the event page: its title up to a colon or dash.
+const slugify = (title) =>
+  title
+    .split(/\s[:–—-]\s|:\s/)[0]
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+
 const clip = (value, length) => {
   const clean = value.replace(/\s+/g, ' ').trim();
   return clean.length <= length ? clean : `${clean.slice(0, length - 1).trimEnd()}…`;
@@ -69,6 +80,7 @@ const gdg = async ({ url, category }) => {
   return {
     id: `gdg-${event.id}`,
     provider: 'gdg',
+    slug: slugify(event.title),
     category,
     title: event.title,
     summary: event.description_short || clip(text(event.description), 220),
@@ -123,6 +135,7 @@ const luma = async ({ url, category }) => {
   return {
     id: `luma-${event.api_id ?? slug}`,
     provider: 'luma',
+    slug: slugify(event.name),
     category,
     title: event.name,
     summary: clip(description, 220) || undefined,
