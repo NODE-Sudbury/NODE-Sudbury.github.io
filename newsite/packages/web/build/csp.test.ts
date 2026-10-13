@@ -92,6 +92,19 @@ describe('cspPolicy', () => {
     ]);
   });
 
+  it("allows the Supabase project's API and its WebSocket, only when the build has one", () => {
+    const without = cspPolicy(site(), { emulators: false });
+    const withUrl = cspPolicy(site(), {
+      emulators: false,
+      supabaseUrl: 'https://abcdefgh.supabase.co',
+    });
+
+    expect(without['connect-src']).not.toContain('https://abcdefgh.supabase.co');
+    expect(withUrl['connect-src']).toEqual(
+      expect.arrayContaining(['https://abcdefgh.supabase.co', 'wss://abcdefgh.supabase.co']),
+    );
+  });
+
   it('allows the emulators only when asked', () => {
     expect(cspPolicy(site(), { emulators: true })['connect-src']).toContain(
       'http://127.0.0.1:8080',

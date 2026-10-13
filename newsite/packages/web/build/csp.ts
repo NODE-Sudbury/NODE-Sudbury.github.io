@@ -67,7 +67,10 @@ const addSources = (policy: CspPolicy, sources: Partial<CspPolicy>) => {
 };
 
 /** The policy for every page, before the hashes of the inline scripts. */
-export const cspPolicy = (site: CspSite, { emulators }: { emulators: boolean }): CspPolicy => {
+export const cspPolicy = (
+  site: CspSite,
+  { emulators, supabaseUrl }: { emulators: boolean; supabaseUrl?: string | undefined },
+): CspPolicy => {
   const fontOrigins = Object.values(site.theme?.fonts ?? {}).flatMap((font) =>
     font?.stylesheet ? [new URL(font.stylesheet).origin] : [],
   );
@@ -108,6 +111,11 @@ export const cspPolicy = (site: CspSite, { emulators }: { emulators: boolean }):
     'manifest-src': ["'self'"],
   };
   if (site.features.map && site.integrations?.googleMapsApiKey) addSources(policy, MAPS);
+  // Sign-in talks to the Supabase project's API, and its realtime channel is a WebSocket.
+  if (supabaseUrl) {
+    const { origin, host } = new URL(supabaseUrl);
+    addSources(policy, { 'connect-src': [origin, `wss://${host}`] });
+  }
   if (emulators) addSources(policy, EMULATORS);
   addSources(policy, site.security?.csp ?? {});
   return policy;
@@ -164,7 +172,10 @@ export const withCsp = (html: string, policy: string): string => {
  * Inline scripts must be in the head, where content never renders, or be Astro's island scripts.
  * Any other inline script fails the build rather than getting a hash.
  */
-export const csp = (site: CspSite, options: { emulators: boolean }): AstroIntegration => ({
+export const csp = (
+  site: CspSite,
+  options: { emulators: boolean; supabaseUrl?: string | undefined },
+): AstroIntegration => ({
   name: 'node-site-csp',
   hooks: {
     'astro:build:done': ({ dir, logger }) => {

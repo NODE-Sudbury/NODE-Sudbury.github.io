@@ -1,6 +1,7 @@
 import sitemap from '@astrojs/sitemap';
 import lit from '@awesome.me/astro-lit';
 import { defineConfig } from 'astro/config';
+import { loadEnv } from 'vite';
 import { env } from 'node:process';
 import { chunkFileNames } from './build/chunk-names';
 import { sitemapFilter, sitemapItem } from './build/sitemap';
@@ -17,6 +18,12 @@ if (CONFIG_PATHS.site.endsWith('demo-config')) {
   console.info('Using the demo site in packages/demo-config: packages/config has no site.json.');
 }
 const config = withDevBar(resolveConfig(), env['FIRESTORE_TARGET']);
+// The Supabase project the build signs in against: .env.development for `npm start`, else .env.production.
+const publicEnv = loadEnv(
+  env['NODE_ENV'] === 'development' ? 'development' : 'production',
+  process.cwd(),
+  'PUBLIC_',
+);
 
 export default defineConfig({
   site: config.site.url,
@@ -45,7 +52,10 @@ export default defineConfig({
     sitePublic(CONFIG_PATHS.public[0]!),
     // Before the service worker, which precaches the pages it changes. Deploys build with
     // FIRESTORE_TARGET=production, and every other build may run on the emulators.
-    csp(config.site as CspSite, { emulators: env['FIRESTORE_TARGET'] !== 'production' }),
+    csp(config.site as CspSite, {
+      emulators: env['FIRESTORE_TARGET'] !== 'production',
+      supabaseUrl: publicEnv['PUBLIC_SUPABASE_URL'],
+    }),
     serviceWorker([...attendingPrecache(config), ...schedulePrecache(config)]),
   ],
   vite: {
