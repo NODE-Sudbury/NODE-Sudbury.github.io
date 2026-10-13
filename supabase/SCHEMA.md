@@ -1,10 +1,10 @@
 # Database structure
 
-What is in the Supabase projects today, what the new website uses, and the structure to grow into. The counts are from the development project, `Node Website Dev`, on October 13, 2026. Production, `Node Website`, has only the first nine migrations: 9 tables and no members.
+What is in the two Supabase projects, and how it grows. On October 13, 2026 both `Node Website Dev` and `Node Website` (production) were cleaned to the same starting point: the old dashboard's 128 other tables were dropped, and the new site's backend starts from the `members` table.
 
 ## The members table
 
-One row per person, made automatically when someone first signs in (a trigger on `auth.users`). The primary key `id` is the same as their sign-in account id. 79 other tables point at it.
+One row per person, made automatically when someone first signs in (a trigger on `auth.users`). The primary key `id` is the same as their sign-in account id.
 
 | Column                                                     | Type        | Default        | What it is                                                                                |
 | ---------------------------------------------------------- | ----------- | -------------- | ----------------------------------------------------------------------------------------- |
@@ -32,36 +32,22 @@ One row per person, made automatically when someone first signs in (a trigger on
 
 **Who can read and change it.** A member reads and edits their own row. The board reads all rows. Only the board can change `role`, `is_super_admin`, `is_active`, `is_exclusive_member`, `email` and `id` (a trigger enforces it). The public reads members only through the `public_profiles` view, which has no email and no role.
 
-**A known leak, not fixed yet.** The original policies `members_select_active` and "Public profiles are viewable by anyone" let anyone with the public key read every column, including email and role. `migrations/20261014000002_hide_member_emails.sql` closes it. Run it on development first.
+**Email privacy.** The old policies that let anyone with the public key read every column were dropped (`20261014000002_hide_member_emails.sql`). Now the public key reads nothing from `members`.
 
-## Related to members
+## What else is in the database
 
-| Name                                             | Kind     | What it is                                                                     |
-| ------------------------------------------------ | -------- | ------------------------------------------------------------------------------ |
-| `auth.users`, `auth.identities`                  | Supabase | The sign-ins. Google and email links. Managed by Supabase, not edited by us.   |
-| `public_profiles`                                | view     | What the public sees: public and active members, without email or role.        |
-| `avatars`                                        | storage  | Public bucket. A member can write only under their own folder, `<member id>/`. |
-| `member_onboarding_state`                        | table    | The old onboarding wizard's progress. Not used by the new site.                |
-| `chapters`                                       | table    | Local chapters (2 rows).                                                       |
-| `member_badges`, `member_points`, `point_events` | tables   | The old points and badges system. Empty.                                       |
+| Name                            | Kind     | What it is                                                                              |
+| ------------------------------- | -------- | --------------------------------------------------------------------------------------- |
+| `auth.users`, `auth.identities` | Supabase | The sign-ins: Google and email links. Managed by Supabase, not edited by us.            |
+| `public_profiles`               | view     | What the public sees: public, active members, without email or role.                    |
+| `avatars`                       | storage  | Public bucket. A member can write only under their own folder, `<member id>/`.          |
+| `handle_available(text)`        | function | Whether a handle is free, for signed-in members. Counts private profiles, says no more. |
+| `handle_new_user()`             | function | Makes the `members` row when someone first signs in.                                    |
+| `members_guard_columns()`       | function | Stops members changing their own role, exclusive flag, active flag, email or id.        |
+| `current_user_role()`           | function | The signed-in member's role, used by the board's policies.                              |
+| `set_updated_at()`              | function | Keeps `updated_at` current.                                                             |
 
-## The 129 tables
-
-Only 16 have any data. All of them came from the old Next.js site's dashboard and admin, which is in `archive/`.
-
-**With data:**
-
-| Table                                                                                                       | Rows                 | Verdict                                                                                   |
-| ----------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------- |
-| `members`                                                                                                   | 2                    | Keep. The core table.                                                                     |
-| `chapters`                                                                                                  | 2                    | Keep if chapters stay a concept.                                                          |
-| `events`, `event_series`, `event_locations`, `event_tags`, `event_tag_links`, `ticket_types`, `promo_codes` | 5, 2, 3, 10, 4, 3, 1 | Old event system. The new site syncs events from GDG and Luma instead. Delete candidates. |
-| `board_members`, `partners`                                                                                 | 2, 3                 | The new site keeps these in its own content files. Delete candidates.                     |
-| `member_onboarding_state`, `badge_definitions`, `feature_flags`, `settings`, `api_keys`                     | 2, 5, 5, 1, 2        | Old app internals. Delete candidates.                                                     |
-
-**Empty (113 tables), by area:** event operations (`event_*`: announcements, check-in sessions, interests, invites, rooms, sessions, speakers, sponsors, templates, tracks), live polls and Q&A (`live_*`), hackathons and judging (`hackathon_*`, `judging_*`), quizzes (`quiz_*`), mentoring (`mentor_*`), session bookmarks, ratings and RSVPs (`session_*`), CTF, game jam, scavenger hunt, job fair, volunteers, certificates, awards, networking, notifications, referrals, payments, moderation and more.
-
-None of the empty tables is used by the new site.
+Everything else that was in the old dashboard's database was dropped. A backup of both projects from before the clean-up is on Hannan's computer, not in this repository.
 
 ## Structure for the new site
 
