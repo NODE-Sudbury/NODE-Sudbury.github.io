@@ -1,0 +1,90 @@
+{
+  "team/0/members/0": {
+    "name": "Dean Lupini",
+    "order": 0,
+    "photo": "/images/node/team/dean.jpg",
+    "photoUrl": "/images/node/team/dean.jpg",
+    "socials": [],
+    "title": "President"
+  },
+  "team/0/members/1": {
+    "name": "Heather Dufour",
+    "order": 1,
+    "photo": "/images/node/team/heather.jpg",
+    "photoUrl": "/images/node/team/heather.jpg",
+    "socials": [],
+    "title": "Treasurer"
+  },
+  "team/0/members/2": {
+    "name": "Hannan",
+    "order": 2,
+    "photo": "/images/node/team/hannan.jpg",
+    "photoUrl": "/images/node/team/hannan.jpg",
+    "socials": [],
+    "title": "Technical Lead"
+  },
+  "team/0/members/3": {
+    "name": "Athif",
+    "order": 3,
+    "photo": "/images/node/team/athif.jpg",
+    "photoUrl": "/images/node/team/athif.jpg",
+    "socials": [],
+    "title": "Secretary"
+  },
+  "team/0/members/4": {
+    "name": "Karan",
+    "order": 4,
+    "photo": "/images/node/team/karan.jpg",
+    "photoUrl": "/images/node/team/karan.jpg",
+    "socials": [],
+    "title": "Marketing"
+  },
+  "team/0/members/5": {
+    "name": "Cheick",
+    "order": 5,
+    "photo": "/images/node/team/cheick.jpg",
+    "photoUrl": "/images/node/team/cheick.jpg",
+    "socials": [],
+    "title": "Promotion / Sponsorship"
+  },
+  "team/0/members/6": {
+    "name": "Baljinder",
+    "order": 6,
+    "photo": "/images/node/team/baljinder.jpg",
+    "photoUrl": "/images/node/team/baljinder.jpg",
+    "socials": [],
+    "title": "Membership Leader"
+  },
+  "team/0/members/7": {
+    "name": "Hassan",
+    "order": 7,
+    "photo": "/images/node/team/hassan.jpg",
+    "photoUrl": "/images/node/team/hassan.jpg",
+    "socials": [],
+    "title": "AI and Emerging Technologies"
+  },
+  "team/1/members/0": {
+    "name": "TBD",
+    "order": 0,
+    "photo": "/images/node/usercoming.jpg",
+    "photoUrl": "/images/node/usercoming.jpg",
+    "socials": [],
+    "title": "Volunteer"
+  },
+  "team/1/members/1": {
+    "name": "TBD",
+    "order": 1,
+    "photo": "/images/node/usercoming.jpg",
+    "photoUrl": "/images/node/usercoming.jpg",
+    "socials": [],
+    "title": "Volunteer"
+  },
+  "team/1/members/2": {
+    "name": "TBD",
+    "order": 2,
+    "photo": "/images/node/usercoming.jpg",
+    "photoUrl": "/images/node/usercoming.jpg",
+    "socials": [],
+    "title": "Volunteer"
+  }
+}
