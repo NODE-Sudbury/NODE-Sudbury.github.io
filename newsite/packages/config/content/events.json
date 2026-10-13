@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-10-13T17:49:24.638Z",
+  "events": [
+    {
+      "id": "luma-evt-M666SdY340S4vk8",
+      "provider": "luma",
+      "category": "Community Events",
+      "title": "Grok Bot Meetup Sudbury #1",
+      "summary": "Join us for a Grok Bot meetup in Sudbury. An evening to try Grok Bot, see what it can do, and hang with the Cursor community. Participants will be provided with credit to purchase 1 month of Cursor Pro+ so you can get a…",
+      "description": "Join us for a Grok Bot meetup in Sudbury. An evening to try Grok Bot, see what it can do, and hang with the Cursor community.\nParticipants will be provided with credit to purchase 1 month of Cursor Pro+ so you can get access.\nBring an iPhone, or a Windows or Mac laptop. No need to install Cursor.\nDesigners, PMs, founders, and developers welcome. Cursor ambassadors on hand all night.\nWhat you get:\nCredit for 1 month of Cursor Pro+\n\nFood and drinks\n\nHands-on help setting up your Grok Bots",
+      "start": "2026-09-15T22:00:00.000Z",
+      "end": "2026-09-16T00:00:00.000Z",
+      "timezone": "America/Toronto",
+      "online": false,
+      "venue": {
+        "name": "Cliff Fielding Research, Innovation and Engineering Building",
+        "address": "Cliff Fielding Research, Innovation and Engineering Building, 935 Ramsey Lake Rd, Sudbury, ON P3E 2C6, Canada",
+        "city": "Greater Sudbury",
+        "region": "Ontario"
+      },
+      "host": "Athif Shaffy, Baljinder Maan, Cheick Ismael Maiga, Hasan Shahriar",
+      "url": "https://luma.com/cursor-nmzu",
+      "rsvpUrl": "https://luma.com/cursor-nmzu",
+      "image": "/images/events/luma-evt-M666SdY340S4vk8.png",
+      "tags": [],
+      "format": "In person",
+      "rsvpCount": 0,
+      "tickets": [
+        {
+          "title": "Standard"
+        }
+      ]
+    },
+    {
+      "id": "gdg-131246",
+      "provider": "gdg",
+      "category": "Community Events",
+      "title": "DevFest Sudbury 2026: Build, Secure, Scale – Developers and Builders in the Agentic Era",
+      "summary": "Northern Ontario's biggest developer conference is back, hosted by GDG Sudbury in partnership with NODE (Northern Ontario Dev Exchange). A full day of talks from Google Developer Experts and local industry leaders, a hands-on hackathon, a free lunch, start-up booths, and networking at Collège Boréal.",
+      "description": "DevFest Sudbury 2026 – Build, Secure, Scale: Developers and Builders in the Agentic Era\nAI agents are changing how we build, protect, and grow software, and every industry is feeling it, from tech to mining. Join GDG Sudbury, in partnership with NODE (Northern Ontario Dev Exchange), for a full day of learning, building, and connecting with Northern Ontario's tech community.\nWhat to expect\n🎤 Talks from Google Developer Experts (GDEs) on building with AI, agents, and Google's developer tools\n\n🏭 Local industry voices: professionals from mining, CEOs, and industry experts sharing how technology is shaping the North\n\n💻 Hackathon: team up and build something real with AI and developer tools, with prizes\n\n🚀 Start-up booths: meet local student and community start-ups\n\n🍽️ Free lunch and plenty of time to network\n\nWho should attend?\nDevelopers, students, founders, security professionals, researchers, industry professionals, and anyone curious about building in the agentic era. All experience levels are welcome.\n🎤 Call for Speakers – now open!\nAre you a Google Developer Expert, industry professional, or builder with a story to share? We're looking for talks, hands-on workshops, demos, and panelists on AI agents, Gemini, Google Cloud, security, and data. Submissions close October 23, 2026.\n👉 Submit your talk: https://app.advocu.com/public/gde/events/6ab5cb52d57d8d687a5e8ceb?cfpid=6abaad0266f6c255eaacc32e\n🙋 Volunteer with us!\nHelp run Northern Ontario's biggest developer conference. Roles include check-in, speaker support, hackathon mentoring and judging, Google product demo stations, open-source project launches, and photography. Volunteers get a free lunch, DevFest swag, and a volunteer reference on request.\n👉 Sign up to volunteer: https://forms.gle/bHQzY7xus9ktPzBf9\nAbout DevFest\nDevFest is a series of community-run developer events hosted by Google Developer Groups around the world. DevFest Sudbury rotates between local post-secondary campuses: Cambrian College in 2023, Laurentian University in 2024, and Collège Boréal this year.\nOrganized with NODE\nDevFest Sudbury 2026 is organized in partnership with NODE (Northern Ontario Dev Exchange), an Ontario not-for-profit that brings together Sudbury's tech communities, including GDG Sudbury, GDG on Campus Cambrian, and Cursor Sudbury. NODE runs events, workshops, and hackathons for anyone who wants to learn and build. Learn more at nodesudbury.com.\nPlease follow our Code of Conduct during the event. The full speaker lineup, schedule, and hackathon details will be announced soon, so stay tuned!",
+      "start": "2026-11-28T08:30:00-05:00",
+      "end": "2026-11-28T17:30:00-05:00",
+      "timezone": "America/Toronto",
+      "online": false,
+      "venue": {
+        "name": "Collège Boréal - Sudbury",
+        "address": "21 Lasalle Boulevard",
+        "city": "Greater Sudbury",
+        "region": "ON",
+        "postalCode": "P3A 6B1"
+      },
+      "host": "GDG Sudbury",
+      "hostUrl": "https://gdg.community.dev/gdg-sudbury/",
+      "url": "https://gdg.community.dev/events/details/google-gdg-sudbury-presents-devfest-sudbury-2026-build-secure-scale-developers-and-builders-in-the-agentic-era/",
+      "rsvpUrl": "https://gdg.community.dev/events/details/google-gdg-sudbury-presents-devfest-sudbury-2026-build-secure-scale-developers-and-builders-in-the-agentic-era/",
+      "image": "/images/events/gdg-131246.png",
+      "tags": [
+        "AI",
+        "AI - Gemini",
+        "AI - Gemma",
+        "Conference",
+        "DevFest",
+        "Hackathon",
+        "Tech Talk / Meetup",
+        "Workshop / hands-on session"
+      ],
+      "free": true,
+      "format": "Hybrid",
+      "rsvpCount": 44,
+      "capacity": 1000,
+      "tickets": [
+        {
+          "title": "Online via Google Meet",
+          "kind": "Online",
+          "capacity": 500,
+          "claimed": 1
+        },
+        {
+          "title": "In Person @ Boreal College",
+          "kind": "In person",
+          "capacity": 350,
+          "claimed": 42
+        }
+      ]
+    }
+  ]
+}
