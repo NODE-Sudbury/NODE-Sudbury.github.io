@@ -337,3 +337,19 @@ export const faqStructuredData = (markdown: string) => {
     })),
   };
 };
+
+/** A board member as JSON-LD: who they are, their role at the organization and their profiles. */
+export const personStructuredData = (
+  member: { name: string; title: string; socials?: readonly { link: string }[] | undefined },
+  { pageUrl, image, organization }: { pageUrl: string; image?: string; organization: string },
+) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${pageUrl}#person`,
+  name: member.name,
+  jobTitle: member.title,
+  url: pageUrl,
+  ...(image ? { image } : {}),
+  worksFor: { '@id': organization },
+  ...(member.socials?.length ? { sameAs: member.socials.map(({ link }) => link) } : {}),
+});

@@ -8,6 +8,7 @@ import {
   faqStructuredData,
   openGraphLocale,
   organizationStructuredData,
+  personStructuredData,
   postStructuredData,
   projectStructuredData,
   serializeJsonLd,
@@ -365,5 +366,35 @@ describe('faqStructuredData', () => {
 
   it('has nothing to say about a page without questions', () => {
     expect(faqStructuredData('Just text.')).toBeUndefined();
+  });
+});
+
+describe('personStructuredData', () => {
+  const options = {
+    pageUrl: 'https://nodesudbury.com/team/dean-lupini',
+    image: 'https://nodesudbury.com/dean.jpg',
+    organization: 'https://nodesudbury.com/#organization',
+  };
+
+  it('describes the person, their role and where they work', () => {
+    expect(
+      personStructuredData(
+        { name: 'Dean Lupini', title: 'President', socials: [{ link: 'https://github.com/dean' }] },
+        options,
+      ),
+    ).toMatchObject({
+      '@type': 'Person',
+      name: 'Dean Lupini',
+      jobTitle: 'President',
+      image: 'https://nodesudbury.com/dean.jpg',
+      worksFor: { '@id': 'https://nodesudbury.com/#organization' },
+      sameAs: ['https://github.com/dean'],
+    });
+  });
+
+  it('leaves out profiles when there are none', () => {
+    expect(
+      personStructuredData({ name: 'A', title: 'B', socials: [] }, options),
+    ).not.toHaveProperty('sameAs');
   });
 });
