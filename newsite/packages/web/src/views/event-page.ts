@@ -15,7 +15,11 @@ import { ThemedComponent } from '../components/themed-component';
 const PROVIDER_NAMES = { gdg: 'GDG', luma: 'Luma' } as const;
 
 /** Paragraphs the sync saved on single lines, as markdown needs them: separated by a blank line. */
-const paragraphs = (text: string) => text.split('\n').filter((line) => line.trim()).join('\n\n');
+const paragraphs = (text: string) =>
+  text
+    .split('\n')
+    .filter((line) => line.trim())
+    .join('\n\n');
 
 /** One event: when and where, the sign-up numbers and ticket types, and a button to RSVP. */
 @customElement('event-page')
@@ -45,11 +49,10 @@ export class EventPage extends ThemedComponent {
         inline-size: 100%;
         margin: 0 0 var(--hb-space-4);
         padding: var(--hb-space-1) var(--hb-space-4);
-        /* A soft red that warns without shouting, readable on every theme's hero. */
-        border: var(--hb-border-width) solid #d9776d;
+        /* A brick red from the theme's error color: it warns without shouting, and white text reads on it. */
         border-radius: 999px;
-        background-color: #b5483f;
-        color: #fff;
+        background-color: color-mix(in srgb, var(--hb-color-error) 20%, firebrick);
+        color: white;
         font-size: var(--hb-text-sm);
         font-weight: 700;
         letter-spacing: 0.04em;
@@ -154,9 +157,23 @@ export class EventPage extends ThemedComponent {
     const past = new Date(event.end ?? event.start).getTime() < Date.now();
     const rsvp = past ? `View event on ${provider}` : `RSVP on ${provider}`;
     // Luma's address already starts with the venue's name, so each part shows once.
-    const address = [event.venue?.name, event.venue?.address, event.venue?.city, event.venue?.region, event.venue?.postalCode]
-      .filter((part, index, parts): part is string => !!part && !parts.slice(0, index).some((earlier) => earlier && (earlier === part || earlier.includes(part))))
-      .filter((part, _index, parts) => !parts.some((other) => other !== part && other.startsWith(part)))
+    const address = [
+      event.venue?.name,
+      event.venue?.address,
+      event.venue?.city,
+      event.venue?.region,
+      event.venue?.postalCode,
+    ]
+      .filter(
+        (part, index, parts): part is string =>
+          !!part &&
+          !parts
+            .slice(0, index)
+            .some((earlier) => earlier && (earlier === part || earlier.includes(part))),
+      )
+      .filter(
+        (part, _index, parts) => !parts.some((other) => other !== part && other.startsWith(part)),
+      )
       .join(', ');
     return html`
       <hero-block tone="${PAGE_TONES.schedule}">
@@ -203,29 +220,31 @@ export class EventPage extends ThemedComponent {
             ? html`<h2 class="section-title">Tickets</h2>
                 <ul class="tickets">
                   ${event.tickets.map(
-                    (ticket) => html`<li class="ticket">
-                      <div>
-                        <strong>${ticket.title}</strong>
-                        ${ticket.kind ? html`<span>${ticket.kind}</span>` : nothing}
-                      </div>
-                      ${
-                        ticket.capacity
-                          ? html`<span>${ticket.claimed ?? 0} of ${ticket.capacity} taken</span>`
-                          : nothing
-                      }
-                    </li>`,
+                    (ticket) =>
+                      html`<li class="ticket">
+                        <div>
+                          <strong>${ticket.title}</strong>
+                          ${ticket.kind ? html`<span>${ticket.kind}</span>` : nothing}
+                        </div>
+                        ${
+                          ticket.capacity
+                            ? html`<span>${ticket.claimed ?? 0} of ${ticket.capacity} taken</span>`
+                            : nothing
+                        }
+                      </li>`,
                   )}
                 </ul>`
             : nothing
         }
-
         ${
           event.description
             ? html`<h2 class="section-title">About this event</h2>
-                <short-markdown class="bio" .content="${paragraphs(event.description)}"></short-markdown>`
+                <short-markdown
+                  class="bio"
+                  .content="${paragraphs(event.description)}"
+                ></short-markdown>`
             : nothing
         }
-
         ${
           address
             ? html`<h2 class="section-title">Where</h2>
@@ -250,7 +269,10 @@ export class EventPage extends ThemedComponent {
   }
 
   private stat(label: string, value: string | number) {
-    return html`<div class="stat"><dt>${label}</dt><dd>${value}</dd></div>`;
+    return html`<div class="stat">
+      <dt>${label}</dt>
+      <dd>${value}</dd>
+    </div>`;
   }
 }
 
