@@ -36,16 +36,17 @@ One row per person, made automatically when someone first signs in (a trigger on
 
 ## What else is in the database
 
-| Name                            | Kind     | What it is                                                                              |
-| ------------------------------- | -------- | --------------------------------------------------------------------------------------- |
-| `auth.users`, `auth.identities` | Supabase | The sign-ins: Google and email links. Managed by Supabase, not edited by us.            |
-| `public_profiles`               | view     | What the public sees: public, active members, without email or role.                    |
-| `avatars`                       | storage  | Public bucket. A member can write only under their own folder, `<member id>/`.          |
-| `handle_available(text)`        | function | Whether a handle is free, for signed-in members. Counts private profiles, says no more. |
-| `handle_new_user()`             | function | Makes the `members` row when someone first signs in.                                    |
-| `members_guard_columns()`       | function | Stops members changing their own role, exclusive flag, active flag, email or id.        |
-| `current_user_role()`           | function | The signed-in member's role, used by the board's policies.                              |
-| `set_updated_at()`              | function | Keeps `updated_at` current.                                                             |
+| Name                            | Kind     | What it is                                                                                        |
+| ------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
+| `auth.users`, `auth.identities` | Supabase | The sign-ins: Google and email links. Managed by Supabase, not edited by us.                      |
+| `subscribers`                   | table    | Emails from the home page's subscribe form. Anyone can add one; only the board can read the list. |
+| `public_profiles`               | view     | What the public sees: public, active members, without email or role.                              |
+| `avatars`                       | storage  | Public bucket. A member can write only under their own folder, `<member id>/`.                    |
+| `handle_available(text)`        | function | Whether a handle is free, for signed-in members. Counts private profiles, says no more.           |
+| `handle_new_user()`             | function | Makes the `members` row when someone first signs in.                                              |
+| `members_guard_columns()`       | function | Stops members changing their own role, exclusive flag, active flag, email or id.                  |
+| `current_user_role()`           | function | The signed-in member's role, used by the board's policies.                                        |
+| `set_updated_at()`              | function | Keeps `updated_at` current.                                                                       |
 
 Everything else that was in the old dashboard's database was dropped. A backup of both projects from before the clean-up is on Hannan's computer, not in this repository.
 
