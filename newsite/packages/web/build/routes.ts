@@ -90,7 +90,7 @@ export const DEV_ROUTES: readonly Route[] = [{ pattern: '/design', entrypoint: '
 export const routes = (features: Record<Feature, boolean>): AstroIntegration => {
   let stopWatching = () => {};
   return {
-    name: 'hoverboard-routes',
+    name: 'node-site-routes',
     hooks: {
       'astro:config:setup': ({ command, injectRoute }) => {
         const devRoutes = command === 'dev' ? DEV_ROUTES : [];

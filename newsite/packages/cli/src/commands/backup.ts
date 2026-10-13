@@ -141,7 +141,7 @@ const addUsersToBackup = (
 };
 
 /**
- * Backs up every Firestore document, with collections Hoverboard doesn't use, to
+ * Backs up every Firestore document, with collections NODE site doesn't use, to
  * .firebase/backups/<time>. On production, also backs up the Auth users.
  */
 export const runBackupCreate = async ({ auth = true }: { auth?: boolean } = {}): Promise<

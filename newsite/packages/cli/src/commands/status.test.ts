@@ -77,7 +77,7 @@ const listen = () =>
 beforeEach(() => {
   for (const [name, value] of Object.entries(env)) vi.stubEnv(name, value);
   vi.stubEnv('GCLOUD_PROJECT', undefined);
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-status-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-status-'));
   write('package.json', { version: '4.0.0' });
   write('packages/web/defaults/site.json', {
     features: { speakers: true, schedule: true, feedback: false, blog: true },
@@ -122,7 +122,7 @@ describe('runStatus', () => {
       ok: true,
       projectId: 'fest-2027',
       url: 'https://fest-2027.web.app/',
-      hoverboard: '4.0.0',
+      nodeSite: '4.0.0',
       schemaVersion: 3,
       features: ['speakers', 'schedule', 'feedback'],
       lastDeploy: { time: '2027-10-01T10:00:00Z', by: 'ada@example.com', message: 'Deploy' },

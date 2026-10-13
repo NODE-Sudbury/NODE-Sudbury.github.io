@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://hoverboard.dev/schemas/resources.schema.json",
-  "title": "Hoverboard content",
+  "title": "NODE site content",
   "description": "packages/config/content/resources.json: event text. The UI text is in the app's source and in packages/translations.",
   "type": "object",
   "additionalProperties": false,

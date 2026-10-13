@@ -5,7 +5,7 @@ import { loadContent, siteLocales } from '../config/site';
 // Matches `sourceLocale` in lit-localize.json.
 export const sourceLocale = 'en';
 
-const STORAGE_KEY = 'hoverboard-locale';
+const STORAGE_KEY = 'node-site-locale';
 
 const modules = import.meta.glob<LocaleModule>('../generated/locales/*.ts');
 const moduleFor = (locale: string) => `../generated/locales/${locale}.ts`;

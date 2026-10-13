@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 const makeTempDir = (): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   return dir;
 };

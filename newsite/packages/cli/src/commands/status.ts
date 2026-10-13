@@ -63,7 +63,7 @@ export const lastDeploy = async (
     : undefined;
 };
 
-/** The files the fork changed since the Hoverboard release it's on, outside packages/config. */
+/** The files the fork changed since the NODE site release it's on, outside packages/config. */
 export const forkChanges = (repoRoot: string, version: string): string[] | undefined => {
   const tag = `v${version}`;
   if (git(repoRoot, ['rev-parse', '--verify', '--quiet', `${tag}^{commit}`]).status !== 0) {
@@ -216,7 +216,7 @@ const stagesLine = ({ stages, ticketSales }: SiteStages, site: Json) =>
 
 /**
  * Prints what the site is: the project, the URL, the versions, the features, the last deploy, the
- * fork's changes to Hoverboard's files, the document count of each collection in the target, the
+ * fork's changes to NODE site's files, the document count of each collection in the target, the
  * features the site hides for lack of content, and the stages the site is in.
  */
 export const runStatus = async (): Promise<CommandResult> => {
@@ -227,7 +227,7 @@ export const runStatus = async (): Promise<CommandResult> => {
   const url =
     (site['url'] as string | undefined) ??
     (projectId ? `https://${projectId}.web.app/` : undefined);
-  const hoverboard = String(readJson(join(repoRoot, 'package.json'))['version']);
+  const nodeSite = String(readJson(join(repoRoot, 'package.json'))['version']);
   const schemaVersion = site['schemaVersion'];
   const features = siteFeatures(repoRoot);
   const on = Object.keys(features).filter((feature) => features[feature]);
@@ -235,7 +235,7 @@ export const runStatus = async (): Promise<CommandResult> => {
 
   console.log(`Project: ${projectId ?? 'none'}${configDir === CONFIG_DIR ? '' : ' (the demo)'}`);
   if (url) console.log(`Site: ${url}`);
-  console.log(`Hoverboard: ${hoverboard}, site.json schemaVersion ${String(schemaVersion)}`);
+  console.log(`NODE site: ${nodeSite}, site.json schemaVersion ${String(schemaVersion)}`);
   console.log(`Features on: ${on.join(', ') || 'none'}`);
   console.log(`Features off: ${off.join(', ') || 'none'}`);
 
@@ -256,13 +256,13 @@ export const runStatus = async (): Promise<CommandResult> => {
     }
   }
 
-  const changes = forkChanges(repoRoot, hoverboard);
+  const changes = forkChanges(repoRoot, nodeSite);
   if (changes === undefined) {
     console.log(
-      `Your changes: unknown, without the v${hoverboard} tag (git fetch --tags upstream)`,
+      `Your changes: unknown, without the v${nodeSite} tag (git fetch --tags upstream)`,
     );
   } else {
-    console.log(`Your changes to Hoverboard's files, outside ${CONFIG_DIR}: ${changes.length}`);
+    console.log(`Your changes to NODE site's files, outside ${CONFIG_DIR}: ${changes.length}`);
     for (const path of changes.slice(0, MAX_LISTED)) console.log(`  ${path}`);
     if (changes.length > MAX_LISTED) console.log(`  and ${changes.length - MAX_LISTED} more`);
   }
@@ -309,7 +309,7 @@ export const runStatus = async (): Promise<CommandResult> => {
     ok: true,
     projectId,
     url,
-    hoverboard,
+    nodeSite,
     schemaVersion,
     features: on,
     ...(deploy ? { lastDeploy: deploy } : {}),

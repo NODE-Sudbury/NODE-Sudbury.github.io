@@ -37,7 +37,7 @@ describe('documentMessages', () => {
       'sessions/101: missing "description".',
     ]);
     expect(documentMessages('sessions/101', { ...session, speaker: 'ada' })).toEqual([
-      'sessions/101: unknown field "speaker". Hoverboard doesn\'t read it.',
+      'sessions/101: unknown field "speaker". NODE site doesn\'t read it.',
     ]);
   });
 
@@ -56,7 +56,7 @@ describe('documentMessages', () => {
 
   it('rejects the old schedule fields', () => {
     expect(documentMessages('sessions/101', { ...session, extend: 2 })).toEqual([
-      'sessions/101: retired field "extend", which Hoverboard stopped reading in 4.0.0.',
+      'sessions/101: retired field "extend", which NODE site stopped reading in 4.0.0.',
     ]);
   });
 });

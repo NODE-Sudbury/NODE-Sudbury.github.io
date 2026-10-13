@@ -5,7 +5,7 @@ import type {
   QueryDocumentSnapshot,
 } from 'firebase-admin/firestore';
 import { env } from 'node:process';
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 import { COLLECTIONS, type CollectionPath } from '../../../storage/collections';
 import { documentUrl } from '../../../storage/messages';
 import { documentMessages, toJson } from '../../../storage/validate';

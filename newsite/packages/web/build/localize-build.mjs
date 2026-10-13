@@ -61,7 +61,7 @@ export const missingXliffErrors = (locales) =>
 
 /** Runs `lit-localize build` for `locales`, after removing the modules of an earlier build. */
 export const buildLocales = (locales) => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-localize-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-localize-'));
   try {
     const configPath = join(dir, 'lit-localize.json');
     const outputDir = absolute(config.output.outputDir);

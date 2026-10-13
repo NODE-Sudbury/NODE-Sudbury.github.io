@@ -1,12 +1,12 @@
 ---
 name: new-theme
-description: 'Create a new Hoverboard theme. Use when asked to add, make, create or design a new theme, a theme with a given look ("add a new theme with neon colors", "a retro theme", "a theme like our brand"), to restyle or brand the site, or for a new base or built-in theme. By default makes a custom event theme for the site in packages/config (site.json colors and fonts, plus custom.css). Makes a new base theme in packages/web/src/themes only when asked for a base, built-in or upstream theme.'
+description: 'Create a new NODE site theme. Use when asked to add, make, create or design a new theme, a theme with a given look ("add a new theme with neon colors", "a retro theme", "a theme like our brand"), to restyle or brand the site, or for a new base or built-in theme. By default makes a custom event theme for the site in packages/config (site.json colors and fonts, plus custom.css). Makes a new base theme in packages/web/src/themes only when asked for a base, built-in or upstream theme.'
 argument-hint: 'The look you want, such as "neon arcade with pixel fonts"'
 ---
 
 # New theme
 
-Turns a description of a look into a Hoverboard theme. There are two kinds:
+Turns a description of a look into a NODE site theme. There are two kinds:
 
 | Kind                             | When                                                                                                                            | Where                                                                                     |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -70,7 +70,7 @@ Limits to tell the user about: share images use the site's colors, fonts and the
 1. `npm run lint` and `npm test`, or at least `npx vitest run --project Web --project Server --project Hydration` and `./hb config validate`. The `Web` tests check contrast in both schemes, the pattern rules, that every token is written, and that decorations turn off.
    - For a base theme, also `npx vitest run --project A11y`. It runs axe on every page in every built-in theme, light and dark, so it covers the new one.
 2. Look at it in a browser:
-   - Start an emulator: `npx firebase emulators:start --only firestore --project=demo-hoverboard` (keep it running).
+   - Start an emulator: `npx firebase emulators:start --only firestore --project=demo-node-site` (keep it running).
    - `./hb data seed --yes`, then `npm run build`.
    - Serve: `python3 -m http.server 5180 --directory packages/web/dist`.
    - For a base theme, pick it with `localStorage.setItem('hb-demo-theme', '<name>')` and reload. `hb-color-scheme` (`light` or `dark`) and `hb-demo-decorations` (`off`) switch the rest.

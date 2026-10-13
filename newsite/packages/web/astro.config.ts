@@ -26,7 +26,7 @@ export default defineConfig({
   integrations: [
     lit(),
     {
-      name: 'hoverboard-hydration',
+      name: 'node-site-hydration',
       hooks: {
         // Islands import this before their components. Loaded later, a component renders twice.
         'astro:config:setup': ({ injectScript }) =>

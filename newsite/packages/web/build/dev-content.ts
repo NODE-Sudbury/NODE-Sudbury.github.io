@@ -2,10 +2,10 @@ import { env } from 'node:process';
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-const APP_NAME = 'hoverboard-dev-content';
+const APP_NAME = 'node-site-dev-content';
 const DEFAULT_EMULATOR_HOST = '127.0.0.1:8080';
 // `npm start` runs the emulators with this project and imports its data.
-const DEMO_PROJECT_ID = 'demo-hoverboard';
+const DEMO_PROJECT_ID = 'demo-node-site';
 
 /**
  * Calls `onChange` with the name of a collection in the Firestore emulator whenever its documents

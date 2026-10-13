@@ -33,14 +33,14 @@ describe('firebase', () => {
     vi.mocked(persistentMultipleTabManager).mockReturnValue(tabManager as never);
     vi.mocked(persistentLocalCache).mockReturnValue(localCache as never);
 
-    await load('demo-hoverboard');
+    await load('demo-node-site');
 
     expect(persistentLocalCache).toHaveBeenCalledWith({ tabManager });
     expect(initializeFirestore).toHaveBeenCalledWith(undefined, { localCache });
   });
 
   it('uses the emulators for demo projects', async () => {
-    const { isDemoProject, analytics } = await load('demo-hoverboard');
+    const { isDemoProject, analytics } = await load('demo-node-site');
 
     expect(isDemoProject).toBe(true);
     expect(connectFirestoreEmulator).toHaveBeenCalledWith(undefined, '127.0.0.1', 8080);
@@ -53,7 +53,7 @@ describe('firebase', () => {
     await load('hoverboard-master');
     expect((await import('./utils/missing-alt')).highlightMissingAlt).not.toHaveBeenCalled();
 
-    await load('demo-hoverboard');
+    await load('demo-node-site');
     expect((await import('./utils/missing-alt')).highlightMissingAlt).toHaveBeenCalledOnce();
   });
 

@@ -20,7 +20,7 @@ const mocks = vi.hoisted(() => ({
     signedIn: vi.fn(() => true),
     list: vi.fn(() => [{ projectId: 'old-fest', displayName: 'Old Fest' }]),
     create: vi.fn(),
-    webApps: vi.fn((): string[] => ['Hoverboard']),
+    webApps: vi.fn((): string[] => ['NODE site']),
     createWebApp: vi.fn(),
   },
 }));
@@ -90,7 +90,7 @@ const detailsFile = () => {
 };
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-init-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-init-'));
   mkdirSync(join(repo, '.git'));
   write('package.json', JSON.stringify({ engines: { node: process.versions.node.split('.')[0] } }));
   write('packages/config/site.json', JSON.stringify(site));
@@ -140,7 +140,7 @@ describe('runInit', () => {
         readFileSync(join(repo, 'packages/config', file), 'utf8'),
       );
     }
-    write('packages/demo-config/package.json', '{ "name": "@hoverboard/demo-config" }');
+    write('packages/demo-config/package.json', '{ "name": "@node-site/demo-config" }');
     write('packages/demo-config/public/images/logo.svg', '<svg></svg>');
     rmSync(join(repo, 'packages/config'), { recursive: true });
 
@@ -188,7 +188,7 @@ describe('runInit', () => {
     await runInit({ project: 'new-fest', create: true, details: detailsFile(), deploy: false });
 
     expect(mocks.projects.create).toHaveBeenCalledWith('new-fest', 'new-fest');
-    expect(mocks.projects.createWebApp).toHaveBeenCalledWith('new-fest', 'Hoverboard');
+    expect(mocks.projects.createWebApp).toHaveBeenCalledWith('new-fest', 'NODE site');
   });
 
   it('stops when the project cannot be created', async () => {

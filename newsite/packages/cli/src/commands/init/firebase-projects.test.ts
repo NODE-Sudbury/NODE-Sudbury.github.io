@@ -47,11 +47,11 @@ describe('firebaseProjects', () => {
     const projects = firebaseProjects('/repo');
 
     projects.create('fest-2027', 'Fest');
-    projects.createWebApp('fest-2027', 'Hoverboard');
+    projects.createWebApp('fest-2027', 'NODE site');
 
     expect(captureCommandMock.mock.calls.map(([, args]) => args)).toEqual([
       ['projects:create', 'fest-2027', '--display-name', 'Fest', '--json'],
-      ['apps:create', 'WEB', 'Hoverboard', '--project', 'fest-2027', '--json'],
+      ['apps:create', 'WEB', 'NODE site', '--project', 'fest-2027', '--json'],
     ]);
   });
 

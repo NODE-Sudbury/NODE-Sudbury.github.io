@@ -1,8 +1,8 @@
 import rss from '@astrojs/rss';
 import type { APIRoute } from 'astro';
 import { JSDOM } from 'jsdom';
-import { posts } from 'virtual:hoverboard/markdown';
-import { site } from 'virtual:hoverboard/site';
+import { posts } from 'virtual:node-site/markdown';
+import { site } from 'virtual:node-site/site';
 import { loadContent } from '../../data/content';
 import '../../data/markdown';
 import { pageMetadata } from '../../data/metadata';

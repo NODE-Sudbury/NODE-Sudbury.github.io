@@ -1,7 +1,7 @@
 import { createServer, type Server } from 'node:net';
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { checkListening, connectFirestore } from './firestore';
 
@@ -54,8 +54,8 @@ describe('connectFirestore', () => {
 
     await expect(connectFirestore()).resolves.toBe('firestore');
     expect(initializeApp).toHaveBeenCalledWith(
-      { projectId: 'demo-hoverboard' },
-      'hoverboard-build',
+      { projectId: 'demo-node-site' },
+      'node-site-build',
     );
     expect(getFirestore).toHaveBeenCalledWith('app');
     await close(server);
@@ -79,7 +79,7 @@ describe('connectFirestore', () => {
     expect(applicationDefault).toHaveBeenCalled();
     expect(initializeApp).toHaveBeenCalledWith(
       { credential: 'credential', projectId: site.firebase.projectId },
-      'hoverboard-build',
+      'node-site-build',
     );
   });
 });

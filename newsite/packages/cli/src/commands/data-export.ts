@@ -21,7 +21,7 @@ export interface ExportOptions {
   collection?: string[];
   /** Only content, without visitor, function and CLI data. */
   content?: boolean;
-  /** Also collections Hoverboard doesn't use, such as retired ones. */
+  /** Also collections NODE site doesn't use, such as retired ones. */
   all?: boolean;
 }
 
@@ -57,7 +57,7 @@ export const manifestLines = ({ collections }: Manifest): string[] =>
       `  ${entry}: ${documents} ${documents === 1 ? 'document' : 'documents'}${personal ? ' (personal data)' : ''}`,
   );
 
-/** Exports Firestore to a folder in the data format, `hoverboard-export-<time>` by default. */
+/** Exports Firestore to a folder in the data format, `node-site-export-<time>` by default. */
 export const runDataExport = async (
   folder: string | undefined,
   options: ExportOptions & { command?: string } = {},
@@ -66,7 +66,7 @@ export const runDataExport = async (
   const projectId = productionProjectId(repoRoot);
   const output = resolve(
     process.env['INIT_CWD'] ?? process.cwd(),
-    folder ?? `hoverboard-export-${backupName()}`,
+    folder ?? `node-site-export-${backupName()}`,
   );
   const { firestore } = await import('../lib/firestore.js');
   const documents = await exportDocuments(firestore, options);

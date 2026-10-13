@@ -28,7 +28,7 @@ describe('checkRealtimeDatabase', () => {
     expect(await checkRealtimeDatabase('/repo', 'demo-project')).toEqual({
       name: 'Realtime Database',
       ok: true,
-      message: 'None, as Hoverboard expects.',
+      message: 'None, as NODE site expects.',
     });
     expect(listDatabaseInstancesMock).toHaveBeenCalledWith('/repo', 'demo-project');
   });
@@ -45,7 +45,7 @@ describe('checkRealtimeDatabase', () => {
     expect(await checkRealtimeDatabase('/repo', 'demo-project')).toEqual({
       name: 'Realtime Database',
       ok: true,
-      message: 'None, as Hoverboard expects.',
+      message: 'None, as NODE site expects.',
     });
   });
 

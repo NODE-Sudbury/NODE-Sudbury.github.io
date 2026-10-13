@@ -1,4 +1,4 @@
-// Types for `virtual:hoverboard/layout`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
+// Types for `virtual:node-site/layout`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
 import type { SiteConfig } from './resolve-config';
 
 export declare const theme: SiteConfig['theme'];

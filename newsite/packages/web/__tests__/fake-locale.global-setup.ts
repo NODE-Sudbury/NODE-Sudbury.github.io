@@ -25,7 +25,7 @@ export const pseudoTranslate = (sourceXml: string, locale: string): string =>
 /** Builds a pseudo-translated locale from `source/en.xlf` with `lit-localize build`. */
 export default function setup({ provide }: TestProject): void {
   const config = JSON.parse(readFileSync(join(webRoot, 'lit-localize.json'), 'utf8'));
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-fake-locale-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-fake-locale-'));
   try {
     const source = readFileSync(join(webRoot, '../translations/source/en.xlf'), 'utf8');
     writeFileSync(join(dir, `${FAKE_LOCALE}.xlf`), pseudoTranslate(source, FAKE_LOCALE));

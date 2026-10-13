@@ -44,8 +44,8 @@ vi.mock('../utils/firebase-project.js', async (importOriginal) => ({
 
 const SAMPLE_DATA = join(import.meta.dirname, '..', '..', '..', '..', 'docs', 'sample-data');
 const meta = {
-  hoverboard: '4.0.0',
-  projectId: 'demo-hoverboard',
+  nodeSite: '4.0.0',
+  projectId: 'demo-node-site',
   createdAt: '2027-10-15T09:00:00.000Z',
   command: 'hb data export',
 };
@@ -82,7 +82,7 @@ const existing = (documents: FirestoreDocument[]) =>
     );
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-import-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-import-'));
   dirs.push(repo);
   mkdirSync(join(repo, '.git'));
   mkdirSync(join(repo, 'packages/config'), { recursive: true });

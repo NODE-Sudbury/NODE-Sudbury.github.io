@@ -25,7 +25,7 @@ const demoResources = {
 };
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-leftovers-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-leftovers-'));
   write('packages/demo-config/site.json', {
     social: { follow: [{ icon: 'x', url: 'https://x.com/demo' }] },
   });

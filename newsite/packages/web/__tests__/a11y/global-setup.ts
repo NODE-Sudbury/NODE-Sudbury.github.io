@@ -121,7 +121,7 @@ export async function setup(project: TestProject) {
     servers.push(
       ...(await startServers({
         // A `demo-` project, so the app expects emulators and reads nothing from production.
-        command: `${firebase} emulators:start --only hosting --project demo-hoverboard-a11y --config ${config}`,
+        command: `${firebase} emulators:start --only hosting --project demo-node-site-a11y --config ${config}`,
         port,
         host: '127.0.0.1',
         launchTimeout: 60000,

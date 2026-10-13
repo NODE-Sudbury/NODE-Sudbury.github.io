@@ -45,9 +45,9 @@ const V410 = '## [4.1.0](compare) (2027-11-01)\n\n### ⚠ BREAKING CHANGES\n\n* 
 const V400 = '## [4.0.0](compare) (2027-10-01)\n\n### Features\n\n* v4\n';
 
 const RELEASE_400: Files = {
-  'package.json': json({ name: 'hoverboard', version: '4.0.0' }),
+  'package.json': json({ name: 'node-site', version: '4.0.0' }),
   'CHANGELOG.md': changelog([V400]),
-  'README.md': '# Hoverboard\n',
+  'README.md': '# NODE site\n',
   '.github/dependabot.yml': 'version: 2\n',
   'packages/web/package.json': json({
     name: 'web',
@@ -59,9 +59,9 @@ const RELEASE_400: Files = {
 };
 
 const RELEASE_410: Files = {
-  'package.json': json({ name: 'hoverboard', version: '4.1.0' }),
+  'package.json': json({ name: 'node-site', version: '4.1.0' }),
   'CHANGELOG.md': changelog([V410, V400]),
-  'README.md': '# Hoverboard 4.1\n',
+  'README.md': '# NODE site 4.1\n',
   '.github/dependabot.yml': 'version: 2\nupdates: []\n',
   'packages/web/package.json': json({
     name: 'web',
@@ -87,8 +87,8 @@ let fork: string;
 
 /** Upstream with v4.0.0 and v4.1.0, and a fork of v4.0.0 with its own changes. */
 const setUp = ({ release = RELEASE_410, forkChanges = FORK_CHANGES } = {}) => {
-  upstream = mkdtempSync(join(tmpdir(), 'hoverboard-upstream-'));
-  fork = mkdtempSync(join(tmpdir(), 'hoverboard-fork-'));
+  upstream = mkdtempSync(join(tmpdir(), 'node-site-upstream-'));
+  fork = mkdtempSync(join(tmpdir(), 'node-site-fork-'));
   dirs.push(upstream, fork);
   run(upstream, 'init', '--quiet', '--initial-branch=main');
   commit(upstream, 'feat: v4', RELEASE_400);
@@ -127,11 +127,11 @@ afterEach(() => {
 
 describe('normalizeRepoUrl', () => {
   it('matches the SSH and HTTPS URLs of a repository', () => {
-    expect(normalizeRepoUrl('git@github.com:gdg-x/hoverboard.git')).toBe(
-      'github.com/gdg-x/hoverboard',
+    expect(normalizeRepoUrl('git@github.com:example/project.git')).toBe(
+      'github.com/example/project',
     );
-    expect(normalizeRepoUrl('https://github.com/gdg-x/Hoverboard')).toBe(
-      'github.com/gdg-x/hoverboard',
+    expect(normalizeRepoUrl('https://github.com/example/Project')).toBe(
+      'github.com/example/project',
     );
   });
 });
@@ -150,7 +150,7 @@ describe('runCodeUpgrade', () => {
     });
     expect(run(fork, 'branch', '--show-current')).toBe('upgrade/v4.1.0');
     expect(run(fork, 'log', '-1', '--format=%s %p')).toMatch(
-      /^chore: upgrade Hoverboard to v4.1.0 \w+ \w+$/,
+      /^chore: upgrade NODE site to v4.1.0 \w+ \w+$/,
     );
     expect(run(fork, 'status', '--porcelain')).toBe('');
     expect(JSON.parse(read(fork, 'package.json'))).toMatchObject({ version: '4.1.0' });
@@ -206,7 +206,7 @@ describe('runCodeUpgrade', () => {
     run(fork, 'add', 'packages/web/src/app.ts');
 
     expect(await runUpgradeContinue({ yes: true })).toMatchObject({ ok: true, to: '4.1.0' });
-    expect(run(fork, 'log', '-1', '--format=%s')).toBe('chore: upgrade Hoverboard to v4.1.0');
+    expect(run(fork, 'log', '-1', '--format=%s')).toBe('chore: upgrade NODE site to v4.1.0');
   });
 
   it('goes back to where it started with abort', async () => {
@@ -237,7 +237,7 @@ describe('runCodeUpgrade', () => {
 
     expect(run(fork, 'remote')).toBe('upstream');
     expect(output()).toContain("Recording v4.0.0 as merged, since this repository doesn't share");
-    expect(run(fork, 'log', '--format=%s')).toContain('chore: record Hoverboard v4.0.0 as merged');
+    expect(run(fork, 'log', '--format=%s')).toContain('chore: record NODE site v4.0.0 as merged');
     expect(JSON.parse(read(fork, 'packages/web/package.json'))['dependencies']).toEqual({
       astro: '^7.1.0',
       lit: '^3.0.0',

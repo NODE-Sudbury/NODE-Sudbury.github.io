@@ -17,7 +17,7 @@ export interface CollectionInfo {
 }
 
 /**
- * Every collection Hoverboard uses, by path, where `*` stands for a document ID. A path with an
+ * Every collection NODE site uses, by path, where `*` stands for a document ID. A path with an
  * even number of segments is a single document, such as a settings document in `config`.
  */
 export const COLLECTIONS = {
@@ -99,7 +99,7 @@ export const pathPattern = (path: string): string =>
     .join('/');
 
 /**
- * The registry entry for a collection or document path, if Hoverboard uses it. A document has its
+ * The registry entry for a collection or document path, if NODE site uses it. A document has its
  * own entry, such as `config/notifications`, or its collection's.
  */
 export const collectionInfo = (path: string): CollectionInfo | undefined => {

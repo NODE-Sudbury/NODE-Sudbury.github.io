@@ -134,7 +134,7 @@ describe('loadPhoto', () => {
 
 describe('each theme', () => {
   afterEach(() => {
-    vi.doUnmock('virtual:hoverboard/social-images');
+    vi.doUnmock('virtual:node-site/social-images');
   });
 
   it.each(Object.keys(THEMES) as ThemeName[])(
@@ -143,7 +143,7 @@ describe('each theme', () => {
       vi.stubGlobal('fetch', fetchPhoto);
       const theme = resolveTheme({ name, density: 'default', decorations: true });
       const { design } = socialImageDesign(theme, undefined, { siteDir: '.', publicDirs: [] });
-      vi.doMock('virtual:hoverboard/social-images', () => design);
+      vi.doMock('virtual:node-site/social-images', () => design);
       // A fresh copy of the module, which reads the design when it loads.
       const render = (await import(
         /* @vite-ignore */ `./social-image-render?theme=${name}`

@@ -113,7 +113,7 @@ export const createProgram = (): Command => {
   const program = new Command();
   program
     .name('hb')
-    .description('Set up, run and deploy a Hoverboard site.')
+    .description('Set up, run and deploy a NODE site site.')
     .version('0.1.0')
     .option(
       '--json',
@@ -123,7 +123,7 @@ export const createProgram = (): Command => {
 
   program
     .command('doctor')
-    .description('Check that this computer and the Firebase project are ready for Hoverboard.')
+    .description('Check that this computer and the Firebase project are ready for NODE site.')
     .action(run(async () => (await import('./commands/doctor.js')).runDoctor()));
 
   program
@@ -161,7 +161,7 @@ export const createProgram = (): Command => {
     .command('status')
     .description(
       'Show the project, the site URL, the versions, the features, the last deploy, your ' +
-        'changes to Hoverboard, the document count of each collection and the stages the site is in.',
+        'changes to NODE site, the document count of each collection and the stages the site is in.',
     )
     .option(PRODUCTION, 'Count the documents in the Firebase project instead of the emulator.')
     .action(run(async () => (await import('./commands/status.js')).runStatus()));
@@ -202,7 +202,7 @@ export const createProgram = (): Command => {
     .action(
       run(async () => {
         const root = findRepoRoot(process.cwd());
-        if (!root) throw new Error('Not in a Hoverboard repo.');
+        if (!root) throw new Error('Not in a NODE site repo.');
         const { githubAnnotation, validateSiteConfig } = await import('./utils/site-config.js');
         const { siteConfigDir } = await import('./utils/firebase-project.js');
         const dir = siteConfigDir(root);
@@ -248,7 +248,7 @@ export const createProgram = (): Command => {
   withWrites(
     program
       .command('deploy')
-      .description('Build and deploy Hoverboard to the Firebase project in site.json.'),
+      .description('Build and deploy NODE site to the Firebase project in site.json.'),
   ).action(run(async (options) => (await import('./commands/deploy.js')).runDeploy(options)));
 
   program
@@ -336,7 +336,7 @@ export const createProgram = (): Command => {
       .command('export')
       .argument(
         '[folder]',
-        'Where to write it. Defaults to hoverboard-export-<time>, or the current folder with --csv.',
+        'Where to write it. Defaults to node-site-export-<time>, or the current folder with --csv.',
       )
       .description(
         'Export the Firestore data to a folder, with a manifest and one JSON file per collection.',
@@ -349,7 +349,7 @@ export const createProgram = (): Command => {
       .option('--content', 'Only the content, without visitor, function or CLI data.')
       .option(
         '--all',
-        "Also collections Hoverboard doesn't use, such as ones from earlier versions.",
+        "Also collections NODE site doesn't use, such as ones from earlier versions.",
       )
       .option('--csv', 'Write one CSV file per collection instead, such as subscribers.csv.'),
   ).action(
@@ -644,7 +644,7 @@ export const createProgram = (): Command => {
         .command('upgrade')
         .argument('[version]', 'The release, such as 4.2.0. The latest by default.')
         .description(
-          'Upgrade Hoverboard to a release: merge it into a new branch, resolve the lockfiles and ' +
+          'Upgrade NODE site to a release: merge it into a new branch, resolve the lockfiles and ' +
             'package.json files, install, migrate the config, build and commit. With ' +
             '--migrations-only, only move site.json to the current schemaVersion and run the ' +
             'Firestore data migrations.',

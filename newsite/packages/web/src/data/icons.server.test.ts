@@ -14,7 +14,7 @@ writeFileSync(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 12"><rect width="24" height="12" fill="red"/></svg>',
 );
 
-vi.mock('virtual:hoverboard/icon', () => ({
+vi.mock('virtual:node-site/icon', () => ({
   get iconFile() {
     return icon.file;
   },

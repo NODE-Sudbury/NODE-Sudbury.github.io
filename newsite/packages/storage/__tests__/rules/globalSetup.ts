@@ -22,7 +22,7 @@ let projectsFile = '';
 let servers: SpawndChildProcess[] = [];
 
 export async function setup(project: TestProject) {
-  projectsFile = join(mkdtempSync(join(tmpdir(), 'hoverboard-rules-')), 'projects.txt');
+  projectsFile = join(mkdtempSync(join(tmpdir(), 'node-site-rules-')), 'projects.txt');
   writeFileSync(projectsFile, '');
   project.provide('rulesProjectsFile', projectsFile);
   servers = await startFirestoreEmulator();

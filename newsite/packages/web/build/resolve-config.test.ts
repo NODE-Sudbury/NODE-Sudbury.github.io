@@ -43,7 +43,7 @@ const writeJson = (path: string, data: unknown) => {
 
 /** The repository's config, with `site` and `resources` merged over the site files. */
 const makePaths = ({ site = {}, resources = {} }: { site?: object; resources?: object } = {}) => {
-  const root = mkdtempSync(join(tmpdir(), 'hoverboard-config-'));
+  const root = mkdtempSync(join(tmpdir(), 'node-site-config-'));
   dirsToClean.push(root);
   writeJson(
     join(root, 'config/site.json'),
@@ -502,7 +502,7 @@ describe('config validation', () => {
   });
 
   it('rejects a hero illustration with content that could run on the site', () => {
-    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    const publicDir = mkdtempSync(join(tmpdir(), 'node-site-public-'));
     dirsToClean.push(publicDir);
     writeFileSync(
       join(publicDir, 'city.svg'),
@@ -593,7 +593,7 @@ describe('config validation', () => {
   });
 
   it('accepts locales that have UI translations', () => {
-    const translations = mkdtempSync(join(tmpdir(), 'hoverboard-translations-'));
+    const translations = mkdtempSync(join(tmpdir(), 'node-site-translations-'));
     dirsToClean.push(translations);
     writeJson(join(translations, 'xliff/es.xlf'), '');
     const paths = {
@@ -623,7 +623,7 @@ describe('config validation', () => {
       site: object = {},
       files: Record<string, string> = {},
     ) => {
-      const translations = mkdtempSync(join(tmpdir(), 'hoverboard-translations-'));
+      const translations = mkdtempSync(join(tmpdir(), 'node-site-translations-'));
       dirsToClean.push(translations);
       writeJson(join(translations, 'xliff/es.xlf'), '');
       const paths = {
@@ -802,7 +802,7 @@ describe('featureDefines', () => {
 
 describe('markdownTranslations', () => {
   it('renders each translated page into a hashed file and points the translation at it', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-markdown-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-markdown-'));
     dirsToClean.push(dir);
     writeFileSync(join(dir, 'faq.md'), '# Preguntas de {{ name }}');
     const config = {
@@ -840,7 +840,7 @@ describe('buildMarkdown', () => {
   });
 
   it('skips markdown that a site does not have', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-markdown-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-markdown-'));
     dirsToClean.push(dir);
 
     expect(buildMarkdown(dir, (template) => template)).toEqual({ pages: {}, posts: {} });
@@ -870,28 +870,28 @@ describe('siteModule', () => {
   const load = plugin.load as (id: string) => Promise<string | undefined>;
 
   it('lazy-loads each content translation from its own module', async () => {
-    const code = (await load(resolveId('virtual:hoverboard/site')!))!;
+    const code = (await load(resolveId('virtual:node-site/site')!))!;
 
     expect(code).toContain(`export const resources = ${JSON.stringify(config.resources)};`);
     expect(code).toContain(
-      'export const contentTranslations = {"es": () => import("virtual:hoverboard/content/es")};',
+      'export const contentTranslations = {"es": () => import("virtual:node-site/content/es")};',
     );
     expect(code).toContain('export const heroIllustration = undefined;');
     expect(code).toContain(
       'export const build = {"sha":"abc1234","time":"2027-10-15T09:00:00.000Z"};',
     );
-    expect(await load(resolveId('virtual:hoverboard/content/es')!)).toBe(
+    expect(await load(resolveId('virtual:node-site/content/es')!)).toBe(
       'export default {"title":"DevFest en español"};\n',
     );
   });
 
   it('resolves only the locales that have a translation', () => {
-    expect(resolveId('virtual:hoverboard/content/fr')).toBeUndefined();
-    expect(resolveId('virtual:hoverboard/content/constructor')).toBeUndefined();
+    expect(resolveId('virtual:node-site/content/fr')).toBeUndefined();
+    expect(resolveId('virtual:node-site/content/constructor')).toBeUndefined();
   });
 
   it('serves the theme and head data to the layout', async () => {
-    const code = (await load(resolveId('virtual:hoverboard/layout')!))!;
+    const code = (await load(resolveId('virtual:node-site/layout')!))!;
 
     expect(code).toContain(`export const theme = ${JSON.stringify(config.theme)};`);
     expect(code).toContain(
@@ -901,7 +901,7 @@ describe('siteModule', () => {
   });
 
   it("serves the site's custom.css, which can't close its style element", () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-custom-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-custom-'));
     dirsToClean.push(dir);
     expect(customCss(dir)).toBe('');
 
@@ -918,7 +918,7 @@ describe('siteModule', () => {
   });
 
   it('serves the theme fonts with imported file URLs', async () => {
-    const code = (await load(resolveId('virtual:hoverboard/fonts')!))!;
+    const code = (await load(resolveId('virtual:node-site/fonts')!))!;
 
     expect(code).toContain(
       'import font0 from "@fontsource-variable/unbounded/files/unbounded-cyrillic-ext-wght-normal.woff2?url&no-inline";',
@@ -937,7 +937,7 @@ describe('heroIllustrationSvg', () => {
     >[0];
 
   it('reads the SVG from packages/web/public without its XML declaration', () => {
-    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    const publicDir = mkdtempSync(join(tmpdir(), 'node-site-public-'));
     dirsToClean.push(publicDir);
     mkdirSync(join(publicDir, 'images'));
     writeFileSync(
@@ -955,7 +955,7 @@ describe('heroIllustrationSvg', () => {
   });
 
   it('removes scripts and event handlers', () => {
-    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    const publicDir = mkdtempSync(join(tmpdir(), 'node-site-public-'));
     dirsToClean.push(publicDir);
     writeFileSync(
       join(publicDir, 'city.svg'),

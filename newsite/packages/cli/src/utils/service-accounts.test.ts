@@ -75,7 +75,7 @@ describe('checkServiceAccounts', () => {
       'Keys that never expire: ' +
         'firebase-adminsdk-abc@demo-project.iam.gserviceaccount.com (2 keys, the oldest from 2018-07-12); ' +
         'deploy@demo-project.iam.gserviceaccount.com (1 key, the oldest from 2026-10-07). ' +
-        'Hoverboard deploys and runs without keys. Delete them, and any GitHub secret that holds ' +
+        'NODE site deploys and runs without keys. Delete them, and any GitHub secret that holds ' +
         'one, in the Google Cloud console under IAM > Service accounts > Keys.',
     );
   });

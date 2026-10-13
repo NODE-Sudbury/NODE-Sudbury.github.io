@@ -165,7 +165,7 @@ export const withCsp = (html: string, policy: string): string => {
  * Any other inline script fails the build rather than getting a hash.
  */
 export const csp = (site: CspSite, options: { emulators: boolean }): AstroIntegration => ({
-  name: 'hoverboard-csp',
+  name: 'node-site-csp',
   hooks: {
     'astro:build:done': ({ dir, logger }) => {
       const root = fileURLToPath(dir);

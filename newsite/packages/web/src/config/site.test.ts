@@ -42,16 +42,16 @@ describe('resolved config', () => {
 });
 
 describe('loadContent', () => {
-  type SiteModule = typeof import('virtual:hoverboard/site');
+  type SiteModule = typeof import('virtual:node-site/site');
 
   afterEach(() => {
-    vi.doUnmock('virtual:hoverboard/site');
+    vi.doUnmock('virtual:node-site/site');
     vi.resetModules();
   });
 
   const withTranslations = async (translations: SiteModule['contentTranslations']) => {
     vi.resetModules();
-    vi.doMock('virtual:hoverboard/site', async (importOriginal) => ({
+    vi.doMock('virtual:node-site/site', async (importOriginal) => ({
       ...(await importOriginal<SiteModule>()),
       contentTranslations: translations,
     }));

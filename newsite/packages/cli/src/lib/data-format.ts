@@ -20,14 +20,14 @@ export interface ManifestEntry {
   file: string;
   documents: number;
   kind: EntryKind;
-  /** Visitor data, or data Hoverboard doesn't know, which can be personal. */
+  /** Visitor data, or data NODE site doesn't know, which can be personal. */
   personal: boolean;
 }
 
 export interface Manifest {
   format: number;
-  /** The Hoverboard version that wrote it, from the root package.json. */
-  hoverboard: string;
+  /** The NODE site version that wrote it, from the root package.json. */
+  nodeSite: string;
   schemaVersion?: number;
   projectId: string;
   createdAt: string;
@@ -145,11 +145,11 @@ export const isExport = (folder: string): boolean => existsSync(join(folder, MAN
 /** Reads an export, backup or the sample data. */
 export const readExport = (folder: string): { manifest: Manifest; documents: ExportDocument[] } => {
   if (!isExport(folder)) {
-    throw new Error(`${folder} isn't a Hoverboard export: it has no ${MANIFEST}.`);
+    throw new Error(`${folder} isn't a NODE site export: it has no ${MANIFEST}.`);
   }
   const manifest = JSON.parse(readFileSync(join(folder, MANIFEST), 'utf8')) as Manifest;
   if (manifest.format > FORMAT) {
-    throw new Error(`${folder} is in a newer format (${manifest.format}). Upgrade Hoverboard.`);
+    throw new Error(`${folder} is in a newer format (${manifest.format}). Upgrade NODE site.`);
   }
   const documents = Object.values(manifest.collections).flatMap(({ file }) =>
     Object.entries(
@@ -162,13 +162,13 @@ export const readExport = (folder: string): { manifest: Manifest; documents: Exp
   return { manifest, documents };
 };
 
-/** The Hoverboard version and the site's `schemaVersion`, for a manifest. */
-export const versions = (repoRoot: string): Pick<Manifest, 'hoverboard' | 'schemaVersion'> => {
+/** The NODE site version and the site's `schemaVersion`, for a manifest. */
+export const versions = (repoRoot: string): Pick<Manifest, 'nodeSite' | 'schemaVersion'> => {
   const read = (path: string) =>
     JSON.parse(readFileSync(join(repoRoot, path), 'utf8')) as Record<string, unknown>;
   const schemaVersion = read(siteConfigPath(repoRoot))['schemaVersion'];
   return {
-    hoverboard: String(read('package.json')['version']),
+    nodeSite: String(read('package.json')['version']),
     ...(typeof schemaVersion === 'number' ? { schemaVersion } : {}),
   };
 };

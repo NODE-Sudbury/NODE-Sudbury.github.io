@@ -1,8 +1,8 @@
 {
-  "name": "@hoverboard/web",
+  "name": "@node-site/web",
   "version": "3.0.0",
   "private": true,
-  "description": "Hoverboard conference website frontend (Lit + Redux Toolkit PWA)",
+  "description": "NODE site conference website frontend (Lit + Redux Toolkit PWA)",
   "type": "module",
   "engines": {
     "node": "22",

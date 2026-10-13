@@ -1,6 +1,6 @@
 import { msg, str } from '@lit/localize';
 import { createHash } from 'node:crypto';
-import { designKey } from 'virtual:hoverboard/social-images';
+import { designKey } from 'virtual:node-site/social-images';
 import { disabledSchedule, scheduleTracks, shortName, url } from '../config/site';
 import type { Session } from '../models/session';
 import type { Speaker } from '../models/speaker';

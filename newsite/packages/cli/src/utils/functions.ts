@@ -16,7 +16,7 @@ const deleteCommands = (functions: { id: string; region: string }[]) =>
     .join(', ');
 
 /**
- * Checks that the project has every Hoverboard function, deployed as 2nd gen. A 1st gen function
+ * Checks that the project has every NODE site function, deployed as 2nd gen. A 1st gen function
  * fails, because a deploy can't upgrade it in place. Missing and old functions only warn, since
  * the next deploy adds or deletes them. With `features.functions` off, it warns about any function
  * still deployed, since deploys then leave functions alone.

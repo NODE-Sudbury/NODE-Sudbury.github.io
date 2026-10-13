@@ -18,7 +18,7 @@ const exported = (documents: { path: string; data: Record<string, unknown> }[]) 
   vi.mocked(runCommand).mockImplementation((_command, args) => {
     calls.push(args);
     writeExport(args[3]!, documents, {
-      hoverboard: '4.0.0',
+      nodeSite: '4.0.0',
       projectId: 'fest-2027',
       createdAt: '2027-10-15T09:00:00.000Z',
       command: 'hb data export',

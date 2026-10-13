@@ -71,7 +71,7 @@ export const normalizeRepoUrl = (url: string): string =>
     .replace(/\/$/, '')
     .toLowerCase();
 
-/** The remote that points at Hoverboard's repository, adding `upstream` when there is none. */
+/** The remote that points at NODE site's repository, adding `upstream` when there is none. */
 const upstreamRemote = (repoRoot: string, url: string): string => {
   for (const name of lines(gitOutput(repoRoot, ['remote']))) {
     const remoteUrl = gitOutput(repoRoot, ['remote', 'get-url', name]);
@@ -159,7 +159,7 @@ const resolve = (repoRoot: string, state: UpgradeState, base: string): string[] 
   return left;
 };
 
-/** Lists the fork's changes to Hoverboard's files, and marks the ones the release changes too. */
+/** Lists the fork's changes to NODE site's files, and marks the ones the release changes too. */
 const printForkChanges = (repoRoot: string, from: string, tag: string) => {
   const own = (path: string) => path.startsWith(`${CONFIG_DIR}/`);
   const changed = lines(gitOutput(repoRoot, ['diff', '--name-only', from, 'HEAD'])).filter(
@@ -169,7 +169,7 @@ const printForkChanges = (repoRoot: string, from: string, tag: string) => {
   const release = new Set(lines(gitOutput(repoRoot, ['diff', '--name-only', from, tag])));
   const both = changed.filter((path) => release.has(path));
   console.log(
-    `Your changes to Hoverboard's files, outside ${CONFIG_DIR}: ${changed.length}, of which the ` +
+    `Your changes to NODE site's files, outside ${CONFIG_DIR}: ${changed.length}, of which the ` +
       `release changes ${both.length} too.`,
   );
   for (const path of [...both, ...changed.filter((file) => !release.has(file))].slice(
@@ -235,7 +235,7 @@ const finish = async (
     }
   }
 
-  const title = `chore: upgrade Hoverboard to v${state.to}`;
+  const title = `chore: upgrade NODE site to v${state.to}`;
   gitOutput(repoRoot, ['add', '--all']);
   gitOutput(repoRoot, ['commit', '--quiet', '-m', title]);
   rmSync(statePath(repoRoot), { force: true });
@@ -269,7 +269,7 @@ const finish = async (
   if (!(await confirmChange(`\nPush ${state.branch} and open a pull request?`, yes))) return result;
   gitOutput(repoRoot, ['push', '--quiet', '-u', 'origin', state.branch]);
   const body = [
-    `Upgrades Hoverboard from v${state.from} to v${state.to}. See the release notes in CHANGELOG.md.`,
+    `Upgrades NODE site from v${state.from} to v${state.to}. See the release notes in CHANGELOG.md.`,
     '',
     ...(state.resolved.length
       ? ['Resolved by `hb upgrade`:', ...state.resolved.map((line) => `- ${line}`), '']
@@ -296,7 +296,7 @@ const finish = async (
 };
 
 /**
- * Upgrades Hoverboard's code to a release: merges its tag into a new branch, resolves the files it
+ * Upgrades NODE site's code to a release: merges its tag into a new branch, resolves the files it
  * knows how to, then installs, migrates the config, builds and commits. Stops on other conflicts.
  */
 export const runCodeUpgrade = async ({
@@ -340,7 +340,7 @@ export const runCodeUpgrade = async ({
   }
 
   const notes = releaseNotes(fileAt(repoRoot, tag, 'CHANGELOG.md') ?? '', from, to);
-  console.log(`\nHoverboard v${from} to v${to}\n\n${notes || '(no release notes)'}\n`);
+  console.log(`\nNODE site v${from} to v${to}\n\n${notes || '(no release notes)'}\n`);
   const fromTag = `v${from}`;
   const hasFromTag = exists(repoRoot, fromTag);
   if (hasFromTag) printForkChanges(repoRoot, fromTag, tag);
@@ -365,7 +365,7 @@ export const runCodeUpgrade = async ({
     // Without it, the merge would start from an old base, or refuse unrelated histories.
     const related = git(repoRoot, ['merge-base', 'HEAD', fromTag]).status === 0;
     console.log(
-      `Recording ${fromTag} as merged, since ${related ? 'an earlier upgrade was squashed' : "this repository doesn't share Hoverboard's history"}. ` +
+      `Recording ${fromTag} as merged, since ${related ? 'an earlier upgrade was squashed' : "this repository doesn't share NODE site's history"}. ` +
         `Check the list of your changes above: the files must match ${fromTag} apart from them.`,
     );
     gitOutput(repoRoot, [
@@ -374,7 +374,7 @@ export const runCodeUpgrade = async ({
       '--strategy=ours',
       ...(related ? [] : ['--allow-unrelated-histories']),
       '-m',
-      `chore: record Hoverboard ${fromTag} as merged`,
+      `chore: record NODE site ${fromTag} as merged`,
       fromTag,
     ]);
   }

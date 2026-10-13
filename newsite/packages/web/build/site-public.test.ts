@@ -8,7 +8,7 @@ describe('publicRequestFile', () => {
   let dir: string;
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'hoverboard-site-public-'));
+    dir = mkdtempSync(join(tmpdir(), 'node-site-site-public-'));
     mkdirSync(join(dir, 'images'));
     writeFileSync(join(dir, 'images/logo.svg'), '<svg></svg>');
     writeFileSync(join(dir, 'images/my logo.svg'), '<svg></svg>');

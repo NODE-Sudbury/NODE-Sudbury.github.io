@@ -41,14 +41,14 @@ export const publicRequestFile = (dir: string, url: string): string | undefined 
  * output, such as the service worker's.
  */
 export const sitePublic = (dir: string): AstroIntegration => ({
-  name: 'hoverboard-site-public',
+  name: 'node-site-site-public',
   hooks: {
     'astro:config:setup': ({ updateConfig }) => {
       updateConfig({
         vite: {
           plugins: [
             {
-              name: 'hoverboard-site-public',
+              name: 'node-site-site-public',
               // Added here, the middleware runs before Vite serves packages/web/public.
               configureServer: (server) => {
                 server.middlewares.use((request, response, next) => {

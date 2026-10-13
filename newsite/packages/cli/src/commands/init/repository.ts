@@ -28,7 +28,7 @@ export const repositoryName = (shortName: string): string =>
   shortName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '') || 'hoverboard';
+    .replace(/^-|-$/g, '') || 'node-site';
 
 const printSteps = () =>
   console.log(
@@ -49,7 +49,7 @@ const printSteps = () =>
 const offerDependabotRemoval = async (repoRoot: string): Promise<boolean> => {
   if (!existsSync(join(repoRoot, DEPENDABOT))) return false;
   const remove = await confirm(
-    `\nDelete ${DEPENDABOT}? Hoverboard's upgrade pull requests update the dependencies, and ` +
+    `\nDelete ${DEPENDABOT}? NODE site's upgrade pull requests update the dependencies, and ` +
       "Dependabot's would conflict with them.",
   );
   if (remove) gitOutput(repoRoot, ['rm', '--quiet', DEPENDABOT]);
@@ -67,7 +67,7 @@ const commitSite = (repoRoot: string, shortName: string, dependabot: boolean) =>
 };
 
 /**
- * Puts the site in the organizer's own GitHub repository. In a clone of Hoverboard, with the `gh`
+ * Puts the site in the organizer's own GitHub repository. In a clone of NODE site, with the `gh`
  * CLI signed in, it offers to create a private repository, push to it, and run `hb setup-github`.
  * Without `gh`, it prints the steps. `ok` is false when a step failed.
  */
@@ -100,7 +100,7 @@ export const setUpRepository = async (
 
   const dependabot = await offerDependabotRemoval(repoRoot);
   commitSite(repoRoot, shortName, dependabot);
-  // Keeps Hoverboard as `upstream`, which `hb upgrade` merges releases from.
+  // Keeps NODE site as `upstream`, which `hb upgrade` merges releases from.
   const renamed = Boolean(origin) && !lines(gitOutput(repoRoot, ['remote'])).includes('upstream');
   if (origin) {
     gitOutput(

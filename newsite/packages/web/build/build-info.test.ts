@@ -15,7 +15,7 @@ describe('buildInfo', () => {
   });
 
   it('leaves out the commit outside a git checkout', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-build-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-build-'));
     try {
       expect(buildInfo(dir, now)).toEqual({ time: '2027-10-15T09:00:00.000Z' });
     } finally {

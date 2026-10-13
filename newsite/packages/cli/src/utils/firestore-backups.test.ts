@@ -13,7 +13,7 @@ afterEach(() => {
 });
 
 const repoWith = (...backups: string[]): string => {
-  const repo = mkdtempSync(join(tmpdir(), 'hoverboard-backups-'));
+  const repo = mkdtempSync(join(tmpdir(), 'node-site-backups-'));
   repos.push(repo);
   for (const backup of backups) mkdirSync(join(repo, BACKUPS_PATH, backup), { recursive: true });
   return repo;

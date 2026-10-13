@@ -1,4 +1,4 @@
-// Types for `virtual:hoverboard/site`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
+// Types for `virtual:node-site/site`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
 import type { BuildInfo } from './build-info';
 import type { SiteConfig } from './resolve-config';
 

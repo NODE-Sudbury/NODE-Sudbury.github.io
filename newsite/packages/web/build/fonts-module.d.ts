@@ -1,4 +1,4 @@
-// Types for `virtual:hoverboard/fonts`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
+// Types for `virtual:node-site/fonts`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
 
 /** The `@font-face` rules of the theme's fonts and their fallbacks, and the `--hb-font-*` variables. */
 export declare const fontCss: string;

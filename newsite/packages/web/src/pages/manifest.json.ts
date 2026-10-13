@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import { theme } from 'virtual:hoverboard/layout';
-import { resources, site } from 'virtual:hoverboard/site';
+import { theme } from 'virtual:node-site/layout';
+import { resources, site } from 'virtual:node-site/site';
 import { ICON_SIZES, iconPath } from '../data/icons';
 
 export const GET: APIRoute = () =>

@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 const siteDir = (site: object) => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-site-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-site-'));
   dirsToClean.push(dir);
   writeFileSync(join(dir, 'site.json'), JSON.stringify(site));
   return dir;

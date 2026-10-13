@@ -72,7 +72,7 @@ export const checkServiceAccounts = async (
   const problems = [
     ...(withKeys.length
       ? [
-          `Keys that never expire: ${withKeys.join('; ')}. Hoverboard deploys and runs without ` +
+          `Keys that never expire: ${withKeys.join('; ')}. NODE site deploys and runs without ` +
             'keys. Delete them, and any GitHub secret that holds one, in the Google Cloud console ' +
             'under IAM > Service accounts > Keys.',
         ]

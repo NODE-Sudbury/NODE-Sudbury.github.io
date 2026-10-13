@@ -75,18 +75,18 @@ describe('localization', () => {
     await setLocale('en');
 
     expect(document.documentElement.lang).toBe('en');
-    expect(localStorage.getItem('hoverboard-locale')).toBe('en');
+    expect(localStorage.getItem('node-site-locale')).toBe('en');
   });
 
   it('ignores a locale the site does not offer', async () => {
     await setLocale('xx');
 
     expect(getLocale()).toBe('en');
-    expect(localStorage.getItem('hoverboard-locale')).toBeNull();
+    expect(localStorage.getItem('node-site-locale')).toBeNull();
   });
 
   it('keeps the source locale at startup when nothing else is available', async () => {
-    localStorage.setItem('hoverboard-locale', 'es');
+    localStorage.setItem('node-site-locale', 'es');
 
     await startLocalization();
 

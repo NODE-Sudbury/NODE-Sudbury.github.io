@@ -117,7 +117,7 @@ describe('checkDocuments', () => {
     );
 
     expect(problems).toContainEqual({
-      message: 'sessions/107: unknown field "notes". Hoverboard doesn\'t read it.',
+      message: 'sessions/107: unknown field "notes". NODE site doesn\'t read it.',
       warning: false,
       url: 'https://console.firebase.google.com/project/demo-project/firestore/databases/-default-/data/~2Fsessions~2F107',
     });
@@ -320,9 +320,9 @@ describe('formatReport', () => {
     expect(formatReport(report, { projectId: 'demo-project' })).toEqual([
       '✘ sessions/107: unknown field "extend". https://x',
       '! blog/a: missing "title". Not an error.',
-      '! users: 2 documents from before 4.0.0, which Hoverboard no longer uses. Delete them once you no longer need them, with npx firebase firestore:delete --recursive users --project demo-project',
-      '! config/site: 1 document from before 4.0.0, which Hoverboard no longer uses. Delete it once you no longer need it, with npx firebase firestore:delete config/site --project demo-project',
-      "! misc: 1 document that Hoverboard doesn't use.",
+      '! users: 2 documents from before 4.0.0, which NODE site no longer uses. Delete them once you no longer need them, with npx firebase firestore:delete --recursive users --project demo-project',
+      '! config/site: 1 document from before 4.0.0, which NODE site no longer uses. Delete it once you no longer need it, with npx firebase firestore:delete config/site --project demo-project',
+      "! misc: 1 document that NODE site doesn't use.",
       '\n✘ Found 1 problem in 3 documents.',
     ]);
   });
@@ -378,7 +378,7 @@ describe('formatReport', () => {
     );
 
     expect(lines).toContain(
-      '! schedule: 2 documents from before 4.0.0, which Hoverboard no longer uses. Keep them until migration 4.0.0-schedule-on-sessions runs.',
+      '! schedule: 2 documents from before 4.0.0, which NODE site no longer uses. Keep them until migration 4.0.0-schedule-on-sessions runs.',
     );
     expect(lines.join('\n')).not.toContain('firestore:delete');
   });

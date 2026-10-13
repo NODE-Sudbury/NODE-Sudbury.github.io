@@ -222,7 +222,7 @@ export const fontModuleParts = async (
 };
 
 /**
- * `virtual:hoverboard/fonts`: the font CSS, with each file imported with `?url` so Vite serves it
+ * `virtual:node-site/fonts`: the font CSS, with each file imported with `?url` so Vite serves it
  * in development and emits it with a hashed name in the build. `no-inline` keeps small files out of
  * the HTML of every page; browsers download only the subsets a page uses.
  */

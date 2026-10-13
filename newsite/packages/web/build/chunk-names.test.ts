@@ -10,7 +10,7 @@ describe('chunkFileNames', () => {
   });
 
   it('puts event content translations under locales/, named after the locale', () => {
-    const content = { facadeModuleId: '\0virtual:hoverboard/content/pt-BR' };
+    const content = { facadeModuleId: '\0virtual:node-site/content/pt-BR' };
 
     expect(chunkFileNames(content)).toBe('locales/content-pt-BR-[hash].js');
   });

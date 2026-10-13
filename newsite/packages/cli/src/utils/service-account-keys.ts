@@ -13,7 +13,7 @@ const isServiceAccountKey = (path: string): boolean => {
   }
 };
 
-/** Warns about key files in the repository root, which Hoverboard no longer uses. */
+/** Warns about key files in the repository root, which NODE site no longer uses. */
 export const checkServiceAccountKeys = (repoRoot: string | undefined): DoctorCheckResult => {
   if (!repoRoot) {
     return { name, ok: true, warning: true, message: 'Skipped, no repository root found.' };
@@ -33,7 +33,7 @@ export const checkServiceAccountKeys = (repoRoot: string | undefined): DoctorChe
     ok: true,
     warning: true,
     message:
-      `Found ${keys.join(', ')}. Hoverboard signs in with \`firebase login\` and no longer uses ` +
+      `Found ${keys.join(', ')}. NODE site signs in with \`firebase login\` and no longer uses ` +
       'key files. Delete them and revoke the keys in the Google Cloud console under IAM > ' +
       'Service accounts.',
   };

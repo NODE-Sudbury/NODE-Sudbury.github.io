@@ -47,8 +47,8 @@ export const runUpgrade = async (
   }
   if (version > current) {
     console.log(
-      `✘ ${sitePath} is at schemaVersion ${version}, newer than this Hoverboard ` +
-        `(${current}). Update Hoverboard first.`,
+      `✘ ${sitePath} is at schemaVersion ${version}, newer than this NODE site ` +
+        `(${current}). Update NODE site first.`,
     );
     return false;
   }

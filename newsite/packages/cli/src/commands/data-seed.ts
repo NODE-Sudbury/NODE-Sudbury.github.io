@@ -74,7 +74,7 @@ export const runStageSeed = async (
   if (existsSync(join(repoRoot, 'packages', 'config', 'site.json'))) {
     console.log(
       `! The fixtures are on the demo's event days, in 2017, which packages/config/site.json ` +
-        "doesn't have. They're for Hoverboard's own demo site.",
+        "doesn't have. They're for NODE site's own demo site.",
     );
   }
   const folder = join(repoRoot, SAMPLE_DATA);

@@ -19,7 +19,7 @@ export interface DeployOptions {
 }
 
 /**
- * Builds and deploys Hoverboard to the Firebase project in the site config,
+ * Builds and deploys NODE site to the Firebase project in the site config,
  * asking for confirmation first since deploying to the wrong project is the
  * costliest mistake this CLI can help prevent.
  */
@@ -57,7 +57,7 @@ export const runDeploy = async (options: DeployOptions = {}): Promise<boolean> =
   }
 
   if (
-    !(await confirmChange(`\nDeploy Hoverboard to Firebase project "${projectId}"?`, options.yes))
+    !(await confirmChange(`\nDeploy NODE site to Firebase project "${projectId}"?`, options.yes))
   ) {
     console.log('Aborted.');
     return false;

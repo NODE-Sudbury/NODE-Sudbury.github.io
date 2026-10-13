@@ -31,7 +31,7 @@ afterEach(() => {
 
 /** A repository whose root and packages/web have lockfiles. */
 const makeRepo = (): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, '.git'));
   mkdirSync(join(dir, 'packages/web'), { recursive: true });

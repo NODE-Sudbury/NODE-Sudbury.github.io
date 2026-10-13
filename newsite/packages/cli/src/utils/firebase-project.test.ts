@@ -19,7 +19,7 @@ afterEach(() => {
 });
 
 const makeRepo = (site?: object | string): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   if (site !== undefined) {
     const path = join(dir, SITE_CONFIG_PATH);

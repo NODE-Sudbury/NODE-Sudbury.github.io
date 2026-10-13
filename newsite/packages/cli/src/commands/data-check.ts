@@ -43,7 +43,7 @@ export interface Report {
   problems: Problem[];
   /** Collections or documents from earlier versions, with their document count. */
   retired: Map<string, number>;
-  /** Collections Hoverboard doesn't use, with their document count. */
+  /** Collections NODE site doesn't use, with their document count. */
   unknown: Map<string, number>;
   /** Data migrations the data still needs, with what shows it and the retired collections they read. */
   migrations: { id: string; reason: string; reads: string[] }[];
@@ -270,7 +270,7 @@ export const formatReport = (
       line(warning, url ? `${message} ${url}` : message),
     ),
     ...[...report.retired].map(([path, amount]) => {
-      const before = `${path}: ${plural(amount, 'document')} from before ${RETIRED[path]}, which Hoverboard no longer uses.`;
+      const before = `${path}: ${plural(amount, 'document')} from before ${RETIRED[path]}, which NODE site no longer uses.`;
       const needed = report.migrations.find(({ reads }) => reads.includes(path));
       return line(
         true,
@@ -280,7 +280,7 @@ export const formatReport = (
       );
     }),
     ...[...report.unknown].map(([path, amount]) =>
-      line(true, `${path}: ${plural(amount, 'document')} that Hoverboard doesn't use.`),
+      line(true, `${path}: ${plural(amount, 'document')} that NODE site doesn't use.`),
     ),
     total
       ? `\n✘ Found ${plural(total, 'problem')} in ${plural(report.checked, 'document')}.` +

@@ -44,7 +44,7 @@ export const resolveFirebaseProjectId = (repoRoot: string): string | undefined =
   process.env['GCLOUD_PROJECT'] || projectIdFromSiteConfig(repoRoot);
 
 /** Local development always uses this project. `demo-` projects only exist in the emulators. */
-export const DEMO_PROJECT_ID = 'demo-hoverboard';
+export const DEMO_PROJECT_ID = 'demo-node-site';
 
 export const checkFirebaseProject = (repoRoot: string | undefined): DoctorCheckResult => {
   const projectId = repoRoot && resolveFirebaseProjectId(repoRoot);

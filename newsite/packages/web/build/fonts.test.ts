@@ -24,7 +24,7 @@ afterEach(() => {
 
 /** A config folder with Unbounded's Latin file as a site font. */
 const siteDir = () => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-fonts-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-fonts-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, 'fonts'));
   copyFileSync(

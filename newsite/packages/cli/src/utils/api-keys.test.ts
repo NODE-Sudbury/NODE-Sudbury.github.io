@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 const makeRepo = (site: object = {}) => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-keys-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-keys-'));
   dirs.push(dir);
   mkdirSync(join(dir, 'packages', 'config'), { recursive: true });
   writeFileSync(join(dir, 'packages', 'config', 'site.json'), JSON.stringify(site));

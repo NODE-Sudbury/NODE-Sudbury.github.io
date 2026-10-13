@@ -1,8 +1,8 @@
 // Locale modules go under `locales/`, which the service worker caches when they first load
 // instead of precaching every locale. See workbox.config.ts.
 const LOCALE_MODULE = /[\\/]src[\\/]generated[\\/]locales[\\/]/;
-// Event content translations from vite-plugin-site.ts, `\0virtual:hoverboard/content/<locale>`.
-const CONTENT_MODULE = /^\0virtual:hoverboard\/content\/([\w-]+)$/;
+// Event content translations from vite-plugin-site.ts, `\0virtual:node-site/content/<locale>`.
+const CONTENT_MODULE = /^\0virtual:node-site\/content\/([\w-]+)$/;
 
 // Astro's own name for the other client chunks.
 const ASSETS = '_astro';

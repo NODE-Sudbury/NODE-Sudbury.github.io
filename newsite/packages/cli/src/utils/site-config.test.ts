@@ -17,7 +17,7 @@ describe('validateSiteConfig', () => {
   });
 
   it('reports a file with invalid JSON as an error', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
     dirsToClean.push(dir);
     mkdirSync(join(dir, 'packages', 'config'), { recursive: true });
     symlinkSync(join(repoRoot, 'packages', 'web'), join(dir, 'packages', 'web'));
@@ -55,8 +55,8 @@ describe('githubAnnotation', () => {
   });
 
   it('escapes percent signs and new lines', () => {
-    expect(githubAnnotation('Not in a Hoverboard repo.\n100%')).toBe(
-      '::error title=Site config::Not in a Hoverboard repo.%0A100%25',
+    expect(githubAnnotation('Not in a NODE site repo.\n100%')).toBe(
+      '::error title=Site config::Not in a NODE site repo.%0A100%25',
     );
   });
 });
@@ -71,7 +71,7 @@ describe('checkSiteConfig', () => {
   });
 
   it('skips without packages/web', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
     dirsToClean.push(dir);
 
     await expect(checkSiteConfig(dir)).resolves.toMatchObject({ ok: true, warning: true });

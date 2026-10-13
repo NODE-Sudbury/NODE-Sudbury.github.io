@@ -18,9 +18,9 @@ import {
 
 const firestore = new Firestore({ projectId: 'demo-project' });
 const meta: Omit<Manifest, 'format' | 'collections'> = {
-  hoverboard: '4.0.0',
+  nodeSite: '4.0.0',
   schemaVersion: 1,
-  projectId: 'demo-hoverboard',
+  projectId: 'demo-node-site',
   createdAt: '2027-10-15T09:00:00.000Z',
   command: 'hb data export',
 };
@@ -30,7 +30,7 @@ afterEach(() => {
   for (const folder of folders.splice(0)) rmSync(folder, { recursive: true, force: true });
 });
 const tempFolder = () => {
-  const folder = mkdtempSync(join(tmpdir(), 'hoverboard-export-'));
+  const folder = mkdtempSync(join(tmpdir(), 'node-site-export-'));
   folders.push(folder);
   return folder;
 };
@@ -176,7 +176,7 @@ describe('writeExport and readExport', () => {
 
   it("refuses a folder that isn't an export, or is from a newer version", () => {
     const folder = tempFolder();
-    expect(() => readExport(folder)).toThrow("isn't a Hoverboard export");
+    expect(() => readExport(folder)).toThrow("isn't a NODE site export");
 
     mkdirSync(join(folder, 'collections'));
     writeFileSync(join(folder, 'manifest.json'), JSON.stringify({ format: 2, collections: {} }));

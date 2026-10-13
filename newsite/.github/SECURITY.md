@@ -12,4 +12,4 @@ Include what is affected, how to reproduce it, and the impact you expect. Mainta
 
 ## Your own site
 
-Hoverboard is a template, and each site runs in its organizer's own Firebase project. A problem with a single site, such as its content, its Firebase settings or a change made in a fork, belongs to that site's organizers, not to this repository.
+NODE site is a template, and each site runs in its organizer's own Firebase project. A problem with a single site, such as its content, its Firebase settings or a change made in a fork, belongs to that site's organizers, not to this repository.

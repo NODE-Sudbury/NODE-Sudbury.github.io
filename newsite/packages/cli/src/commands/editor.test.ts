@@ -26,7 +26,7 @@ const output = () =>
 const setPolicy = () => requests.find(({ url }) => url.endsWith(':setIamPolicy'));
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-editor-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-editor-'));
   mkdirSync(join(repo, '.git'));
   mkdirSync(join(repo, 'packages', 'config'), { recursive: true });
   writeFileSync(

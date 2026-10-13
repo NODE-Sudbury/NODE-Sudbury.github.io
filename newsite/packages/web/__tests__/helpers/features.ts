@@ -1,4 +1,4 @@
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 import type { Feature } from '../../src/config/features';
 
 // In the build, `__HB_FEATURES__.<name>` is a literal. Tests use a global so they can change it.

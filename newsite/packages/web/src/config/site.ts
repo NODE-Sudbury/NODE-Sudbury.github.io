@@ -6,7 +6,7 @@ import {
   heroIllustration,
   resources,
   site as settings,
-} from 'virtual:hoverboard/site';
+} from 'virtual:node-site/site';
 import type { Track } from '../schedule/build-schedule';
 import { readDemoAttendance } from '../utils/demo';
 import { isFeature, isFeatureEnabled, isNavigationRoute, type NavigationRoute } from './features';

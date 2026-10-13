@@ -4,7 +4,7 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "package-name": "hoverboard",
+      "package-name": "node-site",
       "include-component-in-tag": false,
       "release-as": "4.0.0",
       "changelog-sections": [

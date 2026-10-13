@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://hoverboard.dev/schemas/firestore.schema.json",
-  "title": "Hoverboard Firestore data",
-  "description": "Every Firestore document Hoverboard uses, independent of how it is shown. `$defs` describes each document, and `packages/storage/collections.ts` says which collection uses which.",
+  "title": "NODE site Firestore data",
+  "description": "Every Firestore document NODE site uses, independent of how it is shown. `$defs` describes each document, and `packages/storage/collections.ts` says which collection uses which.",
   "$defs": {
     "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
     "time": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" },
@@ -11,7 +11,7 @@
       "type": ["number", "string"]
     },
     "source": {
-      "description": "Where the record was imported from, for example `sessionize`. Absent for records edited in Hoverboard.",
+      "description": "Where the record was imported from, for example `sessionize`. Absent for records edited in NODE site.",
       "type": "string"
     },
     "externalId": {
@@ -329,7 +329,7 @@
       }
     },
     "reference": {
-      "description": "A Firestore document reference, written as JSON for validation. Hoverboard stores IDs, not references.",
+      "description": "A Firestore document reference, written as JSON for validation. NODE site stores IDs, not references.",
       "type": "object",
       "additionalProperties": false,
       "required": ["$reference"],

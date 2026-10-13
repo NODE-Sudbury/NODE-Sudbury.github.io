@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 const makeRepo = () => {
-  const repo = mkdtempSync(join(tmpdir(), 'hoverboard-fix-'));
+  const repo = mkdtempSync(join(tmpdir(), 'node-site-fix-'));
   repos.push(repo);
   mkdirSync(join(repo, 'packages/config'), { recursive: true });
   writeFileSync(join(repo, SITE_CONFIG_PATH), '{ "schedule": {} }\n');

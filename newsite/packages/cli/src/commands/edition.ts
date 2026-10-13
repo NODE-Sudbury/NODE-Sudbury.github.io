@@ -205,9 +205,9 @@ export const runEditionList = (): CommandResult => {
       : undefined;
     console.log(
       `${edition.year}: ${edition.url}, on ${edition.projectId}, ` +
-        (version ? `Hoverboard v${version}` : `no ${edition.tag} tag here`),
+        (version ? `NODE site v${version}` : `no ${edition.tag} tag here`),
     );
-    return { ...edition, ...(version ? { hoverboard: version } : {}) };
+    return { ...edition, ...(version ? { nodeSite: version } : {}) };
   });
   if (!editions.length) console.log('No archived editions. ./hb edition new starts the next one.');
   return { ok: true, current, editions };
@@ -408,7 +408,7 @@ export const runEditionNew = async ({
     console.log(`\nCreating the Firebase project ${to}...`);
     projects.create(to, to);
   }
-  if (!projects.webApps(to).length) projects.createWebApp(to, 'Hoverboard');
+  if (!projects.webApps(to).length) projects.createWebApp(to, 'NODE site');
   if (!(await isBillingEnabled(repoRoot, to).catch(() => false))) {
     console.log(
       `\n\u2718 ${to} isn't on the Blaze plan, which the functions need. Link it to a billing account, ` +

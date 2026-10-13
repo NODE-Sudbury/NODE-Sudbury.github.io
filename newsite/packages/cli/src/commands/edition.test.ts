@@ -129,7 +129,7 @@ const projects = {
 };
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-edition-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-edition-'));
   vi.stubEnv('GIT_CONFIG_GLOBAL', '/dev/null');
   vi.stubEnv('GIT_CONFIG_NOSYSTEM', '1');
   vi.stubEnv('GIT_AUTHOR_NAME', 'Test');
@@ -164,7 +164,7 @@ beforeEach(() => {
         collections.some((collection) => inPath(path, collection)),
       );
       writeExport(args[3]!, documents, {
-        hoverboard: '4.0.0',
+        nodeSite: '4.0.0',
         projectId: project ?? '',
         createdAt: '2027-10-17T00:00:00.000Z',
         command: 'hb data export',
@@ -233,7 +233,7 @@ describe('runEditionNew', () => {
 
     expect(result).toMatchObject({ ok: true, to: 'fest-2028', users: 1 });
     expect(projects.create).toHaveBeenCalledWith('fest-2028', 'fest-2028');
-    expect(projects.createWebApp).toHaveBeenCalledWith('fest-2028', 'Hoverboard');
+    expect(projects.createWebApp).toHaveBeenCalledWith('fest-2028', 'NODE site');
     expect(createDatabase).toHaveBeenCalledWith(repo, 'fest-2028', 'eur3');
     expect(run(repo, 'tag', '--list')).toBe('edition/2027');
     expect(commands()).toEqual([
@@ -381,7 +381,7 @@ describe('runEditionSwitch and the archived editions', () => {
 
     expect(runEditionList()).toMatchObject({
       current: { year: 2027, projectId: 'fest-2028' },
-      editions: [{ year: 2027, hoverboard: '4.0.0' }],
+      editions: [{ year: 2027, nodeSite: '4.0.0' }],
     });
     expect(await runEditionRebuild('2027', { yes: true })).toMatchObject({ ok: true });
     expect(builds).toHaveLength(1);

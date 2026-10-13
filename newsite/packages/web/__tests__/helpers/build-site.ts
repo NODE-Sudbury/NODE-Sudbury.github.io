@@ -38,7 +38,7 @@ export const buildSite = (
   { firestoreTarget = 'none' }: { firestoreTarget?: 'none' | 'sample' } = {},
 ): SiteBuild => {
   // macOS links /var to /private/var. Astro needs its root as a real path to match module paths.
-  const root = realpathSync(mkdtempSync(join(tmpdir(), 'hoverboard-build-')));
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'node-site-build-')));
   const web = join(root, 'packages/web');
   const skip = new Set(['node_modules', 'dist', '.astro'].map((name) => join(webRoot, name)));
   cpSync(webRoot, web, { recursive: true, filter: (source) => !skip.has(source) });

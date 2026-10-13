@@ -1,6 +1,6 @@
 import { html, render } from 'lit';
 import { beforeAll, describe, expect, inject, it, vi } from 'vitest';
-import { resources } from 'virtual:hoverboard/site';
+import { resources } from 'virtual:node-site/site';
 import { queryAllDeep } from '../__tests__/helpers/dom';
 import { useLocale } from '../__tests__/helpers/locale';
 import { getLocale } from './utils/localization';
@@ -21,7 +21,7 @@ const skipLink = () => queryAllDeep(document, '.skip-link')[0];
 describe(`the app with the fake ${fakeLocale} locale`, () => {
   beforeAll(async () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
-    localStorage.setItem('hoverboard-locale', fakeLocale);
+    localStorage.setItem('node-site-locale', fakeLocale);
     await (
       await import('./components/shell/app-header')
     ).demoBanner;
@@ -61,7 +61,7 @@ describe(`the app with the fake ${fakeLocale} locale`, () => {
 
     await vi.waitFor(() => expect(picker()).toHaveAttribute('aria-label', 'Language'));
     expect(document.documentElement).toHaveAttribute('lang', 'en');
-    expect(localStorage.getItem('hoverboard-locale')).toBe('en');
+    expect(localStorage.getItem('node-site-locale')).toBe('en');
     expect(skipLink()).toHaveTextContent(/^Skip to content$/);
     expect(document.title).toBe(resources.title);
   });
@@ -77,7 +77,7 @@ describe(`the app with the fake ${fakeLocale} locale`, () => {
 
   it('hydrates the next page in the source locale, then switches back', async () => {
     await useLocale(fakeLocale);
-    localStorage.setItem('hoverboard-locale', fakeLocale);
+    localStorage.setItem('node-site-locale', fakeLocale);
     const event = Object.assign(new Event('astro:before-preparation'), {
       loader: () => Promise.resolve(),
       newDocument: document,

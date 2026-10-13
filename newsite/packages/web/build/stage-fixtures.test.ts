@@ -23,7 +23,7 @@ afterAll(() => {
 
 /** The demo's config with the fixture's site.json changes, as the build resolves it. */
 const fixtureConfig = (changes: Record<string, unknown> = {}) => {
-  const root = mkdtempSync(join(tmpdir(), 'hoverboard-stage-'));
+  const root = mkdtempSync(join(tmpdir(), 'node-site-stage-'));
   dirs.push(root);
   const site = deepMerge(readJson(join(demo.site, 'site.json')), changes) as {
     features?: { blog?: boolean };

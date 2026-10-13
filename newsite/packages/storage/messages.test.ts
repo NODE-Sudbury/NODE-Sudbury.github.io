@@ -33,13 +33,13 @@ describe('documentProblems', () => {
       'additionalProperties',
       'session',
       { ...session, notes: '' },
-      'unknown field "notes". Hoverboard doesn\'t read it.',
+      'unknown field "notes". NODE site doesn\'t read it.',
     ],
     [
       'unevaluatedProperties',
       'teamDocument',
       { title: 'Organizers', members: [] },
-      'unknown field "members". Hoverboard doesn\'t read it.',
+      'unknown field "members". NODE site doesn\'t read it.',
     ],
     ['dependentRequired', 'session', { ...session, track: 'main' }, '"track" needs "day" too.'],
     ['type', 'session', { ...session, title: 3 }, 'title must be a string, not a number.'],
@@ -173,10 +173,10 @@ describe('documentProblems', () => {
 
   it('names retired fields, in the document and in nested definitions', () => {
     expect(documentMessages('sessions/107', { ...session, extend: 2 })).toEqual([
-      'sessions/107: retired field "extend", which Hoverboard stopped reading in 4.0.0.',
+      'sessions/107: retired field "extend", which NODE site stopped reading in 4.0.0.',
     ]);
     expect(documentMessages('config/notifications', { icon: '/a.png', timezone: 'UTC' })).toEqual([
-      'config/notifications: retired field "timezone", which Hoverboard stopped reading in 4.0.0.',
+      'config/notifications: retired field "timezone", which NODE site stopped reading in 4.0.0.',
     ]);
   });
 
@@ -191,7 +191,7 @@ describe('documentProblems', () => {
         },
       ),
     ).toEqual([
-      'doc/1: unknown field "extend". Hoverboard doesn\'t read it. https://example.com',
+      'doc/1: unknown field "extend". NODE site doesn\'t read it. https://example.com',
       'doc/1: title must be a string, not a number. (fixable) https://example.com',
     ]);
   });

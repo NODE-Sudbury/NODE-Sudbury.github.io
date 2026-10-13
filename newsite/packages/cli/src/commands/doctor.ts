@@ -87,7 +87,7 @@ export const runDoctor = async (): Promise<boolean> => {
   console.log(
     allOk
       ? '\nAll checks passed.'
-      : '\nSome checks failed. Fix the issues above before running or deploying Hoverboard.',
+      : '\nSome checks failed. Fix the issues above before running or deploying NODE site.',
   );
   return allOk;
 };

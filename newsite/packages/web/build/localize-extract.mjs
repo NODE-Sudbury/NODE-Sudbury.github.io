@@ -26,7 +26,7 @@ export const sourcePath = join(translationsRoot, 'source/en.xlf');
  * never touched.
  */
 export const extractSource = () => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-localize-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-localize-'));
   try {
     const configPath = join(dir, 'lit-localize.json');
     const extractConfig = {

@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom';
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 import { describe, expect, it, vi } from 'vitest';
 import type { Post } from '../../models/post';
 import { GET } from './rss.xml';
@@ -23,7 +23,7 @@ const posts = [
 ] as Post[];
 
 vi.mock('../../data/content', () => ({ loadContent: async () => ({ blog: posts }) }));
-vi.mock('virtual:hoverboard/markdown', () => ({
+vi.mock('virtual:node-site/markdown', () => ({
   posts: { 'launch.md': 'See [the schedule](/schedule) and ![the hall](images/hall.jpg).' },
 }));
 

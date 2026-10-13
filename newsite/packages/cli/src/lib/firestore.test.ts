@@ -35,7 +35,7 @@ afterEach(() => {
 // Points HOME at an empty temp dir so firebase-tools' real configstore (if
 // any exists on the machine running the tests) can never leak in.
 const makeRepoRoot = (): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, '.git'));
   process.env['HOME'] = dir;
@@ -51,7 +51,7 @@ describe('lib/firestore (emulator target, the default)', () => {
 
     const firestoreModule = await importFirestore();
 
-    expect(initializeApp).toHaveBeenCalledWith({ projectId: 'demo-hoverboard' });
+    expect(initializeApp).toHaveBeenCalledWith({ projectId: 'demo-node-site' });
     expect(process.env['FIRESTORE_EMULATOR_HOST']).toBe('127.0.0.1:8080');
     expect(firestoreModule.repoRoot).toBe(repoRoot);
     expect(getFirestore).toHaveBeenCalled();
@@ -75,7 +75,7 @@ describe('lib/firestore (emulator target, the default)', () => {
 
     await importFirestore();
 
-    expect(initializeApp).toHaveBeenCalledWith({ projectId: 'demo-hoverboard' });
+    expect(initializeApp).toHaveBeenCalledWith({ projectId: 'demo-node-site' });
   });
 });
 
@@ -116,7 +116,7 @@ describe('lib/firestore (production target)', () => {
   });
 
   it('throws when no repository root can be found', async () => {
-    const outsideRepo = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+    const outsideRepo = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
     dirsToClean.push(outsideRepo);
     vi.spyOn(process, 'cwd').mockReturnValue(outsideRepo);
 

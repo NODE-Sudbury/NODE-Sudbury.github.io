@@ -1,6 +1,6 @@
-# @hoverboard/translations
+# @node-site/translations
 
-Translations of Hoverboard's UI text. `packages/web` reads them by relative path, so this package has no dependencies.
+Translations of NODE site's UI text. `packages/web` reads them by relative path, so this package has no dependencies.
 
 | Path                 | Written by                                       |
 | -------------------- | ------------------------------------------------ |

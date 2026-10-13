@@ -1,8 +1,8 @@
 {
   "format": 1,
-  "hoverboard": "3.0.0",
+  "nodeSite": "3.0.0",
   "schemaVersion": 1,
-  "projectId": "demo-hoverboard",
+  "projectId": "demo-node-site",
   "createdAt": "2026-10-11T16:21:51.846Z",
   "command": "hb data export docs/sample-data",
   "collections": {

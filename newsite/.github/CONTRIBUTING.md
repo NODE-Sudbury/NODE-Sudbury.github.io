@@ -1,6 +1,6 @@
 ## Guide for Contributors
 
-Hoverboard are built in the open, and the GDG[x] team eagerly encourage any and all forms of community contribution. When contributing, please follow these guidelines:
+NODE site are built in the open, and the GDG[x] team eagerly encourage any and all forms of community contribution. When contributing, please follow these guidelines:
 
 ### Filing Issues
 

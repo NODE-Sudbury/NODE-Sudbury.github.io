@@ -1,4 +1,4 @@
-// Types for `virtual:hoverboard/social-images`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
+// Types for `virtual:node-site/social-images`, which vite-plugin-site.ts serves. tsconfig.json maps it here.
 import type { SocialImageDesign } from './social-images';
 
 export declare const fonts: SocialImageDesign['fonts'];

@@ -12,7 +12,7 @@ import {
   logo,
   publicDirs,
   share,
-} from 'virtual:hoverboard/social-images';
+} from 'virtual:node-site/social-images';
 import { shortName } from '../config/site';
 import {
   SOCIAL_IMAGE,

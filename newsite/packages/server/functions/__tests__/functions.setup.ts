@@ -2,8 +2,8 @@
 // config from `process.env.FIREBASE_CONFIG` at module-load time. The Firebase
 // CLI and Cloud Functions runtime set this automatically when deploying or
 // emulating, but it must be provided manually in unit tests.
-process.env.GCLOUD_PROJECT ??= 'hoverboard-test';
+process.env.GCLOUD_PROJECT ??= 'node-site-test';
 process.env.FIREBASE_CONFIG ??= JSON.stringify({
-  projectId: 'hoverboard-test',
-  storageBucket: 'hoverboard-test.appspot.com',
+  projectId: 'node-site-test',
+  storageBucket: 'node-site-test.appspot.com',
 });

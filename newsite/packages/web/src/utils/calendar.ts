@@ -105,7 +105,7 @@ export const icsCalendar = (events: readonly [CalendarEvent, string][]): string 
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    `PRODID:-//${escapeText(title)}//Hoverboard//EN`,
+    `PRODID:-//${escapeText(title)}//NODE site//EN`,
     'CALSCALE:GREGORIAN',
     ...events.flatMap(([event, uid]) => vevent(event, uid, stamp)),
     'END:VCALENDAR',

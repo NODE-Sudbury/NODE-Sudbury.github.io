@@ -14,7 +14,7 @@ afterEach(() => {
 
 /** Writes a fake firebase-tools whose API client echoes each request back. */
 const makeRepo = (signedIn: boolean): string => {
-  const repo = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const repo = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(repo);
   const lib = join(repo, 'node_modules', 'firebase-tools', 'lib');
   mkdirSync(lib, { recursive: true });

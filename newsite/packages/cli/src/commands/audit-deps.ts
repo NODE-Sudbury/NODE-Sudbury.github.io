@@ -12,10 +12,10 @@ export const AUDITED_PACKAGES = [
   'packages/web',
 ];
 
-/** Advisories that don't apply to Hoverboard, and why. Remove each one once a fix is installed. */
+/** Advisories that don't apply to NODE site, and why. Remove each one once a fix is installed. */
 export const ACCEPTED_ADVISORIES: Record<string, string> = {
   'https://github.com/advisories/GHSA-m9gg-hp2v-232j':
-    "@grpc/grpc-js through firebase: only affects gRPC servers' getAuthContext, and Hoverboard only runs clients.",
+    "@grpc/grpc-js through firebase: only affects gRPC servers' getAuthContext, and NODE site only runs clients.",
 };
 
 const FAILING_SEVERITIES = new Set(['high', 'critical']);

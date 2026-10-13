@@ -62,8 +62,8 @@ vi.mock('../utils/firebase-project.js', async (importOriginal) => ({
 }));
 
 const meta = {
-  hoverboard: '4.0.0',
-  projectId: 'demo-hoverboard',
+  nodeSite: '4.0.0',
+  projectId: 'demo-node-site',
   createdAt: '2027-10-15T09:00:00.000Z',
   command: 'hb backup create',
 };
@@ -122,7 +122,7 @@ const imported = () => {
 };
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-backup-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-backup-'));
   dirs.push(repo);
   mkdirSync(join(repo, '.git'));
   mkdirSync(join(repo, 'packages/config'), { recursive: true });
@@ -235,7 +235,7 @@ describe('runBackupList', () => {
       { name: '2027-10-16T09-00-00.000Z', scope: 'changes', documents: 1, users: undefined },
     ]);
     expect(output()).toContain(
-      '  2027-10-15T09-00-00.000Z: all data, 1 document and 1 user from demo-hoverboard',
+      '  2027-10-15T09-00-00.000Z: all data, 1 document and 1 user from demo-node-site',
     );
     expect(listSchedules).not.toHaveBeenCalled();
     expect(result).toMatchObject({ ok: true });

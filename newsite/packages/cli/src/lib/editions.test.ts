@@ -24,7 +24,7 @@ afterEach(() => {
 
 describe('editions.json', () => {
   it('keeps the editions newest first, one per year', () => {
-    const repo = mkdtempSync(join(tmpdir(), 'hoverboard-editions-'));
+    const repo = mkdtempSync(join(tmpdir(), 'node-site-editions-'));
     repos.push(repo);
     mkdirSync(join(repo, 'packages/config'), { recursive: true });
     const edition = (year: number, projectId: string) => ({

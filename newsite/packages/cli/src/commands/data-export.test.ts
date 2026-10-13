@@ -60,7 +60,7 @@ describe('exportDocuments', () => {
     });
   });
 
-  it("also exports collections Hoverboard doesn't use with all", async () => {
+  it("also exports collections NODE site doesn't use with all", async () => {
     expect(paths(await exportDocuments(firestore, { all: true }))).toContain('schedule/2027-10-15');
   });
 
@@ -89,7 +89,7 @@ describe('runDataExport', () => {
   });
 
   it('writes the folder with a manifest, and says when it holds personal data', async () => {
-    const repo = mkdtempSync(join(tmpdir(), 'hoverboard-export-'));
+    const repo = mkdtempSync(join(tmpdir(), 'node-site-export-'));
     dirs.push(repo);
     mkdirSync(join(repo, '.git'));
     mkdirSync(join(repo, 'packages/config'), { recursive: true });
@@ -104,7 +104,7 @@ describe('runDataExport', () => {
 
     const { manifest } = readExport(join(repo, 'out'));
     expect(manifest).toMatchObject({
-      hoverboard: '4.0.0',
+      nodeSite: '4.0.0',
       schemaVersion: 1,
       projectId: 'fest-2027',
       command: 'hb data export out --production',

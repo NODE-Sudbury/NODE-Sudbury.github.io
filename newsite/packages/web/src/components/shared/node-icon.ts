@@ -4,7 +4,7 @@ import { ThemedComponent } from '../themed-component';
 import cloudOff from './icons/cloud-off';
 import cloudUpload from './icons/cloud-upload';
 
-// Lit replacement for the retired `<iron-icon icon="hoverboard:name">` Polymer iconset.
+// Lit replacement for the retired `<iron-icon icon="node-site:name">` Polymer iconset.
 // Each icon is its own module under ./icons so only the icons a page uses are loaded.
 const ICONS: Record<string, () => Promise<{ default: SVGTemplateResult }>> = {
   facebook: () => import('./icons/facebook'),

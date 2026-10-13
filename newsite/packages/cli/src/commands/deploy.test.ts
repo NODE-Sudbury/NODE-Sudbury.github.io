@@ -39,7 +39,7 @@ afterEach(() => {
 });
 
 const makeRepo = (features: Record<string, boolean> = {}): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, '.git'));
   writeFileSync(

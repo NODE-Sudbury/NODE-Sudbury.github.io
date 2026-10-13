@@ -86,7 +86,7 @@ describe('socialImageDesign', () => {
   let publicDir: string;
 
   beforeEach(() => {
-    publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-social-'));
+    publicDir = mkdtempSync(join(tmpdir(), 'node-site-social-'));
     mkdirSync(join(publicDir, 'images'));
     writeFileSync(join(publicDir, 'images/logo.svg'), '<svg width="2" height="1">light</svg>');
   });

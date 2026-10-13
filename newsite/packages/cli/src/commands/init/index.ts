@@ -260,7 +260,7 @@ export const runInit = async (options: InitOptions = {}): Promise<boolean> => {
     }
     if (!projects.webApps(projectId).length) {
       console.log(`Adding a web app to ${projectId}...`);
-      projects.createWebApp(projectId, 'Hoverboard');
+      projects.createWebApp(projectId, 'NODE site');
     }
   } catch (error) {
     console.log(`✘ ${error instanceof Error ? error.message : String(error)}`);

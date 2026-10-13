@@ -52,7 +52,7 @@ export const documentErrors = (documentPath: string, data: unknown): ErrorObject
 
 /**
  * The problems with a document of any collection in the registry, with values left out of visitor
- * data. A document Hoverboard doesn't use has none. `data` is JSON, as from {@link toJson}.
+ * data. A document NODE site doesn't use has none. `data` is JSON, as from {@link toJson}.
  */
 export const documentMessages = (
   documentPath: string,

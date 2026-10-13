@@ -1,8 +1,8 @@
 {
-  "name": "@hoverboard/functions",
+  "name": "@node-site/functions",
   "version": "0.1.0",
   "private": true,
-  "description": "Hoverboard serverless functions",
+  "description": "NODE site serverless functions",
   "main": "dist/src/index.js",
   "module": "dist/src/index.js",
   "type": "module",

@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 
 export const GET: APIRoute = () =>
   new Response(

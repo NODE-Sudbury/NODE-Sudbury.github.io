@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 const makeRepo = (): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, '.git'));
   vi.spyOn(process, 'cwd').mockReturnValue(dir);
@@ -40,7 +40,7 @@ describe('runEmulatorsSave', () => {
       [
         'emulators:export',
         './.firebase/emulator-data',
-        '--project=demo-hoverboard',
+        '--project=demo-node-site',
         '--only',
         'firestore',
         '--force',
@@ -50,7 +50,7 @@ describe('runEmulatorsSave', () => {
   });
 
   it('fails fast when no repository root can be found', () => {
-    const outsideRepo = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+    const outsideRepo = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
     dirsToClean.push(outsideRepo);
     vi.spyOn(process, 'cwd').mockReturnValue(outsideRepo);
     vi.spyOn(console, 'log').mockImplementation(() => undefined);

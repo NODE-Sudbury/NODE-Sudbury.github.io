@@ -14,7 +14,7 @@ const list = (names: string[]) => names.join(', ');
 const is = (names: unknown[]) => (names.length === 1 ? 'is' : 'are');
 
 /**
- * Warns when the project has an active Realtime Database. Hoverboard no longer uses one, and
+ * Warns when the project has an active Realtime Database. NODE site no longer uses one, and
  * deploys no longer set its rules. A disabled database serves no data, so it passes.
  */
 export const checkRealtimeDatabase = async (
@@ -29,7 +29,7 @@ export const checkRealtimeDatabase = async (
   try {
     instances = await listDatabaseInstances(repoRoot, projectId);
   } catch (error) {
-    if (apiDisabled(error)) return { name, ok: true, message: 'None, as Hoverboard expects.' };
+    if (apiDisabled(error)) return { name, ok: true, message: 'None, as NODE site expects.' };
     const reason = error instanceof Error ? error.message : String(error);
     return {
       name,
@@ -47,7 +47,7 @@ export const checkRealtimeDatabase = async (
       ok: true,
       warning: true,
       message:
-        `${list(active)} ${is(active)} active in ${projectId}, but Hoverboard no longer uses the ` +
+        `${list(active)} ${is(active)} active in ${projectId}, but NODE site no longer uses the ` +
         'Realtime Database, and deploys no longer set its rules. Export any data you still need, ' +
         'then disable or delete it in the Firebase console: ' +
         `https://console.firebase.google.com/project/${projectId}/database`,
@@ -61,5 +61,5 @@ export const checkRealtimeDatabase = async (
       message: `${list(disabled)} ${is(disabled)} disabled, so ${serves} no data.`,
     };
   }
-  return { name, ok: true, message: 'None, as Hoverboard expects.' };
+  return { name, ok: true, message: 'None, as NODE site expects.' };
 };

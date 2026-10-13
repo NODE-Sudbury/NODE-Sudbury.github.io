@@ -42,7 +42,7 @@ const details: SiteDetails = {
 
 let dir: string;
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'hoverboard-starter-'));
+  dir = mkdtempSync(join(tmpdir(), 'node-site-starter-'));
   cpSync(demo, dir, { recursive: true });
 });
 afterEach(() => rmSync(dir, { recursive: true, force: true }));

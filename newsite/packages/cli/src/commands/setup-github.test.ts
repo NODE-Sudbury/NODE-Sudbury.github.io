@@ -161,7 +161,7 @@ afterEach(() => {
 });
 
 const repoWithOrigin = (url: string) => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-git-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-git-'));
   dirs.push(dir);
   execFileSync('git', ['init', '-q'], { cwd: dir });
   execFileSync('git', ['remote', 'add', 'origin', url], { cwd: dir });

@@ -33,7 +33,7 @@ export const schedulePrecache = ({ site }: Pick<SiteConfig, 'site'>): string[] =
 
 /** Writes `service-worker.js` with Workbox once the pages are built, precaching `files` too. */
 export const serviceWorker = (files: string[] = []): AstroIntegration => ({
-  name: 'hoverboard-service-worker',
+  name: 'node-site-service-worker',
   hooks: {
     'astro:build:done': async ({ dir, logger }) => {
       const globDirectory = fileURLToPath(dir);

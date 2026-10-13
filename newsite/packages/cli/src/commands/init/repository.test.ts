@@ -46,9 +46,9 @@ const write = (path: string, content: string) => {
 
 beforeEach(() => {
   for (const [name, value] of Object.entries(env)) vi.stubEnv(name, value);
-  repo = mkdtempSync(join(tmpdir(), 'hoverboard-repo-'));
+  repo = mkdtempSync(join(tmpdir(), 'node-site-repo-'));
   run('init', '--quiet', '--initial-branch=main');
-  write('README.md', 'Hoverboard');
+  write('README.md', 'NODE site');
   write('.github/dependabot.yml', 'version: 2');
   run('add', '.');
   run('commit', '--quiet', '-m', 'feat: v4');
@@ -148,6 +148,6 @@ describe('setUpRepository', () => {
 describe('repositoryName', () => {
   it('makes a repository name from the short name', () => {
     expect(repositoryName('#DevFest Lviv 2027!')).toBe('devfest-lviv-2027');
-    expect(repositoryName('!!!')).toBe('hoverboard');
+    expect(repositoryName('!!!')).toBe('node-site');
   });
 });

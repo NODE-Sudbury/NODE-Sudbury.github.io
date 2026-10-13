@@ -1,4 +1,4 @@
-name: Upgrade Hoverboard
+name: Upgrade NODE site
 on:
   # Mondays, a few days after most releases.
   schedule:
@@ -7,7 +7,7 @@ on:
 permissions: {}
 jobs:
   upgrade:
-    # Hoverboard's own repository makes the releases.
+    # NODE site's own repository makes the releases.
     if: github.repository != 'gdg-x/hoverboard'
     runs-on: ubuntu-latest
     permissions:

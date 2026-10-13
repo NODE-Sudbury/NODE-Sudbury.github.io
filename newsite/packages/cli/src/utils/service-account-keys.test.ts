@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 const makeRepo = (files: Record<string, string>): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   for (const [file, content] of Object.entries(files)) writeFileSync(join(dir, file), content);
   return dir;
@@ -19,7 +19,7 @@ const makeRepo = (files: Record<string, string>): string => {
 
 describe('checkServiceAccountKeys', () => {
   it('passes when there are no key files', () => {
-    const repo = makeRepo({ 'package.json': '{ "name": "hoverboard" }', 'firebase.json': '{}' });
+    const repo = makeRepo({ 'package.json': '{ "name": "node-site" }', 'firebase.json': '{}' });
 
     expect(checkServiceAccountKeys(repo)).toEqual({
       name: 'Service account keys',

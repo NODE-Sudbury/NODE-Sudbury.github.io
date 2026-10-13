@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://hoverboard.dev/schemas/site.schema.json",
-  "title": "Hoverboard site config",
+  "title": "NODE site site config",
   "description": "packages/config/site.json. Only the values a site changes need to be set. Defaults come from packages/web/defaults/site.json.",
   "type": "object",
   "additionalProperties": false,
@@ -272,7 +272,7 @@
           "$ref": "#/$defs/themeColors"
         },
         "fonts": {
-          "description": "Overrides for the theme's fonts. Hoverboard assumes the site has the right to use them.",
+          "description": "Overrides for the theme's fonts. NODE site assumes the site has the right to use them.",
           "type": "object",
           "additionalProperties": false,
           "properties": {

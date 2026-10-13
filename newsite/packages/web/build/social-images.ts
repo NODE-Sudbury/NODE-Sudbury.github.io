@@ -23,7 +23,7 @@ export interface SocialFont {
   weight: number;
 }
 
-/** What `virtual:hoverboard/social-images` exports. */
+/** What `virtual:node-site/social-images` exports. */
 export interface SocialImageDesign {
   fonts: SocialFont[];
   /** The weight of titles and initials. */

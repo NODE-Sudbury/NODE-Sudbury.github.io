@@ -2,12 +2,12 @@ import { createConnection } from 'node:net';
 import { env } from 'node:process';
 import { type App, applicationDefault, getApps, initializeApp } from 'firebase-admin/app';
 import { type Firestore, getFirestore } from 'firebase-admin/firestore';
-import { site } from 'virtual:hoverboard/site';
+import { site } from 'virtual:node-site/site';
 
-const APP_NAME = 'hoverboard-build';
+const APP_NAME = 'node-site-build';
 const DEFAULT_EMULATOR_HOST = '127.0.0.1:8080';
 // `npm start` runs the emulators with this project and imports its data.
-const DEMO_PROJECT_ID = 'demo-hoverboard';
+const DEMO_PROJECT_ID = 'demo-node-site';
 
 /** Resolves when something listens on `host` (`hostname:port`), and rejects otherwise. */
 export const checkListening = (host: string, timeout = 2000): Promise<void> => {

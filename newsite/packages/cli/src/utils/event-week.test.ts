@@ -23,7 +23,7 @@ describe('confirmUpgradeTiming', () => {
   const during = new Date('2027-10-15T09:00:00Z');
 
   beforeEach(() => {
-    repo = mkdtempSync(join(tmpdir(), 'hoverboard-event-week-'));
+    repo = mkdtempSync(join(tmpdir(), 'node-site-event-week-'));
     mkdirSync(join(repo, 'packages', 'config'), { recursive: true });
     writeFileSync(join(repo, 'packages', 'config', 'site.json'), JSON.stringify({ event }));
     vi.spyOn(console, 'log').mockImplementation(() => undefined);

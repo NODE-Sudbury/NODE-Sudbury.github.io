@@ -13,7 +13,7 @@ import '../shared/node-icon';
 import '../ui/hb-icon-button';
 import '../ui/hb-sticker';
 
-const HOVERBOARD_URL = 'https://github.com/gdg-x/hoverboard';
+const NODE_SITE_URL = 'https://github.com/gdg-x/hoverboard';
 
 /** A full-width band with the event name, links, settings and the organizer. */
 @customElement('footer-block')
@@ -121,7 +121,7 @@ export class FooterBlock extends ThemedComponent {
             __HB_FEATURES__.forkMe
               ? html`<a
                   class="fork-me"
-                  href="${HOVERBOARD_URL}"
+                  href="${NODE_SITE_URL}"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

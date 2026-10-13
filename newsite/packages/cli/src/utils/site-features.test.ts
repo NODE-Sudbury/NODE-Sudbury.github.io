@@ -12,7 +12,7 @@ afterEach(() => {
 });
 
 const makeRepo = (defaults: object, site: object): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(dir);
   for (const [path, json] of [
     ['packages/web/defaults/site.json', defaults],

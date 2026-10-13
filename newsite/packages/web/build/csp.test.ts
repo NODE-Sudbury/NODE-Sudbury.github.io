@@ -176,7 +176,7 @@ describe('csp integration', () => {
   });
 
   const buildDone = (pages: Record<string, string>) => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-csp-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-csp-'));
     dirs.push(dir);
     for (const [file, html] of Object.entries(pages)) {
       mkdirSync(dirname(join(dir, file)), { recursive: true });

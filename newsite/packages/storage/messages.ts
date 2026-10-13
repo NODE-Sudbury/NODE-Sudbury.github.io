@@ -109,9 +109,9 @@ const message = (
       const name = String(params['additionalProperty'] ?? params['unevaluatedProperty']);
       const retired = RETIRED_FIELDS[definitionOf(error) ?? '']?.[name];
       if (retired) {
-        return `retired field "${join(field, name)}", which Hoverboard stopped reading in ${retired}.`;
+        return `retired field "${join(field, name)}", which NODE site stopped reading in ${retired}.`;
       }
-      return `unknown field "${join(field, name)}". Hoverboard doesn't read it.`;
+      return `unknown field "${join(field, name)}". NODE site doesn't read it.`;
     }
     case 'dependentRequired':
       return `"${join(field, String(params['property']))}" needs "${join(field, String(params['missingProperty']))}" too.`;
@@ -159,7 +159,7 @@ const message = (
 
 /**
  * Plain messages for Ajv's errors about one document, such as
- * `sessions/107: unknown field "extend". Hoverboard doesn't read it.` Ajv needs `verbose: true`,
+ * `sessions/107: unknown field "extend". NODE site doesn't read it.` Ajv needs `verbose: true`,
  * so each error has the data and the schema.
  */
 export const documentProblems = (

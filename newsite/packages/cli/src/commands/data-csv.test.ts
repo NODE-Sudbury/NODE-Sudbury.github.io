@@ -63,7 +63,7 @@ describe('runCsvExport', () => {
   });
 
   const tempDir = () => {
-    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-csv-'));
+    const dir = mkdtempSync(join(tmpdir(), 'node-site-csv-'));
     dirs.push(dir);
     return dir;
   };

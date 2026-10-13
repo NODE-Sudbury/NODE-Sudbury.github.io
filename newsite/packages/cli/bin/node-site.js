@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // Runs the CLI straight from TypeScript source via the local tsx dependency,
-// so no build step is required before `hoverboard` can be used.
+// so no build step is required before `node-site` can be used.
 const require = createRequire(import.meta.url);
 const tsxPackageDir = dirname(require.resolve('tsx/package.json'));
 const tsxCli = join(tsxPackageDir, require('tsx/package.json').bin);

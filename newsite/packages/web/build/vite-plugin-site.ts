@@ -21,25 +21,25 @@ import { sanitizeSvg } from './svg';
 import { socialImageDesign } from './social-images';
 import { darkLogoCss, demoThemesCss, type SiteTheme, themeCss } from './theme';
 
-export const SITE_MODULE = 'virtual:hoverboard/site';
+export const SITE_MODULE = 'virtual:node-site/site';
 const RESOLVED_SITE_MODULE = `\0${SITE_MODULE}`;
 // What the layout needs beyond the client config. Only `.astro` files import it.
-export const LAYOUT_MODULE = 'virtual:hoverboard/layout';
+export const LAYOUT_MODULE = 'virtual:node-site/layout';
 const RESOLVED_LAYOUT_MODULE = `\0${LAYOUT_MODULE}`;
 // The theme's `@font-face` rules and font variables. Only `.astro` files import it.
-export const FONTS_MODULE = 'virtual:hoverboard/fonts';
+export const FONTS_MODULE = 'virtual:node-site/fonts';
 const RESOLVED_FONTS_MODULE = `\0${FONTS_MODULE}`;
 // The fonts, colors and logo of the share images. Only server code imports it.
-export const SOCIAL_IMAGES_MODULE = 'virtual:hoverboard/social-images';
+export const SOCIAL_IMAGES_MODULE = 'virtual:node-site/social-images';
 const RESOLVED_SOCIAL_IMAGES_MODULE = `\0${SOCIAL_IMAGES_MODULE}`;
 // The app icon's file, which the icon pages resize. Only server code imports it.
-export const ICON_MODULE = 'virtual:hoverboard/icon';
+export const ICON_MODULE = 'virtual:node-site/icon';
 const RESOLVED_ICON_MODULE = `\0${ICON_MODULE}`;
-// One module per locale, `virtual:hoverboard/content/<locale>`, so each is its own chunk.
-export const CONTENT_MODULE = 'virtual:hoverboard/content/';
+// One module per locale, `virtual:node-site/content/<locale>`, so each is its own chunk.
+export const CONTENT_MODULE = 'virtual:node-site/content/';
 const RESOLVED_CONTENT_MODULE = `\0${CONTENT_MODULE}`;
 // The markdown that pages render at build time. Only server code imports it.
-export const MARKDOWN_MODULE = 'virtual:hoverboard/markdown';
+export const MARKDOWN_MODULE = 'virtual:node-site/markdown';
 const RESOLVED_MARKDOWN_MODULE = `\0${MARKDOWN_MODULE}`;
 
 /**
@@ -54,7 +54,7 @@ export const featureDefines = (features: Record<Feature, boolean>): Record<strin
 });
 
 /**
- * Serves the resolved config as `virtual:hoverboard/site`, the client's only source of config.
+ * Serves the resolved config as `virtual:node-site/site`, the client's only source of config.
  * `contentTranslations` lazy-loads each locale's event content translation.
  * Tests pass `defineFeatures: false` and set `globalThis.__HB_FEATURES__` so they can toggle flags.
  */
@@ -67,7 +67,7 @@ export const siteModule = (
     build = buildInfo(),
   } = {},
 ): Plugin => ({
-  name: 'hoverboard-site-module',
+  name: 'node-site-site-module',
   config: () => (defineFeatures ? { define: featureDefines(config.site.features) } : {}),
   resolveId: (id) => {
     if (id === SITE_MODULE) return RESOLVED_SITE_MODULE;
@@ -236,7 +236,7 @@ export const buildMarkdown = (
 };
 
 const markdownModule = (markdown: BuildMarkdown): Plugin => ({
-  name: 'hoverboard-markdown-module',
+  name: 'node-site-markdown-module',
   resolveId: (id) => (id === MARKDOWN_MODULE ? RESOLVED_MARKDOWN_MODULE : undefined),
   load: (id) =>
     id === RESOLVED_MARKDOWN_MODULE
@@ -261,7 +261,7 @@ export const site = (data: SiteConfig = resolveConfig()): PluginOption[] => {
     siteModule({ ...data, contentTranslations: markdown.contentTranslations }),
     markdownModule(buildMarkdown(CONFIG_PATHS.site, compileTemplate)),
     clientOnly<Plugin>({
-      name: 'hoverboard-localized-markdown',
+      name: 'node-site-localized-markdown',
       generateBundle() {
         for (const { fileName, source } of markdown.files) {
           this.emitFile({ type: 'asset', fileName, source });

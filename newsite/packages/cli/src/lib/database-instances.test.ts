@@ -12,7 +12,7 @@ afterEach(() => {
 
 /** A repo with a fake firebase-tools that has just the internals listDatabaseInstances uses. */
 const makeRepo = (instances: object[]): string => {
-  const repo = mkdtempSync(join(tmpdir(), 'hoverboard-cli-'));
+  const repo = mkdtempSync(join(tmpdir(), 'node-site-cli-'));
   dirsToClean.push(repo);
   const lib = join(repo, 'node_modules', 'firebase-tools', 'lib');
   mkdirSync(join(lib, 'management'), { recursive: true });

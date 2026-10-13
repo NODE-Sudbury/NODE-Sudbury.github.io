@@ -23,7 +23,7 @@ afterEach(() => {
 });
 
 const makeRepo = (site: Record<string, unknown>): string => {
-  const dir = mkdtempSync(join(tmpdir(), 'hoverboard-upgrade-'));
+  const dir = mkdtempSync(join(tmpdir(), 'node-site-upgrade-'));
   dirsToClean.push(dir);
   mkdirSync(join(dir, '.git'));
   mkdirSync(join(dir, 'packages/config'), { recursive: true });
@@ -60,12 +60,12 @@ describe('runUpgrade', () => {
     expect(runDataCheckMock).not.toHaveBeenCalled();
   });
 
-  it('refuses a site.json newer than this Hoverboard', async () => {
+  it('refuses a site.json newer than this NODE site', async () => {
     makeRepo({ schemaVersion: 4 });
     const text = output();
 
     expect(await runUpgrade({}, migrations)).toBe(false);
-    expect(text()).toContain('schemaVersion 4, newer than this Hoverboard (3)');
+    expect(text()).toContain('schemaVersion 4, newer than this NODE site (3)');
   });
 
   it('runs the pending config migrations in order, then the Firestore fixes', async () => {

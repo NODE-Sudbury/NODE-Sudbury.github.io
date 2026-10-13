@@ -1,6 +1,6 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import sharp from 'sharp';
-import { iconFile } from 'virtual:hoverboard/icon';
+import { iconFile } from 'virtual:node-site/icon';
 import { ICON_SIZES } from '../../../data/icons';
 
 export const getStaticPaths = (() =>
