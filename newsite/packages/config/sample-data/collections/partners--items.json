@@ -1,0 +1,32 @@
+{
+  "partners/0/items/000": {
+    "order": 0,
+    "logoUrl": "/images/node/partners/foundry.jpg",
+    "name": "Laurentian University Foundry",
+    "url": "https://laurentian.ca/research/fielding-innovation-centre/foundry"
+  },
+  "partners/0/items/001": {
+    "order": 1,
+    "logoUrl": "/images/node/partners/gdg-sudbury.jpg",
+    "name": "GDG Sudbury",
+    "url": "https://gdg.community.dev/gdg-sudbury/"
+  },
+  "partners/0/items/002": {
+    "order": 2,
+    "logoUrl": "/images/node/partners/norcat.jpg",
+    "name": "Norcat",
+    "url": "https://www.norcat.org/"
+  },
+  "partners/0/items/003": {
+    "order": 3,
+    "logoUrl": "/images/node/partners/cursor.jpg",
+    "name": "Cursor Sudbury",
+    "url": "https://luma.com/spacexai-sudbury?period=past"
+  },
+  "partners/1/items/000": {
+    "order": 0,
+    "logoUrl": "/images/node/partners/your-logo-here.jpg",
+    "name": "Your logo here",
+    "url": "mailto:hello@nodesudbury.com"
+  }
+}
