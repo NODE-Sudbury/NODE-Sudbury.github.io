@@ -127,3 +127,13 @@ describe('speaker-card', () => {
     );
   });
 });
+
+describe('speaker-card without a link', () => {
+  it('is not a link when it has no page of its own', async () => {
+    const card = await fixture<SpeakerCard>(
+      html`<speaker-card .speaker="${speaker}" .linked="${false}"></speaker-card>`,
+    );
+
+    expect(card.shadowRoot!.querySelector('hb-card')).not.toHaveAttribute('href');
+  });
+});

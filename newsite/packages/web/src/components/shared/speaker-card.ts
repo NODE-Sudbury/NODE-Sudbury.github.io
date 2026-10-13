@@ -1,6 +1,7 @@
 import { css, html, nothing } from 'lit';
 import { displayFont } from '../../styles/shared';
 import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import type { Speaker } from '../../models/speaker';
 import { speakerPath } from '../../utils/navigation';
@@ -126,6 +127,10 @@ export class SpeakerCard extends ThemedComponent {
   @property()
   accessor href: string | undefined;
 
+  /** Whether the card is a link. Off for a person who has no page of their own. */
+  @property({ type: Boolean })
+  accessor linked = true;
+
   /** Names the photo for the view transition to the same photo on the linked page. */
   @property({ attribute: 'transition-name' })
   accessor transitionName: string | undefined;
@@ -141,7 +146,10 @@ export class SpeakerCard extends ThemedComponent {
       .slice(0, ANGLES.length);
     const meta = [speaker.company, speaker.country].filter(Boolean).join(' · ');
     return html`
-      <hb-card href="${this.href ?? speakerPath(speaker.id)}" label="${speaker.name}">
+      <hb-card
+        href="${ifDefined(this.linked ? (this.href ?? speakerPath(speaker.id)) : undefined)}"
+        label="${speaker.name}"
+      >
         <div class="content">
           <div class="photo-frame">
             <speaker-photo
