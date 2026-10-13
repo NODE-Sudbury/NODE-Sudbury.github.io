@@ -71,7 +71,9 @@ const PAGES: Record<Page, () => PageText> = {
   }),
   schedule: () => ({
     title: msg('Events', { id: 'pages.schedule.title' }),
-    metaDescription: msg('Choose your sessions to visit', { id: 'pages.schedule.description' }),
+    metaDescription: msg('See the upcoming and past events from NODE and our partners', {
+      id: 'pages.schedule.description',
+    }),
   }),
   speakers: () => ({
     title: msg('Speakers', { id: 'pages.speakers.title' }),
@@ -82,7 +84,7 @@ const PAGES: Record<Page, () => PageText> = {
   }),
   team: () => ({
     title: msg('Board', { id: 'pages.team.title' }),
-    metaDescription: msg('Get more info about organizers', { id: 'pages.team.description' }),
+    metaDescription: msg('Meet the NODE board and volunteers', { id: 'pages.team.description' }),
   }),
 };
 

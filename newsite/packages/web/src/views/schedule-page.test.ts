@@ -52,7 +52,7 @@ describe('schedule-page', () => {
   it('sets the page metadata and titles the page', async () => {
     const { shadowRoot } = await render();
 
-    expect(updateMetadata).toHaveBeenCalledWith('Events', 'Choose your sessions to visit');
+    expect(updateMetadata).toHaveBeenCalledWith('Events', 'See the upcoming and past events from NODE and our partners');
     expect(shadowRoot.querySelector('simple-hero')).toHaveAttribute('page', 'schedule');
   });
 
@@ -62,7 +62,7 @@ describe('schedule-page', () => {
   ])('gives %s its own title', async (pathname, params, title) => {
     await render({ location: { pathname, search: '', params } });
 
-    expect(updateMetadata).toHaveBeenLastCalledWith(title, 'Choose your sessions to visit');
+    expect(updateMetadata).toHaveBeenLastCalledWith(title, 'See the upcoming and past events from NODE and our partners');
   });
 
   it('shows the progress indicator while the schedule is pending', async () => {

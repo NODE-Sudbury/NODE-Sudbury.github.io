@@ -36,7 +36,7 @@ Sessions are held at the Norcat Innovation Hub, 1545 Maley Dr, Greater Sudbury, 
 
 ### When do the hackathons and meetups happen?
 
-Dates are still to be announced. Check the [schedule](/schedule) for updates.
+Dates are still to be announced. Check the [events page](/events) for updates.
 
 ### How do I stay informed?
 

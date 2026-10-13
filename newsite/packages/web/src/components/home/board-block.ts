@@ -53,7 +53,7 @@ export class BoardBlock extends ThemedComponent {
         <div class="band-header">
           <h2 class="band-title">${msg('Board Members', { id: 'home.board-block.title' })}</h2>
           <hb-button variant="outlined" class="cta-button" href="/team" trailing-icon>
-            ${msg('Board & Teams', { id: 'home.board-block.cta' })}
+            ${msg('Meet the Board', { id: 'home.board-block.cta' })}
             <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>

@@ -276,7 +276,7 @@
   <source>Board Members</source>
 </trans-unit>
 <trans-unit id="home.board-block.cta">
-  <source>Board &amp; Teams</source>
+  <source>Meet the Board</source>
 </trans-unit>
 <trans-unit id="home.featured-videos.previous">
   <source>Previous videos</source>
@@ -861,7 +861,7 @@
   <source>Events</source>
 </trans-unit>
 <trans-unit id="pages.schedule.description">
-  <source>Choose your sessions to visit</source>
+  <source>See the upcoming and past events from NODE and our partners</source>
 </trans-unit>
 <trans-unit id="pages.speakers.title">
   <source>Speakers</source>
@@ -873,7 +873,7 @@
   <source>Board</source>
 </trans-unit>
 <trans-unit id="pages.team.description">
-  <source>Get more info about organizers</source>
+  <source>Meet the NODE board and volunteers</source>
 </trans-unit>
 <trans-unit id="event.online">
   <source>Online</source>

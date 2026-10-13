@@ -39,7 +39,7 @@ describe('team-page', () => {
   it('opens with the team photo and story', async () => {
     const { shadowRoot } = await render();
 
-    expect(updateMetadata).toHaveBeenCalledWith('Team', 'Get more info about organizers');
+    expect(updateMetadata).toHaveBeenCalledWith('Board', 'Meet the NODE board and volunteers');
     expect(screen.getByShadowRole('img', { name: 'The team' })).toHaveAttribute(
       'src',
       aboutOrganizerBlock.image,
