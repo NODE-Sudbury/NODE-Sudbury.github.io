@@ -13,7 +13,7 @@ const { sessions, speakers } = await loadContent();
 const content = seedPage({ sessions, speakers });
 ---
 
-<Base {...pageMetadata('schedule', scheduleDetail(location))} content={content}>
+<Base {...pageMetadata('schedule', scheduleDetail(location))} content={content} noindex>
   <SchedulePage location={location} client:load>
     <MySchedule client:load />
   </SchedulePage>
