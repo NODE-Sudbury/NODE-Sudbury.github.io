@@ -7,26 +7,6 @@ import { basepath } from './config/site';
 if ('serviceWorker' in navigator) {
   const workbox = new Workbox('service-worker.js', { scope: basepath });
 
-  workbox.addEventListener('installing', () => {
-    store.dispatch(
-      queueSnackbar(
-        msg('App being installed for offline use.', { id: 'shell.service-worker.installing' }),
-      ),
-    );
-  });
-
-  workbox.addEventListener('installed', (event) => {
-    if (!event.isUpdate) {
-      store.dispatch(
-        queueSnackbar(
-          msg('App is now installed and available offline.', {
-            id: 'shell.service-worker.installed',
-          }),
-        ),
-      );
-    }
-  });
-
   // The new worker waits until the user opts in so open tabs never run
   // against precached assets deleted by the new version.
   workbox.addEventListener('waiting', () => {

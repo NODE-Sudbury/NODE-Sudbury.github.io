@@ -728,12 +728,6 @@
 <trans-unit id="social-image.speaker.alt">
   <source>Speaker at <x id="0" equiv-text="${shortName}"/></source>
 </trans-unit>
-<trans-unit id="shell.service-worker.installing">
-  <source>App being installed for offline use.</source>
-</trans-unit>
-<trans-unit id="shell.service-worker.installed">
-  <source>App is now installed and available offline.</source>
-</trans-unit>
 <trans-unit id="shell.service-worker.available">
   <source>A new version of this app is available.</source>
 </trans-unit>

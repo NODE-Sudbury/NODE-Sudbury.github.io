@@ -46,24 +46,12 @@ describe('service-worker-registration', () => {
     expect(mocks.listeners.size).toBeGreaterThan(0);
   });
 
-  it('queues a snackbar on first install', () => {
+  it('does not announce the first install or an update, or a worker that starts installing', () => {
     mocks.emit('installed', { isUpdate: false });
-
-    expect(dispatch).toHaveBeenCalledWith(
-      queueSnackbar('App is now installed and available offline.'),
-    );
-  });
-
-  it('does not queue the installed snackbar for an update', () => {
     mocks.emit('installed', { isUpdate: true });
-
-    expect(dispatch).not.toHaveBeenCalled();
-  });
-
-  it('queues a snackbar when a worker starts installing', () => {
     mocks.emit('installing');
 
-    expect(dispatch).toHaveBeenCalledWith(queueSnackbar('App being installed for offline use.'));
+    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('prompts to activate a waiting worker and reloads once it takes control', () => {
