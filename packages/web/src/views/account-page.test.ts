@@ -110,10 +110,20 @@ describe('account-page', () => {
     expect(fetchOwnProfile).toHaveBeenCalledWith('user-1');
     expect(field(shadowRoot, 'fullName').value).toBe('Ada Lovelace');
     expect(field(shadowRoot, 'handle').value).toBe('ada');
-    expect(screen.getByShadowRole('link', { name: '/members/ada' })).toHaveAttribute(
-      'href',
-      '/members/ada',
-    );
+    expect(shadowRoot).toHaveTextContent('Your public page is live');
+    expect(shadowRoot).toHaveTextContent('/members/ada');
+    expect(
+      screen.getByShadowRole('link', { name: 'Open your public page in a new tab' }),
+    ).toHaveAttribute('href', '/members/ada');
+  });
+
+  it('says the profile is private, with no link, when it is not public', async () => {
+    const { shadowRoot } = await renderSignedIn({ ...own, isPublic: false });
+
+    expect(shadowRoot).toHaveTextContent('Your profile is private');
+    expect(
+      screen.queryByShadowRole('link', { name: 'Open your public page in a new tab' }),
+    ).toBeNull();
   });
 
   it('asks a student for a program and school instead of a job', async () => {
@@ -202,12 +212,12 @@ describe('account-page', () => {
   });
 
   it('points a member with no handle to the address older links use', async () => {
-    await renderSignedIn({ ...own, handle: '' });
+    const { shadowRoot } = await renderSignedIn({ ...own, handle: '' });
 
-    expect(screen.getByShadowRole('link', { name: '/profile/user-1' })).toHaveAttribute(
-      'href',
-      '/profile/user-1',
-    );
+    expect(shadowRoot).toHaveTextContent('/profile/user-1');
+    expect(
+      screen.getByShadowRole('link', { name: 'Open your public page in a new tab' }),
+    ).toHaveAttribute('href', '/profile/user-1');
   });
 
   it('checks that a new handle is free and says so', async () => {

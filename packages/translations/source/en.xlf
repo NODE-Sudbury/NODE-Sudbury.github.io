@@ -959,8 +959,26 @@
 <trans-unit id="pages.account.visible">
   <source>Show my profile to everyone</source>
 </trans-unit>
-<trans-unit id="pages.account.your-page">
-  <source>Your page:</source>
+<trans-unit id="pages.account.saving">
+  <source>Saving...</source>
+</trans-unit>
+<trans-unit id="pages.account.save">
+  <source>Save profile</source>
+</trans-unit>
+<trans-unit id="pages.account.share-private">
+  <source>Your profile is private</source>
+</trans-unit>
+<trans-unit id="pages.account.share-private-body">
+  <source>Only you can see it right now. Turn on "Show my profile to everyone" below, then save, to get a link you can share.</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live">
+  <source>Your public page is live</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live-body">
+  <source>Share this link on your CV, your LinkedIn or at an event. Anyone can see your photo, name, role, links and bio. Your email stays private.</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live-body-id">
+  <source>Choose a handle below, then save, to get a short link like /members/your-name. Until then this link works.</source>
 </trans-unit>
 <trans-unit id="pages.account.copied">
   <source>Copied</source>
@@ -968,14 +986,8 @@
 <trans-unit id="pages.account.copy">
   <source>Copy link</source>
 </trans-unit>
-<trans-unit id="pages.account.handle-suggest">
-  <source>Choose a handle for a short address like /members/your-name.</source>
-</trans-unit>
-<trans-unit id="pages.account.saving">
-  <source>Saving...</source>
-</trans-unit>
-<trans-unit id="pages.account.save">
-  <source>Save profile</source>
+<trans-unit id="pages.account.open-page">
+  <source>Open your public page in a new tab</source>
 </trans-unit>
 <trans-unit id="pages.account.handle-needed">
   <source>Choose a handle to show your profile to everyone.</source>

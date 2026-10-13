@@ -5,9 +5,11 @@ import { customElement, state } from 'lit/decorators.js';
 import '../components/hero/hero-block';
 import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
+import '../components/shared/node-icon';
 import '../components/shared/speaker-photo';
 import '../components/ui/hb-button';
 import '../components/ui/hb-chip';
+import '../components/ui/hb-icon-button';
 import '../components/ui/hb-progress';
 import '../components/ui/hb-switch';
 import '../components/ui/hb-text-field';
@@ -177,6 +179,71 @@ export class AccountPage extends ThemedComponent {
         display: none;
       }
 
+      .share {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--hb-space-4) var(--hb-space-6);
+        max-inline-size: 40rem;
+        margin-block-end: var(--hb-space-6);
+        padding: var(--hb-space-5);
+        border: var(--hb-border-width) solid var(--hb-border-color);
+        border-radius: var(--hb-radius-l);
+        background-color: var(--hb-panel-background);
+        box-shadow: var(--hb-shadow-card);
+      }
+
+      .share-text {
+        display: grid;
+        flex: 1 1 18rem;
+        gap: var(--hb-space-2);
+        min-inline-size: 0;
+      }
+
+      .share-title {
+        margin: 0;
+        ${displayFont('heading', 'lg', 1.2)};
+      }
+
+      .share-body {
+        margin: 0;
+        color: var(--hb-color-on-surface-variant);
+        font-size: var(--hb-text-sm);
+        line-height: 1.5;
+      }
+
+      .share-link {
+        display: flex;
+        align-items: center;
+        gap: var(--hb-space-2);
+        min-inline-size: 0;
+        margin-block-start: var(--hb-space-1);
+        padding: var(--hb-space-2) var(--hb-space-3);
+        border-radius: var(--hb-radius-m);
+        background-color: var(--hb-color-surface-container);
+        font-family: var(--hb-font-mono);
+        font-size: var(--hb-text-sm);
+      }
+
+      .share-link node-icon {
+        flex: none;
+        inline-size: 1.25rem;
+        block-size: 1.25rem;
+        color: var(--hb-color-on-surface-variant);
+      }
+
+      .share-link span {
+        min-inline-size: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .share-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--hb-space-2);
+      }
+
       .signed-out {
         display: grid;
         justify-items: start;
@@ -198,6 +265,8 @@ export class AccountPage extends ThemedComponent {
   private accessor errors: Errors = {};
   @state()
   private accessor savedPath = '';
+  @state()
+  private accessor savedPublic = true;
   // False on the server and in the first render, so hydration matches whoever is signed in.
   @state()
   private accessor ready = false;
@@ -240,6 +309,7 @@ export class AccountPage extends ThemedComponent {
       const own = await fetchOwnProfile(uid);
       this.form = own ?? EMPTY;
       this.savedPath = own ? publicPath(own) : '';
+      this.savedPublic = own?.isPublic ?? true;
       this.savedHandle = own?.handle ?? '';
     } catch {
       store.dispatch(queueSnackbar(this.generalError()));
@@ -303,6 +373,7 @@ export class AccountPage extends ThemedComponent {
     const student = form.memberType === 'student';
     return html`
       <hb-progress ?hidden="${!this.loading}"></hb-progress>
+      ${this.renderShare()}
       <form @submit="${(event: Event) => event.preventDefault()}" ?inert="${this.loading}">
         <fieldset>
           <legend>${msg('Photo', { id: 'pages.account.photo' })}</legend>
@@ -432,30 +503,6 @@ export class AccountPage extends ThemedComponent {
           >
             ${msg('Show my profile to everyone', { id: 'pages.account.visible' })}
           </hb-switch>
-          ${
-            this.savedPath
-              ? html`<p class="address">
-                  ${msg('Your page:', { id: 'pages.account.your-page' })}
-                  <a href="${this.savedPath}">${this.savedPath}</a>
-                  <hb-button variant="text" @click="${this.copyLink}">
-                    ${
-                      this.copied
-                        ? msg('Copied', { id: 'pages.account.copied' })
-                        : msg('Copy link', { id: 'pages.account.copy' })
-                    }
-                  </hb-button>
-                </p>`
-              : nothing
-          }
-          ${
-            form.isPublic && !form.handle
-              ? html`<p class="note">
-                  ${msg('Choose a handle for a short address like /members/your-name.', {
-                    id: 'pages.account.handle-suggest',
-                  })}
-                </p>`
-              : nothing
-          }
         </fieldset>
 
         <div class="actions">
@@ -469,6 +516,72 @@ export class AccountPage extends ThemedComponent {
         </div>
       </form>
     `;
+  }
+
+  /**
+   * Where the public page is, at the top of the page where it is easy to find: the link, a button
+   * to copy it and one to open it. What it says depends on what is saved, not on unsaved edits.
+   */
+  private renderShare() {
+    const address = this.savedPath ? `${window.location.host}${this.savedPath}` : '';
+    if (!this.savedPublic || !this.savedPath) {
+      return html`<section class="share" aria-labelledby="share-title">
+        <div class="share-text">
+          <h2 class="share-title" id="share-title">
+            ${msg('Your profile is private', { id: 'pages.account.share-private' })}
+          </h2>
+          <p class="share-body">
+            ${msg(
+              'Only you can see it right now. Turn on "Show my profile to everyone" below, then save, to get a link you can share.',
+              { id: 'pages.account.share-private-body' },
+            )}
+          </p>
+        </div>
+      </section>`;
+    }
+    const hasHandle = this.savedPath.startsWith('/members/');
+    return html`<section class="share" aria-labelledby="share-title">
+      <div class="share-text">
+        <h2 class="share-title" id="share-title">
+          ${msg('Your public page is live', { id: 'pages.account.share-live' })}
+        </h2>
+        <p class="share-body">
+          ${
+            hasHandle
+              ? msg(
+                  'Share this link on your CV, your LinkedIn or at an event. Anyone can see your photo, name, role, links and bio. Your email stays private.',
+                  { id: 'pages.account.share-live-body' },
+                )
+              : msg(
+                  'Choose a handle below, then save, to get a short link like /members/your-name. Until then this link works.',
+                  { id: 'pages.account.share-live-body-id' },
+                )
+          }
+        </p>
+        <div class="share-link">
+          <node-icon name="link"></node-icon>
+          <span>${address}</span>
+        </div>
+      </div>
+      <div class="share-actions">
+        <hb-button variant="outlined" @click="${this.copyLink}">
+          <node-icon slot="icon" name="copy"></node-icon>
+          ${
+            this.copied
+              ? msg('Copied', { id: 'pages.account.copied' })
+              : msg('Copy link', { id: 'pages.account.copy' })
+          }
+        </hb-button>
+        <hb-icon-button
+          variant="tonal"
+          href="${this.savedPath}"
+          target="_blank"
+          label="${msg('Open your public page in a new tab', { id: 'pages.account.open-page' })}"
+        >
+          <node-icon name="open-in-new"></node-icon>
+        </hb-icon-button>
+      </div>
+    </section>`;
   }
 
   private setForm(values: Partial<MemberProfile>) {
@@ -630,6 +743,7 @@ export class AccountPage extends ThemedComponent {
       await saveOwnProfile(this.user.data.uid, result.profile);
       this.form = result.profile;
       this.savedPath = publicPath(result.profile);
+      this.savedPublic = result.profile.isPublic;
       this.savedHandle = result.profile.handle;
       this.handleStatus = 'idle';
       store.dispatch(queueSnackbar(msg('Profile saved.', { id: 'pages.account.saved' })));
