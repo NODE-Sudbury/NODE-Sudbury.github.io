@@ -9,14 +9,16 @@ import '../ui/hb-chip';
 
 const MAX_TAGS = 6;
 
-/** "Sat, Nov 28, 2026" in the event's own time zone. */
-export const eventDate = (event: Pick<CommunityEvent, 'start' | 'timezone'>) =>
-  new Date(event.start).toLocaleDateString('en-CA', {
+/** "Sat, Nov 28, 2026, 8:30 a.m." in the given time zone, else the event's own. */
+export const eventDate = (event: Pick<CommunityEvent, 'start' | 'timezone'>, zone?: string) =>
+  new Date(event.start).toLocaleString('en-CA', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-    timeZone: event.timezone,
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: zone ?? event.timezone,
   });
 
 /** "Collège Boréal - Sudbury, Greater Sudbury", "Online", or nothing when the venue is unknown. */
@@ -116,6 +118,10 @@ export class EventCard extends ThemedComponent {
   @property({ attribute: false })
   accessor event!: CommunityEvent;
 
+  /** The time zone to show the start in. Defaults to the event's own. */
+  @property()
+  accessor zone: string | undefined;
+
   /** The name's heading level: 2 right under the page title, 3 under a section heading. */
   @property({ type: Number, attribute: 'heading-level' })
   accessor headingLevel: 2 | 3 = 3;
@@ -123,7 +129,7 @@ export class EventCard extends ThemedComponent {
   override render() {
     const { event } = this;
     const place = eventPlace(event);
-    const meta = [eventDate(event), place].filter(Boolean).join(' · ');
+    const meta = [eventDate(event, this.zone), place].filter(Boolean).join(' · ');
     const tags = [...new Set(event.tags)].slice(0, MAX_TAGS);
     const stats = [
       event.rsvpCount ? `${event.rsvpCount} ${event.rsvpCount === 1 ? 'person' : 'people'} signed up` : '',
