@@ -8,7 +8,7 @@ const event = (id: string, start: string, end?: string): CommunityEvent => ({
   category: 'Community Events',
   title: id,
   start,
-  end,
+  ...(end ? { end } : {}),
   online: false,
   url: `https://example.org/${id}`,
   rsvpUrl: `https://example.org/${id}`,
