@@ -68,8 +68,10 @@ node_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# dotenv environment variables files: the Supabase keys stay out of git
 .env
+.env.*
+!.env.example
 
 # Custom
 dist/

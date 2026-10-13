@@ -36,6 +36,7 @@
     "@lit-labs/observers": "^2.1.0",
     "@lit/localize": "^0.12.2",
     "@reduxjs/toolkit": "^2.13.0",
+    "@supabase/supabase-js": "^2.117.3",
     "dompurify": "^3.4.16",
     "firebase": "^12.19.0",
     "lit": "^3.3.3",
