@@ -9,7 +9,7 @@ import { type CalendarEvent, downloadIcs, sessionToCalendarEvent } from '../../u
 import { getScheduleDay } from '../../utils/dates';
 import { sessionPath } from '../../utils/navigation';
 import '../../components/shared/auth-required';
-import '../../components/shared/hoverboard-icon';
+import '../../components/shared/node-icon';
 import '../../components/ui/hb-button';
 import './schedule-day';
 import { fromStore } from '../../controllers/from-store';
@@ -107,7 +107,7 @@ export class MySchedule extends ThemedComponent {
           saved
             ? html`<div class="export">
                 <hb-button variant="outlined" @click="${this.download}">
-                  <hoverboard-icon slot="icon" name="calendar"></hoverboard-icon>
+                  <node-icon slot="icon" name="calendar"></node-icon>
                   ${msg('Add my sessions to calendar', { id: 'schedule.my-schedule.export' })}
                 </hb-button>
                 <p class="hint">

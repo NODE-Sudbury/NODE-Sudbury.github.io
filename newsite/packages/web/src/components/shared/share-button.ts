@@ -3,7 +3,7 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
-import './hoverboard-icon';
+import './node-icon';
 
 @customElement('share-button')
 export class ShareButton extends ThemedComponent {
@@ -35,7 +35,7 @@ export class ShareButton extends ThemedComponent {
 
     return html`
       <hb-button variant="outlined" @click="${this.share}">
-        <hoverboard-icon slot="icon" name="share"></hoverboard-icon>
+        <node-icon slot="icon" name="share"></node-icon>
         ${msg('Share', { id: 'shared.share-button.label', desc: 'Shares the session.' })}
       </hb-button>
     `;

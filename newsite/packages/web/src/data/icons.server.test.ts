@@ -6,7 +6,7 @@ import { afterAll, describe, expect, it, vi } from 'vitest';
 import { GET, getStaticPaths } from '../pages/images/manifest/icon-[size].png';
 import { ICON_SIZES } from './icons';
 
-const dir = mkdtempSync(join(tmpdir(), 'hoverboard-icon-'));
+const dir = mkdtempSync(join(tmpdir(), 'node-icon-'));
 const icon = { file: join(dir, 'icon.svg') };
 // A wide SVG with a tiny viewBox, the hardest case to keep sharp and square.
 writeFileSync(

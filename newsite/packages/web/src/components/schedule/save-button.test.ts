@@ -50,7 +50,7 @@ describe('save-button', () => {
 
     expect(button).toHaveAttribute('label', 'Save Example Session');
     expect(button.pressed).toBe(true);
-    expect(button.querySelector('hoverboard-icon')).toHaveAttribute('name', 'star-filled');
+    expect(button.querySelector('node-icon')).toHaveAttribute('name', 'star-filled');
   });
 
   it('has an outlined star for a session that is not saved', async () => {
@@ -58,7 +58,7 @@ describe('save-button', () => {
     const button = shadowRoot.querySelector('hb-icon-button')!;
 
     expect(button.pressed).toBe(false);
-    expect(button.querySelector('hoverboard-icon')).toHaveAttribute('name', 'star');
+    expect(button.querySelector('node-icon')).toHaveAttribute('name', 'star');
   });
 
   it('says whether the session is saved as a button', async () => {
@@ -70,7 +70,7 @@ describe('save-button', () => {
 
     expect(button).toHaveTextContent(/^Save$/);
     expect(button).toHaveAttribute('variant', 'filled');
-    expect(button.querySelector('hoverboard-icon')).toHaveAttribute('slot', 'icon');
+    expect(button.querySelector('node-icon')).toHaveAttribute('slot', 'icon');
 
     element.featuredSessions = new Success({ 'session-1': true });
     await element.updateComplete;

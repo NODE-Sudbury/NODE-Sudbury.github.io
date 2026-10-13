@@ -10,7 +10,7 @@ import { subscribe, type SubscribeState } from '../../store/subscribe';
 import { needsNetworkMessage, selectOnline } from '../../store/sync';
 import type { UserState } from '../../store/user';
 import { band } from '../../styles/band';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-text-field';
@@ -72,7 +72,7 @@ export class SubscribeBlock extends ThemedComponent {
         font-weight: 600;
       }
 
-      .subscribed hoverboard-icon {
+      .subscribed node-icon {
         inline-size: 28px;
         block-size: 28px;
       }
@@ -131,7 +131,7 @@ export class SubscribeBlock extends ThemedComponent {
   private renderSubscribed() {
     return html`
       <p class="subscribed" role="status">
-        <hoverboard-icon name="checked"></hoverboard-icon>
+        <node-icon name="checked"></node-icon>
         ${msg('Subscribed', { id: 'common.subscribed' })}
       </p>
     `;

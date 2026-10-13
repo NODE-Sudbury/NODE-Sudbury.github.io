@@ -8,7 +8,7 @@ import { type FilterGroup, FilterGroupKey } from '../../models/filter-group';
 import { clearFilters, toggleFilter } from '../../utils/filters';
 import { getLocale } from '../../utils/localization';
 import { generateClassName, tagChipStyle } from '../../utils/styles';
-import './hoverboard-icon';
+import './node-icon';
 import '../ui/hb-button';
 import '../ui/hb-chip';
 import { ThemedComponent } from '../themed-component';
@@ -137,8 +137,8 @@ export class FilterMenu extends ThemedComponent {
           @click="${this.toggleBoard}"
         >
           ${msg('Filters', { id: 'shared.filter-menu.title' })}
-          <hoverboard-icon slot="icon" name="${this.opened ? 'close' : 'filter-list'}">
-          </hoverboard-icon>
+          <node-icon slot="icon" name="${this.opened ? 'close' : 'filter-list'}">
+          </node-icon>
         </hb-button>
         ${
           selected.length

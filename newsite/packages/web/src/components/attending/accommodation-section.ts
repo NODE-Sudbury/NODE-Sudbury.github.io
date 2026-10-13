@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import { attendingPage } from '../../config/site';
 import { store } from '../../store';
 import { queueSnackbar } from '../../store/snackbars';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-icon-button';
@@ -82,7 +82,7 @@ export class AccommodationSection extends ThemedComponent {
               ${hotels.map(
                 ({ name, address, note, code, url }) => html`
                   <li class="hotel">
-                    <hoverboard-icon name="hotel"></hoverboard-icon>
+                    <node-icon name="hotel"></node-icon>
                     <div>
                       <h3>${name}</h3>
                       ${address ? html`<address>${address}</address>` : nothing} ${markdown(note)}
@@ -118,7 +118,7 @@ export class AccommodationSection extends ThemedComponent {
           label="${msg(str`Copy ${code}`, { id: 'attending.accommodation.copy' })}"
           @click="${() => this.copy(code)}"
         >
-          <hoverboard-icon name="copy"></hoverboard-icon>
+          <node-icon name="copy"></node-icon>
         </hb-icon-button>
       </p>
     `;

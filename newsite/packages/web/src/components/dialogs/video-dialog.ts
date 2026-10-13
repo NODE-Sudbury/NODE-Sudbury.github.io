@@ -3,7 +3,7 @@ import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { selectOnline, availableOnlineMessage } from '../../store/sync';
 import { closeVideoDialog, initialUiState } from '../../store/ui';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-dialog';
 import { fromStore } from '../../controllers/from-store';
 import { ThemedComponent } from '../themed-component';
@@ -27,7 +27,7 @@ export class VideoDialog extends ThemedComponent {
       text-align: center;
     }
 
-    .offline hoverboard-icon {
+    .offline node-icon {
       inline-size: 48px;
       block-size: 48px;
     }
@@ -54,7 +54,7 @@ export class VideoDialog extends ThemedComponent {
                 autoload
               ></lite-youtube>`
             : html`<p class="offline">
-                <hoverboard-icon name="cloud-off"></hoverboard-icon>
+                <node-icon name="cloud-off"></node-icon>
                 ${availableOnlineMessage()}
               </p>`
         }

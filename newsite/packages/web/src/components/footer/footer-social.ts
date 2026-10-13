@@ -5,7 +5,7 @@ import { safeUrl } from '../../utils/safe-url';
 import { share } from '../../utils/share';
 import { mailto, organizer, socialNetwork } from '../../config/site';
 import { ThemedComponent } from '../themed-component';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-icon-button';
 
 @customElement('footer-social')
@@ -61,7 +61,7 @@ export class FooterSocial extends ThemedComponent {
             (socFollow) => html`
               <li>
                 <hb-icon-button label="${socFollow.name}" href="${socFollow.url}" target="_blank">
-                  <hoverboard-icon name="${socFollow.name}"></hoverboard-icon>
+                  <node-icon name="${socFollow.name}"></node-icon>
                 </hb-icon-button>
               </li>
             `,
@@ -78,7 +78,7 @@ export class FooterSocial extends ThemedComponent {
               share="facebook"
               @click="${this.share}"
             >
-              <hoverboard-icon name="facebook"></hoverboard-icon>
+              <node-icon name="facebook"></node-icon>
             </hb-icon-button>
           </li>
           <li>
@@ -87,7 +87,7 @@ export class FooterSocial extends ThemedComponent {
               share="twitter"
               @click="${this.share}"
             >
-              <hoverboard-icon name="twitter"></hoverboard-icon>
+              <node-icon name="twitter"></node-icon>
             </hb-icon-button>
           </li>
         </ul>

@@ -5,7 +5,7 @@ import { customElement } from 'lit/decorators.js';
 import { aboutBlock } from '../../config/site';
 import { openVideoDialog } from '../../store/ui';
 import { band } from '../../styles/band';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -138,12 +138,12 @@ export class AboutBlock extends ThemedComponent {
               trailing-icon
             >
               ${callToAction.featuredSessions.label}
-              <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+              <node-icon slot="icon" name="arrow-right-circle"></node-icon>
             </hb-button>
             ${
               callToAction.howItWas
                 ? html`<hb-button variant="outlined" class="watch-video" @click="${this.playVideo}">
-                    <hoverboard-icon slot="icon" name="play"></hoverboard-icon>
+                    <node-icon slot="icon" name="play"></node-icon>
                     ${callToAction.howItWas.label}
                   </hb-button>`
                 : nothing

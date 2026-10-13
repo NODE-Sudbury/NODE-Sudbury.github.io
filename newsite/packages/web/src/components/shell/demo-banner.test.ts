@@ -99,7 +99,7 @@ describe('demo-banner', () => {
     expect(within(spacing).getByRole('radio', { checked: true })).toHaveAttribute('value', density);
     expect(
       // Only the spacing icons, not those of the nested brightness toggle.
-      deepQuerySelectorAll(shadowRoot, '.controls > fieldset hoverboard-icon').map((icon) =>
+      deepQuerySelectorAll(shadowRoot, '.controls > fieldset node-icon').map((icon) =>
         icon.getAttribute('name'),
       ),
     ).toEqual(['density-small', 'density-medium', 'density-large']);

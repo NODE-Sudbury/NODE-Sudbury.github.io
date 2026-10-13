@@ -9,7 +9,7 @@ import { acceptingFeedback } from '../../utils/feedback';
 import { getLocale } from '../../utils/localization';
 import { isLive, sessionStream } from '../../utils/stream';
 import { tagColor } from '../../utils/styles';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../shared/speaker-photo';
 import '../ui/hb-icon-button';
 import './save-button';
@@ -249,7 +249,7 @@ export class SessionCard extends ThemedComponent {
           label="${msg(str`Rate ${session.title}`, { id: 'schedule.session.rate' })}"
           @click="${this.openFeedback}"
         >
-          <hoverboard-icon name="insert-comment"></hoverboard-icon>
+          <node-icon name="insert-comment"></node-icon>
         </hb-icon-button>
       `;
     }

@@ -6,7 +6,7 @@ import { PAGE_TONES } from '../components/hero/simple-hero';
 import '../components/markdown/short-markdown';
 import '../components/open-source/commit-activity-chart';
 import '../components/open-source/contributors-chart';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import '../components/ui/hb-button';
 import '../components/ui/hb-chip';
 import type { OpenSourceProject } from '../models/open-source';
@@ -128,7 +128,7 @@ export class OpenSourceProjectPage extends ThemedComponent {
     return html`
       <hero-block tone="${PAGE_TONES.openSource}">
         <a class="back" href="/open-source">
-          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          <node-icon name="arrow-left"></node-icon>
           All projects
         </a>
         <h1 class="hero-title">${project.name}</h1>
@@ -138,13 +138,13 @@ export class OpenSourceProjectPage extends ThemedComponent {
         </ul>
         <div class="actions">
           <hb-button href="${project.url}" target="_blank" variant="filled" size="l">
-            <hoverboard-icon slot="icon" name="github"></hoverboard-icon>
+            <node-icon slot="icon" name="github"></node-icon>
             View the repository
           </hb-button>
           ${
             project.homepage
               ? html`<hb-button href="${project.homepage}" target="_blank" variant="outlined" size="l">
-                  <hoverboard-icon slot="icon" name="website"></hoverboard-icon>
+                  <node-icon slot="icon" name="website"></node-icon>
                   Live site
                 </hb-button>`
               : nothing

@@ -48,7 +48,7 @@ describe('at-venue-section', () => {
     expect(shadowRoot.querySelector('slot[name="heading"]')).not.toBeNull();
     expect(
       [...shadowRoot.querySelectorAll('.item')].map((item) => [
-        item.querySelector('hoverboard-icon')?.getAttribute('name'),
+        item.querySelector('node-icon')?.getAttribute('name'),
         item.querySelector('h3')?.textContent?.trim(),
       ]),
     ).toEqual([

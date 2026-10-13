@@ -7,7 +7,7 @@ import { fromStore } from '../../controllers/from-store';
 import type { Photo } from '../../models/photo';
 import { type GalleryState, selectGallery } from '../../store/gallery';
 import { band } from '../../styles/band';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { pastEditionsLabel } from './past-editions';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -101,7 +101,7 @@ export class GalleryBlock extends ThemedComponent {
             trailing-icon
           >
             ${msg('See all photos', { id: 'home.gallery-block.cta' })}
-            <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>
         ${

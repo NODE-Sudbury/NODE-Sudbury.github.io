@@ -10,7 +10,7 @@ import {
   type PreviousSpeakersState,
   selectPreviousSpeakersState,
 } from '../../store/previous-speakers';
-import './hoverboard-icon';
+import './node-icon';
 import './speaker-photo';
 import '../ui/hb-button';
 import { fromStore } from '../../controllers/from-store';
@@ -94,7 +94,7 @@ export class PreviousSpeakersBlock extends ThemedComponent {
           </h2>
           <hb-button variant="outlined" href="/previous-speakers" trailing-icon>
             ${msg('View all', { id: 'shared.previous-speakers-block.view-all' })}
-            <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>
 

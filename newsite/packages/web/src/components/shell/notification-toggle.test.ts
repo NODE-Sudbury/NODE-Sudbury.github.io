@@ -33,7 +33,7 @@ describe('notification-toggle', () => {
   ])('shows the permission in its icon', async (notificationPermission, icon) => {
     const { trigger } = await render({ notificationPermission });
 
-    expect(trigger.querySelector('hoverboard-icon')).toHaveAttribute('name', icon);
+    expect(trigger.querySelector('node-icon')).toHaveAttribute('name', icon);
   });
 
   it('opens the settings from the bell', async () => {

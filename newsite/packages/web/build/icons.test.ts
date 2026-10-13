@@ -25,7 +25,7 @@ describe('iconErrors', () => {
   let publicDir: string;
 
   beforeEach(() => {
-    publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-icon-'));
+    publicDir = mkdtempSync(join(tmpdir(), 'node-icon-'));
   });
 
   afterEach(() => rmSync(publicDir, { recursive: true, force: true }));

@@ -7,7 +7,7 @@ import type { Speaker } from '../../models/speaker';
 import { type RawSpeakersState, selectRawSpeakersState } from '../../store/speakers';
 import { band } from '../../styles/band';
 import { randomOrder } from '../../utils/arrays';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../shared/speaker-card';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -76,7 +76,7 @@ export class SpeakersBlock extends ThemedComponent {
           <h2 class="band-title">${msg('Speakers', { id: 'home.speakers-block.title' })}</h2>
           <hb-button variant="outlined" class="cta-button" href="/speakers" trailing-icon>
             ${msg('View all speakers', { id: 'home.speakers-block.cta' })}
-            <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>
 

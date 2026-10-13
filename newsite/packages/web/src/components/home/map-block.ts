@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import { location } from '../../config/site';
 import { band } from '../../styles/band';
 import '../attending/venue-section';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -24,7 +24,7 @@ export class MapBlock extends ThemedComponent {
           __HB_FEATURES__.attending
             ? html`<hb-button class="attending" variant="text" href="/attending" trailing-icon>
                 ${msg('More about attending', { id: 'home.map-block.attending' })}
-                <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+                <node-icon slot="icon" name="arrow-right-circle"></node-icon>
               </hb-button>`
             : nothing
         }

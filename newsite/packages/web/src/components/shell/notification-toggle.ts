@@ -11,7 +11,7 @@ import {
   unsupportedNotificationPermission,
 } from '../../store/notification-permission';
 import { selectOnline } from '../../store/sync';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-icon-button';
 import '../ui/hb-popover';
 import type { HbPopover } from '../ui/hb-popover';
@@ -58,7 +58,7 @@ export class NotificationToggle extends ThemedComponent {
           label="${msg('Notifications', { id: 'shell.notifications.toggle' })}"
           @click="${this.requestPermission}"
         >
-          <hoverboard-icon name="${this.icon}"></hoverboard-icon>
+          <node-icon name="${this.icon}"></node-icon>
         </hb-icon-button>
         <notification-settings @close="${this.close}"></notification-settings>
       </hb-popover>

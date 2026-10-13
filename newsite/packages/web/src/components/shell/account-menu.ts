@@ -6,7 +6,7 @@ import { fromStore } from '../../controllers/from-store';
 import { signOut } from '../../store/auth';
 import { openProfileDialog, openSigninDialog } from '../../store/dialogs';
 import type { UserState } from '../../store/user';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-icon-button';
 import '../ui/hb-menu';
 import { ThemedComponent } from '../themed-component';
@@ -51,7 +51,7 @@ export class AccountMenu extends ThemedComponent {
     if (!(this.user instanceof Success)) {
       return html`
         <hb-icon-button label="${msg('Sign in', { id: 'common.sign-in' })}" @click="${this.signIn}">
-          <hoverboard-icon name="account"></hoverboard-icon>
+          <node-icon name="account"></node-icon>
         </hb-icon-button>
       `;
     }
@@ -67,7 +67,7 @@ export class AccountMenu extends ThemedComponent {
           ${
             photoURL
               ? html`<img class="avatar" src="${photoURL}" alt="" referrerpolicy="no-referrer" />`
-              : html`<hoverboard-icon name="account"></hoverboard-icon>`
+              : html`<node-icon name="account"></node-icon>`
           }
         </hb-icon-button>
         <div class="profile" role="presentation">

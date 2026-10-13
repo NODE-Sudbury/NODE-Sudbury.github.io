@@ -2,7 +2,7 @@ import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Social } from '../../models/social';
 import '../ui/hb-icon-button';
-import './hoverboard-icon';
+import './node-icon';
 import { ThemedComponent } from '../themed-component';
 
 /** A person's social profiles as a row of icon links, which open in a new tab. */
@@ -47,7 +47,7 @@ export class SocialLinks extends ThemedComponent {
                 target="_blank"
                 label="${this.owner ? `${social.name}: ${this.owner}` : social.name}"
               >
-                <hoverboard-icon name="${social.icon}"></hoverboard-icon>
+                <node-icon name="${social.icon}"></node-icon>
               </hb-icon-button>
             </li>
           `,

@@ -42,7 +42,7 @@ export const heroText = css`
     border-radius: var(--hb-radius-s);
   }
 
-  .back hoverboard-icon {
+  .back node-icon {
     inline-size: 20px;
     block-size: 20px;
   }

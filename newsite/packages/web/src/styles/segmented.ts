@@ -51,7 +51,7 @@ export const segmented = css`
   }
 
   label:has(input:checked) span,
-  label:has(input:checked) hoverboard-icon {
+  label:has(input:checked) node-icon {
     color: var(--hb-segmented-selected-color, var(--hb-color-surface));
   }
 
@@ -68,7 +68,7 @@ export const segmented = css`
     cursor: inherit;
   }
 
-  hoverboard-icon {
+  node-icon {
     inline-size: 18px;
     block-size: 18px;
   }
@@ -89,7 +89,7 @@ export const segmented = css`
     }
 
     label:has(input:checked) span,
-    label:has(input:checked) hoverboard-icon {
+    label:has(input:checked) node-icon {
       color: HighlightText;
     }
   }

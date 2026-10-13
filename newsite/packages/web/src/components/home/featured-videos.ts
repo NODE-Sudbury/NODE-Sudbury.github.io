@@ -8,7 +8,7 @@ import type { Video } from '../../models/video';
 import { openVideoDialog } from '../../store/ui';
 import { type VideosState, selectVideos } from '../../store/videos';
 import { band } from '../../styles/band';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { pastEditionsLabel } from './past-editions';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -101,7 +101,7 @@ export class FeaturedVideos extends ThemedComponent {
         color: var(--hb-on-cta);
       }
 
-      .play hoverboard-icon {
+      .play node-icon {
         inline-size: 28px;
         block-size: 28px;
       }
@@ -155,7 +155,7 @@ export class FeaturedVideos extends ThemedComponent {
               ?disabled="${this.atStart}"
               @click="${() => this.scrollRail(-1)}"
             >
-              <hoverboard-icon name="chevron-left"></hoverboard-icon>
+              <node-icon name="chevron-left"></node-icon>
             </hb-icon-button>
             <hb-icon-button
               class="next"
@@ -163,7 +163,7 @@ export class FeaturedVideos extends ThemedComponent {
               ?disabled="${this.atEnd}"
               @click="${() => this.scrollRail(1)}"
             >
-              <hoverboard-icon name="chevron-right"></hoverboard-icon>
+              <node-icon name="chevron-right"></node-icon>
             </hb-icon-button>
           </div>
         </div>
@@ -184,7 +184,7 @@ export class FeaturedVideos extends ThemedComponent {
                 <button class="video" type="button" @click="${() => this.playVideo(video)}">
                   <span class="thumbnail">
                     <img src="${video.thumbnail}" alt="" loading="lazy" />
-                    <span class="play"><hoverboard-icon name="play"></hoverboard-icon></span>
+                    <span class="play"><node-icon name="play"></node-icon></span>
                   </span>
                   <span class="title">${video.title}</span>
                 </button>
@@ -200,7 +200,7 @@ export class FeaturedVideos extends ThemedComponent {
           trailing-icon
         >
           ${msg('See all videos', { id: 'home.featured-videos.cta' })}
-          <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+          <node-icon slot="icon" name="arrow-right-circle"></node-icon>
         </hb-button>
       </div>
     `;

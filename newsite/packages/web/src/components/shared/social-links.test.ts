@@ -31,7 +31,7 @@ describe('social-links', () => {
     expect(links[0]).toHaveAttribute('target', '_blank');
     expect(links[0]).toHaveAttribute('label', 'GitHub');
     expect(links[0]).toHaveAttribute('variant', 'standard');
-    expect(links[0]!.querySelector('hoverboard-icon')).toHaveAttribute('name', 'github');
+    expect(links[0]!.querySelector('node-icon')).toHaveAttribute('name', 'github');
   });
 
   it("adds the owner's name when several people share a page", async () => {

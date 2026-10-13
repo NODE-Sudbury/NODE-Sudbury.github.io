@@ -9,7 +9,7 @@ import './color-scheme-toggle';
 import './footer-rel';
 import './footer-social';
 import './locale-picker';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-icon-button';
 import '../ui/hb-sticker';
 
@@ -94,7 +94,7 @@ export class FooterBlock extends ThemedComponent {
               label="${msg('Back to top', { id: 'footer.block.back-to-top' })}"
               @click="${scrollToTop}"
             >
-              <hoverboard-icon name="up"></hoverboard-icon>
+              <node-icon name="up"></node-icon>
             </hb-icon-button>
           </div>
 

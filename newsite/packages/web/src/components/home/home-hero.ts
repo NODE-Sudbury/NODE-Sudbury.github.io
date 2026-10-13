@@ -39,7 +39,7 @@ import {
 } from '../../utils/next-step';
 import { eventPlace, type Attending } from '../../utils/place';
 import '../shared/add-to-calendar';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { nextStepLink } from '../shared/next-step-link';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -244,7 +244,7 @@ export class HomeHero extends ThemedComponent {
             <ul class="details" aria-label="${msg('Event details', { id: 'home.hero.details' })}">
               <li>
                 <hb-chip>
-                  <hoverboard-icon slot="icon" name="registration"></hoverboard-icon>
+                  <node-icon slot="icon" name="registration"></node-icon>
                   OCN 1001716490
                 </hb-chip>
               </li>
@@ -253,10 +253,10 @@ export class HomeHero extends ThemedComponent {
                   class="place"
                   href="${ifDefined(__HB_FEATURES__.attending ? '/attending' : undefined)}"
                 >
-                  <hoverboard-icon
+                  <node-icon
                     slot="icon"
                     name="${this.where.location ? 'location' : 'monitor'}"
-                  ></hoverboard-icon>
+                  ></node-icon>
                   ${eventPlace(({ short }) => short, this.where)}
                 </hb-chip>
               </li>
@@ -315,14 +315,14 @@ export class HomeHero extends ThemedComponent {
     if (actions.length < 2 && aboutBlock.callToAction.howItWas) {
       actions.push(html`
         <hb-button variant="outlined" size="l" class="watch-video" @click="${this.playVideo}">
-          <hoverboard-icon slot="icon" name="play"></hoverboard-icon>
+          <node-icon slot="icon" name="play"></node-icon>
           ${msg('View Highlights', { id: 'pages.home.view-highlights' })}
         </hb-button>
       `);
     }
     actions.push(html`
       <hb-button variant="outlined" size="l" href="/#organization">
-        <hoverboard-icon slot="icon" name="registration"></hoverboard-icon>
+        <node-icon slot="icon" name="registration"></node-icon>
         ${msg('View OCN details', { id: 'home.hero.ocn-details' })}
       </hb-button>
     `);
@@ -333,7 +333,7 @@ export class HomeHero extends ThemedComponent {
     const { href, label: stepLabel, icon, external } = nextStepLink(step);
     const label =
       step === 'schedule' ? msg('Our events', { id: 'home.hero.our-events' }) : stepLabel;
-    const content = html`<hoverboard-icon slot="icon" name="${icon}"></hoverboard-icon>${label}`;
+    const content = html`<node-icon slot="icon" name="${icon}"></node-icon>${label}`;
     // The tickets are on this page, so it scrolls to them.
     if (step === 'tickets') {
       return html`<hb-button

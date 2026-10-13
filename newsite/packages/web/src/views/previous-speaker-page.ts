@@ -6,7 +6,7 @@ import '../components/hero/hero-block';
 import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
 import '../components/markdown/short-markdown';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import '../components/shared/previous-speakers-block';
 import '../components/shared/previous-talks';
 import '../components/shared/social-links';
@@ -78,7 +78,7 @@ export class PreviousSpeakerPage extends ThemedComponent {
     return html`
       <hero-block tone="${PAGE_TONES.previousSpeakers}">
         <a class="back" href="/previous-speakers">
-          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          <node-icon name="arrow-left"></node-icon>
           ${msg('All previous speakers', { id: 'pages.previous-speaker.all' })}
         </a>
         <speaker-profile kind="previous-speaker" .speaker="${speaker}"></speaker-profile>

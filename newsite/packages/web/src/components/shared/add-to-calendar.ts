@@ -14,7 +14,7 @@ import {
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-menu';
-import './hoverboard-icon';
+import './node-icon';
 
 /** A menu that adds a session, or with `event` and `uid` any calendar event, to a calendar. */
 @customElement('add-to-calendar')
@@ -61,7 +61,7 @@ export class AddToCalendar extends ThemedComponent {
     return html`
       <hb-menu>
         <hb-button slot="trigger" variant="outlined" size="${ifDefined(this.size)}">
-          <hoverboard-icon slot="icon" name="calendar"></hoverboard-icon>
+          <node-icon slot="icon" name="calendar"></node-icon>
           ${msg('Add to calendar', { id: 'shared.add-to-calendar.label' })}
         </hb-button>
         <a

@@ -25,7 +25,7 @@ const render = async () => {
 
 const items = (root: ShadowRoot) =>
   [...root.querySelectorAll('.item')].map((item) => [
-    item.querySelector('hoverboard-icon')?.getAttribute('name'),
+    item.querySelector('node-icon')?.getAttribute('name'),
     item.querySelector('h3')?.textContent?.trim(),
     item.querySelector('.text')?.textContent?.trim(),
   ]);

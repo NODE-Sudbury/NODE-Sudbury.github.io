@@ -8,7 +8,7 @@ import '../components/shared/share-button';
 import '../components/shared/auth-required';
 import '../components/hero/hero-block';
 import { heroText } from '../components/hero/hero-block';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import '../components/shared/report-mistake';
 import '../components/shared/speaker-card';
 import '../components/markdown/short-markdown';
@@ -190,7 +190,7 @@ export class SessionPage extends ThemedComponent {
     return html`
       <hero-block tone="${PAGE_TONES.schedule}">
         <a class="back" href="${session?.day ? `/schedule/${session.day}` : '/schedule'}">
-          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          <node-icon name="arrow-left"></node-icon>
           ${msg('Back to schedule', { id: 'pages.session.back-to-schedule' })}
         </a>
         <h1 class="hero-title">${session?.title ?? ''}</h1>
@@ -227,7 +227,7 @@ export class SessionPage extends ThemedComponent {
           ${
             stream
               ? html`<hb-button class="live-button" href="${stream}" target="_blank">
-                  <hoverboard-icon slot="icon" name="play"></hoverboard-icon>
+                  <node-icon slot="icon" name="play"></node-icon>
                   ${msg('Watch live', { id: 'pages.session.watch-live' })}
                 </hb-button>`
               : nothing
@@ -244,7 +244,7 @@ export class SessionPage extends ThemedComponent {
           ${
             session.videoId
               ? html`<hb-button variant="outlined" class="video-button" @click="${this.openVideo}">
-                  <hoverboard-icon slot="icon" name="video"></hoverboard-icon>
+                  <node-icon slot="icon" name="video"></node-icon>
                   ${msg('View video', { id: 'common.view-video' })}
                 </hb-button>`
               : nothing
@@ -252,7 +252,7 @@ export class SessionPage extends ThemedComponent {
           ${
             session.presentation
               ? html`<hb-button variant="outlined" href="${session.presentation}" target="_blank">
-                  <hoverboard-icon slot="icon" name="presentation"></hoverboard-icon>
+                  <node-icon slot="icon" name="presentation"></node-icon>
                   ${msg('View presentation', { id: 'common.view-presentation' })}
                 </hb-button>`
               : nothing

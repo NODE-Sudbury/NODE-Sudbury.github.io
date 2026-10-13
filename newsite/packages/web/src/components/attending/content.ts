@@ -1,7 +1,7 @@
 import { css, html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { renderMarkdown } from '../../utils/markdown';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 
 /** The organizers' short markdown, sanitized by `renderMarkdown()`. */
 export const markdown = (text: string | undefined) =>
@@ -19,7 +19,7 @@ export const itemList = (items: Item[]) => html`
     ${items.map(
       ({ icon, title, text }) => html`
         <li class="item">
-          <hoverboard-icon name="${icon}"></hoverboard-icon>
+          <node-icon name="${icon}"></node-icon>
           <div>
             <h3>${title}</h3>
             ${markdown(text)}

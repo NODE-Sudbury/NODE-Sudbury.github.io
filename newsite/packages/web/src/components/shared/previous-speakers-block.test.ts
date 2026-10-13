@@ -56,7 +56,7 @@ describe('previous-speakers-block', () => {
     expect(speakerLink?.querySelector('speaker-photo')).toHaveProperty('alt', 'Previous Speaker');
     expect(shadowRoot.querySelector('h2')).toHaveTextContent('Previous speakers');
     expect(shadowRoot).toHaveTextContent('View all');
-    expect(shadowRoot.querySelector('hoverboard-icon')).toHaveAttribute(
+    expect(shadowRoot.querySelector('node-icon')).toHaveAttribute(
       'name',
       'arrow-right-circle',
     );

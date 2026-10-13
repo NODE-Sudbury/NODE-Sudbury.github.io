@@ -85,8 +85,8 @@ const loaded = new Map<string, SVGTemplateResult>([
   ['cloud-upload', cloudUpload],
 ]);
 
-@customElement('hoverboard-icon')
-export class HoverboardIcon extends ThemedComponent {
+@customElement('node-icon')
+export class NodeIcon extends ThemedComponent {
   static override styles = css`
     :host {
       display: inline-flex;
@@ -160,6 +160,6 @@ export class HoverboardIcon extends ThemedComponent {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'hoverboard-icon': HoverboardIcon;
+    'node-icon': NodeIcon;
   }
 }

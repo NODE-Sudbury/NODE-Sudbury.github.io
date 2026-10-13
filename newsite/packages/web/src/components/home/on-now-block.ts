@@ -14,7 +14,7 @@ import { sessionPath } from '../../utils/navigation';
 import { isLive, sessionStream } from '../../utils/stream';
 import { zonedTime } from '../../utils/time-zone';
 import { otherTimeZone, visitorClock, yourTime } from '../../utils/visitor-time';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -190,7 +190,7 @@ export class OnNowBlock extends ThemedComponent {
         ${
           stream
             ? html`<hb-button class="live-button" href="${stream}" target="_blank">
-                <hoverboard-icon slot="icon" name="play"></hoverboard-icon>
+                <node-icon slot="icon" name="play"></node-icon>
                 ${msg('Watch live', { id: 'pages.session.watch-live' })}
               </hb-button>`
             : nothing

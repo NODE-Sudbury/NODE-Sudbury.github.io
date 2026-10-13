@@ -86,7 +86,7 @@ describe('detail pages on the server', () => {
   });
 
   it('render icons empty, so the first render in the browser matches', async () => {
-    const page = await renderToString(html`<hoverboard-icon name="github"></hoverboard-icon>`);
+    const page = await renderToString(html`<node-icon name="github"></node-icon>`);
 
     expect(page).not.toContain('<svg');
   });

@@ -3,7 +3,7 @@ import { css, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { fromStore } from '../../controllers/from-store';
 import { selectOnline, selectPendingCount, syncLabel } from '../../store/sync';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-popover';
 import { ThemedComponent } from '../themed-component';
 
@@ -45,7 +45,7 @@ export class SyncStatus extends ThemedComponent {
       outline-offset: 2px;
     }
 
-    hoverboard-icon {
+    node-icon {
       inline-size: 20px;
       block-size: 20px;
     }
@@ -115,7 +115,7 @@ export class SyncStatus extends ThemedComponent {
         <!-- A live region, so screen readers say when the count changes. -->
         <button slot="trigger" class="chip" type="button" aria-live="polite" title="${label}">
           ${this.pending ? html`<span aria-hidden="true">${this.pending}</span>` : nothing}
-          <hoverboard-icon name="${this.pending ? 'cloud-upload' : 'cloud-off'}"></hoverboard-icon>
+          <node-icon name="${this.pending ? 'cloud-upload' : 'cloud-off'}"></node-icon>
           <span class="visually-hidden">${label}</span>
         </button>
         <p class="help">

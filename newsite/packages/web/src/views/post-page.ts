@@ -8,7 +8,7 @@ import '../components/hero/hero-block';
 import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
 import '../components/markdown/long-markdown';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import '../components/shared/posts-list';
 import { StoreController } from '../controllers/store-controller';
 import type { Post } from '../models/post';
@@ -153,7 +153,7 @@ export class PostPage extends ThemedComponent {
     return html`
       <hero-block tone="${PAGE_TONES.blog}">
         <a class="back" href="/blog">
-          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          <node-icon name="arrow-left"></node-icon>
           ${msg('All posts', { id: 'pages.post.all-posts' })}
         </a>
         <h1 class="hero-title">${post?.title ?? ''}</h1>

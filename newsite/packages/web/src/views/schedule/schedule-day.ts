@@ -24,7 +24,7 @@ import { getScheduleDay } from '../../utils/dates';
 import { getLocale } from '../../utils/localization';
 import { generateClassName } from '../../utils/styles';
 import { wallClock, zonedTime } from '../../utils/time-zone';
-import '../../components/shared/hoverboard-icon';
+import '../../components/shared/node-icon';
 import '../../components/shared/no-results';
 import '../../components/schedule/session-card';
 import '../../components/ui/hb-icon-button';
@@ -213,7 +213,7 @@ export class ScheduleDay extends ThemedComponent {
         outline-offset: 2px;
       }
 
-      .browse hoverboard-icon {
+      .browse node-icon {
         inline-size: 20px;
         block-size: 20px;
       }
@@ -389,14 +389,14 @@ export class ScheduleDay extends ThemedComponent {
           ?disabled="${this.atStart}"
           @click="${() => this.scrollByTrack(-1)}"
         >
-          <hoverboard-icon name="chevron-left"></hoverboard-icon>
+          <node-icon name="chevron-left"></node-icon>
         </hb-icon-button>
         <hb-icon-button
           label="${msg('Next track', { id: 'schedule.day.next-track' })}"
           ?disabled="${this.atEnd}"
           @click="${() => this.scrollByTrack(1)}"
         >
-          <hoverboard-icon name="chevron-right"></hoverboard-icon>
+          <node-icon name="chevron-right"></node-icon>
         </hb-icon-button>
       </div>
 
@@ -451,7 +451,7 @@ export class ScheduleDay extends ThemedComponent {
                       href="/schedule/${day.date}#${timeslot.startTime}"
                       style="grid-row: ${index + 1}"
                     >
-                      <hoverboard-icon name="add-circle-outline"></hoverboard-icon>
+                      <node-icon name="add-circle-outline"></node-icon>
                       ${msg('Browse sessions', { id: 'schedule.day.browse-sessions' })}
                     </a>`
                   : nothing

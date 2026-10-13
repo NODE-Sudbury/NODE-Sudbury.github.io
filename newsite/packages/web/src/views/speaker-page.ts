@@ -7,7 +7,7 @@ import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
 import '../components/markdown/short-markdown';
 import '../components/schedule/session-card';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import '../components/shared/previous-talks';
 import '../components/shared/report-mistake';
 import '../components/shared/social-links';
@@ -97,7 +97,7 @@ export class SpeakerPage extends ThemedComponent {
     return html`
       <hero-block tone="${PAGE_TONES.speakers}">
         <a class="back" href="/speakers">
-          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          <node-icon name="arrow-left"></node-icon>
           ${msg('All speakers', { id: 'pages.speaker.all-speakers' })}
         </a>
         <speaker-profile kind="speaker" .speaker="${speaker}"></speaker-profile>

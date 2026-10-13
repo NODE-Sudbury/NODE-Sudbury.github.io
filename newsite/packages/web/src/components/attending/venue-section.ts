@@ -6,7 +6,7 @@ import { location, mapsScriptUrl } from '../../config/site';
 import { fromStore } from '../../controllers/from-store';
 import { availableOnlineMessage, selectOnline } from '../../store/sync';
 import { currentColorScheme } from '../../utils/color-scheme';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -141,7 +141,7 @@ export class VenueSection extends ThemedComponent {
       text-align: center;
     }
 
-    .placeholder > hoverboard-icon {
+    .placeholder > node-icon {
       inline-size: 48px;
       block-size: 48px;
     }
@@ -204,7 +204,7 @@ export class VenueSection extends ThemedComponent {
               ({ name, url }) => html`
                 <li>
                   <hb-button variant="outlined" href="${url}" target="_blank">
-                    <hoverboard-icon slot="icon" name="directions"></hoverboard-icon>
+                    <node-icon slot="icon" name="directions"></node-icon>
                     ${name}
                   </hb-button>
                 </li>
@@ -254,7 +254,7 @@ export class VenueSection extends ThemedComponent {
     const loading = this.mapState === 'loading';
     return html`
       <div class="placeholder">
-        <hoverboard-icon name="location"></hoverboard-icon>
+        <node-icon name="location"></node-icon>
         <p>
           ${
             this.online

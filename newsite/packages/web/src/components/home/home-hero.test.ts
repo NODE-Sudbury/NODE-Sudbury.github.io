@@ -102,7 +102,7 @@ describe('home-hero', () => {
     const place = shadowRoot.querySelectorAll('ul.details hb-chip')[1]!;
 
     expect(place).toHaveTextContent(/^Online$/);
-    expect(place.querySelector('hoverboard-icon')).toHaveAttribute('name', 'monitor');
+    expect(place.querySelector('node-icon')).toHaveAttribute('name', 'monitor');
   });
 
   it('names the venue and online for a hybrid event', async () => {
@@ -111,7 +111,7 @@ describe('home-hero', () => {
     const place = shadowRoot.querySelectorAll('ul.details hb-chip')[1]!;
 
     expect(place).toHaveTextContent(`${location!.short} · Online`);
-    expect(place.querySelector('hoverboard-icon')).toHaveAttribute('name', 'location');
+    expect(place.querySelector('node-icon')).toHaveAttribute('name', 'location');
   });
 
   it('links the place to the attending page, when it is on', async () => {

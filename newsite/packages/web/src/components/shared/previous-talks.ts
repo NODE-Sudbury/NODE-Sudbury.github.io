@@ -6,7 +6,7 @@ import type { PreviousSessionWithYear } from '../../models/previous-session';
 import type { PreviousSpeaker } from '../../models/previous-speaker';
 import { tagChipStyle } from '../../utils/styles';
 import { ThemedComponent } from '../themed-component';
-import './hoverboard-icon';
+import './node-icon';
 import '../ui/hb-button';
 import '../ui/hb-chip';
 import '../ui/hb-sticker';
@@ -105,7 +105,7 @@ export class PreviousTalks extends ThemedComponent {
                               href="https://www.youtube.com/watch?v=${talk.videoId}"
                               target="_blank"
                             >
-                              <hoverboard-icon slot="icon" name="video"></hoverboard-icon>
+                              <node-icon slot="icon" name="video"></node-icon>
                               ${msg('View video', { id: 'common.view-video' })}
                             </hb-button>`
                           : nothing
@@ -117,7 +117,7 @@ export class PreviousTalks extends ThemedComponent {
                               href="${talk.presentation}"
                               target="_blank"
                             >
-                              <hoverboard-icon slot="icon" name="presentation"></hoverboard-icon>
+                              <node-icon slot="icon" name="presentation"></node-icon>
                               ${msg('View presentation', { id: 'common.view-presentation' })}
                             </hb-button>`
                           : nothing

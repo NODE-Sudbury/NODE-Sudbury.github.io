@@ -27,7 +27,7 @@ import {
 import { getLocale } from '../../utils/localization';
 import { wallClock, zonedTime } from '../../utils/time-zone';
 import '../footer/color-scheme-toggle';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-icon-button';
@@ -250,7 +250,7 @@ export class DemoBanner extends ThemedComponent {
                       ?checked="${value === this.density}"
                       @change="${this.onDensity}"
                     />
-                    <hoverboard-icon name="${DENSITY_ICONS[value]}"></hoverboard-icon>
+                    <node-icon name="${DENSITY_ICONS[value]}"></node-icon>
                     <span class="visually-hidden">${labels[value]}</span>
                   </label>
                 `,
@@ -263,7 +263,7 @@ export class DemoBanner extends ThemedComponent {
             ?checked="${this.decorations}"
             @change="${this.onDecorations}"
           >
-            <hoverboard-icon name="party"></hoverboard-icon>
+            <node-icon name="party"></node-icon>
           </hb-switch>
           <label>
             <span class="visually-hidden">
@@ -280,7 +280,7 @@ export class DemoBanner extends ThemedComponent {
           </label>
           <hb-popover>
             <hb-icon-button slot="trigger" label="${msg('When', { id: 'shell.demo.time' })}">
-              <hoverboard-icon name="clock"></hoverboard-icon>
+              <node-icon name="clock"></node-icon>
             </hb-icon-button>
             <div class="picker">
               <label>

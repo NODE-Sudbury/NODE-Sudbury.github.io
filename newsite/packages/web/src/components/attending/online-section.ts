@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { attendance, attendingPage, stream, timeZone } from '../../config/site';
 import { fromStore } from '../../controllers/from-store';
 import { loadLocalTime, selectLocalTime } from '../../store/ui';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import { contentStyles, markdown } from './content';
@@ -54,7 +54,7 @@ export class OnlineSection extends ThemedComponent {
       ${
         stream
           ? html`<hb-button class="watch" href="${stream}" target="_blank">
-              <hoverboard-icon slot="icon" name="play"></hoverboard-icon>
+              <node-icon slot="icon" name="play"></node-icon>
               ${msg('Watch live', { id: 'pages.session.watch-live' })}
             </hb-button>`
           : nothing

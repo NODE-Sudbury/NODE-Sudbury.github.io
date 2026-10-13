@@ -4,7 +4,7 @@ import type { OpenSourceProject } from '../../models/open-source';
 import { displayFont } from '../../styles/shared';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-card';
-import './hoverboard-icon';
+import './node-icon';
 
 /**
  * A project as one link: a mark, its name, language and license, a short description and its
@@ -41,7 +41,7 @@ export class ProjectCard extends ThemedComponent {
       background-color: var(--hb-color-accent-1-container);
     }
 
-    .mark hoverboard-icon {
+    .mark node-icon {
       inline-size: 54%;
       block-size: 54%;
     }
@@ -113,7 +113,7 @@ export class ProjectCard extends ThemedComponent {
       <hb-card href="/open-source/${project.id}" label="${project.name}">
         <div class="content">
           <div class="mark">
-            <hoverboard-icon name="github"></hoverboard-icon>
+            <node-icon name="github"></node-icon>
           </div>
           <div class="text">
             ${

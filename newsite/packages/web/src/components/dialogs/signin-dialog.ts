@@ -20,7 +20,7 @@ import { emailLinkSignIn, signInProviders } from '../../config/site';
 import { getProviderCompanyName, PROVIDER } from '../../utils/providers';
 import { illustration, illustrationStyles } from '../../illustrations/illustration';
 import signInArt from '../../illustrations/sign-in.svg?raw';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-button';
 import '../ui/hb-dialog';
 import './email-link-form';
@@ -216,11 +216,11 @@ export class SigninDialog extends ThemedComponent {
                         ?disabled="${!this.online}"
                         @click="${() => this.signIn(provider.url as PROVIDER)}"
                       >
-                        <hoverboard-icon
+                        <node-icon
                           slot="icon"
                           name="${provider.name}"
                           class="icon-${provider.name}"
-                        ></hoverboard-icon>
+                        ></node-icon>
                         ${signInWith(provider.label)}
                       </hb-button>
                     `,

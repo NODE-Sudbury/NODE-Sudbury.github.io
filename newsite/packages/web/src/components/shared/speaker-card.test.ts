@@ -75,7 +75,7 @@ describe('speaker-card', () => {
       '45deg',
       '10deg',
     ]);
-    const icon = deepQuerySelector(badges[0]!, 'hoverboard-icon')!;
+    const icon = deepQuerySelector(badges[0]!, 'node-icon')!;
     expect(icon).toHaveAttribute('name', 'gde');
     expect(icon.style.color).toBe('var(--hb-tag-gde, var(--hb-color-outline))');
     expect(deepQuerySelector(shadowRoot, 'speaker-photo.photo')).toHaveProperty('alt', '');

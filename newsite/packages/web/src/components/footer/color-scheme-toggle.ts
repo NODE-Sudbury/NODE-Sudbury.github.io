@@ -10,7 +10,7 @@ import {
   COLOR_SCHEME_KEY,
   readColorScheme,
 } from '../../utils/color-scheme';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 
 type Choice = ChosenColorScheme | 'system';
@@ -105,7 +105,7 @@ export class ColorSchemeToggle extends ThemedComponent {
                   ?checked="${this.choice === value}"
                   @change="${this.onChange}"
                 />
-                <hoverboard-icon name="${icon}"></hoverboard-icon>
+                <node-icon name="${icon}"></node-icon>
                 <span class="${text}">${label}</span>
               </label>
             `,

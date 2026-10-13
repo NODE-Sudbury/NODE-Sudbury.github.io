@@ -7,7 +7,7 @@ import { aboutOrganizerBlock } from '../../config/site';
 import { band } from '../../styles/band';
 import { type ContentPresence, linkLeadsSomewhere } from '../../utils/content-presence';
 import { renderMarkdown } from '../../utils/markdown';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -106,7 +106,7 @@ export class AboutOrganizerBlock extends ThemedComponent {
                         trailing-icon
                       >
                         ${block.callToAction.label}
-                        <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+                        <node-icon slot="icon" name="arrow-right-circle"></node-icon>
                       </hb-button>`
                     : nothing
                 }

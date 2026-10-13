@@ -22,7 +22,7 @@ import { type EventState, eventState } from '../../utils/event-state';
 import { type ContentPresence, hasContent } from '../../utils/content-presence';
 import { callForPapersOpen, headerStep, ticketOnSale } from '../../utils/next-step';
 import { routeNameFor } from '../../utils/navigation';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { nextStepLink } from '../shared/next-step-link';
 import '../ui/hb-button';
 import '../ui/hb-dialog';
@@ -290,7 +290,7 @@ export class AppHeader extends ThemedComponent {
               .expanded="${this.menuOpen}"
               @click="${this.openMenu}"
             >
-              <hoverboard-icon name="menu"></hoverboard-icon>
+              <node-icon name="menu"></node-icon>
             </hb-icon-button>
           </div>
         </div>

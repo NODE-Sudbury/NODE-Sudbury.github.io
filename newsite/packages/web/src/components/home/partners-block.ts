@@ -10,7 +10,7 @@ import { openPartnerDialog } from '../../store/dialogs';
 import { type PartnerGroupsState, selectPartnerGroups } from '../../store/partners';
 import { band } from '../../styles/band';
 import { safeUrl } from '../../utils/safe-url';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -90,7 +90,7 @@ export class PartnersBlock extends ThemedComponent {
                   @click="${openPartnerDialog}"
                 >
                   ${msg('Become a partner', { id: 'home.partners-block.cta' })}
-                  <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+                  <node-icon slot="icon" name="arrow-right-circle"></node-icon>
                 </hb-button>`
           }
         </div>

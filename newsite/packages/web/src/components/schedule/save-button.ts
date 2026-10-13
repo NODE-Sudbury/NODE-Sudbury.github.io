@@ -14,7 +14,7 @@ import {
 import { queueComplexSnackbar } from '../../store/snackbars';
 import type { UserState } from '../../store/user';
 import { confetti } from '../../utils/confetti';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-button';
 import '../ui/hb-icon-button';
 import { ThemedComponent } from '../themed-component';
@@ -53,10 +53,10 @@ export class SaveButton extends ThemedComponent {
     const session = this.session;
     if (!session) return nothing;
     const saved = this.saved;
-    const icon = html`<hoverboard-icon
+    const icon = html`<node-icon
       slot="${this.variant === 'button' ? 'icon' : nothing}"
       name="${saved ? 'star-filled' : 'star'}"
-    ></hoverboard-icon>`;
+    ></node-icon>`;
 
     if (this.variant === 'button') {
       return html`

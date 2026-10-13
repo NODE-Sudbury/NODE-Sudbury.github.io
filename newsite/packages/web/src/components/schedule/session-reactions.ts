@@ -27,7 +27,7 @@ import type { UserState } from '../../store/user';
 import { confetti } from '../../utils/confetti';
 import { getLocale } from '../../utils/localization';
 import { acceptingReactions } from '../../utils/reactions';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../ui/hb-icon-button';
 import '../ui/hb-popover';
 import type { HbPopover } from '../ui/hb-popover';
@@ -257,7 +257,7 @@ export class SessionReactions extends ThemedComponent {
     return html`
       <hb-popover>
         <hb-icon-button slot="trigger" label="${msg('Add a reaction', { id: 'reactions.add' })}">
-          <hoverboard-icon name="add-reaction"></hoverboard-icon>
+          <node-icon name="add-reaction"></node-icon>
         </hb-icon-button>
         <div
           class="picker"

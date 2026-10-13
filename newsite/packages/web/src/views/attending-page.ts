@@ -12,7 +12,7 @@ import '../components/attending/venue-section';
 import '../components/hero/simple-hero';
 import { ThemedComponent } from '../components/themed-component';
 import '../components/ui/hb-chip';
-import '../components/shared/hoverboard-icon';
+import '../components/shared/node-icon';
 import {
   attendance,
   attendingPage,
@@ -194,16 +194,16 @@ export class AttendingPage extends ThemedComponent {
         <ul class="details" aria-label="${msg('Event details', { id: 'home.hero.details' })}">
           <li>
             <hb-chip>
-              <hoverboard-icon slot="icon" name="calendar"></hoverboard-icon>
+              <node-icon slot="icon" name="calendar"></node-icon>
               ${getEventDates()}
             </hb-chip>
           </li>
           <li>
             <hb-chip>
-              <hoverboard-icon
+              <node-icon
                 slot="icon"
                 name="${this.where.location ? 'location' : 'monitor'}"
-              ></hoverboard-icon>
+              ></node-icon>
               ${eventPlace(({ short }) => short, this.where)}
             </hb-chip>
           </li>

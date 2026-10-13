@@ -7,7 +7,7 @@ import type { Member } from '../../models/member';
 import { band } from '../../styles/band';
 import { selectTeamsAndMembers } from '../../store/teams-members/selectors';
 import type { initialTeamsMembersState } from '../../store/teams-members/state';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import '../shared/team-member';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
@@ -54,7 +54,7 @@ export class BoardBlock extends ThemedComponent {
           <h2 class="band-title">${msg('Board Members', { id: 'home.board-block.title' })}</h2>
           <hb-button variant="outlined" class="cta-button" href="/team" trailing-icon>
             ${msg('Board & Teams', { id: 'home.board-block.cta' })}
-            <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>
 

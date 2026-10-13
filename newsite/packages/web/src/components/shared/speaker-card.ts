@@ -7,7 +7,7 @@ import { speakerPath } from '../../utils/navigation';
 import { photoTransitionName, tagColor } from '../../utils/styles';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-card';
-import './hoverboard-icon';
+import './node-icon';
 import './speaker-photo';
 
 /** Badges with an icon for the photo. */
@@ -76,7 +76,7 @@ export class SpeakerCard extends ThemedComponent {
       background-color: var(--hb-color-surface-bright);
     }
 
-    .affiliation hoverboard-icon {
+    .affiliation node-icon {
       inline-size: 55%;
       block-size: 55%;
     }
@@ -161,10 +161,10 @@ export class SpeakerCard extends ThemedComponent {
                   title="${badge.description || badge.name.toUpperCase()}"
                   style="${styleMap({ '--angle': `${ANGLES[index]}deg` })}"
                 >
-                  <hoverboard-icon
+                  <node-icon
                     name="${badge.name}"
                     style="color: ${tagColor(badge.name)}"
-                  ></hoverboard-icon>
+                  ></node-icon>
                 </span>`,
             )}
           </div>

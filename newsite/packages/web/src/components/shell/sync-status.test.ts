@@ -23,7 +23,7 @@ describe('sync-status', () => {
 
     expect(status).toHaveTextContent(/^Offline$/);
     expect(deepQuerySelector(status, '[aria-hidden]')).toBeNull();
-    expect(deepQuerySelector(shadowRoot, 'hoverboard-icon')).toHaveAttribute('name', 'cloud-off');
+    expect(deepQuerySelector(shadowRoot, 'node-icon')).toHaveAttribute('name', 'cloud-off');
   });
 
   it('shows the number of changes to sync, with what works offline', async () => {
@@ -32,7 +32,7 @@ describe('sync-status', () => {
     const status = screen.getByShadowRole('button');
 
     expect(deepQuerySelector(status, '[aria-hidden="true"]')).toHaveTextContent(/^2$/);
-    expect(deepQuerySelector(shadowRoot, 'hoverboard-icon')).toHaveAttribute(
+    expect(deepQuerySelector(shadowRoot, 'node-icon')).toHaveAttribute(
       'name',
       'cloud-upload',
     );

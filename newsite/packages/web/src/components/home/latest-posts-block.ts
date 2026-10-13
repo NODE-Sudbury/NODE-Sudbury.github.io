@@ -9,7 +9,7 @@ import { type BlogState, selectBlogPosts } from '../../store/blog';
 import { band } from '../../styles/band';
 import { getDate } from '../../utils/dates';
 import { postPath } from '../../utils/navigation';
-import '../shared/hoverboard-icon';
+import '../shared/node-icon';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-card';
@@ -82,7 +82,7 @@ export class LatestPostsBlock extends ThemedComponent {
           </h2>
           <hb-button variant="outlined" class="cta-button" href="/blog" trailing-icon>
             ${msg('View all stories', { id: 'home.latest-posts-block.cta' })}
-            <hoverboard-icon slot="icon" name="arrow-right-circle"></hoverboard-icon>
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
           </hb-button>
         </div>
 
