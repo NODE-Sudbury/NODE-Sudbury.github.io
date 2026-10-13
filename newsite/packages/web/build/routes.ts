@@ -78,6 +78,7 @@ export const ROUTES: readonly Route[] = [
     feature: 'openSource',
   },
   { pattern: '/team', entrypoint: 'team.astro', feature: 'team' },
+  { pattern: '/team/[id]', entrypoint: 'team/[id].astro', feature: 'team', content: 'team' },
   { pattern: '/attending', entrypoint: 'attending.astro', feature: 'attending' },
   { pattern: '/faq', entrypoint: 'faq.astro', feature: 'faq' },
   { pattern: '/coc', entrypoint: 'coc.astro', feature: 'codeOfConduct' },

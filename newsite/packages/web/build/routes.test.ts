@@ -70,6 +70,7 @@ describe('routes', () => {
     expect(injectRoute.mock.calls).toEqual([
       [{ pattern: '/', entrypoint: './src/routes/index.astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
+      [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
   });
 

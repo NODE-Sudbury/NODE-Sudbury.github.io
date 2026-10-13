@@ -8,6 +8,8 @@ export interface MemberData {
   photoUrl: string;
   socials: Social[];
   title: string;
+  /** About the member, as markdown. Without it the page says who they are. */
+  bio?: string;
 }
 
 export type Member = ParentId & MemberData;

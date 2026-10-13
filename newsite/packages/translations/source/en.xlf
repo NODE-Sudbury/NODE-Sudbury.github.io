@@ -935,6 +935,15 @@
 <trans-unit id="pages.home.scroll-error">
   <source>Error scrolling to section.</source>
 </trans-unit>
+<trans-unit id="pages.member.default-bio">
+  <source><x id="0" equiv-text="${member.name}"/> is <x id="1" equiv-text="${member.title}"/> of the NODE board of directors.</source>
+</trans-unit>
+<trans-unit id="pages.member.all-members">
+  <source>All board members</source>
+</trans-unit>
+<trans-unit id="pages.member.socials">
+  <source>Social links</source>
+</trans-unit>
 <trans-unit id="pages.not-found.joke">
   <source>This session was moved to another room.</source>
 </trans-unit>

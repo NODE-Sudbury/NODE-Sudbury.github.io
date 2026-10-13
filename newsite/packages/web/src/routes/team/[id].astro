@@ -1,0 +1,36 @@
+---
+import { loadContent } from '../../data/content';
+import { boardMembers } from '../../data/members';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import type { Member } from '../../models/member';
+import { memberSlug } from '../../utils/members';
+import Base from '../../layouts/base.astro';
+import { MemberPage } from '../../views/member-page';
+
+export const getStaticPaths = async () => {
+  const { teams, members } = await loadContent();
+  return boardMembers(teams, members).map((member) => ({
+    params: { id: memberSlug(member) },
+    props: { member },
+  }));
+};
+
+const { member } = Astro.props as { member: Member };
+const slug = memberSlug(member);
+---
+
+<Base
+  {...itemMetadata(
+    `${member.name}, ${member.title}`,
+    `${member.name} is ${member.title} of the NODE board of directors, the volunteer team behind Northern Ontario Dev Exchange in Sudbury.`,
+    member.photoUrl,
+  )}
+  content={seedPage({})}
+  breadcrumbs={[
+    { name: 'Board', path: '/team' },
+    { name: member.name, path: `/team/${slug}` },
+  ]}
+>
+  <MemberPage member={member} client:load />
+</Base>
