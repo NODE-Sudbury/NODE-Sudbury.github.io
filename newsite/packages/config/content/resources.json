@@ -144,8 +144,13 @@
           "newTab": true
         },
         {
+          "name": "Facebook",
+          "url": "https://www.facebook.com/nodesudbury",
+          "newTab": true
+        },
+        {
           "name": "LinkedIn",
-          "url": "https://www.linkedin.com/company/nodesudbury",
+          "url": "https://www.linkedin.com/company/node-northern-ontario-dev-exchange",
           "newTab": true
         }
       ]

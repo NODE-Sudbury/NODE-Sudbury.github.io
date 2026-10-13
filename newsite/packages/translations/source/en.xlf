@@ -1080,7 +1080,7 @@
   <source>Appearance</source>
   <note from="lit-localize">Picks the light or dark colors, or follows the device.</note>
 </trans-unit>
-<trans-unit id="shared.share.twitter-text">
+<trans-unit id="shared.share.x-text">
   <source>Check out <x id="0" equiv-text="${title}"/> at #<x id="1" equiv-text="${hashtag}"/>: <x id="2" equiv-text="${shareUrl}"/></source>
   <note from="lit-localize">Post text. Followed by a page title, the event hashtag and a link.</note>
 </trans-unit>

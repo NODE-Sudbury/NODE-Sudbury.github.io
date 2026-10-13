@@ -61,7 +61,7 @@
     "hashtag": "NODESudbury",
     "follow": [
       {
-        "name": "twitter",
+        "name": "x",
         "url": "https://x.com/nodesudbury"
       },
       {
@@ -69,8 +69,12 @@
         "url": "https://www.instagram.com/nodesudbury"
       },
       {
+        "name": "facebook",
+        "url": "https://www.facebook.com/nodesudbury"
+      },
+      {
         "name": "linkedin",
-        "url": "https://www.linkedin.com/company/nodesudbury"
+        "url": "https://www.linkedin.com/company/node-northern-ontario-dev-exchange"
       }
     ]
   },

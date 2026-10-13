@@ -40,7 +40,7 @@ Dates are still to be announced. Check the [schedule](/schedule) for updates.
 
 ### How do I stay informed?
 
-Follow NODE on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/nodesudbury), or use the subscribe form on the home page.
+Follow NODE on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram.com/nodesudbury), [Facebook](https://www.facebook.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node-northern-ontario-dev-exchange), or use the subscribe form on the home page.
 
 ## Contact
 
