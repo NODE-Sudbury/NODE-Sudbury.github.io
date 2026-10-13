@@ -31,9 +31,9 @@ const FEATURE_PATHS: Partial<Record<Feature, string[]>> = {
   blog: ['/blog'],
   codeOfConduct: ['/coc'],
   faq: ['/faq'],
-  mySchedule: ['/schedule/my-schedule'],
+  mySchedule: ['/events/my-schedule'],
   previousSpeakers: ['/previous-speakers'],
-  schedule: ['/schedule', '/sessions'],
+  schedule: ['/events', '/sessions'],
   speakers: ['/speakers'],
   team: ['/team'],
 };

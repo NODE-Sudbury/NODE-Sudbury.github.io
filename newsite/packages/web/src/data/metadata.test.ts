@@ -25,9 +25,9 @@ describe('pageMetadata', () => {
 
 describe('scheduleDetail', () => {
   it.each([
-    ['/schedule', {}, undefined],
-    ['/schedule/2026-10-08', { id: '2026-10-08' }, 'October 8'],
-    ['/schedule/my-schedule', {}, 'My Schedule'],
+    ['/events', {}, undefined],
+    ['/events/2026-10-08', { id: '2026-10-08' }, 'October 8'],
+    ['/events/my-schedule', {}, 'My Schedule'],
   ])('names what %s shows', (pathname, params, detail) => {
     expect(scheduleDetail({ pathname, search: '', params })).toBe(detail);
   });

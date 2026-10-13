@@ -8,7 +8,7 @@ describe('safeUrl', () => {
     'https://example.com/a?b#c',
     'http://example.com',
     'mailto:ada@example.com',
-    '/schedule',
+    '/events',
     '#top',
     'images/logo.svg',
     '../images/logo.svg',

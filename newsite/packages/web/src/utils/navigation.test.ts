@@ -16,7 +16,7 @@ describe('routeNameFor', () => {
 
   it('returns the first path segment', () => {
     expect(routeNameFor('/blog')).toBe('blog');
-    expect(routeNameFor('/schedule/2026-10-08')).toBe('schedule');
+    expect(routeNameFor('/events/2026-10-08')).toBe('schedule');
     expect(routeNameFor('/faq')).toBe('faq');
   });
 

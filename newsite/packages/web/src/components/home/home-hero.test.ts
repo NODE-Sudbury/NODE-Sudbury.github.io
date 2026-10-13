@@ -207,7 +207,7 @@ describe('home-hero', () => {
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
 
     expect(shadowRoot.querySelector('.buy-ticket')).toBeNull();
-    expect(shadowRoot.querySelector('.schedule')).toHaveAttribute('href', '/schedule');
+    expect(shadowRoot.querySelector('.schedule')).toHaveAttribute('href', '/events');
   });
 
   it('offers neither tickets nor the schedule when the build found none', async () => {

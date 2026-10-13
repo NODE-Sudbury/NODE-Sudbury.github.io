@@ -37,7 +37,7 @@ export const nextStepLink = (step: NextStep, ticketUrl = ''): NextStepLink => {
       };
     case 'onNow':
       return {
-        href: '/schedule',
+        href: '/events',
         label: msg("See what's on now", { id: 'home.hero.live-schedule' }),
         icon: 'calendar',
         external: false,
@@ -54,7 +54,7 @@ export const nextStepLink = (step: NextStep, ticketUrl = ''): NextStepLink => {
       };
     case 'schedule':
       return {
-        href: '/schedule',
+        href: '/events',
         label: navigationLabel('schedule'),
         icon: 'calendar',
         external: false,

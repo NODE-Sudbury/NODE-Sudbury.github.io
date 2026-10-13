@@ -8,7 +8,7 @@ import Base from '../../layouts/base.astro';
 import { SchedulePage } from '../../views/schedule-page';
 import { MySchedule } from '../../views/schedule/my-schedule';
 
-const location: RouteLocation = { pathname: '/schedule/my-schedule', search: '', params: {} };
+const location: RouteLocation = { pathname: '/events/my-schedule', search: '', params: {} };
 const { sessions, speakers } = await loadContent();
 const content = seedPage({ sessions, speakers });
 ---

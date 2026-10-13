@@ -51,7 +51,7 @@ describe('startApp', () => {
 
     expect(selectFilters(store.getState())).toEqual([]);
 
-    window.history.replaceState({}, '', '/schedule?complexity=Beginner');
+    window.history.replaceState({}, '', '/events?complexity=Beginner');
     document.dispatchEvent(new Event('astro:after-swap'));
 
     await vi.waitFor(() =>

@@ -349,7 +349,7 @@ export class AppHeader extends ThemedComponent {
       const inNav = this.links.some((nav) => nav.route === 'schedule');
       if (inNav && inSheet) return nothing;
       // The bar keeps it on narrow screens, where the navigation is behind the menu button.
-      return html`<hb-button class="cta ${inNav ? 'in-nav' : ''}" variant="cta" href="/schedule"
+      return html`<hb-button class="cta ${inNav ? 'in-nav' : ''}" variant="cta" href="/events"
         >${navigationLabel('schedule')}</hb-button
       >`;
     }

@@ -430,7 +430,7 @@ describe('email link sign-in', () => {
   });
 
   it('emails a link back to the current page, and remembers the address', async () => {
-    window.history.replaceState(null, '', '/schedule?tags=Web#10:00');
+    window.history.replaceState(null, '', '/events?tags=Web#10:00');
     const { sendSignInLink } = await loadModule();
 
     await sendSignInLink('ada@example.com');

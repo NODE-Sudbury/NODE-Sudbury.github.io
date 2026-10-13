@@ -142,7 +142,7 @@ export class ScheduleTabs extends ThemedComponent {
   }
 
   private href(id: string) {
-    return `/schedule/${id}${this.location?.search ?? ''}`;
+    return `/events/${id}${this.location?.search ?? ''}`;
   }
 }
 

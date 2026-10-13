@@ -448,7 +448,7 @@ export class ScheduleDay extends ThemedComponent {
                 this.onlyFeatured && timeslot.sessions.length && visible[index]!.length === 0
                   ? html`<a
                       class="browse"
-                      href="/schedule/${day.date}#${timeslot.startTime}"
+                      href="/events/${day.date}#${timeslot.startTime}"
                       style="grid-row: ${index + 1}"
                     >
                       <node-icon name="add-circle-outline"></node-icon>

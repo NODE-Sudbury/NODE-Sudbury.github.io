@@ -109,7 +109,7 @@ describe('routes', () => {
       expect(emit).toHaveBeenCalledTimes(2);
       expect(emit).toHaveBeenCalledWith(
         'change',
-        join(import.meta.dirname, '../src/routes/schedule/[...day].astro'),
+        join(import.meta.dirname, '../src/routes/events/[...day].astro'),
       );
       expect(emit).toHaveBeenCalledWith(
         'change',

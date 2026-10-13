@@ -156,7 +156,7 @@ describe('schedule-day', () => {
     await render({ onlyFeatured: true });
     const link = screen.getByShadowRole('link', { name: 'Browse sessions' });
 
-    expect(link).toHaveAttribute('href', '/schedule/2024-01-01#11:00');
+    expect(link).toHaveAttribute('href', '/events/2024-01-01#11:00');
     expect(screen.getAllByShadowRole('link', { name: 'Browse sessions' })).toHaveLength(1);
   });
 
@@ -181,7 +181,7 @@ describe('schedule-day', () => {
       screen
         .getAllByShadowRole('link', { name: 'Browse sessions' })
         .map((link) => link.getAttribute('href')),
-    ).toEqual(['/schedule/2024-01-01#11:00', '/schedule/2024-01-01#12:30']);
+    ).toEqual(['/events/2024-01-01#11:00', '/events/2024-01-01#12:30']);
   });
 
   it('marks the current time during the day, after the first render', async () => {
@@ -218,7 +218,7 @@ describe('schedule-day', () => {
     const { element } = await render({
       day: undefined,
       schedule: new Success([day, other]),
-      location: { pathname: '/schedule/2024-01-02', search: '', params: { id: '2024-01-02' } },
+      location: { pathname: '/events/2024-01-02', search: '', params: { id: '2024-01-02' } },
     });
 
     expect(element.day).toBe(other);

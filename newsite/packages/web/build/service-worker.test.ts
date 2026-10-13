@@ -60,7 +60,7 @@ describe('schedulePrecache', () => {
     >;
 
   it('precaches every page of a published schedule, which the build names by day', () => {
-    expect(schedulePrecache(site(true, true))).toEqual(['schedule.html', 'schedule/*.html']);
+    expect(schedulePrecache(site(true, true))).toEqual(['events.html', 'events/*.html']);
   });
 
   it('precaches nothing before the schedule is published, or with it off', () => {

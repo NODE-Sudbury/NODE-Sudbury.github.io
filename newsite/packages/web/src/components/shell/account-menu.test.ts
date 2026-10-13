@@ -63,7 +63,7 @@ describe('account-menu', () => {
 
     expect(
       menu().getByShadowRole('menuitem', { name: 'My Schedule', hidden: true }),
-    ).toHaveAttribute('href', '/schedule/my-schedule');
+    ).toHaveAttribute('href', '/events/my-schedule');
 
     fireEvent.click(menu().getByShadowRole('menuitem', { name: 'Sign out', hidden: true }));
 

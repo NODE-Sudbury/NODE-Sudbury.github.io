@@ -14,7 +14,7 @@
       "featuredSessions": {
         "description": "Our programs: 4 hackathons a year, a monthly speaker series at the Norcat Innovation Hub (12 sessions, September 2026 to August 2027, 6:00 PM to 7:00 PM), and community meetups with Cursor Sudbury and GDG Sudbury.",
         "label": "Explore the schedule",
-        "link": "/schedule"
+        "link": "/events"
       },
       "howItWas": {
         "description": "Highlights video coming soon.",
@@ -58,7 +58,7 @@
         "description": "NODE supports careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners. Programs: 4 hackathons a year, a monthly speaker series at the Norcat Innovation Hub (12 sessions, September 2026 to August 2027, 6:00 PM to 7:00 PM), and community meetups with Cursor Sudbury and GDG Sudbury.",
         "callToAction": {
           "label": "Explore the schedule",
-          "link": "/schedule"
+          "link": "/events"
         }
       },
       {
@@ -155,7 +155,7 @@
       "links": [
         {
           "name": "Schedule",
-          "url": "/schedule",
+          "url": "/events",
           "newTab": false
         },
         {

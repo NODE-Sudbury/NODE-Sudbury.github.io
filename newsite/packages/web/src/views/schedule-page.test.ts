@@ -57,8 +57,8 @@ describe('schedule-page', () => {
   });
 
   it.each([
-    ['/schedule/2026-10-08', { id: '2026-10-08' }, 'October 8 | Schedule'],
-    ['/schedule/my-schedule', {}, 'My Schedule | Schedule'],
+    ['/events/2026-10-08', { id: '2026-10-08' }, 'October 8 | Schedule'],
+    ['/events/my-schedule', {}, 'My Schedule | Schedule'],
   ])('gives %s its own title', async (pathname, params, title) => {
     await render({ location: { pathname, search: '', params } });
 
@@ -85,7 +85,7 @@ describe('schedule-page', () => {
   it('keeps My Schedule without days, which says how to save sessions', async () => {
     const { shadowRoot } = await render({
       schedule: new Success([]),
-      location: { pathname: '/schedule/my-schedule', search: '', params: {} },
+      location: { pathname: '/events/my-schedule', search: '', params: {} },
     });
 
     expect(shadowRoot.querySelector('coming-soon')).toBeNull();
@@ -93,7 +93,7 @@ describe('schedule-page', () => {
   });
 
   it('passes the location to the day tabs', async () => {
-    const location = { pathname: '/schedule/day-1', search: '', params: {} };
+    const location = { pathname: '/events/day-1', search: '', params: {} };
     const { shadowRoot } = await render({ location });
 
     expect(shadowRoot.querySelector('schedule-tabs')!.location).toBe(location);
@@ -113,7 +113,7 @@ describe('schedule-page', () => {
 
   it('has no filters on My Schedule', async () => {
     const { shadowRoot } = await render({
-      location: { pathname: '/schedule/my-schedule', search: '', params: {} },
+      location: { pathname: '/events/my-schedule', search: '', params: {} },
     });
 
     expect(shadowRoot.querySelector('filter-menu')).toBeNull();

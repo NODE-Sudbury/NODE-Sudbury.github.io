@@ -83,7 +83,7 @@ export class NotFoundPage extends ThemedComponent {
             </hb-button>
             ${
               __HB_FEATURES__.schedule
-                ? html`<hb-button variant="outlined" href="/schedule">
+                ? html`<hb-button variant="outlined" href="/events">
                     ${msg('See the schedule', { id: 'pages.not-found.schedule-link' })}
                   </hb-button>`
                 : nothing

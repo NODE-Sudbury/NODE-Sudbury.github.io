@@ -22,7 +22,10 @@ export const routeNameFor = (pathname: string): string => {
   const [, part] = pathname.split('/');
   switch (part) {
     case 'sessions':
+    case 'events':
       return 'schedule';
+    case 'open-source':
+      return 'openSource';
     case 'previous-speakers':
       return 'speakers';
     default:

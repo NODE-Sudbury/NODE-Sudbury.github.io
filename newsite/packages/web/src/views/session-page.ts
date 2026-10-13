@@ -189,7 +189,7 @@ export class SessionPage extends ThemedComponent {
     const session = this.session;
     return html`
       <hero-block tone="${PAGE_TONES.schedule}">
-        <a class="back" href="${session?.day ? `/schedule/${session.day}` : '/schedule'}">
+        <a class="back" href="${session?.day ? `/events/${session.day}` : '/events'}">
           <node-icon name="arrow-left"></node-icon>
           ${msg('Back to schedule', { id: 'pages.session.back-to-schedule' })}
         </a>

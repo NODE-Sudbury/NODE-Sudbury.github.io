@@ -21,13 +21,13 @@ export const ROUTES: readonly Route[] = [
   { pattern: '/blog/[id]', entrypoint: 'blog/[id].astro', feature: 'blog', content: 'blog' },
   { pattern: '/blog/rss.xml', entrypoint: 'blog/rss.xml.ts', feature: 'blog' },
   {
-    pattern: '/schedule/my-schedule',
-    entrypoint: 'schedule/my-schedule.astro',
+    pattern: '/events/my-schedule',
+    entrypoint: 'events/my-schedule.astro',
     feature: 'mySchedule',
   },
   {
-    pattern: '/schedule/[...day]',
-    entrypoint: 'schedule/[...day].astro',
+    pattern: '/events/[...day]',
+    entrypoint: 'events/[...day].astro',
     feature: 'schedule',
     // The days come from the sessions.
     content: 'sessions',

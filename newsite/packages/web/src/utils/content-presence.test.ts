@@ -28,7 +28,7 @@ describe('linkLeadsSomewhere', () => {
     expect(linkLeadsSomewhere(presence, '/team')).toBe(false);
     expect(linkLeadsSomewhere(presence, '/team#organizers')).toBe(false);
     expect(linkLeadsSomewhere(presence, '/sessions/101')).toBe(false);
-    expect(linkLeadsSomewhere(presence, '/schedule/my-schedule')).toBe(false);
+    expect(linkLeadsSomewhere(presence, '/events/my-schedule')).toBe(false);
     expect(linkLeadsSomewhere(presence, '/previous-speakers/ada')).toBe(true);
     expect(linkLeadsSomewhere({}, '/team')).toBe(true);
   });

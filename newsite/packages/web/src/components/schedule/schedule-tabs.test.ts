@@ -43,8 +43,8 @@ describe('schedule-tabs', () => {
       'Day 2 January 2',
       'My Schedule',
     ]);
-    expect(links[1]).toHaveAttribute('href', '/schedule/2024-01-02');
-    expect(links[2]).toHaveAttribute('href', '/schedule/my-schedule');
+    expect(links[1]).toHaveAttribute('href', '/events/2024-01-02');
+    expect(links[2]).toHaveAttribute('href', '/events/my-schedule');
   });
 
   it('shows only the date for a one-day event', async () => {
@@ -54,32 +54,32 @@ describe('schedule-tabs', () => {
   });
 
   it('marks the first day as current on /schedule', async () => {
-    const container = await render({ location: location('/schedule') });
+    const container = await render({ location: location('/events') });
 
     expect(within(container).getByRole('link', { current: 'page' })).toHaveTextContent('January 1');
   });
 
   it("marks the location's day or My Schedule as current", async () => {
     expect(
-      within(await render({ location: location('/schedule/2024-01-02') })).getByRole('link', {
+      within(await render({ location: location('/events/2024-01-02') })).getByRole('link', {
         current: 'page',
       }),
     ).toHaveTextContent('January 2');
     litRender(nothing, document.body);
 
     expect(
-      within(await render({ location: location('/schedule/my-schedule') })).getByRole('link', {
+      within(await render({ location: location('/events/my-schedule') })).getByRole('link', {
         current: 'page',
       }),
     ).toHaveTextContent('My Schedule');
   });
 
   it('keeps the query string in its links', async () => {
-    const container = await render({ location: location('/schedule/2024-01-01', '?tags=web') });
+    const container = await render({ location: location('/events/2024-01-01', '?tags=web') });
 
     expect(within(container).getAllByRole('link')[0]).toHaveAttribute(
       'href',
-      '/schedule/2024-01-01?tags=web',
+      '/events/2024-01-01?tags=web',
     );
   });
 

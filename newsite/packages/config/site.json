@@ -104,7 +104,7 @@
     },
     {
       "route": "schedule",
-      "permalink": "/schedule"
+      "permalink": "/events"
     },
     {
       "route": "team",

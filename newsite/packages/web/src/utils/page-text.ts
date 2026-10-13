@@ -93,7 +93,7 @@ export const pageText = (page: Page): PageText => PAGES[page]();
 export const pageTitle = (page: Page, detail?: string): string =>
   detail ? `${detail} | ${pageText(page).title}` : pageText(page).title;
 
-/** What a schedule page shows, for its title: a day or My Schedule. `/schedule` has none. */
+/** What a schedule page shows, for its title: a day or My Schedule. `/events` has none. */
 export const scheduleDetail = ({ pathname, params }: RouteLocation): string | undefined => {
   if (pathname.endsWith('/my-schedule')) return navigationLabel('mySchedule');
   return params['id'] ? getScheduleDay(params['id']) : undefined;

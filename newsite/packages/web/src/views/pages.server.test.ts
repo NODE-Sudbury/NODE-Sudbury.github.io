@@ -41,7 +41,7 @@ const session = {
 } as never as Session;
 
 const location: RouteLocation = {
-  pathname: '/schedule/2026-10-08',
+  pathname: '/events/2026-10-08',
   search: '',
   params: { id: '2026-10-08' },
 };

@@ -131,14 +131,14 @@ describe('app-header', () => {
     });
     const { callToAction } = await render('/blog');
 
-    expect(callToAction()).toHaveAttribute('href', '/schedule');
+    expect(callToAction()).toHaveAttribute('href', '/events');
   });
 
   it('calls to see the schedule without tickets, then to get updates, then to nothing', async () => {
     setFeatures({ tickets: false });
     const { callToAction } = await render();
 
-    expect(callToAction()).toHaveAttribute('href', '/schedule');
+    expect(callToAction()).toHaveAttribute('href', '/events');
 
     setFeatures({ tickets: false, schedule: false, mySchedule: false, feedback: false });
     const { callToAction: updates } = await render('/blog');

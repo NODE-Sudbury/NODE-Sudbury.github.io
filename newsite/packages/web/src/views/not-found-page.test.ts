@@ -27,7 +27,7 @@ describe('not-found-page', () => {
     const links = deepQuerySelectorAll(shadowRoot, 'hb-button').map((link) =>
       link.getAttribute('href'),
     );
-    expect(links).toEqual(['/', '/schedule']);
+    expect(links).toEqual(['/', '/events']);
   });
 
   it('has no schedule link when the schedule is off', async () => {

@@ -179,7 +179,7 @@ describe('session-page', () => {
 
     expect(screen.getByShadowRole('link', { name: 'Back to schedule' })).toHaveAttribute(
       'href',
-      '/schedule/2024-01-02',
+      '/events/2024-01-02',
     );
   });
 

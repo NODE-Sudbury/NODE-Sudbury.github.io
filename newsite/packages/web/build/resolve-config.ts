@@ -246,7 +246,7 @@ const FEATURE_PATHS: Record<string, Feature> = {
   faq: 'faq',
   'open-source': 'openSource',
   'previous-speakers': 'previousSpeakers',
-  schedule: 'schedule',
+  events: 'schedule',
   sessions: 'schedule',
   speakers: 'speakers',
   team: 'team',

@@ -76,7 +76,7 @@ export class AccountMenu extends ThemedComponent {
         </div>
         ${
           __HB_FEATURES__.mySchedule
-            ? html`<a role="menuitem" href="/schedule/my-schedule"
+            ? html`<a role="menuitem" href="/events/my-schedule"
                 >${navigationLabel('mySchedule')}</a
               >`
             : nothing

@@ -16,6 +16,7 @@ export const hasContent = (presence: ContentPresence, route: Feature | 'home'): 
 // Pages whose path isn't their feature's name.
 const PAGE_FEATURES: Record<string, Feature> = {
   coc: 'codeOfConduct',
+  events: 'schedule',
   'open-source': 'openSource',
   'previous-speakers': 'previousSpeakers',
   sessions: 'schedule',
