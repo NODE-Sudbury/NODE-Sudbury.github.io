@@ -21,8 +21,8 @@ import { ThemedComponent } from '../components/themed-component';
 const zoneName = (zone: string) => zone.replaceAll('_', ' ');
 
 /**
- * The events page: Upcoming events under the time zone and the category filters, then Past events
- * as cards. Both come from the events the site synced from GDG and Luma.
+ * The events page: Upcoming events in one column per category under the time zone and the filters,
+ * then Past events as cards. Both come from the events the site synced from GDG and Luma.
  */
 @customElement('events-page')
 export class EventsPage extends ThemedComponent {
@@ -76,6 +76,36 @@ export class EventsPage extends ThemedComponent {
       flex-basis: 100%;
     }
 
+    /* One column per category, headed like the schedule's rooms. */
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(var(--columns, 3), minmax(0, 1fr));
+      gap: 0 var(--hb-space-5);
+      margin-block-start: var(--hb-space-3);
+    }
+
+    .column {
+      display: grid;
+      align-content: start;
+      gap: var(--hb-space-4);
+      min-inline-size: 0;
+    }
+
+    .column-title {
+      margin: 0 0 var(--hb-space-2);
+      padding: var(--hb-space-3) 0;
+      border-block-end: 2px solid var(--hb-color-on-surface);
+      ${displayFont('heading', 'lg', 1.2)};
+      text-align: center;
+    }
+
+    .column-empty {
+      margin: 0;
+      color: var(--hb-color-on-surface-variant);
+      font-size: var(--hb-text-sm);
+      text-align: center;
+    }
+
     .events {
       display: grid;
       grid-template-columns: repeat(
@@ -90,6 +120,13 @@ export class EventsPage extends ThemedComponent {
 
     .events > li {
       display: grid;
+    }
+
+    @container (width < 760px) {
+      .columns {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--hb-space-5) 0;
+      }
     }
 
     @container (width < 480px) {
@@ -144,11 +181,29 @@ export class EventsPage extends ThemedComponent {
     ];
   }
 
-  private get shownUpcoming() {
+  /** The categories to show: the chosen filters, or all of them. */
+  private get shownCategories() {
     const chosen = this.selectedFilters
       .filter(({ group }) => group === FilterGroupKey.tags)
       .map(({ tag }) => tag);
-    return chosen.length ? this.upcoming.filter(({ category }) => chosen.includes(category)) : this.upcoming;
+    return chosen.length ? this.categories.filter((category) => chosen.includes(category)) : this.categories;
+  }
+
+  private columns(zone: string) {
+    const categories = this.shownCategories;
+    return html`<div class="columns" style="--columns: ${Math.max(categories.length, 1)}">
+      ${categories.map((category) => {
+        const events = this.upcoming.filter((event) => event.category === category);
+        return html`<section class="column">
+          <h3 class="column-title">${category}</h3>
+          ${
+            events.length
+              ? events.map((event) => html`<event-card .event="${event}" zone="${zone}"></event-card>`)
+              : html`<p class="column-empty">${msg('Nothing planned yet.', { id: 'events.page.column-empty' })}</p>`
+          }
+        </section>`;
+      })}
+    </div>`;
   }
 
   private cards(events: CommunityEvent[], zone: string) {
@@ -164,7 +219,6 @@ export class EventsPage extends ThemedComponent {
     const visitorZone = this.visitorTimeZone;
     const otherZone = !!visitorZone && visitorZone !== timeZone;
     const shownZone = this.localTime && otherZone ? visitorZone : timeZone;
-    const upcoming = this.shownUpcoming;
     return html`
       <simple-hero page="schedule"></simple-hero>
 
@@ -192,11 +246,7 @@ export class EventsPage extends ThemedComponent {
           ></filter-menu>
         </div>
 
-        ${
-          upcoming.length
-            ? this.cards(upcoming, shownZone)
-            : html`<p class="empty">${msg('No upcoming events right now. Check back soon.', { id: 'events.page.none-upcoming' })}</p>`
-        }
+        ${this.columns(shownZone)}
 
         ${
           this.past.length

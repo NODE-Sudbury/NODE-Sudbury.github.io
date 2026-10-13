@@ -914,6 +914,9 @@
 <trans-unit id="pages.blog-list.error">
   <source>Error loading posts.</source>
 </trans-unit>
+<trans-unit id="events.page.column-empty">
+  <source>Nothing planned yet.</source>
+</trans-unit>
 <trans-unit id="events.page.upcoming">
   <source>Upcoming events</source>
 </trans-unit>
@@ -922,9 +925,6 @@
 </trans-unit>
 <trans-unit id="schedule.page.local-time">
   <source>Show my time zone, <x id="0" equiv-text="${zoneName(visitorZone)}"/></source>
-</trans-unit>
-<trans-unit id="events.page.none-upcoming">
-  <source>No upcoming events right now. Check back soon.</source>
 </trans-unit>
 <trans-unit id="events.page.past">
   <source>Past events</source>
