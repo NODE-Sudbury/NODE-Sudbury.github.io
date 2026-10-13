@@ -4,7 +4,13 @@
     "order": 0,
     "photo": "/images/node/team/dean.jpg",
     "photoUrl": "/images/node/team/dean.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/dean-lupini-67608a22/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "President"
   },
   "team/0/members/1": {
@@ -12,7 +18,13 @@
     "order": 1,
     "photo": "/images/node/team/heather.jpg",
     "photoUrl": "/images/node/team/heather.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/heather-dufour/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Treasurer"
   },
   "team/0/members/2": {
@@ -20,7 +32,13 @@
     "order": 2,
     "photo": "/images/node/team/hannan.jpg",
     "photoUrl": "/images/node/team/hannan.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/hannanmax/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Technical Lead"
   },
   "team/0/members/3": {
@@ -28,7 +46,13 @@
     "order": 3,
     "photo": "/images/node/team/athif.jpg",
     "photoUrl": "/images/node/team/athif.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/athif-shaffy/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Secretary"
   },
   "team/0/members/4": {
@@ -36,7 +60,13 @@
     "order": 4,
     "photo": "/images/node/team/karan.jpg",
     "photoUrl": "/images/node/team/karan.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/karan-tutlani/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Marketing"
   },
   "team/0/members/5": {
@@ -44,7 +74,13 @@
     "order": 5,
     "photo": "/images/node/team/cheick.jpg",
     "photoUrl": "/images/node/team/cheick.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/cheickismaelmaiga/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Promotion / Sponsorship"
   },
   "team/0/members/6": {
@@ -52,7 +88,13 @@
     "order": 6,
     "photo": "/images/node/team/baljinder.jpg",
     "photoUrl": "/images/node/team/baljinder.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/baljinder-maan/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "Membership Leader"
   },
   "team/0/members/7": {
@@ -60,7 +102,13 @@
     "order": 7,
     "photo": "/images/node/team/hassan.jpg",
     "photoUrl": "/images/node/team/hassan.jpg",
-    "socials": [],
+    "socials": [
+      {
+        "icon": "linkedin",
+        "link": "https://www.linkedin.com/in/mshahriar/",
+        "name": "LinkedIn"
+      }
+    ],
     "title": "AI and Emerging Technologies"
   },
   "team/1/members/0": {
