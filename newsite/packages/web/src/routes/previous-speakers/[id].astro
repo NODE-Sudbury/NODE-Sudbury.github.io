@@ -20,6 +20,11 @@ const content = seedPage({ previousSpeakers });
 <Base
   {...itemMetadata(pageTitle('previousSpeakers', speaker.name), speaker.bio, speaker.photoUrl)}
   content={content}
+  noindex={/\bTBD\b/i.test(speaker.name)}
+  breadcrumbs={[
+    { name: 'Previous Speakers', path: '/previous-speakers' },
+    { name: speaker.name, path: `/previous-speakers/${speaker.id}` },
+  ]}
 >
   <PreviousSpeakerPage speakerId={speaker.id} client:load />
 </Base>

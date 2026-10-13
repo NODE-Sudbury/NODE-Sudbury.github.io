@@ -21,6 +21,14 @@ const image = __HB_FEATURES__.socialImages
   : content.speakers.find(({ id }) => id === session.speakers?.[0])?.photoUrl;
 ---
 
-<Base {...itemMetadata(session.title, session.description, image)} content={content}>
+<Base
+  {...itemMetadata(session.title, session.description, image)}
+  content={content}
+  noindex={/\bTBD\b/i.test(session.title)}
+  breadcrumbs={[
+    { name: 'Events', path: '/events' },
+    { name: session.title, path: `/sessions/${session.id}` },
+  ]}
+>
   <SessionPage sessionId={session.id} client:load />
 </Base>

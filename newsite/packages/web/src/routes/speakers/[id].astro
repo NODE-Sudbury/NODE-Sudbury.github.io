@@ -24,6 +24,14 @@ const image = __HB_FEATURES__.socialImages
   : speaker.photoUrl;
 ---
 
-<Base {...itemMetadata(speaker.name, speaker.bio, image)} content={content}>
+<Base
+  {...itemMetadata(speaker.name, speaker.bio, image)}
+  content={content}
+  noindex={/\bTBD\b/i.test(speaker.name)}
+  breadcrumbs={[
+    { name: 'Speakers', path: '/speakers' },
+    { name: speaker.name, path: `/speakers/${speaker.id}` },
+  ]}
+>
   <SpeakerPage speakerId={speaker.id} client:load />
 </Base>
