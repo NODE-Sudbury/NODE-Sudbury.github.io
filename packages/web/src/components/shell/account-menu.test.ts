@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { setFeatures } from '../../../__tests__/helpers/features';
 import { fixture } from '../../../__tests__/helpers/fixtures';
 import { signOut } from '../../store/auth';
-import { openProfileDialog, openSigninDialog } from '../../store/dialogs';
+import { openSigninDialog } from '../../store/dialogs';
 import type { AccountMenu } from './account-menu';
 import './account-menu';
 
@@ -18,7 +18,6 @@ vi.mock('../../store/auth', async (importOriginal) => ({
 
 vi.mock('../../store/dialogs', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../store/dialogs')>()),
-  openProfileDialog: vi.fn(),
   openSigninDialog: vi.fn(),
 }));
 
@@ -71,29 +70,20 @@ describe('account-menu', () => {
   });
 
   it('leaves out My Schedule when the feature is off', async () => {
-    setFeatures({ mySchedule: false, reactions: false });
+    setFeatures({ mySchedule: false });
     const { menu } = await render(ada);
 
-    expect(menu().getAllByShadowRole('menuitem', { hidden: true })).toHaveLength(1);
+    expect(menu().getAllByShadowRole('menuitem', { hidden: true })).toHaveLength(2);
     expect(
       menu().queryByShadowRole('menuitem', { name: 'My Schedule', hidden: true }),
     ).not.toBeInTheDocument();
   });
 
-  it('opens the public profile, with reactions on', async () => {
-    const { menu } = await render(ada);
-
-    fireEvent.click(menu().getByShadowRole('menuitem', { name: 'Public profile', hidden: true }));
-
-    expect(openProfileDialog).toHaveBeenCalled();
-  });
-
-  it('has no public profile with reactions off', async () => {
-    setFeatures({ reactions: false });
+  it('links to the profile page', async () => {
     const { menu } = await render(ada);
 
     expect(
-      menu().queryByShadowRole('menuitem', { name: 'Public profile', hidden: true }),
-    ).not.toBeInTheDocument();
+      menu().getByShadowRole('menuitem', { name: 'My profile', hidden: true }),
+    ).toHaveAttribute('href', '/account');
   });
 });

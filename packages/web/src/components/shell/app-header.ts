@@ -17,6 +17,7 @@ import {
 } from '../../config/site';
 import { fromStore } from '../../controllers/from-store';
 import type { Ticket } from '../../models/ticket';
+import { signInAvailable } from '../../store/auth';
 import { type TicketsState, selectTickets } from '../../store/tickets';
 import { type EventState, eventState } from '../../utils/event-state';
 import { type ContentPresence, hasContent } from '../../utils/content-presence';
@@ -276,14 +277,7 @@ export class AppHeader extends ThemedComponent {
             <sync-status></sync-status>
             ${this.renderCallToAction()}
             ${__HB_FEATURES__.notifications ? html`<notification-toggle></notification-toggle>` : nothing}
-            ${
-              (__HB_FEATURES__.mySchedule ||
-                __HB_FEATURES__.feedback ||
-                __HB_FEATURES__.reactions) &&
-              !archive
-                ? html`<account-menu></account-menu>`
-                : nothing
-            }
+            ${signInAvailable && !archive ? html`<account-menu></account-menu>` : nothing}
             <hb-icon-button
               class="menu-button"
               label="${msg('Menu', { id: 'shell.header.menu' })}"

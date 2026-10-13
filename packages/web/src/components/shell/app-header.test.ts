@@ -32,6 +32,11 @@ const tickets = new Success([
   { name: 'Regular', url: 'https://example.com/regular', available: true },
 ] as Ticket[]);
 
+vi.mock('../../supabase', () => ({
+  isSupabaseConfigured: true,
+  getSupabase: vi.fn(),
+}));
+
 describe('app-header', () => {
   // Otherwise it can finish loading after jsdom is gone, which fails the run.
   beforeAll(() => demoBanner);
@@ -175,17 +180,10 @@ describe('app-header', () => {
     expect(callToAction()).toHaveTextContent('Get updates');
   });
 
-  it('shows the account menu only when a feature needs sign-in', async () => {
+  it('shows the account menu when members can sign in', async () => {
     const { shadowRoot } = await render();
+
     expect(deepQuerySelector(shadowRoot, 'account-menu')).toBeInTheDocument();
-
-    setFeatures({ mySchedule: false, feedback: false });
-    const { shadowRoot: withReactions } = await render('/blog');
-    expect(deepQuerySelector(withReactions, 'account-menu')).toBeInTheDocument();
-
-    setFeatures({ mySchedule: false, feedback: false, reactions: false });
-    const { shadowRoot: withoutAccount } = await render('/team');
-    expect(deepQuerySelector(withoutAccount, 'account-menu')).toBeNull();
   });
 
   it('shows the notifications bell only when notifications are on', async () => {

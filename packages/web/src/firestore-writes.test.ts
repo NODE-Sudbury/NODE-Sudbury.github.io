@@ -17,9 +17,14 @@ const ALLOWED: Record<string, string> = {};
 const unwrappedWrites = (source: string) =>
   [...source.matchAll(WRITE)].filter(({ index }) => !IN_WRITE.test(source.slice(0, index)));
 
-/** The functions a file imports from `src/db/`. */
+/**
+ * The functions a file imports from `src/db/`. The member profiles are in Supabase, which answers
+ * over the network, so their functions are awaited and left out here.
+ */
 const dbImports = (source: string) =>
-  [...source.matchAll(/import\s*{([^}]+)}\s*from\s*'[./]*\/db\/[^']+'/g)].flatMap(([, names]) =>
+  [
+    ...source.matchAll(/import\s*{([^}]+)}\s*from\s*'[./]*\/db\/(?!member-profiles)[^']+'/g),
+  ].flatMap(([, names]) =>
     names!
       .split(',')
       .map((name) => name.trim().replace(/^type\s+/, ''))

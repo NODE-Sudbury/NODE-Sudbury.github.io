@@ -106,7 +106,10 @@
   "features": {
     "demo": false,
     "notifications": false,
-    "forkMe": false
+    "forkMe": false,
+    "mySchedule": false,
+    "feedback": false,
+    "reactions": false
   },
   "navigation": [
     {
