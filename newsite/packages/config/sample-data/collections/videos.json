@@ -1,0 +1,23 @@
+{
+  "videos/000": {
+    "speakers": "TBD",
+    "thumbnail": "/images/node/talk.jpeg",
+    "title": "Video coming soon",
+    "youtubeId": "hUY8jg9-ieE",
+    "order": "0"
+  },
+  "videos/001": {
+    "speakers": "TBD",
+    "thumbnail": "/images/node/talk.jpeg",
+    "title": "Video coming soon",
+    "youtubeId": "D6WEL_inXxk",
+    "order": "1"
+  },
+  "videos/002": {
+    "speakers": "TBD",
+    "thumbnail": "/images/node/talk.jpeg",
+    "title": "Video coming soon",
+    "youtubeId": "hUY8jg9-ieE",
+    "order": "2"
+  }
+}
