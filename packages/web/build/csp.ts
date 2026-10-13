@@ -91,6 +91,8 @@ export const cspPolicy = (
       'https://*.google-analytics.com',
       'https://*.analytics.google.com',
       'https://*.googletagmanager.com',
+      // The home page asks Discord how many members the server has.
+      'https://discord.com',
     ],
     // Content images can be on any host.
     'img-src': ["'self'", 'https:', 'data:'],

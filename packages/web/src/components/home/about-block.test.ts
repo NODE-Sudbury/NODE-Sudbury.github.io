@@ -5,6 +5,7 @@ import { deepQuerySelector, deepQuerySelectorAll, screen } from 'shadow-dom-test
 import { fixture } from '../../../__tests__/helpers/fixtures';
 import { openVideoDialog } from '../../store/ui';
 import { aboutBlock } from '../../config/site';
+import * as discord from '../../utils/discord';
 import './about-block';
 
 vi.mock('../../store/ui', async (importOriginal) => ({
@@ -79,5 +80,21 @@ describe('about-block', () => {
     } finally {
       aboutBlock.callToAction.howItWas = video;
     }
+  });
+
+  it('adds a members tile once Discord says how many there are', async () => {
+    vi.spyOn(discord, 'fetchDiscordMemberCount').mockResolvedValue(30);
+    const { shadowRoot } = await fixture(html`<about-block></about-block>`);
+
+    await vi.waitFor(() => expect(shadowRoot).toHaveTextContent('29+'));
+    expect(shadowRoot).toHaveTextContent('Members');
+  });
+
+  it('has no members tile when Discord cannot be reached', async () => {
+    vi.spyOn(discord, 'fetchDiscordMemberCount').mockResolvedValue(undefined);
+    const { shadowRoot } = await fixture(html`<about-block></about-block>`);
+
+    expect(shadowRoot).not.toHaveTextContent('Members');
+    expect(deepQuerySelectorAll(shadowRoot, '.stat')).toHaveLength(4);
   });
 });
