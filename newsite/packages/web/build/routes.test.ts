@@ -20,11 +20,13 @@ describe('routes', () => {
   });
 
   it('names the content collection of every page with a path parameter', () => {
-    // The open source projects come from the GitHub sync, not from a Firestore collection.
+    // The open source projects and the events come from syncs, not from a Firestore collection.
     expect(
       ROUTES.filter(
         ({ pattern, content }) =>
-          pattern.includes('[') && !content && pattern !== '/open-source/[id]',
+          pattern.includes('[') &&
+          !content &&
+          !['/open-source/[id]', '/events/[id]'].includes(pattern),
       ),
     ).toEqual([]);
   });
