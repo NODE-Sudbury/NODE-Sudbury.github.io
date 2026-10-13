@@ -39,6 +39,21 @@ export class EventPage extends ThemedComponent {
         list-style: none;
       }
 
+      .past-banner {
+        display: block;
+        box-sizing: border-box;
+        inline-size: 100%;
+        margin: 0 0 var(--hb-space-4);
+        padding: var(--hb-space-1) var(--hb-space-4);
+        border: var(--hb-border-width) solid currentColor;
+        border-radius: 999px;
+        font-size: var(--hb-text-sm);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
       .category {
         border-radius: 999px;
         font-weight: 600;
@@ -133,11 +148,16 @@ export class EventPage extends ThemedComponent {
     const { event } = this;
     const provider = PROVIDER_NAMES[event.provider];
     const place = eventPlace(event);
+    const past = new Date(event.end ?? event.start).getTime() < Date.now();
+    const rsvp = past ? `View event on ${provider}` : `RSVP on ${provider}`;
+    // Luma's address already starts with the venue's name, so each part shows once.
     const address = [event.venue?.name, event.venue?.address, event.venue?.city, event.venue?.region, event.venue?.postalCode]
-      .filter(Boolean)
+      .filter((part, index, parts): part is string => !!part && !parts.slice(0, index).some((earlier) => earlier && (earlier === part || earlier.includes(part))))
+      .filter((part, _index, parts) => !parts.some((other) => other !== part && other.startsWith(part)))
       .join(', ');
     return html`
       <hero-block tone="${PAGE_TONES.schedule}">
+        ${past ? html`<p class="past-banner">Past event</p>` : nothing}
         <a class="back" href="/events">
           <node-icon name="arrow-left"></node-icon>
           All events
@@ -151,7 +171,7 @@ export class EventPage extends ThemedComponent {
         <div class="actions">
           <hb-button href="${event.rsvpUrl}" target="_blank" variant="filled" size="l">
             <node-icon slot="icon" name="registration"></node-icon>
-            RSVP on ${provider}
+            ${rsvp}
           </hb-button>
           ${
             event.hostUrl
@@ -219,7 +239,7 @@ export class EventPage extends ThemedComponent {
         <div class="actions">
           <hb-button href="${event.rsvpUrl}" target="_blank" variant="filled" size="l">
             <node-icon slot="icon" name="registration"></node-icon>
-            RSVP on ${provider}
+            ${rsvp}
           </hb-button>
         </div>
       </div>
