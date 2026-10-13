@@ -9,6 +9,10 @@ const { previousSpeakers } = await loadContent();
 const content = seedPage({ previousSpeakers });
 ---
 
-<Base {...pageMetadata('previousSpeakers')} content={content}>
+<Base
+  {...pageMetadata('previousSpeakers')}
+  content={content}
+  breadcrumbs={[{ name: 'Previous Speakers', path: '/previous-speakers' }]}
+>
   <PreviousSpeakersPage client:load />
 </Base>

@@ -8,6 +8,10 @@ import { CocPage } from '../views/coc-page';
 const content = seedPage({});
 ---
 
-<Base {...pageMetadata('coc')} content={content}>
+<Base
+  {...pageMetadata('coc')}
+  content={content}
+  breadcrumbs={[{ name: 'Code of Conduct', path: '/coc' }]}
+>
   <CocPage content={pages.coc} client:load />
 </Base>

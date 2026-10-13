@@ -9,6 +9,6 @@ const { blog } = await loadContent();
 const content = seedPage({ blog });
 ---
 
-<Base {...pageMetadata('blog')} content={content}>
+<Base {...pageMetadata('blog')} content={content} breadcrumbs={[{ name: 'Blog', path: '/blog' }]}>
   <BlogListPage client:load />
 </Base>

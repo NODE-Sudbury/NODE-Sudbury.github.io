@@ -7,6 +7,10 @@ import { AttendingPage } from '../views/attending-page';
 const content = seedPage({});
 ---
 
-<Base {...pageMetadata('attending')} content={content}>
+<Base
+  {...pageMetadata('attending')}
+  content={content}
+  breadcrumbs={[{ name: 'Attending', path: '/attending' }]}
+>
   <AttendingPage client:load />
 </Base>
