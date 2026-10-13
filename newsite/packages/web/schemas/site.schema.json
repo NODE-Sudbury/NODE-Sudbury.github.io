@@ -75,6 +75,27 @@
         "twitter": {
           "description": "A handle, without the @.",
           "type": "string"
+        },
+        "legalName": {
+          "description": "The organization's registered name, for search engines.",
+          "type": "string"
+        },
+        "registrationNumber": {
+          "description": "A registration or charity number, such as an Ontario Corporation Number.",
+          "type": "string"
+        },
+        "address": {
+          "description": "The organization's postal address, for search engines.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["streetAddress", "addressLocality", "addressRegion", "postalCode", "addressCountry"],
+          "properties": {
+            "streetAddress": { "type": "string" },
+            "addressLocality": { "type": "string" },
+            "addressRegion": { "type": "string" },
+            "postalCode": { "type": "string" },
+            "addressCountry": { "type": "string" }
+          }
         }
       }
     },

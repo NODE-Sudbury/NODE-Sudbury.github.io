@@ -14,7 +14,16 @@
     "twitter": "nodesudbury",
     "blog": "https://nodesudbury.com/",
     "url": "https://nodesudbury.com/",
-    "email": "admin@nodesudbury.com"
+    "email": "admin@nodesudbury.com",
+    "legalName": "Northern Ontario Dev Exchange",
+    "registrationNumber": "OCN 1001716490",
+    "address": {
+      "streetAddress": "73 Elm St Ste 203",
+      "addressLocality": "Sudbury",
+      "addressRegion": "ON",
+      "postalCode": "P3C 1R6",
+      "addressCountry": "CA"
+    }
   },
   "event": {
     "startDate": "2026-10-21",
