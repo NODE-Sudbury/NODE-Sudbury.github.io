@@ -5,6 +5,7 @@ import {
   eventListStructuredData,
   eventPageStructuredData,
   eventStructuredData,
+  faqStructuredData,
   openGraphLocale,
   organizationStructuredData,
   postStructuredData,
@@ -320,5 +321,49 @@ describe('absoluteUrl', () => {
     expect(absoluteUrl('/images/a.png', 'https://nodesudbury.com/')).toBe(
       'https://nodesudbury.com/images/a.png',
     );
+  });
+});
+
+describe('faqStructuredData', () => {
+  const faq = [
+    '## General',
+    '',
+    '### What is NODE?',
+    '',
+    'A **not-for-profit** in [Sudbury](https://nodesudbury.com).',
+    '',
+    '### What do we run?',
+    '',
+    '- Hackathons.',
+    '- A speaker series.',
+    '',
+    '## Contact',
+    '',
+    '### How do I reach NODE?',
+    '',
+    'Email admin@nodesudbury.com.',
+  ].join('\n');
+
+  it('turns each question heading and the text under it into a question and answer', () => {
+    const data = faqStructuredData(faq)!;
+
+    expect(data['@type']).toBe('FAQPage');
+    expect(data.mainEntity.map(({ name }) => name)).toEqual([
+      'What is NODE?',
+      'What do we run?',
+      'How do I reach NODE?',
+    ]);
+    expect(data.mainEntity[0]!.acceptedAnswer.text).toBe('A not-for-profit in Sudbury.');
+    expect(data.mainEntity[1]!.acceptedAnswer.text).toBe('Hackathons. A speaker series.');
+  });
+
+  it('stops an answer at the next section heading', () => {
+    const last = faqStructuredData(`### One\n\nFirst.\n\n## Next section\n\nNot part of it.`)!;
+
+    expect(last.mainEntity[0]!.acceptedAnswer.text).toBe('First.');
+  });
+
+  it('has nothing to say about a page without questions', () => {
+    expect(faqStructuredData('Just text.')).toBeUndefined();
   });
 });

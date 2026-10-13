@@ -301,3 +301,39 @@ export const projectStructuredData = (
   url: pageUrl,
   author: { '@id': organization },
 });
+
+/** Markdown as the plain text of a search result: no link syntax, emphasis or list markers. */
+const plainText = (markdown: string): string =>
+  markdown
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`]/g, '')
+    .replace(/^\s*[-*]\s+/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+/**
+ * The FAQ page as JSON-LD: every `###` heading is a question and the text under it the answer.
+ * Returns nothing when the page has no questions. See
+ * https://developers.google.com/search/docs/appearance/structured-data/faqpage
+ */
+export const faqStructuredData = (markdown: string) => {
+  const entries = markdown
+    .split(/^### /m)
+    .slice(1)
+    .map((block) => {
+      const [question = '', ...rest] = block.split('\n');
+      const answer = plainText(rest.join('\n').split(/^## /m)[0] ?? '');
+      return { question: plainText(question), answer };
+    })
+    .filter(({ question, answer }) => question && answer);
+  if (!entries.length) return undefined;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: entries.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  };
+};
