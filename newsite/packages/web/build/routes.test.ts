@@ -106,11 +106,8 @@ describe('routes', () => {
       onChange('sessions');
       vi.advanceTimersByTime(500);
 
-      expect(emit).toHaveBeenCalledTimes(2);
-      expect(emit).toHaveBeenCalledWith(
-        'change',
-        join(import.meta.dirname, '../src/routes/events/[...day].astro'),
-      );
+      // The events page reads synced events, not sessions, so only the session pages reload.
+      expect(emit).toHaveBeenCalledTimes(1);
       expect(emit).toHaveBeenCalledWith(
         'change',
         join(import.meta.dirname, '../src/routes/sessions/[id].astro'),

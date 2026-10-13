@@ -52,13 +52,13 @@ describe('schedule-page', () => {
   it('sets the page metadata and titles the page', async () => {
     const { shadowRoot } = await render();
 
-    expect(updateMetadata).toHaveBeenCalledWith('Schedule', 'Choose your sessions to visit');
+    expect(updateMetadata).toHaveBeenCalledWith('Events', 'Choose your sessions to visit');
     expect(shadowRoot.querySelector('simple-hero')).toHaveAttribute('page', 'schedule');
   });
 
   it.each([
-    ['/events/2026-10-08', { id: '2026-10-08' }, 'October 8 | Schedule'],
-    ['/events/my-schedule', {}, 'My Schedule | Schedule'],
+    ['/events/2026-10-08', { id: '2026-10-08' }, 'October 8 | Events'],
+    ['/events/my-schedule', {}, 'My Schedule | Events'],
   ])('gives %s its own title', async (pathname, params, title) => {
     await render({ location: { pathname, search: '', params } });
 
