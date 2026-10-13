@@ -326,7 +326,7 @@ describe('home-hero', () => {
       button.textContent?.includes('Join Discord'),
     );
 
-    expect(discord).toHaveAttribute('href', 'https://discord.gg/a79bt42c4');
+    expect(discord).toHaveAttribute('href', 'https://discord.gg/MtBcHMbkgB');
     expect(discord).toHaveAttribute('target', '_blank');
   });
 

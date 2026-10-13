@@ -43,7 +43,7 @@ import '../ui/hb-chip';
 import '../ui/hb-sticker';
 
 /** NODE's community on Discord. */
-const DISCORD_URL = 'https://discord.gg/a79bt42c4';
+const DISCORD_URL = 'https://discord.gg/MtBcHMbkgB';
 
 /**
  * The top of the home page: the event state, the event name, dates and place, and the calls to

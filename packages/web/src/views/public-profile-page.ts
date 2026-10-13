@@ -6,8 +6,7 @@ import { heroText } from '../components/hero/hero-block';
 import { PAGE_TONES } from '../components/hero/simple-hero';
 import '../components/markdown/short-markdown';
 import '../components/shared/node-icon';
-import '../components/shared/social-links';
-import '../components/shared/speaker-profile';
+import '../components/shared/speaker-photo';
 import '../components/ui/hb-chip';
 import '../components/ui/hb-progress';
 import { fetchPublicProfile, type ProfileKey } from '../db/member-profiles';
@@ -54,12 +53,79 @@ export class PublicProfilePage extends ThemedComponent {
         color: var(--hb-color-on-surface);
       }
 
-      .facts {
+      .who {
+        display: grid;
+        justify-items: center;
+        gap: var(--hb-space-3);
+        text-align: center;
+      }
+
+      .who .hero-title {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .tags {
+        justify-content: center;
+      }
+
+      .headline,
+      .pronouns {
+        margin: 0;
+        color: var(--hb-color-on-surface-variant);
+        font-size: var(--hb-text-lg);
+      }
+
+      .pronouns {
+        font-size: var(--hb-text-sm);
+      }
+
+      .card {
+        display: grid;
+        justify-items: center;
+        gap: var(--hb-space-5);
+        max-inline-size: 32rem;
+        margin-inline: auto;
+      }
+
+      .card .bio {
+        margin: 0;
+        text-align: center;
+      }
+
+      .links {
+        display: grid;
+        inline-size: 100%;
+        gap: var(--hb-space-3);
+      }
+
+      .link {
+        display: flex;
         align-items: center;
-        margin-block-end: var(--hb-space-4);
+        justify-content: center;
+        gap: var(--hb-space-3);
+        min-block-size: var(--hb-target-min);
+        padding: var(--hb-space-3) var(--hb-space-5);
+        border: var(--hb-border-width) solid var(--hb-border-color);
+        border-radius: var(--hb-radius-l);
+        background-color: var(--hb-panel-background);
+        color: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: var(--hb-shadow-card);
+      }
+
+      .link:hover {
+        background-color: color-mix(in srgb, currentColor 8%, var(--hb-panel-background));
+      }
+
+      .link node-icon {
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
       }
 
       .since {
+        margin: 0;
         color: var(--hb-color-on-surface-variant);
         font-size: var(--hb-text-sm);
       }
@@ -108,17 +174,7 @@ export class PublicProfilePage extends ThemedComponent {
         </a>
         ${
           member
-            ? html`<speaker-profile
-                .speaker="${{
-                  id: member.handle,
-                  name: member.fullName,
-                  photoUrl: member.avatarUrl,
-                  title: profileHeadline(member),
-                  company: '',
-                  country: '',
-                  ...(member.pronouns ? { pronouns: member.pronouns } : {}),
-                }}"
-              ></speaker-profile>`
+            ? this.renderWho(member)
             : html`<h1 class="hero-title">
                 ${
                   this.load === 'loading'
@@ -154,10 +210,13 @@ export class PublicProfilePage extends ThemedComponent {
     `;
   }
 
-  private renderProfile(member: PublicProfile) {
-    const socials = profileSocials(member);
-    return html`
-      <ul class="facts">
+  /** The photo, name, type and headline, centered in the hero. */
+  private renderWho(member: PublicProfile) {
+    const headline = profileHeadline(member);
+    return html`<div class="who">
+      <speaker-photo size="l" src="${member.avatarUrl}"></speaker-photo>
+      <h1 class="hero-title">${member.fullName}</h1>
+      <ul class="tags">
         <li>
           <hb-chip>
             ${
@@ -176,28 +235,47 @@ export class PublicProfilePage extends ThemedComponent {
               </li>`
             : nothing
         }
-        ${
-          member.createdAt
-            ? html`<li class="since">
-                ${msg(str`Member since ${memberSince(member.createdAt)}`, {
-                  id: 'pages.account.member-since',
-                })}
-              </li>`
-            : nothing
-        }
       </ul>
+      ${headline ? html`<p class="headline">${headline}</p>` : nothing}
+      ${member.pronouns ? html`<p class="pronouns">${member.pronouns}</p>` : nothing}
+    </div>`;
+  }
+
+  private renderProfile(member: PublicProfile) {
+    const socials = profileSocials(member);
+    return html`<div class="card">
+      ${member.bio ? html`<short-markdown class="bio" .content="${member.bio}"></short-markdown>` : nothing}
       ${
         socials.length
-          ? html`<social-links
-              variant="tonal"
-              label="${msg('Social links', { id: 'pages.member.socials' })}"
-              owner="${member.fullName}"
-              .socials="${socials}"
-            ></social-links>`
+          ? html`<nav
+              class="links"
+              aria-label="${msg('Social links', { id: 'pages.member.socials' })}"
+            >
+              ${socials.map(
+                (social) =>
+                  html`<a
+                    class="link"
+                    href="${social.link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <node-icon name="${social.icon}"></node-icon>
+                    ${social.name}
+                  </a>`,
+              )}
+            </nav>`
           : nothing
       }
-      ${member.bio ? html`<short-markdown class="bio" .content="${member.bio}"></short-markdown>` : nothing}
-    `;
+      ${
+        member.createdAt
+          ? html`<p class="since">
+              ${msg(str`Member since ${memberSince(member.createdAt)}`, {
+                id: 'pages.account.member-since',
+              })}
+            </p>`
+          : nothing
+      }
+    </div>`;
   }
 }
 
