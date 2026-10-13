@@ -5,7 +5,7 @@ import { deepQuerySelector, screen } from 'shadow-dom-testing-library';
 import { fixture } from '../../__tests__/helpers/fixtures';
 import { aboutOrganizerBlock, team } from '../config/site';
 import { updateMetadata } from '../utils/metadata';
-import type { TeamMember } from '../components/shared/team-member';
+import type { SpeakerCard } from '../components/shared/speaker-card';
 import type { TeamPage } from './team-page';
 import './team-page';
 
@@ -39,7 +39,10 @@ describe('team-page', () => {
   it('opens with the team photo and story', async () => {
     const { shadowRoot } = await render();
 
-    expect(updateMetadata).toHaveBeenCalledWith('Board', 'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.');
+    expect(updateMetadata).toHaveBeenCalledWith(
+      'Board',
+      'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
+    );
     expect(screen.getByShadowRole('img', { name: 'The team' })).toHaveAttribute(
       'src',
       aboutOrganizerBlock.image,
@@ -54,7 +57,21 @@ describe('team-page', () => {
     const { shadowRoot } = await render();
 
     expect(screen.getByShadowRole('heading', { level: 2, name: 'Core team' })).toBeInTheDocument();
-    expect(deepQuerySelector<TeamMember>(shadowRoot, '.members team-member')!.member).toBe(member);
+    const card = deepQuerySelector<SpeakerCard>(shadowRoot, '.members speaker-card')!;
+
+    expect(card.speaker).toMatchObject({ name: 'Ada Lovelace', company: 'Organizer' });
+    expect(card.href).toBe('/team/ada-lovelace');
+    expect(card.linked).toBe(true);
+  });
+
+  it('shows a member whose name is still to be announced without a link', async () => {
+    const { element, shadowRoot } = await render();
+    element.teamsMembers = new Success([
+      { id: 'team-1', title: 'Volunteers', members: [{ ...member, name: 'TBD' }] },
+    ]);
+    await element.updateComplete;
+
+    expect(deepQuerySelector<SpeakerCard>(shadowRoot, '.members speaker-card')!.linked).toBe(false);
   });
 
   it('shows loading and failure states', async () => {

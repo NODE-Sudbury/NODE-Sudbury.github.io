@@ -8,7 +8,8 @@ import { band } from '../../styles/band';
 import { selectTeamsAndMembers } from '../../store/teams-members/selectors';
 import type { initialTeamsMembersState } from '../../store/teams-members/state';
 import '../shared/node-icon';
-import '../shared/team-member';
+import '../shared/speaker-card';
+import { isPlaceholderMember, memberCardSpeaker, memberPath } from '../../utils/members';
 import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 
@@ -26,7 +27,7 @@ export class BoardBlock extends ThemedComponent {
         display: grid;
         grid-template-columns: repeat(
           auto-fill,
-          minmax(calc(14rem * var(--hb-card-scale, 1)), 1fr)
+          minmax(min(100%, calc(17rem * var(--hb-card-scale, 1))), 1fr)
         );
         gap: var(--hb-space-5);
       }
@@ -61,7 +62,14 @@ export class BoardBlock extends ThemedComponent {
         <div class="board">
           <ul class="grid plain">
             ${this.members.map(
-              (member) => html`<li><team-member .member="${member}"></team-member></li>`,
+              (member) =>
+                html`<li>
+                  <speaker-card
+                    .speaker="${memberCardSpeaker(member)}"
+                    href="${memberPath(member)}"
+                    .linked="${!isPlaceholderMember(member)}"
+                  ></speaker-card>
+                </li>`,
             )}
           </ul>
         </div>

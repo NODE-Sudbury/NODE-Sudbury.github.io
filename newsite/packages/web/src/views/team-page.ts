@@ -5,10 +5,11 @@ import { displayFont } from '../styles/shared';
 import { customElement } from 'lit/decorators.js';
 import '../components/hero/simple-hero';
 import '../components/markdown/short-markdown';
-import '../components/shared/team-member';
+import '../components/shared/speaker-card';
 import { selectTeamsAndMembers } from '../store/teams-members/selectors';
 import { initialTeamsMembersState } from '../store/teams-members/state';
 import { aboutOrganizerBlock, team } from '../config/site';
+import { isPlaceholderMember, memberCardSpeaker, memberPath } from '../utils/members';
 import { PageMetadataController } from '../controllers/page-metadata-controller';
 import { fromStore } from '../controllers/from-store';
 import { ThemedComponent } from '../components/themed-component';
@@ -127,9 +128,19 @@ export class TeamPage extends ThemedComponent {
             <section aria-labelledby="team-${team.id}">
               <h2 class="team-title" id="team-${team.id}">${team.title}</h2>
               <ul class="members">
-                ${[...team.members].sort((a, b) => a.order - b.order).map(
-                  (member) => html` <li><team-member .member="${member}"></team-member></li> `,
-                )}
+                ${[...team.members]
+                  .sort((a, b) => a.order - b.order)
+                  .map(
+                    (member) =>
+                      html`<li>
+                        <speaker-card
+                          .speaker="${memberCardSpeaker(member)}"
+                          href="${memberPath(member)}"
+                          .linked="${!isPlaceholderMember(member)}"
+                          heading-level="3"
+                        ></speaker-card>
+                      </li>`,
+                  )}
               </ul>
             </section>
           `,
