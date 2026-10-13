@@ -39,6 +39,19 @@ export const selectAuthFailure = (state: RootState): AuthFailure | undefined =>
 /** Whether this build can sign people in. Without Supabase keys it cannot. */
 export const signInAvailable = isSupabaseConfigured;
 
+let markSessionRestored: () => void = () => undefined;
+
+/**
+ * Settles once the browser has said whether someone is signed in: their saved session came back,
+ * or there is none. A page waits for it before it shows a signed-out view, so a member never sees
+ * a flash of "sign in" on their way in.
+ */
+export const sessionRestored: Promise<void> = isSupabaseConfigured
+  ? new Promise((resolve) => {
+      markSessionRestored = resolve;
+    })
+  : Promise.resolve();
+
 /** Where Supabase sends the member back to: this page, without a leftover code or hash. */
 const returnUrl = (): string => {
   const url = new URL(window.location.href);
@@ -73,6 +86,7 @@ export const sendSignInLink = async (email: string) => {
 export const onUser = () => {
   if (!isSupabaseConfigured) return;
   getSupabase().auth.onAuthStateChange((event, session) => {
+    markSessionRestored();
     if (session?.user) {
       setUser(session.user);
       dispatch(success());
