@@ -1,4 +1,4 @@
-import { FacebookAuthProvider, GoogleAuthProvider, TwitterAuthProvider } from 'firebase/auth';
+import type { Provider } from '@supabase/supabase-js';
 
 export enum PROVIDER {
   'https://accounts.google.com' = 'https://accounts.google.com',
@@ -9,46 +9,20 @@ export enum PROVIDER {
   'twitter.com' = 'twitter.com',
 }
 
-export const getFederatedProvider = (provider: PROVIDER) => {
-  switch (provider) {
-    case PROVIDER['https://accounts.google.com']:
-    case PROVIDER['google.com']: {
-      const provider = new GoogleAuthProvider();
-      provider.addScope('profile');
-      provider.addScope('email');
-      return provider;
-    }
-
-    case PROVIDER['https://www.facebook.com']:
-    case PROVIDER['facebook.com']: {
-      const provider = new FacebookAuthProvider();
-      provider.addScope('email');
-      provider.addScope('public_profile');
-      return provider;
-    }
-
-    case PROVIDER['https://twitter.com']:
-    case PROVIDER['twitter.com']:
-      return new TwitterAuthProvider();
-
-    default:
-      throw new Error('Unsupported provider');
-  }
-};
-
-export const getFederatedProviderClass = (provider: PROVIDER) => {
+/** The name Supabase gives the identity provider that site.json names by its address. */
+export const supabaseProvider = (provider: PROVIDER): Provider => {
   switch (provider) {
     case PROVIDER['https://accounts.google.com']:
     case PROVIDER['google.com']:
-      return GoogleAuthProvider;
+      return 'google';
 
     case PROVIDER['https://www.facebook.com']:
     case PROVIDER['facebook.com']:
-      return FacebookAuthProvider;
+      return 'facebook';
 
     case PROVIDER['https://twitter.com']:
     case PROVIDER['twitter.com']:
-      return TwitterAuthProvider;
+      return 'twitter';
 
     default:
       throw new Error('Unsupported provider');
@@ -56,20 +30,12 @@ export const getFederatedProviderClass = (provider: PROVIDER) => {
 };
 
 export const getProviderCompanyName = (provider: PROVIDER) => {
-  switch (provider) {
-    case PROVIDER['https://accounts.google.com']:
-    case PROVIDER['google.com']:
+  switch (supabaseProvider(provider)) {
+    case 'google':
       return 'Google';
-
-    case PROVIDER['https://www.facebook.com']:
-    case PROVIDER['facebook.com']:
+    case 'facebook':
       return 'Facebook';
-
-    case PROVIDER['https://twitter.com']:
-    case PROVIDER['twitter.com']:
-      return 'Twitter';
-
     default:
-      throw new Error('Unsupported provider');
+      return 'Twitter';
   }
 };

@@ -2,7 +2,7 @@ import { Initialized, Success } from '@abraham/remotedata';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import reducer, { removeUser, selectUser, selectUserId, setUser, setUserSuccess } from '.';
 import { dispatch } from '../dispatch';
-import type { FirebaseUser, User } from '../../models/user';
+import type { SupabaseUser, User } from '../../models/user';
 import type { RootState } from '..';
 
 vi.mock('../dispatch');
@@ -23,23 +23,20 @@ describe('user', () => {
     expect(reducer(new Success(user), { type: 'user/reset' })).toStrictEqual(new Initialized());
   });
 
-  it('dispatches the serialized firebase user', () => {
-    const toJSON = vi.fn(() => ({
-      uid: 'user-1',
-      displayName: 'Ada Lovelace',
-    }));
-    const firebaseUser = {
-      toJSON,
-    } as unknown as FirebaseUser;
+  it('dispatches the member made from the Supabase account', () => {
+    setUser({
+      id: 'user-1',
+      email: 'ada@example.com',
+      user_metadata: { full_name: 'Ada Lovelace' },
+    } as unknown as SupabaseUser);
 
-    setUser(firebaseUser);
-
-    expect(toJSON).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalledWith(
       setUserSuccess({
         uid: 'user-1',
+        email: 'ada@example.com',
         displayName: 'Ada Lovelace',
-      } as User),
+        photoURL: null,
+      }),
     );
   });
 
