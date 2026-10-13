@@ -4,14 +4,12 @@ import { css, html, nothing, type TemplateResult } from 'lit';
 import { displayFont } from '../../styles/shared';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import {
   aboutBlock,
   attendance,
   decorations,
   eventDates,
   heroDescriptions,
-  heroIllustration,
   heroSettings,
   location,
   siteAttendance,
@@ -45,7 +43,9 @@ import { ThemedComponent } from '../themed-component';
 import '../ui/hb-button';
 import '../ui/hb-chip';
 import '../ui/hb-sticker';
-import heroArt from '../../illustrations/hero.svg?raw';
+
+/** NODE's community on Discord. */
+const DISCORD_URL = 'https://discord.gg/a79bt42c4';
 
 /**
  * The top of the home page: the event state, the event name, dates and place, and the calls to
@@ -175,7 +175,8 @@ export class HomeHero extends ThemedComponent {
       background: var(--hb-hero-art-background, none);
     }
 
-    .art svg {
+    .art svg,
+    .art img {
       display: block;
       inline-size: 100%;
       block-size: auto;
@@ -269,7 +270,7 @@ export class HomeHero extends ThemedComponent {
             // The demo banner can turn decorations on, so a demo site always has the drawing.
             decorations || __HB_FEATURES__.demo
               ? html`<div class="art" aria-hidden="true">
-                  ${unsafeHTML(heroIllustration ?? heroArt)}
+                  <img src="/images/node/node-logo.svg" alt="NODE logo" width="187" height="130" />
                 </div>`
               : nothing
           }
@@ -324,6 +325,12 @@ export class HomeHero extends ThemedComponent {
       <hb-button variant="outlined" size="l" href="/#organization">
         <node-icon slot="icon" name="registration"></node-icon>
         ${msg('View OCN details', { id: 'home.hero.ocn-details' })}
+      </hb-button>
+    `);
+    actions.push(html`
+      <hb-button variant="outlined" size="l" href="${DISCORD_URL}" target="_blank">
+        <node-icon slot="icon" name="discord"></node-icon>
+        ${msg('Join Discord', { id: 'home.hero.discord' })}
       </hb-button>
     `);
     return actions;

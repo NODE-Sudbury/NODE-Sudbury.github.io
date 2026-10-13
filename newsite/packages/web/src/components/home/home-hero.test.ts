@@ -320,15 +320,28 @@ describe('home-hero', () => {
     expect(shadowRoot.querySelector('.watch-video')).not.toBeNull();
   });
 
-  it('shows a decorative illustration on the dotted band', async () => {
+  it('links to the Discord community, in a new tab', async () => {
+    const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
+    const discord = [...shadowRoot.querySelectorAll('hb-button')].find((button) =>
+      button.textContent?.includes('Join Discord'),
+    );
+
+    expect(discord).toHaveAttribute('href', 'https://discord.gg/a79bt42c4');
+    expect(discord).toHaveAttribute('target', '_blank');
+  });
+
+  it('shows the NODE logo on the dotted band', async () => {
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
 
     expect(shadowRoot.querySelector('.hero')).toHaveClass('pattern');
     expect(shadowRoot.querySelector('.art')).toHaveAttribute('aria-hidden', 'true');
-    expect(shadowRoot.querySelector('.art svg')).not.toBeNull();
+    expect(shadowRoot.querySelector('.art img')).toHaveAttribute(
+      'src',
+      '/images/node/node-logo.svg',
+    );
   });
 
-  it('has no illustration with decorations off', async () => {
+  it('has no logo art with decorations off', async () => {
     setFeatures({ demo: false });
     config.decorations = false;
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');

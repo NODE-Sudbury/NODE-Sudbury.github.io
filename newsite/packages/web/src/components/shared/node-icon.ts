@@ -7,6 +7,7 @@ import cloudUpload from './icons/cloud-upload';
 // Lit replacement for the retired `<iron-icon icon="node-site:name">` Polymer iconset.
 // Each icon is its own module under ./icons so only the icons a page uses are loaded.
 const ICONS: Record<string, () => Promise<{ default: SVGTemplateResult }>> = {
+  discord: () => import('./icons/discord'),
   facebook: () => import('./icons/facebook'),
   github: () => import('./icons/github'),
   linkedin: () => import('./icons/linkedin'),

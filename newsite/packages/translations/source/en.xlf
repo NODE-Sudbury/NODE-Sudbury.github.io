@@ -320,6 +320,9 @@
 <trans-unit id="home.hero.ocn-details">
   <source>View OCN details</source>
 </trans-unit>
+<trans-unit id="home.hero.discord">
+  <source>Join Discord</source>
+</trans-unit>
 <trans-unit id="home.hero.our-events">
   <source>Our events</source>
 </trans-unit>
