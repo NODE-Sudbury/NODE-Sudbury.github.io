@@ -22,7 +22,7 @@ const config = withDevBar(resolveConfig(), env['FIRESTORE_TARGET']);
 const publicEnv = loadEnv(
   env['NODE_ENV'] === 'development' ? 'development' : 'production',
   process.cwd(),
-  'PUBLIC_',
+  ['PUBLIC_', 'NEXT_PUBLIC_'],
 );
 
 export default defineConfig({
@@ -54,11 +54,13 @@ export default defineConfig({
     // FIRESTORE_TARGET=production, and every other build may run on the emulators.
     csp(config.site as CspSite, {
       emulators: env['FIRESTORE_TARGET'] !== 'production',
-      supabaseUrl: publicEnv['PUBLIC_SUPABASE_URL'],
+      supabaseUrl: publicEnv['NEXT_PUBLIC_SUPABASE_URL'],
     }),
     serviceWorker([...attendingPrecache(config), ...schedulePrecache(config)]),
   ],
   vite: {
+    // The Supabase variables keep the names the Vercel project already has.
+    envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'],
     // Content read from the sample data has no Firebase behind it, so the browser skips live updates.
     define: { __HB_STATIC_CONTENT__: JSON.stringify(env['FIRESTORE_TARGET'] === 'sample') },
     // The build smoke test links node_modules into a copy of this package. Astro fails on

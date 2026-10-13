@@ -1,7 +1,7 @@
 import { type SupabaseClient, createClient } from '@supabase/supabase-js';
 
-const url = import.meta.env['PUBLIC_SUPABASE_URL'] as string | undefined;
-const anonKey = import.meta.env['PUBLIC_SUPABASE_ANON_KEY'] as string | undefined;
+const url = import.meta.env['NEXT_PUBLIC_SUPABASE_URL'] as string | undefined;
+const anonKey = import.meta.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'] as string | undefined;
 
 /** Whether this build knows its Supabase project. Without one, sign-in is off. */
 export const isSupabaseConfigured = Boolean(url && anonKey);
