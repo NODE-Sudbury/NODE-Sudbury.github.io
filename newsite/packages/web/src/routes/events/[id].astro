@@ -1,0 +1,17 @@
+---
+import { loadEvents } from '../../data/events';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import type { CommunityEvent } from '../../models/event';
+import Base from '../../layouts/base.astro';
+import { EventPage } from '../../views/event-page';
+
+export const getStaticPaths = () =>
+  loadEvents().events.map((event) => ({ params: { id: event.slug }, props: { event } }));
+
+const { event } = Astro.props as { event: CommunityEvent };
+---
+
+<Base {...itemMetadata(event.title, event.summary ?? '', event.image)} content={seedPage({})}>
+  <EventPage event={event} client:load />
+</Base>

@@ -26,6 +26,11 @@ export const ROUTES: readonly Route[] = [
     feature: 'mySchedule',
   },
   {
+    pattern: '/events/[id]',
+    entrypoint: 'events/[id].astro',
+    feature: 'schedule',
+  },
+  {
     pattern: '/events',
     entrypoint: 'events/index.astro',
     feature: 'schedule',

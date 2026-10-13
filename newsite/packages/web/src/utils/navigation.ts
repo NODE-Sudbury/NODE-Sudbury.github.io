@@ -9,6 +9,9 @@ const path = (prefix: string) => (id: string) => `${prefix}/${encodeURIComponent
 
 export const postPath = path('/blog');
 export const sessionPath = path('/sessions');
+/** An event's own page: /events/<slug>. */
+export const eventPath = (event: { slug?: string; id: string }) => `/events/${event.slug ?? event.id}`;
+
 export const speakerPath = path('/speakers');
 export const previousSpeakerPath = path('/previous-speakers');
 
