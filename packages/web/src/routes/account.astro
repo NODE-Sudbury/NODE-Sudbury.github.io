@@ -1,0 +1,14 @@
+---
+import { itemMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import Base from '../layouts/base.astro';
+import { AccountPage } from '../views/account-page';
+---
+
+<Base
+  {...itemMetadata('My profile', 'Your NODE member profile and public page.')}
+  content={seedPage({})}
+  noindex
+>
+  <AccountPage client:load />
+</Base>
