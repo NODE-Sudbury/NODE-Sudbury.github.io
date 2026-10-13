@@ -46,5 +46,7 @@ export interface CommunityEvent {
 
 export interface EventsData {
   generatedAt: string;
+  /** The filters of the events page, in order. An event belongs to one. */
+  categories: string[];
   events: CommunityEvent[];
 }

@@ -1,4 +1,9 @@
 {
+  "categories": [
+    "Hackathons",
+    "Community Events",
+    "Norcat Series"
+  ],
   "sources": [
     {
       "provider": "gdg",

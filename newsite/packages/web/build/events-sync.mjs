@@ -173,7 +173,7 @@ const PROVIDERS = { gdg, luma };
 const readJson = (file, fallback) => (existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : fallback);
 
 const main = async () => {
-  const { sources } = readJson(SOURCES, { sources: [] });
+  const { sources, categories = [] } = readJson(SOURCES, { sources: [] });
   const previous = readJson(OUT, { events: [] }).events;
   const events = [];
   for (const source of sources) {
@@ -196,7 +196,7 @@ const main = async () => {
     }
   }
   events.sort((a, b) => (a.start ?? '').localeCompare(b.start ?? ''));
-  writeFileSync(OUT, `${JSON.stringify({ generatedAt: new Date().toISOString(), events }, null, 2)}\n`);
+  writeFileSync(OUT, `${JSON.stringify({ generatedAt: new Date().toISOString(), categories, events }, null, 2)}\n`);
   console.log(`Wrote ${events.length} event(s) to packages/config/content/events.json`);
 };
 

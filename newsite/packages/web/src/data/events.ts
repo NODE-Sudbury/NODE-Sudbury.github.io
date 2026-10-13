@@ -6,7 +6,7 @@ import type { CommunityEvent, EventsData } from '../models/event';
 /** The events `npm run sync:events` saved in the site's content, or none before the first sync. */
 export const loadEvents = (): EventsData => {
   const file = join(CONFIG_PATHS.site, 'content', 'events.json');
-  if (!existsSync(file)) return { generatedAt: '', events: [] };
+  if (!existsSync(file)) return { generatedAt: '', categories: [], events: [] };
   return JSON.parse(readFileSync(file, 'utf8')) as EventsData;
 };
 
