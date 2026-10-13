@@ -81,15 +81,15 @@ describe('public-profile-page', () => {
       'content',
       'I write programs.',
     );
-    const profile = shadowRoot.querySelector('speaker-profile');
-    expect(profile?.speaker).toMatchObject({
-      name: 'Ada Lovelace',
-      title: 'Engineer at Analytical Engines',
-      pronouns: 'she/her',
-    });
-    expect(shadowRoot.querySelector('social-links')?.socials).toEqual([
-      { icon: 'linkedin', name: 'LinkedIn', link: 'https://linkedin.com/in/ada' },
-    ]);
+    expect(shadowRoot.querySelector('h1')).toHaveTextContent('Ada Lovelace');
+    expect(shadowRoot.querySelector('.headline')).toHaveTextContent(
+      'Engineer at Analytical Engines',
+    );
+    expect(shadowRoot.querySelector('.pronouns')).toHaveTextContent('she/her');
+    const links = [...shadowRoot.querySelectorAll('a.link')];
+    expect(links).toHaveLength(1);
+    expect(links[0]).toHaveAttribute('href', 'https://linkedin.com/in/ada');
+    expect(links[0]).toHaveTextContent('LinkedIn');
     expect(updateTextMetadata).toHaveBeenCalledWith(
       'Ada Lovelace',
       'Engineer at Analytical Engines',
