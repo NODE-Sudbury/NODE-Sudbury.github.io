@@ -7,6 +7,7 @@ export const NOINDEX_PATHS = [
   '/design',
   '/account',
   '/members',
+  '/profile',
 ] as const;
 
 const pathOf = (page: string) => new URL(page).pathname.replace(/\/$/, '') || '/';

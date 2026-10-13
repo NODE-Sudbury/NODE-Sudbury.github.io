@@ -7,7 +7,10 @@
   "cleanUrls": true,
   "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ] || [ \"$VERCEL_GIT_COMMIT_REF\" = \"dev\" ]; then exit 1; else exit 0; fi",
   "redirects": [{ "source": "/schedule", "destination": "/events", "permanent": true }],
-  "rewrites": [{ "source": "/members/:handle", "destination": "/members" }],
+  "rewrites": [
+    { "source": "/members/:handle", "destination": "/members" },
+    { "source": "/profile/:id", "destination": "/profile" }
+  ],
   "headers": [
     {
       "source": "/_astro/(.*)",

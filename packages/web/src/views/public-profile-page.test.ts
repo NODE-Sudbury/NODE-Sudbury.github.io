@@ -5,13 +5,16 @@ import { expectNoAxeViolations } from '../../__tests__/helpers/axe';
 import { fetchPublicProfile } from '../db/member-profiles';
 import type { PublicProfile } from '../models/member-profile';
 import { updateTextMetadata } from '../utils/metadata';
-import { handleFromPath, type PublicProfilePage } from './public-profile-page';
+import { profileKeyFromPath, type PublicProfilePage } from './public-profile-page';
 import './public-profile-page';
 
 vi.mock('../db/member-profiles');
 vi.mock('../utils/metadata');
 
 const ada: PublicProfile = {
+  id: 'cea1bd28-92ce-42ef-98b0-0c1967f1355a',
+  createdAt: '2026-08-29T01:11:00Z',
+  isExclusiveMember: true,
   handle: 'ada',
   fullName: 'Ada Lovelace',
   avatarUrl: 'https://example.com/ada.jpg',
@@ -39,15 +42,22 @@ const render = async (path: string) => {
   return result;
 };
 
-describe('handleFromPath', () => {
-  it('reads the handle in the address, in lowercase', () => {
-    expect(handleFromPath('/members/Ada')).toBe('ada');
-    expect(handleFromPath('/members/ada/')).toBe('ada');
+describe('profileKeyFromPath', () => {
+  it('reads the handle in a /members address, in lowercase', () => {
+    expect(profileKeyFromPath('/members/Ada')).toEqual({ handle: 'ada' });
+    expect(profileKeyFromPath('/members/ada/')).toEqual({ handle: 'ada' });
   });
 
-  it('has none for the bare page or a broken address', () => {
-    expect(handleFromPath('/members')).toBe('');
-    expect(handleFromPath('/members/%E0%A4%A')).toBe('');
+  it('reads the id in an older /profile address', () => {
+    expect(profileKeyFromPath('/profile/CEA1BD28-92CE-42EF-98B0-0C1967F1355A')).toEqual({
+      id: 'cea1bd28-92ce-42ef-98b0-0c1967f1355a',
+    });
+  });
+
+  it('has none for the bare page, a broken address or an id that is not one', () => {
+    expect(profileKeyFromPath('/members')).toBeUndefined();
+    expect(profileKeyFromPath('/members/%E0%A4%A')).toBeUndefined();
+    expect(profileKeyFromPath('/profile/not-an-id')).toBeUndefined();
   });
 });
 
@@ -66,7 +76,7 @@ describe('public-profile-page', () => {
 
     const { shadowRoot } = await render('/members/ada');
 
-    expect(fetchPublicProfile).toHaveBeenCalledWith('ada');
+    expect(fetchPublicProfile).toHaveBeenCalledWith({ handle: 'ada' });
     expect(shadowRoot.querySelector('short-markdown')).toHaveProperty(
       'content',
       'I write programs.',
@@ -84,6 +94,35 @@ describe('public-profile-page', () => {
       'Ada Lovelace',
       'Engineer at Analytical Engines',
     );
+  });
+
+  it('shows who they are: type, exclusive membership and when they joined', async () => {
+    vi.mocked(fetchPublicProfile).mockResolvedValue(ada);
+
+    const { shadowRoot } = await render('/members/ada');
+
+    expect(shadowRoot).toHaveTextContent('Professional');
+    expect(shadowRoot).toHaveTextContent('Exclusive member');
+    expect(shadowRoot).toHaveTextContent('Member since August 2026');
+  });
+
+  it('opens an older /profile/<id> link and moves it to the handle address', async () => {
+    vi.mocked(fetchPublicProfile).mockResolvedValue(ada);
+    const replace = vi.spyOn(window.history, 'replaceState');
+
+    await render(`/profile/${ada.id}`);
+
+    expect(fetchPublicProfile).toHaveBeenCalledWith({ id: ada.id });
+    expect(replace).toHaveBeenCalledWith(null, '', '/members/ada');
+  });
+
+  it('keeps the older address for a member who has no handle', async () => {
+    vi.mocked(fetchPublicProfile).mockResolvedValue({ ...ada, handle: '' });
+    const replace = vi.spyOn(window.history, 'replaceState');
+
+    await render(`/profile/${ada.id}`);
+
+    expect(replace).not.toHaveBeenCalledWith(null, '', expect.stringContaining('/members/'));
   });
 
   it('says when the profile is private or there is no such handle', async () => {
