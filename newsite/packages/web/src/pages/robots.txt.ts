@@ -10,7 +10,7 @@ export const GET: APIRoute = () =>
       'Allow: /',
       ...NOINDEX_PATHS.map((path) => `Disallow: ${path}`),
       '',
-      `Sitemap: ${new URL('sitemap-index.xml', site.url).href}`,
+      `Sitemap: ${new URL('sitemap.xml', site.url).href}`,
       '',
     ].join('\n'),
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },

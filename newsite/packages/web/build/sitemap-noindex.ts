@@ -1,4 +1,11 @@
-import { readdirSync, readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import {
+  copyFileSync,
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
@@ -35,6 +42,18 @@ export const withoutUrls = (xml: string, urls: readonly string[]): string =>
   }, xml);
 
 /**
+ * Publishes the sitemap at the usual address, `/sitemap.xml`. The sitemap plugin names its files
+ * `sitemap-index.xml` and `sitemap-0.xml`; a site small enough for one sitemap needs no index.
+ * Returns whether it did. With several sitemaps the index stays the entry point.
+ */
+export const publishSitemap = (dist: string): boolean => {
+  const sitemaps = readdirSync(dist).filter((file) => /^sitemap-\d+\.xml$/.test(file));
+  if (sitemaps.length !== 1) return false;
+  copyFileSync(join(dist, sitemaps[0]!), join(dist, 'sitemap.xml'));
+  return true;
+};
+
+/**
  * After the sitemap is written, drops every page that has a noindex robots tag. A page can't ask
  * search engines to skip it and also invite them to index it.
  */
@@ -50,6 +69,7 @@ export const sitemapNoindex = (siteUrl: string): AstroIntegration => ({
         writeFileSync(file, withoutUrls(readFileSync(file, 'utf8'), skipped));
       }
       logger.info(`Left ${skipped.length} noindex page(s) out of the sitemap.`);
+      if (publishSitemap(dist)) logger.info('Published the sitemap at /sitemap.xml.');
     },
   },
 });

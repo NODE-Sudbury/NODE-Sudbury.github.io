@@ -157,9 +157,9 @@ describe('a production build of a minimal site', () => {
 
     expect(locs('sitemap-index.xml')).toEqual(['https://minimal-site.web.app/sitemap-0.xml']);
     expect(locs('sitemap-0.xml')).toEqual(['https://minimal-site.web.app/']);
-    expect(build.read('robots.txt')).toContain(
-      'Sitemap: https://minimal-site.web.app/sitemap-index.xml',
-    );
+    // With one sitemap, it is also published at the usual address, and robots.txt names that.
+    expect(locs('sitemap.xml')).toEqual(['https://minimal-site.web.app/']);
+    expect(build.read('robots.txt')).toContain('Sitemap: https://minimal-site.web.app/sitemap.xml');
   });
 
   it('precaches the scripts and the home and offline pages', () => {

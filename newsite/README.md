@@ -47,7 +47,7 @@ Every page carries what search engines and link previews read:
 
 - A unique title and description, a canonical link, Open Graph and Twitter tags, and a robots tag. Pages that should stay out of search (404, offline, My Schedule and placeholder speakers and sessions marked TBD) say `noindex`.
 - Structured data (JSON-LD): the organization (`NGO`, with its registration number and address from `site.json`) and the website on every page, breadcrumbs on inner pages, `Event` on every event page, an event list on `/events`, `FAQPage` on the FAQ, `BlogPosting` on posts and `SoftwareSourceCode` on open source projects.
-- `/robots.txt` and `/sitemap-index.xml`. The sitemap lists every indexable page with a priority and update frequency, and the build removes any page that says `noindex`.
+- `/robots.txt` and `/sitemap.xml`. The sitemap lists every indexable page with a priority and update frequency, and the build removes any page that says `noindex`.
 - `/.well-known/security.txt`, which says where to report a security problem. Update its `Expires` date once a year.
 
 Event pages take their title, description, address and image from the synced event, so adding an event to `event-sources.json` gives it all of this.
