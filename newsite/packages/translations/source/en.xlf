@@ -482,6 +482,9 @@
 <trans-unit id="common.sign-in">
   <source>Sign in</source>
 </trans-unit>
+<trans-unit id="shared.filter-menu.tags">
+  <source>Tags</source>
+</trans-unit>
 <trans-unit id="shared.filter-menu.tracks">
   <source>Tracks</source>
 </trans-unit>
@@ -535,9 +538,6 @@
 </trans-unit>
 <trans-unit id="shared.previous-speakers-block.error">
   <source>Error loading previous speakers.</source>
-</trans-unit>
-<trans-unit id="shared.filter-menu.tags">
-  <source>Tags</source>
 </trans-unit>
 <trans-unit id="common.view-video">
   <source>View video</source>
@@ -914,6 +914,21 @@
 <trans-unit id="pages.blog-list.error">
   <source>Error loading posts.</source>
 </trans-unit>
+<trans-unit id="events.page.upcoming">
+  <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="schedule.page.time-zone">
+  <source>Times in <x id="0" equiv-text="&lt;strong&gt;${zoneName(shownZone)}&lt;/strong&gt;"/></source>
+</trans-unit>
+<trans-unit id="schedule.page.local-time">
+  <source>Show my time zone, <x id="0" equiv-text="${zoneName(visitorZone)}"/></source>
+</trans-unit>
+<trans-unit id="events.page.none-upcoming">
+  <source>No upcoming events right now. Check back soon.</source>
+</trans-unit>
+<trans-unit id="events.page.past">
+  <source>Past events</source>
+</trans-unit>
 <trans-unit id="pages.home.scroll-error">
   <source>Error scrolling to section.</source>
 </trans-unit>
@@ -964,12 +979,6 @@
 </trans-unit>
 <trans-unit id="schedule.page.title">
   <source>Upcoming events</source>
-</trans-unit>
-<trans-unit id="schedule.page.time-zone">
-  <source>Times in <x id="0" equiv-text="&lt;strong&gt;${zoneName(shownZone)}&lt;/strong&gt;"/></source>
-</trans-unit>
-<trans-unit id="schedule.page.local-time">
-  <source>Show my time zone, <x id="0" equiv-text="${zoneName(visitorZone)}"/></source>
 </trans-unit>
 <trans-unit id="schedule.my-schedule.export">
   <source>Add my sessions to calendar</source>
