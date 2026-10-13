@@ -16,3 +16,6 @@ The connection strings and passwords live in a gitignored env file, never in the
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `20261014000001_member_profiles.sql`    | Adds the member `handle`, a `public_profiles` view that never shows email or role, and a guard on who can set a role. |
 | `20261014000002_hide_member_emails.sql` | Closes the leak that lets the public key read every member's email. Not additive.                                     |
+| `20261014000003_exclusive_members.sql`  | Adds `is_exclusive_member` (only the board can change it) and the member id to the public view.                       |
+
+The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
