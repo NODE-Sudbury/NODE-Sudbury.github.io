@@ -977,9 +977,6 @@
 <trans-unit id="schedule.page.coming-soon">
   <source>The schedule is coming soon.</source>
 </trans-unit>
-<trans-unit id="schedule.page.title">
-  <source>Upcoming events</source>
-</trans-unit>
 <trans-unit id="schedule.my-schedule.export">
   <source>Add my sessions to calendar</source>
 </trans-unit>
