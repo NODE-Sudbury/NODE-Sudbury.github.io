@@ -270,7 +270,7 @@ export class HomeHero extends ThemedComponent {
             // The demo banner can turn decorations on, so a demo site always has the drawing.
             decorations || __HB_FEATURES__.demo
               ? html`<div class="art" aria-hidden="true">
-                  <img src="/images/node/node-logo.svg" alt="NODE logo" width="187" height="130" />
+                  <img src="/images/node/node-logo.svg" alt="NODE logo" width="187" height="103" />
                 </div>`
               : nothing
           }
