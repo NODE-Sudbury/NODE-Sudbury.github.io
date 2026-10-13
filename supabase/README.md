@@ -20,5 +20,6 @@ The connection strings and passwords live in a gitignored env file, never in the
 
 | `20261014000004_handle_available.sql` | Adds `handle_available()`, so a member can check a handle before saving it. |
 | `20261014000005_clean_slate.sql` | Drops every table, view, function and type from the old dashboard except what the new site uses. Cannot be undone. |
+| `20261014000006_subscribers.sql` | Adds the `subscribers` table for the home page's subscribe form, with row level security. |
 
-All five are applied to both projects, in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+The first five are applied to both projects, the sixth to development, in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
