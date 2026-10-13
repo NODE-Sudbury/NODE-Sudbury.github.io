@@ -26,11 +26,9 @@ export const ROUTES: readonly Route[] = [
     feature: 'mySchedule',
   },
   {
-    pattern: '/events/[...day]',
-    entrypoint: 'events/[...day].astro',
+    pattern: '/events',
+    entrypoint: 'events/index.astro',
     feature: 'schedule',
-    // The days come from the sessions.
-    content: 'sessions',
   },
   {
     pattern: '/sessions/[id]',

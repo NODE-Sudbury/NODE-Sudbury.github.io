@@ -1,0 +1,16 @@
+---
+import { loadEvents, splitEvents } from '../../data/events';
+import { pageMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import Base from '../../layouts/base.astro';
+import { EventsPage } from '../../views/events-page';
+
+const { categories, events } = loadEvents();
+// The cards show the summary, so the long descriptions stay out of the page.
+const lean = events.map(({ description, ...event }) => event);
+const { upcoming, past } = splitEvents(lean);
+---
+
+<Base {...pageMetadata('schedule')} content={seedPage({})}>
+  <EventsPage upcoming={upcoming} past={past} categories={categories} client:load />
+</Base>
