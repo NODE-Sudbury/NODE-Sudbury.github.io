@@ -16,7 +16,7 @@ const ICONS: Record<string, () => Promise<{ default: SVGTemplateResult }>> = {
   google: () => import('./icons/google'),
   instagram: () => import('./icons/instagram'),
   meetup: () => import('./icons/meetup'),
-  twitter: () => import('./icons/twitter'),
+  x: () => import('./icons/x'),
   youtube: () => import('./icons/youtube'),
   website: () => import('./icons/website'),
   'arrow-right-circle': () => import('./icons/arrow-right-circle'),

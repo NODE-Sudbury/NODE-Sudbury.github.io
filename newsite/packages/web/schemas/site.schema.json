@@ -211,7 +211,7 @@
             "required": ["name", "url"],
             "properties": {
               "name": {
-                "description": "The icon name, for example twitter.",
+                "description": "The icon name, for example x.",
                 "type": "string"
               },
               "url": {

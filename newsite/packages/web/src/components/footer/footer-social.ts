@@ -8,6 +8,16 @@ import { ThemedComponent } from '../themed-component';
 import '../shared/node-icon';
 import '../ui/hb-icon-button';
 
+/** How each icon name reads to a screen reader. */
+export const FOLLOW_LABELS: Record<string, string> = {
+  x: 'X',
+  instagram: 'Instagram',
+  facebook: 'Facebook',
+  linkedin: 'LinkedIn',
+  github: 'GitHub',
+  youtube: 'YouTube',
+};
+
 @customElement('footer-social')
 export class FooterSocial extends ThemedComponent {
   static override styles = css`
@@ -60,7 +70,7 @@ export class FooterSocial extends ThemedComponent {
           ${this.socialNetwork.follow.map(
             (socFollow) => html`
               <li>
-                <hb-icon-button label="${socFollow.name}" href="${socFollow.url}" target="_blank">
+                <hb-icon-button label="${FOLLOW_LABELS[socFollow.name] ?? socFollow.name}" href="${socFollow.url}" target="_blank">
                   <node-icon name="${socFollow.name}"></node-icon>
                 </hb-icon-button>
               </li>
@@ -83,11 +93,11 @@ export class FooterSocial extends ThemedComponent {
           </li>
           <li>
             <hb-icon-button
-              label="${this.shareLabel('Twitter')}"
-              share="twitter"
+              label="${this.shareLabel('X')}"
+              share="x"
               @click="${this.share}"
             >
-              <node-icon name="twitter"></node-icon>
+              <node-icon name="x"></node-icon>
             </hb-icon-button>
           </li>
         </ul>

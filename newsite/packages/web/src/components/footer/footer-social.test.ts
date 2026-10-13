@@ -5,6 +5,7 @@ import { screen } from 'shadow-dom-testing-library';
 import { fixture } from '../../../__tests__/helpers/fixtures';
 import { mailto, organizer, socialNetwork } from '../../config/site';
 import { share } from '../../utils/share';
+import { FOLLOW_LABELS } from './footer-social';
 import './footer-social';
 
 vi.mock('../../utils/share');
@@ -28,7 +29,7 @@ describe('footer-social', () => {
     fireEvent.click(await screen.findByShadowRole('button', { name: 'Share on Facebook' }));
     expect(mockShare).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(screen.getByShadowRole('button', { name: 'Share on Twitter' }));
+    fireEvent.click(screen.getByShadowRole('button', { name: 'Share on X' }));
     expect(mockShare).toHaveBeenCalledTimes(2);
   });
 
@@ -36,7 +37,7 @@ describe('footer-social', () => {
     await fixture(html`<footer-social></footer-social>`);
 
     for (const { name, url } of socialNetwork.follow) {
-      const link = await screen.findByShadowRole('link', { name });
+      const link = await screen.findByShadowRole('link', { name: FOLLOW_LABELS[name] ?? name });
       expect(link).toHaveAttribute('href', url);
       expect(link).toHaveAttribute('target', '_blank');
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');

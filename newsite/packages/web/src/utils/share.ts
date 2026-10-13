@@ -12,8 +12,8 @@ export const share = (e: PointerEvent) => {
       openFacebook({ title, shareUrl });
       break;
     }
-    case 'twitter': {
-      openTwitter({ title, shareUrl });
+    case 'x': {
+      openX({ title, shareUrl });
       break;
     }
     default:
@@ -34,12 +34,12 @@ const features = ({ height }: { height: number }): string => {
     .join(',');
 };
 
-const openTwitter = ({ title, shareUrl }: { title: string; shareUrl: string }) => {
+const openX = ({ title, shareUrl }: { title: string; shareUrl: string }) => {
   const text = msg(str`Check out ${title} at #${hashtag}: ${shareUrl}`, {
-    id: 'shared.share.twitter-text',
+    id: 'shared.share.x-text',
     desc: 'Post text. Followed by a page title, the event hashtag and a link.',
   });
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
   window.open(url, 'share', features({ height: 275 }));
 };
 

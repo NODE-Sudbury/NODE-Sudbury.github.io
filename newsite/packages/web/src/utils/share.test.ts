@@ -7,8 +7,8 @@ describe('share', () => {
   let open: MockInstance<Open>;
   const features = (height: number) =>
     `menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=${height}`;
-  const twitterUrl = [
-    'https://twitter.com/intent/tweet',
+  const xUrl = [
+    'https://x.com/intent/post',
     'text=Check%20out%20Awesome%20Schedule%20at%20%23DevFest%3A%20http%3A%2F%2Flocalhost%2F',
   ].join('?');
 
@@ -21,10 +21,10 @@ describe('share', () => {
     open.mockClear();
   });
 
-  it('shares to Twitter', () => {
-    share({ currentTarget: fixture('twitter') } as unknown as PointerEvent);
+  it('shares to X', () => {
+    share({ currentTarget: fixture('x') } as unknown as PointerEvent);
 
-    expect(window.open).toHaveBeenCalledWith(twitterUrl, 'share', features(275));
+    expect(window.open).toHaveBeenCalledWith(xUrl, 'share', features(275));
   });
 
   it('shares to Facebook', () => {
