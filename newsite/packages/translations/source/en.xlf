@@ -822,19 +822,19 @@
   <source>Blog</source>
 </trans-unit>
 <trans-unit id="pages.blog.description">
-  <source>Read stories from our team</source>
+  <source>News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.</source>
 </trans-unit>
 <trans-unit id="pages.coc.title">
   <source>Code of Conduct</source>
 </trans-unit>
 <trans-unit id="pages.coc.description">
-  <source>Learn more about our expectations for all those who participate in our community</source>
+  <source>The NODE code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.</source>
 </trans-unit>
 <trans-unit id="pages.faq.title">
   <source>FAQs</source>
 </trans-unit>
 <trans-unit id="pages.faq.description">
-  <source>Find you answer right here!</source>
+  <source>Answers about NODE: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.</source>
 </trans-unit>
 <trans-unit id="pages.not-found.title">
   <source>Not Found</source>
@@ -852,31 +852,31 @@
   <source>Open Source</source>
 </trans-unit>
 <trans-unit id="pages.open-source.description">
-  <source>Open source projects built by the NODE community</source>
+  <source>Open source projects built by the NODE community in Sudbury. Browse the code, see who contributes and how active each project is.</source>
 </trans-unit>
 <trans-unit id="pages.previous-speakers.title">
   <source>Previous Speakers</source>
 </trans-unit>
 <trans-unit id="pages.previous-speakers.description">
-  <source>Check who was with us last years</source>
+  <source>The speakers who have presented at NODE events across Northern Ontario.</source>
 </trans-unit>
 <trans-unit id="pages.schedule.title">
   <source>Events</source>
 </trans-unit>
 <trans-unit id="pages.schedule.description">
-  <source>See the upcoming and past events from NODE and our partners</source>
+  <source>Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.</source>
 </trans-unit>
 <trans-unit id="pages.speakers.title">
   <source>Speakers</source>
 </trans-unit>
 <trans-unit id="pages.speakers.description">
-  <source>Hear from the Googlers, Partners, and Guest Speakers who are building the future of cloud. Check back often as we add more speakers, including our customers and partners.</source>
+  <source>Meet the developers, founders and employers speaking at the monthly NODE speaker series at the Norcat Innovation Hub in Sudbury.</source>
 </trans-unit>
 <trans-unit id="pages.team.title">
   <source>Board</source>
 </trans-unit>
 <trans-unit id="pages.team.description">
-  <source>Meet the NODE board and volunteers</source>
+  <source>Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.</source>
 </trans-unit>
 <trans-unit id="event.online">
   <source>Online</source>

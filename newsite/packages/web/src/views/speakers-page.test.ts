@@ -39,7 +39,7 @@ describe('speakers-page', () => {
 
     expect(updateMetadata).toHaveBeenCalledWith(
       'Speakers',
-      expect.stringMatching(/^Hear from the Googlers/),
+      expect.stringMatching(/^Meet the developers, founders/),
     );
     expect(shadowRoot.querySelector('simple-hero')).toHaveAttribute('page', 'speakers');
   });

@@ -46,7 +46,7 @@ describe('coc-page', () => {
     expect(mockUpdateMetadata).toHaveBeenCalledTimes(1);
     expect(mockUpdateMetadata).toHaveBeenCalledWith(
       'Code of Conduct',
-      'Learn more about our expectations for all those who participate in our community',
+      'The NODE code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.',
     );
   });
 });
