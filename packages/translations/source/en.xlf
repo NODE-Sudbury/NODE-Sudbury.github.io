@@ -873,13 +873,13 @@
   <source>My profile</source>
 </trans-unit>
 <trans-unit id="pages.account.description">
-  <source>Your NODE member profile and public page.</source>
+  <source>Your NODE member profile and public profile.</source>
 </trans-unit>
 <trans-unit id="common.general-error">
   <source>An error has occurred. Please, try again later.</source>
 </trans-unit>
 <trans-unit id="pages.account.lede">
-  <source>Tell other members who you are, and choose your public page.</source>
+  <source>Tell other members who you are, and choose your public profile.</source>
 </trans-unit>
 <trans-unit id="pages.account.sign-in-needed">
   <source>Sign in to edit your profile.</source>
@@ -887,8 +887,95 @@
 <trans-unit id="common.sign-in">
   <source>Sign in</source>
 </trans-unit>
+<trans-unit id="pages.account.website">
+  <source>Website</source>
+</trans-unit>
+<trans-unit id="pages.account.profile">
+  <source>Profile</source>
+</trans-unit>
+<trans-unit id="pages.account.name">
+  <source>Name</source>
+</trans-unit>
+<trans-unit id="pages.account.pronouns">
+  <source>Pronouns</source>
+</trans-unit>
+<trans-unit id="pages.account.school">
+  <source>School</source>
+</trans-unit>
+<trans-unit id="pages.account.work">
+  <source>Work</source>
+</trans-unit>
+<trans-unit id="pages.account.bio">
+  <source>About</source>
+</trans-unit>
+<trans-unit id="pages.account.links">
+  <source>Links</source>
+</trans-unit>
+<trans-unit id="pages.account.discord-hint">
+  <source>Shown only to you for now.</source>
+</trans-unit>
+<trans-unit id="pages.account.public">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="pages.account.handle">
+  <source>Handle</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility">
+  <source>Visibility</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility-public">
+  <source>Public: anyone with the link can see it.</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility-private">
+  <source>Private: only you can see it.</source>
+</trans-unit>
+<trans-unit id="pages.account.visible">
+  <source>Show my profile to everyone</source>
+</trans-unit>
+<trans-unit id="pages.account.membership">
+  <source>Membership</source>
+</trans-unit>
+<trans-unit id="pages.account.status">
+  <source>Status</source>
+</trans-unit>
+<trans-unit id="pages.account.member-since">
+  <source>Member since <x id="0" equiv-text="${memberSince(saved.createdAt)}"/></source>
+</trans-unit>
+<trans-unit id="pages.account.exclusive">
+  <source>Exclusive member</source>
+</trans-unit>
+<trans-unit id="pages.account.student">
+  <source>I'm a student</source>
+</trans-unit>
+<trans-unit id="pages.account.program">
+  <source>Program</source>
+</trans-unit>
+<trans-unit id="pages.account.job-title">
+  <source>Job title</source>
+</trans-unit>
+<trans-unit id="pages.account.company">
+  <source>Company</source>
+</trans-unit>
+<trans-unit id="pages.account.saving">
+  <source>Saving...</source>
+</trans-unit>
+<trans-unit id="pages.account.save">
+  <source>Save</source>
+</trans-unit>
+<trans-unit id="pages.account.cancel">
+  <source>Cancel</source>
+</trans-unit>
+<trans-unit id="pages.account.not-set">
+  <source>Not set</source>
+</trans-unit>
+<trans-unit id="pages.account.edit">
+  <source>Edit</source>
+</trans-unit>
 <trans-unit id="pages.account.photo">
   <source>Photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-choose">
+  <source>Choose a photo</source>
 </trans-unit>
 <trans-unit id="pages.account.photo-saving">
   <source>Saving photo...</source>
@@ -899,86 +986,20 @@
 <trans-unit id="pages.account.photo-remove">
   <source>Remove photo</source>
 </trans-unit>
-<trans-unit id="pages.account.photo-note">
-  <source>JPG, PNG or WebP, up to 5 MB. It is cut to a square.</source>
-</trans-unit>
-<trans-unit id="pages.account.photo-choose">
-  <source>Choose a photo</source>
-</trans-unit>
-<trans-unit id="pages.account.membership">
-  <source>Membership</source>
-</trans-unit>
-<trans-unit id="pages.account.member-since">
-  <source>Member since <x id="0" equiv-text="${memberSince(form.createdAt)}"/></source>
-</trans-unit>
-<trans-unit id="pages.account.exclusive">
-  <source>Exclusive member</source>
-</trans-unit>
-<trans-unit id="pages.account.about">
-  <source>About you</source>
-</trans-unit>
-<trans-unit id="pages.account.name">
-  <source>Name</source>
-</trans-unit>
-<trans-unit id="pages.account.pronouns">
-  <source>Pronouns</source>
-</trans-unit>
-<trans-unit id="pages.account.student">
-  <source>I'm a student</source>
-</trans-unit>
-<trans-unit id="pages.account.program">
-  <source>Program</source>
-</trans-unit>
-<trans-unit id="pages.account.school">
-  <source>School</source>
-</trans-unit>
-<trans-unit id="pages.account.job-title">
-  <source>Job title</source>
-</trans-unit>
-<trans-unit id="pages.account.company">
-  <source>Company</source>
-</trans-unit>
-<trans-unit id="pages.account.bio">
-  <source>About</source>
-</trans-unit>
-<trans-unit id="pages.account.links">
-  <source>Links</source>
-</trans-unit>
-<trans-unit id="pages.account.website">
-  <source>Website</source>
-</trans-unit>
-<trans-unit id="pages.account.discord-hint">
-  <source>Shown only to you for now.</source>
-</trans-unit>
-<trans-unit id="pages.account.public">
-  <source>Your public page</source>
-</trans-unit>
-<trans-unit id="pages.account.handle">
-  <source>Handle</source>
-</trans-unit>
-<trans-unit id="pages.account.visible">
-  <source>Show my profile to everyone</source>
-</trans-unit>
-<trans-unit id="pages.account.saving">
-  <source>Saving...</source>
-</trans-unit>
-<trans-unit id="pages.account.save">
-  <source>Save profile</source>
-</trans-unit>
 <trans-unit id="pages.account.share-private">
   <source>Your profile is private</source>
 </trans-unit>
 <trans-unit id="pages.account.share-private-body">
-  <source>Only you can see it right now. Turn on "Show my profile to everyone" below, then save, to get a link you can share.</source>
+  <source>Only you can see it right now. Under Public profile, set visibility to public and add a handle to get a link you can share.</source>
 </trans-unit>
 <trans-unit id="pages.account.share-live">
-  <source>Your public page is live</source>
+  <source>Your public profile is live</source>
 </trans-unit>
 <trans-unit id="pages.account.share-live-body">
   <source>Share this link on your CV, your LinkedIn or at an event. Anyone can see your photo, name, role, links and bio. Your email stays private.</source>
 </trans-unit>
 <trans-unit id="pages.account.share-live-body-id">
-  <source>Choose a handle below, then save, to get a short link like /members/your-name. Until then this link works.</source>
+  <source>Add a handle under Public profile to get a short link like /members/your-name. Until then this link works.</source>
 </trans-unit>
 <trans-unit id="pages.account.copied">
   <source>Copied</source>
@@ -987,7 +1008,7 @@
   <source>Copy link</source>
 </trans-unit>
 <trans-unit id="pages.account.open-page">
-  <source>Open your public page in a new tab</source>
+  <source>Open your public profile in a new tab</source>
 </trans-unit>
 <trans-unit id="pages.account.handle-needed">
   <source>Choose a handle to show your profile to everyone.</source>
@@ -1008,7 +1029,7 @@
   <source><x id="0" equiv-text="${handle}"/> is available.</source>
 </trans-unit>
 <trans-unit id="pages.account.handle-hint">
-  <source>Your page will be at /members/ followed by this.</source>
+  <source>Your profile will be at /members/ followed by this.</source>
 </trans-unit>
 <trans-unit id="pages.account.handle-taken">
   <source>The handle <x id="0" equiv-text="${this.form.handle.trim().toLowerCase()}"/> is taken. Try another.</source>

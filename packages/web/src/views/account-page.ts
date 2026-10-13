@@ -45,6 +45,7 @@ import { updateTextMetadata } from '../utils/metadata';
 import { ThemedComponent } from '../components/themed-component';
 
 type Field = keyof MemberProfile;
+type RowId = 'name' | 'work' | 'about' | 'links' | 'handle' | 'visibility';
 type Errors = Partial<Record<Field, string>>;
 
 const EMPTY: MemberProfile = {
@@ -67,6 +68,16 @@ const EMPTY: MemberProfile = {
   websiteUrl: '',
   discordTag: '',
   isPublic: true,
+};
+
+/** The fields each row edits, to tell which row an error belongs to. */
+const ROW_FIELDS: Record<RowId, readonly Field[]> = {
+  name: ['fullName', 'pronouns'],
+  work: ['memberType', 'jobTitle', 'company', 'school', 'program'],
+  about: ['bio'],
+  links: ['linkedinUrl', 'githubUrl', 'twitterUrl', 'websiteUrl', 'discordTag'],
+  handle: ['handle'],
+  visibility: ['isPublic'],
 };
 
 /** Which site each link box takes, so the LinkedIn box only takes LinkedIn. */
@@ -99,24 +110,63 @@ export class AccountPage extends ThemedComponent {
         color: var(--hb-color-on-surface);
       }
 
-      form {
+      .settings {
         display: grid;
-        gap: var(--hb-space-5);
-        max-inline-size: 40rem;
+        gap: var(--hb-space-8);
+        max-inline-size: 44rem;
       }
 
-      fieldset {
+      .group {
+        display: grid;
+        margin: 0;
+      }
+
+      .group-title {
+        margin: 0 0 var(--hb-space-2);
+        ${displayFont('heading', 'lg', 1.2)};
+      }
+
+      .item {
+        display: grid;
+        grid-template-columns: minmax(7rem, 11rem) 1fr auto;
+        align-items: center;
+        gap: var(--hb-space-3) var(--hb-space-4);
+        padding-block: var(--hb-space-4);
+        border-block-end: var(--hb-border-width) solid var(--hb-border-color);
+      }
+
+      .item:last-child {
+        border-block-end: 0;
+      }
+
+      .item-label {
+        font-weight: 600;
+      }
+
+      .item-value {
+        min-inline-size: 0;
+        overflow-wrap: anywhere;
+        color: var(--hb-color-on-surface-variant);
+      }
+
+      .item-value.empty {
+        font-style: italic;
+      }
+
+      .item-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--hb-space-2);
+        justify-content: flex-end;
+      }
+
+      .item.editing {
+        grid-template-columns: 1fr;
+      }
+
+      .editor {
         display: grid;
         gap: var(--hb-space-4);
-        margin: 0;
-        padding: 0;
-        border: 0;
-      }
-
-      legend {
-        margin-block-end: var(--hb-space-2);
-        padding: 0;
-        ${displayFont('heading', 'lg', 1.2)};
       }
 
       .row {
@@ -129,36 +179,26 @@ export class AccountPage extends ThemedComponent {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: var(--hb-space-4);
+        gap: var(--hb-space-3);
       }
 
-      .address {
-        margin: 0;
-        color: var(--hb-color-on-surface-variant);
-        font-size: var(--hb-text-sm);
+      .visually-hidden {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
       }
 
-      .address a {
-        color: inherit;
-      }
+      @media (max-width: 36rem) {
+        .item {
+          grid-template-columns: 1fr auto;
+        }
 
-      .photo {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--hb-space-4);
-      }
-
-      .photo-actions {
-        display: grid;
-        gap: var(--hb-space-2);
-        justify-items: start;
-      }
-
-      .photo-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--hb-space-2);
+        .item-label {
+          grid-column: 1 / -1;
+        }
       }
 
       .note {
@@ -172,7 +212,6 @@ export class AccountPage extends ThemedComponent {
         flex-wrap: wrap;
         align-items: center;
         gap: var(--hb-space-3);
-        margin: 0;
       }
 
       input[type='file'] {
@@ -185,8 +224,6 @@ export class AccountPage extends ThemedComponent {
         align-items: center;
         justify-content: space-between;
         gap: var(--hb-space-4) var(--hb-space-6);
-        max-inline-size: 40rem;
-        margin-block-end: var(--hb-space-6);
         padding: var(--hb-space-5);
         border: var(--hb-border-width) solid var(--hb-border-color);
         border-radius: var(--hb-radius-l);
@@ -257,6 +294,11 @@ export class AccountPage extends ThemedComponent {
 
   @state()
   private accessor form: MemberProfile = EMPTY;
+  // The profile as last saved, which Cancel goes back to.
+  private saved: MemberProfile = EMPTY;
+  // The row being edited. Only one is open at a time.
+  @state()
+  private accessor editing: RowId | undefined;
   @state()
   private accessor loading = false;
   @state()
@@ -285,7 +327,7 @@ export class AccountPage extends ThemedComponent {
   override async firstUpdated() {
     updateTextMetadata(
       msg('My profile', { id: 'pages.account.title' }),
-      msg('Your NODE member profile and public page.', { id: 'pages.account.description' }),
+      msg('Your NODE member profile and public profile.', { id: 'pages.account.description' }),
     );
     await sessionRestored;
     this.ready = true;
@@ -300,6 +342,8 @@ export class AccountPage extends ThemedComponent {
     } else if (!uid) {
       this.loadedFor = undefined;
       this.form = EMPTY;
+      this.saved = EMPTY;
+      this.editing = undefined;
     }
   }
 
@@ -308,6 +352,7 @@ export class AccountPage extends ThemedComponent {
     try {
       const own = await fetchOwnProfile(uid);
       this.form = own ?? EMPTY;
+      this.saved = this.form;
       this.savedPath = own ? publicPath(own) : '';
       this.savedPublic = own?.isPublic ?? true;
       this.savedHandle = own?.handle ?? '';
@@ -326,7 +371,7 @@ export class AccountPage extends ThemedComponent {
       <hero-block tone="${PAGE_TONES.team}">
         <h1 class="hero-title">${msg('My profile', { id: 'pages.account.title' })}</h1>
         <p class="hero-description">
-          ${msg('Tell other members who you are, and choose your public page.', {
+          ${msg('Tell other members who you are, and choose your public profile.', {
             id: 'pages.account.lede',
           })}
         </p>
@@ -369,158 +414,253 @@ export class AccountPage extends ThemedComponent {
   }
 
   private renderForm() {
-    const { form } = this;
-    const student = form.memberType === 'student';
+    const { saved } = this;
+    const student = saved.memberType === 'student';
+    const links = (
+      [
+        ['LinkedIn', saved.linkedinUrl],
+        ['GitHub', saved.githubUrl],
+        ['X', saved.twitterUrl],
+        [msg('Website', { id: 'pages.account.website' }), saved.websiteUrl],
+        ['Discord', saved.discordTag],
+      ] as const
+    )
+      .filter(([, value]) => value)
+      .map(([name]) => name);
+    const work = student
+      ? [saved.program, saved.school].filter(Boolean).join(' - ')
+      : [saved.jobTitle, saved.company].filter(Boolean).join(' - ');
     return html`
       <hb-progress ?hidden="${!this.loading}"></hb-progress>
-      ${this.renderShare()}
-      <form @submit="${(event: Event) => event.preventDefault()}" ?inert="${this.loading}">
-        <fieldset>
-          <legend>${msg('Photo', { id: 'pages.account.photo' })}</legend>
-          <div class="photo">
-            <speaker-photo size="l" src="${form.avatarUrl}"></speaker-photo>
-            <div class="photo-actions">
-              <div class="photo-buttons">
-                <hb-button
-                  variant="outlined"
-                  ?disabled="${this.uploading}"
-                  @click="${this.choosePhoto}"
-                >
-                  ${
-                    this.uploading
-                      ? msg('Saving photo...', { id: 'pages.account.photo-saving' })
-                      : msg('Change photo', { id: 'pages.account.photo-change' })
-                  }
-                </hb-button>
-                ${
-                  form.avatarUrl
-                    ? html`<hb-button
-                        variant="text"
-                        ?disabled="${this.uploading}"
-                        @click="${this.removePhoto}"
-                      >
-                        ${msg('Remove photo', { id: 'pages.account.photo-remove' })}
-                      </hb-button>`
-                    : nothing
-                }
-              </div>
-              <p class="note">
-                ${msg('JPG, PNG or WebP, up to 5 MB. It is cut to a square.', {
-                  id: 'pages.account.photo-note',
-                })}
-              </p>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                aria-label="${msg('Choose a photo', { id: 'pages.account.photo-choose' })}"
-                @change="${this.onPhotoChosen}"
-              />
-            </div>
-          </div>
-        </fieldset>
+      <div class="settings" ?inert="${this.loading}">
+        ${this.renderShare()}
 
-        <fieldset>
-          <legend>${msg('Membership', { id: 'pages.account.membership' })}</legend>
-          <p class="membership">
-            ${
-              form.createdAt
-                ? msg(str`Member since ${memberSince(form.createdAt)}`, {
-                    id: 'pages.account.member-since',
-                  })
-                : nothing
-            }
-            ${
-              form.isExclusiveMember
-                ? html`<hb-chip accent="1">
-                    ${msg('Exclusive member', { id: 'pages.account.exclusive' })}
-                  </hb-chip>`
-                : nothing
-            }
-          </p>
-        </fieldset>
-
-        <fieldset>
-          <legend>${msg('About you', { id: 'pages.account.about' })}</legend>
-          <div class="row">
-            ${this.text('fullName', msg('Name', { id: 'pages.account.name' }), {
-              autocomplete: 'name',
-            })}
-            ${this.text('pronouns', msg('Pronouns', { id: 'pages.account.pronouns' }))}
-          </div>
-          <hb-switch
-            .checked="${student}"
-            ?disabled="${this.saving}"
-            @change="${(event: Event) =>
-              this.setForm({
-                memberType: (event.target as HbSwitch).checked ? 'student' : 'professional',
-              })}"
-          >
-            ${msg("I'm a student", { id: 'pages.account.student' })}
-          </hb-switch>
-          ${
+        <section class="group" aria-labelledby="group-profile">
+          <h2 class="group-title" id="group-profile">
+            ${msg('Profile', { id: 'pages.account.profile' })}
+          </h2>
+          ${this.renderPhoto()}
+          ${this.renderRow(
+            'name',
+            msg('Name', { id: 'pages.account.name' }),
+            [saved.fullName, saved.pronouns && `(${saved.pronouns})`].filter(Boolean).join(' '),
+            html`<div class="row">
+              ${this.text('fullName', msg('Name', { id: 'pages.account.name' }), {
+                autocomplete: 'name',
+              })}
+              ${this.text('pronouns', msg('Pronouns', { id: 'pages.account.pronouns' }))}
+            </div>`,
+          )}
+          ${this.renderRow(
+            'work',
             student
-              ? html`<div class="row">
-                  ${this.text('program', msg('Program', { id: 'pages.account.program' }))}
-                  ${this.text('school', msg('School', { id: 'pages.account.school' }))}
-                </div>`
-              : html`<div class="row">
-                  ${this.text('jobTitle', msg('Job title', { id: 'pages.account.job-title' }))}
-                  ${this.text('company', msg('Company', { id: 'pages.account.company' }))}
-                </div>`
-          }
-          <hb-text-field
-            type="textarea"
-            rows="4"
-            maxlength="600"
-            label="${msg('About', { id: 'pages.account.bio' })}"
-            name="bio"
-            .value="${form.bio}"
-            ?disabled="${this.saving}"
-            @input="${(event: Event) => this.set('bio', (event.target as HbTextField).value)}"
-          ></hb-text-field>
-        </fieldset>
+              ? msg('School', { id: 'pages.account.school' })
+              : msg('Work', { id: 'pages.account.work' }),
+            work,
+            this.renderWorkEditor(),
+          )}
+          ${this.renderRow(
+            'about',
+            msg('About', { id: 'pages.account.bio' }),
+            saved.bio,
+            html`<hb-text-field
+              type="textarea"
+              rows="4"
+              maxlength="600"
+              label="${msg('About', { id: 'pages.account.bio' })}"
+              name="bio"
+              .value="${this.form.bio}"
+              ?disabled="${this.saving}"
+              @input="${(event: Event) => this.set('bio', (event.target as HbTextField).value)}"
+            ></hb-text-field>`,
+          )}
+          ${this.renderRow(
+            'links',
+            msg('Links', { id: 'pages.account.links' }),
+            links.join(', '),
+            html`${this.text('linkedinUrl', 'LinkedIn')} ${this.text('githubUrl', 'GitHub')}
+            ${this.text('twitterUrl', 'X')}
+            ${this.text('websiteUrl', msg('Website', { id: 'pages.account.website' }))}
+            ${this.text('discordTag', 'Discord', {
+              hint: msg('Shown only to you for now.', { id: 'pages.account.discord-hint' }),
+            })}`,
+          )}
+        </section>
 
-        <fieldset>
-          <legend>${msg('Links', { id: 'pages.account.links' })}</legend>
-          ${this.text('linkedinUrl', 'LinkedIn')} ${this.text('githubUrl', 'GitHub')}
-          ${this.text('twitterUrl', 'X')}
-          ${this.text('websiteUrl', msg('Website', { id: 'pages.account.website' }))}
-          ${this.text('discordTag', 'Discord', {
-            hint: msg('Shown only to you for now.', { id: 'pages.account.discord-hint' }),
-          })}
-        </fieldset>
+        <section class="group" aria-labelledby="group-public">
+          <h2 class="group-title" id="group-public">
+            ${msg('Public profile', { id: 'pages.account.public' })}
+          </h2>
+          ${this.renderRow(
+            'handle',
+            msg('Handle', { id: 'pages.account.handle' }),
+            saved.handle ? `/members/${saved.handle}` : '',
+            this.text('handle', msg('Handle', { id: 'pages.account.handle' }), {
+              hint: this.handleHint(),
+              error: this.handleStatus === 'taken' ? this.handleTakenMessage() : '',
+            }),
+          )}
+          ${this.renderRow(
+            'visibility',
+            msg('Visibility', { id: 'pages.account.visibility' }),
+            saved.isPublic
+              ? msg('Public: anyone with the link can see it.', {
+                  id: 'pages.account.visibility-public',
+                })
+              : msg('Private: only you can see it.', { id: 'pages.account.visibility-private' }),
+            html`<hb-switch
+              .checked="${this.form.isPublic}"
+              ?disabled="${this.saving}"
+              @change="${(event: Event) =>
+                this.setForm({ isPublic: (event.target as HbSwitch).checked })}"
+            >
+              ${msg('Show my profile to everyone', { id: 'pages.account.visible' })}
+            </hb-switch>`,
+          )}
+        </section>
 
-        <fieldset>
-          <legend>${msg('Your public page', { id: 'pages.account.public' })}</legend>
-          ${this.text('handle', msg('Handle', { id: 'pages.account.handle' }), {
-            hint: this.handleHint(),
-            error: this.handleStatus === 'taken' ? this.handleTakenMessage() : '',
-          })}
-          <hb-switch
-            .checked="${form.isPublic}"
-            ?disabled="${this.saving}"
-            @change="${(event: Event) => this.setForm({ isPublic: (event.target as HbSwitch).checked })}"
-          >
-            ${msg('Show my profile to everyone', { id: 'pages.account.visible' })}
-          </hb-switch>
-        </fieldset>
-
-        <div class="actions">
-          <hb-button ?disabled="${this.saving || this.loading}" @click="${this.save}">
-            ${
-              this.saving
-                ? msg('Saving...', { id: 'pages.account.saving' })
-                : msg('Save profile', { id: 'pages.account.save' })
-            }
-          </hb-button>
-        </div>
-      </form>
+        <section class="group" aria-labelledby="group-membership">
+          <h2 class="group-title" id="group-membership">
+            ${msg('Membership', { id: 'pages.account.membership' })}
+          </h2>
+          <div class="item">
+            <span class="item-label">${msg('Status', { id: 'pages.account.status' })}</span>
+            <span class="item-value membership">
+              ${
+                saved.createdAt
+                  ? msg(str`Member since ${memberSince(saved.createdAt)}`, {
+                      id: 'pages.account.member-since',
+                    })
+                  : nothing
+              }
+              ${
+                saved.isExclusiveMember
+                  ? html`<hb-chip accent="1">
+                      ${msg('Exclusive member', { id: 'pages.account.exclusive' })}
+                    </hb-chip>`
+                  : nothing
+              }
+            </span>
+          </div>
+        </section>
+      </div>
     `;
   }
 
+  private renderWorkEditor() {
+    const student = this.form.memberType === 'student';
+    return html`<hb-switch
+        .checked="${student}"
+        ?disabled="${this.saving}"
+        @change="${(event: Event) =>
+          this.setForm({
+            memberType: (event.target as HbSwitch).checked ? 'student' : 'professional',
+          })}"
+      >
+        ${msg("I'm a student", { id: 'pages.account.student' })}
+      </hb-switch>
+      ${
+        student
+          ? html`<div class="row">
+              ${this.text('program', msg('Program', { id: 'pages.account.program' }))}
+              ${this.text('school', msg('School', { id: 'pages.account.school' }))}
+            </div>`
+          : html`<div class="row">
+              ${this.text('jobTitle', msg('Job title', { id: 'pages.account.job-title' }))}
+              ${this.text('company', msg('Company', { id: 'pages.account.company' }))}
+            </div>`
+      }`;
+  }
+
+  /** One setting: its name and value with an Edit button, or its fields with Save and Cancel. */
+  private renderRow(id: RowId, label: string, value: string, editor: unknown) {
+    if (this.editing === id) {
+      return html`<div class="item editing" role="group" aria-label="${label}">
+        <span class="item-label visually-hidden">${label}</span>
+        <div class="editor">${editor}</div>
+        <div class="actions">
+          <hb-button ?disabled="${this.saving}" @click="${this.save}">
+            ${
+              this.saving
+                ? msg('Saving...', { id: 'pages.account.saving' })
+                : msg('Save', { id: 'pages.account.save' })
+            }
+          </hb-button>
+          <hb-button variant="text" ?disabled="${this.saving}" @click="${this.cancel}">
+            ${msg('Cancel', { id: 'pages.account.cancel' })}
+          </hb-button>
+        </div>
+      </div>`;
+    }
+    return html`<div class="item">
+      <span class="item-label">${label}</span>
+      <span class="item-value ${value ? '' : 'empty'}">
+        ${value || msg('Not set', { id: 'pages.account.not-set' })}
+      </span>
+      <hb-button
+        variant="outlined"
+        ?disabled="${this.editing !== undefined}"
+        @click="${() => this.edit(id)}"
+      >
+        ${msg('Edit', { id: 'pages.account.edit' })}
+        <span class="visually-hidden">${label}</span>
+      </hb-button>
+    </div>`;
+  }
+
+  /** The photo is the one setting that saves at once, so it has its own buttons. */
+  private renderPhoto() {
+    return html`<div class="item">
+      <span class="item-label">${msg('Photo', { id: 'pages.account.photo' })}</span>
+      <span class="item-value">
+        <speaker-photo size="m" src="${this.form.avatarUrl}"></speaker-photo>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          aria-label="${msg('Choose a photo', { id: 'pages.account.photo-choose' })}"
+          @change="${this.onPhotoChosen}"
+        />
+      </span>
+      <span class="item-buttons">
+        <hb-button variant="outlined" ?disabled="${this.uploading}" @click="${this.choosePhoto}">
+          ${
+            this.uploading
+              ? msg('Saving photo...', { id: 'pages.account.photo-saving' })
+              : msg('Change photo', { id: 'pages.account.photo-change' })
+          }
+        </hb-button>
+        ${
+          this.form.avatarUrl
+            ? html`<hb-button
+                variant="text"
+                ?disabled="${this.uploading}"
+                @click="${this.removePhoto}"
+              >
+                ${msg('Remove photo', { id: 'pages.account.photo-remove' })}
+              </hb-button>`
+            : nothing
+        }
+      </span>
+    </div>`;
+  }
+
+  private edit(id: RowId) {
+    this.errors = {};
+    this.handleStatus = 'idle';
+    this.editing = id;
+  }
+
+  private readonly cancel = () => {
+    clearTimeout(this.handleTimer);
+    this.form = this.saved;
+    this.errors = {};
+    this.handleStatus = 'idle';
+    this.editing = undefined;
+  };
+
   /**
-   * Where the public page is, at the top of the page where it is easy to find: the link, a button
-   * to copy it and one to open it. What it says depends on what is saved, not on unsaved edits.
+   * Where the public profile is, at the top of the page where it is easy to find: the link, a
+   * button to copy it and one to open it. It follows what is saved, not what is being typed.
    */
   private renderShare() {
     const address = this.savedPath ? `${window.location.host}${this.savedPath}` : '';
@@ -532,7 +672,7 @@ export class AccountPage extends ThemedComponent {
           </h2>
           <p class="share-body">
             ${msg(
-              'Only you can see it right now. Turn on "Show my profile to everyone" below, then save, to get a link you can share.',
+              'Only you can see it right now. Under Public profile, set visibility to public and add a handle to get a link you can share.',
               { id: 'pages.account.share-private-body' },
             )}
           </p>
@@ -543,7 +683,7 @@ export class AccountPage extends ThemedComponent {
     return html`<section class="share" aria-labelledby="share-title">
       <div class="share-text">
         <h2 class="share-title" id="share-title">
-          ${msg('Your public page is live', { id: 'pages.account.share-live' })}
+          ${msg('Your public profile is live', { id: 'pages.account.share-live' })}
         </h2>
         <p class="share-body">
           ${
@@ -553,7 +693,7 @@ export class AccountPage extends ThemedComponent {
                   { id: 'pages.account.share-live-body' },
                 )
               : msg(
-                  'Choose a handle below, then save, to get a short link like /members/your-name. Until then this link works.',
+                  'Add a handle under Public profile to get a short link like /members/your-name. Until then this link works.',
                   { id: 'pages.account.share-live-body-id' },
                 )
           }
@@ -576,7 +716,7 @@ export class AccountPage extends ThemedComponent {
           variant="tonal"
           href="${this.savedPath}"
           target="_blank"
-          label="${msg('Open your public page in a new tab', { id: 'pages.account.open-page' })}"
+          label="${msg('Open your public profile in a new tab', { id: 'pages.account.open-page' })}"
         >
           <node-icon name="open-in-new"></node-icon>
         </hb-icon-button>
@@ -657,7 +797,7 @@ export class AccountPage extends ThemedComponent {
     if (this.handleStatus === 'available') {
       return msg(str`${handle} is available.`, { id: 'pages.account.handle-available' });
     }
-    return msg('Your page will be at /members/ followed by this.', {
+    return msg('Your profile will be at /members/ followed by this.', {
       id: 'pages.account.handle-hint',
     });
   }
@@ -694,6 +834,7 @@ export class AccountPage extends ThemedComponent {
     try {
       const url = await uploadAvatar(this.user.data.uid, await cropToSquare(file));
       this.form = { ...this.form, avatarUrl: url };
+      this.saved = { ...this.saved, avatarUrl: url };
       store.dispatch(queueSnackbar(msg('Photo saved.', { id: 'pages.account.photo-saved' })));
     } catch {
       store.dispatch(queueSnackbar(this.generalError()));
@@ -708,6 +849,7 @@ export class AccountPage extends ThemedComponent {
     try {
       await removeAvatar(this.user.data.uid);
       this.form = { ...this.form, avatarUrl: '' };
+      this.saved = { ...this.saved, avatarUrl: '' };
       store.dispatch(queueSnackbar(msg('Photo removed.', { id: 'pages.account.photo-removed' })));
     } catch {
       store.dispatch(queueSnackbar(this.generalError()));
@@ -735,6 +877,12 @@ export class AccountPage extends ThemedComponent {
     const result = this.checked();
     if ('errors' in result) {
       this.errors = result.errors;
+      // An error in a setting that is not open has no field to show it, so say it in a message.
+      const open = this.editing ? ROW_FIELDS[this.editing] : [];
+      const hidden = Object.keys(result.errors).filter((field) => !open.includes(field as Field));
+      if (hidden.length === Object.keys(result.errors).length) {
+        store.dispatch(queueSnackbar(Object.values(result.errors)[0] ?? this.generalError()));
+      }
       return;
     }
     this.saving = true;
@@ -742,6 +890,8 @@ export class AccountPage extends ThemedComponent {
     try {
       await saveOwnProfile(this.user.data.uid, result.profile);
       this.form = result.profile;
+      this.saved = result.profile;
+      this.editing = undefined;
       this.savedPath = publicPath(result.profile);
       this.savedPublic = result.profile.isPublic;
       this.savedHandle = result.profile.handle;

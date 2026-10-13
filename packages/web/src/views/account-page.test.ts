@@ -67,7 +67,21 @@ const own: MemberProfile = {
 const field = (shadowRoot: ShadowRoot, name: string) =>
   deepQuerySelector<HbTextField>(shadowRoot, `hb-text-field[name="${name}"]`)!;
 
+/** Opens one setting for editing, like clicking its Edit button. */
+const openRow = async (element: AccountPage, label: string) => {
+  fireEvent.click(screen.getByShadowRole('button', { name: `Edit ${label}` }));
+  await element.updateComplete;
+};
+
+const ROW_OF: Record<string, string> = {
+  fullName: 'Name',
+  pronouns: 'Name',
+  linkedinUrl: 'Links',
+  handle: 'Handle',
+};
+
 const type = async (element: AccountPage, name: string, value: string) => {
+  if (!field(element.shadowRoot!, name)) await openRow(element, ROW_OF[name]!);
   const input = field(element.shadowRoot!, name);
   input.value = value;
   input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
@@ -84,7 +98,7 @@ const renderSignedIn = async (profile: MemberProfile | undefined = own) => {
   return result;
 };
 
-const saveButton = () => screen.getByShadowRole('button', { name: 'Save profile' });
+const saveButton = () => screen.getByShadowRole('button', { name: 'Save' });
 
 describe('account-page', () => {
   beforeEach(() => {
@@ -104,16 +118,19 @@ describe('account-page', () => {
     expect(fetchOwnProfile).not.toHaveBeenCalled();
   });
 
-  it("fills the form with the member's own profile and shows their public page", async () => {
-    const { shadowRoot } = await renderSignedIn();
+  it("shows the member's own profile as settings, and their public profile", async () => {
+    const { element, shadowRoot } = await renderSignedIn();
 
     expect(fetchOwnProfile).toHaveBeenCalledWith('user-1');
+    expect(shadowRoot).toHaveTextContent('Ada Lovelace');
+    expect(shadowRoot).toHaveTextContent('/members/ada');
+    expect(field(shadowRoot, 'fullName')).toBeNull();
+    await openRow(element, 'Name');
     expect(field(shadowRoot, 'fullName').value).toBe('Ada Lovelace');
-    expect(field(shadowRoot, 'handle').value).toBe('ada');
-    expect(shadowRoot).toHaveTextContent('Your public page is live');
+    expect(shadowRoot).toHaveTextContent('Your public profile is live');
     expect(shadowRoot).toHaveTextContent('/members/ada');
     expect(
-      screen.getByShadowRole('link', { name: 'Open your public page in a new tab' }),
+      screen.getByShadowRole('link', { name: 'Open your public profile in a new tab' }),
     ).toHaveAttribute('href', '/members/ada');
   });
 
@@ -122,12 +139,13 @@ describe('account-page', () => {
 
     expect(shadowRoot).toHaveTextContent('Your profile is private');
     expect(
-      screen.queryByShadowRole('link', { name: 'Open your public page in a new tab' }),
+      screen.queryByShadowRole('link', { name: 'Open your public profile in a new tab' }),
     ).toBeNull();
   });
 
   it('asks a student for a program and school instead of a job', async () => {
-    const { shadowRoot } = await renderSignedIn({ ...own, memberType: 'student' });
+    const { element, shadowRoot } = await renderSignedIn({ ...own, memberType: 'student' });
+    await openRow(element, 'School');
 
     expect(field(shadowRoot, 'program')).not.toBeNull();
     expect(field(shadowRoot, 'jobTitle')).toBeNull();
@@ -169,12 +187,12 @@ describe('account-page', () => {
 
   it('needs a handle and a name to show the profile to everyone', async () => {
     const { element, shadowRoot } = await renderSignedIn({ ...own, handle: '', fullName: '' });
+    await openRow(element, 'Name');
 
     fireEvent.click(saveButton());
     await element.updateComplete;
 
     expect(saveOwnProfile).not.toHaveBeenCalled();
-    expect(field(shadowRoot, 'handle')).toHaveAttribute('error');
     expect(field(shadowRoot, 'fullName')).toHaveAttribute('error');
   });
 
@@ -195,6 +213,7 @@ describe('account-page', () => {
   it('says when the handle is taken', async () => {
     vi.mocked(saveOwnProfile).mockRejectedValue(new HandleTakenError());
     const { element, shadowRoot } = await renderSignedIn();
+    await openRow(element, 'Handle');
 
     fireEvent.click(saveButton());
 
@@ -216,7 +235,7 @@ describe('account-page', () => {
 
     expect(shadowRoot).toHaveTextContent('/profile/user-1');
     expect(
-      screen.getByShadowRole('link', { name: 'Open your public page in a new tab' }),
+      screen.getByShadowRole('link', { name: 'Open your public profile in a new tab' }),
     ).toHaveAttribute('href', '/profile/user-1');
   });
 
@@ -298,6 +317,30 @@ describe('account-page', () => {
 
     await vi.waitFor(() => expect(removeAvatar).toHaveBeenCalledWith('user-1'));
     await vi.waitFor(() => expect(element['form'].avatarUrl).toBe(''));
+  });
+
+  it('opens one setting at a time, and Cancel puts back what was typed over', async () => {
+    const { element, shadowRoot } = await renderSignedIn();
+    await type(element, 'fullName', 'Someone Else');
+
+    expect(screen.getByShadowRole('button', { name: 'Edit Work' })).toBeDisabled();
+    fireEvent.click(screen.getByShadowRole('button', { name: 'Cancel' }));
+    await element.updateComplete;
+
+    expect(field(shadowRoot, 'fullName')).toBeNull();
+    expect(shadowRoot).toHaveTextContent('Ada Lovelace');
+    expect(saveOwnProfile).not.toHaveBeenCalled();
+  });
+
+  it('closes the setting after it is saved', async () => {
+    vi.mocked(saveOwnProfile).mockResolvedValue();
+    const { element, shadowRoot } = await renderSignedIn();
+    await type(element, 'fullName', 'Ada King');
+
+    fireEvent.click(saveButton());
+
+    await vi.waitFor(() => expect(field(shadowRoot, 'fullName')).toBeNull());
+    expect(shadowRoot).toHaveTextContent('Ada King');
   });
 
   it('has no accessibility violations', async () => {
