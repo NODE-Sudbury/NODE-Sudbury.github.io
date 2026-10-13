@@ -3,6 +3,7 @@ import lit from '@awesome.me/astro-lit';
 import { defineConfig } from 'astro/config';
 import { env } from 'node:process';
 import { chunkFileNames } from './build/chunk-names';
+import { sitemapFilter, sitemapItem } from './build/sitemap';
 import { csp, type CspSite } from './build/csp';
 import { decorators } from './build/decorators';
 import { CONFIG_PATHS, production, resolveConfig, withDevBar } from './build/resolve-config';
@@ -38,7 +39,7 @@ export default defineConfig({
       },
     },
     routes(config.site.features),
-    sitemap({ filter: (page) => !page.endsWith('/offline') }),
+    sitemap({ filter: sitemapFilter, serialize: (item) => sitemapItem(item) }),
     sitePublic(CONFIG_PATHS.public[0]!),
     // Before the service worker, which precaches the pages it changes. Deploys build with
     // FIRESTORE_TARGET=production, and every other build may run on the emulators.
