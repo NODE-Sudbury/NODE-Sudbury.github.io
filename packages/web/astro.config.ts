@@ -33,6 +33,18 @@ export default defineConfig({
   // Pages share one store, which each page fills with its content in turn (`seedPage()`).
   build: { format: 'file', concurrency: 1 },
   integrations: [
+    {
+      name: 'node-site-members-address',
+      hooks: {
+        // Vercel rewrites /members/<handle> to /members (see vercel.json); the dev server does it here.
+        'astro:server:setup': ({ server }) => {
+          server.middlewares.use((request, _response, next) => {
+            if (request.url?.startsWith('/members/')) request.url = '/members';
+            next();
+          });
+        },
+      },
+    },
     lit(),
     {
       name: 'node-site-hydration',
