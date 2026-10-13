@@ -33,6 +33,10 @@ npm --prefix packages/web run sync:github
 
 Set `GITHUB_TOKEN` for a higher rate limit. Building with `SYNC_GITHUB=1` refreshes it first, and a daily workflow can rebuild the site on a schedule.
 
+## Events
+
+The Events page and each event's own page come from the event links in `packages/config/content/event-sources.json`. Add a GDG (`gdg.community.dev`) or Luma (`luma.com`) link there with its category, then run `npm --prefix packages/web run sync:events`. The sync reads the public details of each page: description, address, tags, ticket types and the sign-up count. Building with `SYNC_EVENTS=1` refreshes them first, and the same daily workflow keeps the numbers current.
+
 ## License
 
 Parts of this project are used under the MIT License. See [LICENSE.md](./LICENSE.md).

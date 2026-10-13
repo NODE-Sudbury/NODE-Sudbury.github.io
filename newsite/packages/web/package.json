@@ -18,7 +18,7 @@
     "localize:build": "node build/localize-build.mjs",
     "localize:check": "node build/localize-extract.mjs --check",
     "localize:extract": "node build/localize-extract.mjs",
-    "prebuild": "node build/github-sync.mjs --if-requested",
+    "prebuild": "node build/github-sync.mjs --if-requested && node build/events-sync.mjs --if-requested",
     "start:astro": "npm run localize:build && astro dev",
     "sync:github": "node build/github-sync.mjs",
     "sync:events": "node build/events-sync.mjs"
