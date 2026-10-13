@@ -1,3 +1,4 @@
+import { msg, str } from '@lit/localize';
 import { css, html, nothing } from 'lit';
 import { displayFont } from '../../styles/shared';
 import { customElement, property } from 'lit/decorators.js';
@@ -15,6 +16,10 @@ import './speaker-photo';
 const AFFILIATIONS = ['gde', 'gdg', 'google', 'wtm'];
 /** Where each badge sits on the photo's edge, clockwise from the right. */
 const ANGLES = [45, 10, 80, -25];
+
+/** A person's LinkedIn profile among their social links, which the card shows as a badge. */
+export const linkedInProfile = (socials: CardSpeaker['socials'] = []) =>
+  socials.find(({ icon, link }) => icon === 'linkedin' || /(^|\.)linkedin\.com\//i.test(link));
 
 /** What a card shows. Previous speakers have no badges. */
 export type CardSpeaker = Pick<Speaker, 'id' | 'name' | 'photoUrl' | 'company' | 'country'> &
@@ -75,6 +80,19 @@ export class SpeakerCard extends ThemedComponent {
       border: var(--hb-border-width) solid var(--hb-border-color);
       border-radius: 50%;
       background-color: var(--hb-color-surface-bright);
+    }
+
+    /* The LinkedIn badge is its own link, above the card's link. */
+    a.affiliation {
+      z-index: 2;
+      color: var(--hb-color-accent-1);
+      text-decoration: none;
+      transition: scale var(--hb-duration-short) var(--hb-ease-press);
+    }
+
+    a.affiliation:hover,
+    a.affiliation:focus-visible {
+      scale: 1.12;
     }
 
     .affiliation node-icon {
@@ -145,6 +163,8 @@ export class SpeakerCard extends ThemedComponent {
       .filter((badge) => AFFILIATIONS.includes(badge.name))
       .slice(0, ANGLES.length);
     const meta = [speaker.company, speaker.country].filter(Boolean).join(' · ');
+    const linkedIn = linkedInProfile(speaker.socials);
+    const linkedInAngle = ANGLES[affiliations.length];
     return html`
       <hb-card
         href="${ifDefined(this.linked ? (this.href ?? speakerPath(speaker.id)) : undefined)}"
@@ -175,6 +195,22 @@ export class SpeakerCard extends ThemedComponent {
                   ></node-icon>
                 </span>`,
             )}
+            ${
+              linkedIn && linkedInAngle !== undefined
+                ? html`<a
+                    class="affiliation"
+                    href="${linkedIn.link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="${msg(str`${speaker.name} on LinkedIn`, {
+                      id: 'shared.speaker-card.linkedin',
+                    })}"
+                    style="${styleMap({ '--angle': `${linkedInAngle}deg` })}"
+                  >
+                    <node-icon name="linkedin"></node-icon>
+                  </a>`
+                : nothing
+            }
           </div>
           <div class="text">
             ${

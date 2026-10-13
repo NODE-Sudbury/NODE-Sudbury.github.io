@@ -557,6 +557,9 @@
 <trans-unit id="pages.speaker.badges">
   <source>Badges</source>
 </trans-unit>
+<trans-unit id="shared.speaker-card.linkedin">
+  <source><x id="0" equiv-text="${speaker.name}"/> on LinkedIn</source>
+</trans-unit>
 <trans-unit id="shared.star-rating.rate">
   <source>Rate <x id="0" equiv-text="${value}"/> out of <x id="1" equiv-text="${this.maxRating}"/></source>
 </trans-unit>

@@ -137,3 +137,28 @@ describe('speaker-card without a link', () => {
     expect(card.shadowRoot!.querySelector('hb-card')).not.toHaveAttribute('href');
   });
 });
+
+describe('speaker-card LinkedIn badge', () => {
+  const linkedin = { icon: 'linkedin', link: 'https://www.linkedin.com/in/ada', name: 'LinkedIn' };
+
+  it('shows a badge that links to the LinkedIn profile in a new tab', async () => {
+    const card = await fixture<SpeakerCard>(
+      html`<speaker-card .speaker="${{ ...speaker, socials: [linkedin] }}"></speaker-card>`,
+    );
+    const badge = card.shadowRoot!.querySelector('a.affiliation')!;
+
+    expect(badge).toHaveAttribute('href', linkedin.link);
+    expect(badge).toHaveAttribute('target', '_blank');
+    expect(badge).toHaveAttribute('aria-label', 'Ada Lovelace on LinkedIn');
+  });
+
+  it('has no badge without a LinkedIn profile', async () => {
+    const card = await fixture<SpeakerCard>(
+      html`<speaker-card
+        .speaker="${{ ...speaker, socials: [{ icon: 'github', link: 'https://github.com/ada', name: 'GitHub' }] }}"
+      ></speaker-card>`,
+    );
+
+    expect(card.shadowRoot!.querySelector('a.affiliation')).toBeNull();
+  });
+});
