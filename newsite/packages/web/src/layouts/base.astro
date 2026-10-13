@@ -13,7 +13,15 @@ import '../data/markdown';
 import { imageType, pageMetadata } from '../data/metadata';
 import { seedPage } from '../data/page';
 import { contentPresence } from '../data/presence';
-import { openGraphLocale } from '../data/structured-data';
+import {
+  type Crumb,
+  absoluteUrl,
+  breadcrumbStructuredData,
+  openGraphLocale,
+  organizationStructuredData,
+  serializeJsonLd,
+  websiteStructuredData,
+} from '../data/structured-data';
 import { type Content, PAGE_CONTENT_ID, serializeContent } from '../store/content';
 import { BUILD_META } from '../utils/build';
 import { colorSchemeScript } from '../utils/color-scheme';
@@ -31,6 +39,14 @@ interface Props {
   imageHeight?: number;
   /** The content from `seedPage()`, which the browser's store starts from. */
   content?: Partial<Content>;
+  /** Keeps the page out of search results and the sitemap: errors, offline and empty pages. */
+  noindex?: boolean;
+  /** `og:type`: `article` for a post, `website` for the rest. */
+  ogType?: 'website' | 'article';
+  /** The trail from the home page to this page, for search results. */
+  breadcrumbs?: Crumb[];
+  /** More JSON-LD for the page, such as an event or a post. */
+  jsonLd?: object[];
 }
 
 const {
@@ -41,6 +57,10 @@ const {
   imageWidth,
   imageHeight,
   content: pageContent = {},
+  noindex = false,
+  ogType = 'website',
+  breadcrumbs,
+  jsonLd = [],
 } = Astro.props;
 const { imageType: type = imageType(image) } = Astro.props;
 // The header links to tickets on every page. The page's own content has already rendered.
@@ -50,6 +70,17 @@ const presence = contentPresence(siteContent);
 // The build sees file paths such as /index.html. Hosting serves them without `.html`.
 const path = Astro.url.pathname.replace(/(index)?\.html$/, '').slice(1);
 const url = new URL(path, site.url).href;
+// What every page says about the organization and the site, and its own trail and data.
+const structuredData = [
+  organizationStructuredData(
+    site,
+    site.social.follow.map(({ url: profile }) => profile),
+    absoluteUrl('images/icon.png', site.url),
+  ),
+  websiteStructuredData(site, resources.title, resources.description),
+  ...(breadcrumbs ? [breadcrumbStructuredData([{ name: 'Home', path: '/' }, ...breadcrumbs], site.url)] : []),
+  ...jsonLd,
+];
 
 // Local development always uses the demo project on the emulators, and `astro dev` has no `/__/`.
 const demoFirebaseConfig = {
@@ -90,6 +121,10 @@ await demoBanner;
       name="viewport"
     />
     <meta content={description} name="description" />
+    <meta
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'}
+      name="robots"
+    />
     <meta content={resources.keywords} name="keywords" />
     <meta content={site.organizer.name} name="author" />
     <meta content={build.time} name={BUILD_META} />
@@ -146,7 +181,7 @@ await demoBanner;
 
     <meta content={title} property="og:title" />
     <meta content={resources.title} property="og:site_name" />
-    <meta content="website" property="og:type" />
+    <meta content={ogType} property="og:type" />
     <meta content={openGraphLocale(site.locales.source)} property="og:locale" />
     <meta content={url} property="og:url" />
     <meta content={description} property="og:description" />
@@ -173,6 +208,9 @@ await demoBanner;
     <link href="https://firestore.googleapis.com" rel="preconnect" />
     {fontStylesheets.map((href) => (
       <link href={href} rel="stylesheet" />
+    ))}
+    {structuredData.map((data) => (
+      <script is:inline type="application/ld+json" set:html={serializeJsonLd(data)} />
     ))}
     <slot name="head" />
 
