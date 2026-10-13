@@ -7,7 +7,7 @@ import { ThemedComponent } from '../themed-component';
 import '../ui/hb-card';
 import '../ui/hb-chip';
 
-const MAX_TAGS = 4;
+const MAX_TAGS = 6;
 
 /** "Sat, Nov 28, 2026" in the event's own time zone. */
 export const eventDate = (event: Pick<CommunityEvent, 'start' | 'timezone'>) =>
@@ -124,7 +124,7 @@ export class EventCard extends ThemedComponent {
     const { event } = this;
     const place = eventPlace(event);
     const meta = [eventDate(event), place].filter(Boolean).join(' · ');
-    const tags = [...new Set([event.category, event.format, ...event.tags])].filter(Boolean).slice(0, MAX_TAGS + 1) as string[];
+    const tags = [...new Set(event.tags)].slice(0, MAX_TAGS);
     const stats = [
       event.rsvpCount ? `${event.rsvpCount} ${event.rsvpCount === 1 ? 'person' : 'people'} signed up` : '',
       event.host ? `Hosted by ${event.host}` : '',

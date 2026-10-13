@@ -143,7 +143,7 @@ const luma = async ({ url, category }) => {
     url: `https://luma.com/${event.url ?? slug}`,
     rsvpUrl: `https://luma.com/${event.url ?? slug}`,
     image: event.cover_url || undefined,
-    tags: (data.tags ?? []).map((tag) => tag.name).filter(Boolean),
+    tags: (data.categories ?? []).map((category) => category.name).filter(Boolean),
     free: tickets.length ? undefined : true,
     format: online ? 'Online' : 'In person',
     rsvpCount: data.guest_count ?? event.guest_count ?? undefined,
