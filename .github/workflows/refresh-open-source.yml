@@ -1,7 +1,8 @@
-name: Refresh open source data
+name: Refresh open source and events data
 
 # Rebuilds the site every day so the Open Source page shows current repositories, commits and
-# contributors. The build fetches them from GitHub (SYNC_GITHUB=1 in the build command).
+# contributors, and the Events page shows current GDG and Luma details and sign-up numbers. The
+# build fetches them (SYNC_GITHUB=1 and SYNC_EVENTS=1 in the build command).
 # Add a repository secret named SITE_DEPLOY_HOOK_URL with your host's deploy hook URL
 # (Vercel, Netlify, Cloudflare Pages and others each give you one).
 
