@@ -62,7 +62,7 @@ export default function AdminSettings() {
           <Separator />
           <Field label="Website" value={form.website_url} onChange={(v) => set('website_url', v)} placeholder="nodesudbury.com" />
           <Separator />
-          <Field label="Contact email" value={form.email} onChange={(v) => set('email', v)} placeholder="hello@nodesudbury.com" />
+          <Field label="Contact email" value={form.email} onChange={(v) => set('email', v)} placeholder="admin@nodesudbury.com" />
         </CardContent>
       </Card>
 

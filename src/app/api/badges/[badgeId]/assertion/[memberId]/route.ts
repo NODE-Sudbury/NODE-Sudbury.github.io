@@ -55,7 +55,7 @@ export async function GET(
       type: 'Profile',
       name: 'NODE - Northern Ontario Dev Exchange',
       url: siteUrl,
-      email: 'hello@nodesudbury.com',
+      email: 'admin@nodesudbury.com',
     },
     issuanceDate: row.awarded_at,
     credentialSubject: {

@@ -66,7 +66,7 @@
         "description": "nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).",
         "callToAction": {
           "label": "Contact NODE",
-          "link": "mailto:hello@nodesudbury.com",
+          "link": "mailto:admin@nodesudbury.com",
           "newTab": true
         }
       }
@@ -104,9 +104,9 @@
     "formTitle": "Get the latest updates, events and news from NODE sent to your inbox."
   },
   "codeOfConductBlock": {
-    "form": "mailto:hello@nodesudbury.com",
+    "form": "mailto:admin@nodesudbury.com",
     "contacts": [
-      "NODE organizers, [hello@nodesudbury.com](mailto:hello@nodesudbury.com)"
+      "NODE organizers, [admin@nodesudbury.com](mailto:admin@nodesudbury.com)"
     ]
   },
   "footerRelBlock": [
@@ -125,7 +125,7 @@
         },
         {
           "name": "Contact",
-          "url": "mailto:hello@nodesudbury.com",
+          "url": "mailto:admin@nodesudbury.com",
           "newTab": true
         }
       ]
@@ -209,7 +209,7 @@
         "note": "The session runs from 6:00 PM to 7:00 PM. Doors details coming soon."
       }
     ],
-    "accessibility": "Accessibility details for the Norcat Innovation Hub are coming soon. Tell us what you need at hello@nodesudbury.com.",
+    "accessibility": "Accessibility details for the Norcat Innovation Hub are coming soon. Tell us what you need at admin@nodesudbury.com.",
     "accommodation": {
       "text": "Accommodation information is coming soon.",
       "hotels": [

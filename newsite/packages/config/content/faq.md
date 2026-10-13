@@ -46,4 +46,4 @@ Follow NODE on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram
 
 ### How do I contact NODE?
 
-Email [hello@nodesudbury.com](mailto:hello@nodesudbury.com).
+Email [admin@nodesudbury.com](mailto:admin@nodesudbury.com).

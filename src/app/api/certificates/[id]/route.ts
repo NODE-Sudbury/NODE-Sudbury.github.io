@@ -50,7 +50,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         type: 'Profile',
         name: 'NODE Sudbury',
         url: appUrl,
-        email: 'hello@nodesudbury.com',
+        email: 'admin@nodesudbury.com',
       },
       validFrom: cert.issued_at,
       credentialSubject: {

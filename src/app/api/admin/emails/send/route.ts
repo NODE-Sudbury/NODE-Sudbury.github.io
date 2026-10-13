@@ -151,7 +151,7 @@ async function sendEmail({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: process.env.RESEND_FROM_EMAIL || 'NODE <hello@nodesudbury.com>',
+        from: process.env.RESEND_FROM_EMAIL || 'NODE <admin@nodesudbury.com>',
         to,
         subject,
         html,
