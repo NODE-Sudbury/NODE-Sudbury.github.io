@@ -1,0 +1,161 @@
+import { css, html, nothing } from 'lit';
+import { displayFont } from '../../styles/shared';
+import { customElement, property } from 'lit/decorators.js';
+import { ThemedComponent } from '../themed-component';
+
+export type HeroTone = '1' | '2' | '3' | '4';
+
+/**
+ * Styles for what a page puts in the hero: the `.hero-title`, a `.hero-description` and a `.back`
+ * link. Pages include them, because their own heading styles win over the hero's `::slotted()`.
+ */
+export const heroText = css`
+  .hero-title {
+    margin: 0;
+    padding: 0;
+    ${displayFont('display', '5xl', 1.05, -0.01)};
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-description {
+    max-inline-size: var(--hb-prose-max);
+    margin: var(--hb-space-4) 0 0;
+    font-size: var(--hb-text-lg);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hb-space-1);
+    min-block-size: var(--hb-target-min);
+    margin-block-end: var(--hb-space-3);
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .back:focus-visible {
+    outline: 3px solid var(--hb-color-focus);
+    outline-offset: 2px;
+    border-radius: var(--hb-radius-s);
+  }
+
+  .back node-icon {
+    inline-size: 20px;
+    block-size: 20px;
+  }
+`;
+
+/**
+ * The top of a page: a band in one of the theme's accent colors with the page title (a slotted
+ * `.hero-title`, styled by `heroText`), a `.hero-description` and anything else the page adds.
+ * With a photo, the text sits on the scrim in the dark scheme's colors, as in the home hero.
+ */
+@customElement('hero-block')
+export class HeroBlock extends ThemedComponent {
+  static override styles = css`
+    :host {
+      --hb-hero-background: var(--hb-tone-accent-1-background);
+      --hb-hero-color: var(--hb-tone-accent-1-color);
+
+      display: block;
+      container-type: inline-size;
+    }
+
+    :host([tone='2']) {
+      --hb-hero-background: var(--hb-tone-accent-2-background);
+      --hb-hero-color: var(--hb-tone-accent-2-color);
+    }
+
+    :host([tone='3']) {
+      --hb-hero-background: var(--hb-tone-accent-3-background);
+      --hb-hero-color: var(--hb-tone-accent-3-color);
+    }
+
+    :host([tone='4']) {
+      --hb-hero-background: var(--hb-tone-accent-4-background);
+      --hb-hero-color: var(--hb-tone-accent-4-color);
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: var(--hb-space-8) var(--hb-gutter) var(--hb-space-7);
+      background-color: color-mix(
+        in srgb,
+        var(--hb-hero-background) var(--hb-tint-opacity),
+        transparent
+      );
+      color: var(--hb-hero-color);
+    }
+
+    .pattern::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: var(--hb-hero-pattern);
+      opacity: var(--hb-decorations, 1);
+    }
+
+    .photo {
+      color-scheme: dark;
+      background-color: var(--hb-color-surface);
+      color: var(--hb-color-on-surface);
+    }
+
+    .photo::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background-color: var(--hb-color-scrim);
+    }
+
+    .background {
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+    .inner {
+      max-inline-size: var(--hb-content-max);
+      margin-inline: auto;
+    }
+
+    @media (forced-colors: active) {
+      .pattern::before {
+        display: none;
+      }
+    }
+  `;
+
+  @property({ attribute: 'background-image' })
+  accessor backgroundImage = '';
+
+  /** The theme accent the band uses. */
+  @property({ reflect: true })
+  accessor tone: HeroTone = '1';
+
+  override render() {
+    const photo = this.backgroundImage;
+    return html`
+      <div class="hero ${photo ? 'photo' : 'pattern'}">
+        ${photo ? html`<img class="background" src="${photo}" alt="" decoding="async" />` : nothing}
+        <div class="inner"><slot></slot></div>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'hero-block': HeroBlock;
+  }
+}

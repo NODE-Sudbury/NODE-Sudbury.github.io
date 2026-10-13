@@ -1,0 +1,38 @@
+/** A page's path and its dynamic segments, as the page passes it to its views. */
+export interface RouteLocation {
+  pathname: string;
+  search: string;
+  params: Record<string, string | undefined>;
+}
+
+const path = (prefix: string) => (id: string) => `${prefix}/${encodeURIComponent(id)}`;
+
+export const postPath = path('/blog');
+export const sessionPath = path('/sessions');
+/** An event's own page: /events/<slug>. */
+export const eventPath = (event: { slug?: string; id: string }) =>
+  `/events/${event.slug ?? event.id}`;
+
+export const speakerPath = path('/speakers');
+export const previousSpeakerPath = path('/previous-speakers');
+
+/** Loads a page. Views use it to leave for the not found page. */
+export const goto = (pathname: string): void => {
+  location.assign(pathname);
+};
+
+/** The navigation route that a path belongs to, for the selected navigation entry. */
+export const routeNameFor = (pathname: string): string => {
+  const [, part] = pathname.split('/');
+  switch (part) {
+    case 'sessions':
+    case 'events':
+      return 'schedule';
+    case 'open-source':
+      return 'openSource';
+    case 'previous-speakers':
+      return 'speakers';
+    default:
+      return part || 'home';
+  }
+};

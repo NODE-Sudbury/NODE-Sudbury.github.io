@@ -1,0 +1,35 @@
+---
+import { site } from 'virtual:node-site/site';
+import { loadOpenSource } from '../../data/open-source';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import { absoluteUrl, projectStructuredData } from '../../data/structured-data';
+import type { OpenSourceProject } from '../../models/open-source';
+import Base from '../../layouts/base.astro';
+import { OpenSourceProjectPage } from '../../views/open-source-project-page';
+
+export const getStaticPaths = () =>
+  loadOpenSource().projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+
+const { project } = Astro.props as { project: OpenSourceProject };
+---
+
+<Base
+  {...itemMetadata(
+    project.name,
+    project.description || `${project.name}, an open source project by NODE.`,
+  )}
+  content={seedPage({})}
+  breadcrumbs={[
+    { name: 'Open Source', path: '/open-source' },
+    { name: project.name, path: `/open-source/${project.id}` },
+  ]}
+  jsonLd={[
+    projectStructuredData(project, {
+      pageUrl: absoluteUrl(`/open-source/${project.id}`, site.url),
+      organization: `${site.url}#organization`,
+    }),
+  ]}
+>
+  <OpenSourceProjectPage project={project} client:load />
+</Base>

@@ -1,0 +1,42 @@
+import { describe, expect, it, vi } from 'vitest';
+import type { ReactiveControllerHost } from 'lit';
+import { description, title } from '../config/site';
+import { INCLUDE_SITE_TITLE, updateMetadata } from '../utils/metadata';
+import { PageMetadataController } from './page-metadata-controller';
+
+vi.mock('../utils/metadata');
+
+const host = { addController: vi.fn() } as unknown as ReactiveControllerHost;
+const localeStatus = (status: string) =>
+  window.dispatchEvent(new CustomEvent('lit-localize-status', { detail: { status } }));
+
+describe('PageMetadataController', () => {
+  it('sets the page metadata on connect and when a locale finishes loading', () => {
+    const controller = new PageMetadataController(host, 'team');
+
+    controller.hostConnected();
+    expect(updateMetadata).toHaveBeenCalledWith(
+      'Board',
+      'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
+    );
+
+    localeStatus('loading');
+    expect(updateMetadata).toHaveBeenCalledTimes(1);
+
+    localeStatus('ready');
+    expect(updateMetadata).toHaveBeenCalledTimes(2);
+
+    controller.hostDisconnected();
+    localeStatus('ready');
+    expect(updateMetadata).toHaveBeenCalledTimes(2);
+  });
+
+  it('uses the site title and description on the home page', () => {
+    const controller = new PageMetadataController(host, 'home');
+
+    controller.hostConnected();
+    controller.hostDisconnected();
+
+    expect(updateMetadata).toHaveBeenLastCalledWith(title, description, INCLUDE_SITE_TITLE.NO);
+  });
+});

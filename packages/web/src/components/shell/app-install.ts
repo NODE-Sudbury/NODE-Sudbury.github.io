@@ -1,0 +1,84 @@
+import { msg } from '@lit/localize';
+import { css, html } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+import { ThemedComponent } from '../themed-component';
+
+@customElement('app-install')
+export class AppInstall extends ThemedComponent {
+  static override styles = css`
+    .bottom-drawer-link {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      text-align: start;
+    }
+  `;
+
+  @state()
+  private accessor deferredPrompt: BeforeInstallPromptEvent | undefined;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('beforeinstallprompt', this.onBeforeInstallPrompt);
+  }
+
+  override disconnectedCallback() {
+    window.removeEventListener('beforeinstallprompt', this.onBeforeInstallPrompt);
+    super.disconnectedCallback();
+  }
+
+  override render() {
+    return html`
+      <button
+        type="button"
+        class="bottom-drawer-link"
+        @click="${this.prompt}"
+        ?hidden=${!this.deferredPrompt}
+      >
+        ${msg('Add to Home Screen', { id: 'shell.app-install.cta' })}
+      </button>
+    `;
+  }
+
+  private readonly prompt = () => {
+    if (!this.deferredPrompt) {
+      return;
+    }
+    void this.deferredPrompt.prompt();
+    this.deferredPrompt = undefined;
+  };
+
+  private readonly onBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+    e.preventDefault();
+    this.deferredPrompt = e;
+  };
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'app-install': AppInstall;
+  }
+}
+
+// https://stackoverflow.com/a/67171375/26406
+interface UserChoice {
+  outcome: 'accepted' | 'dismissed';
+  platform: string;
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<UserChoice>;
+  prompt(): Promise<void>;
+}
+
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}

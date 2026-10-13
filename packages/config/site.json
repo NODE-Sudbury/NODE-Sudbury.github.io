@@ -1,0 +1,136 @@
+{
+  "$schema": "../web/schemas/site.schema.json",
+  "schemaVersion": 1,
+  "firebase": {
+    "projectId": "demo-node-sudbury"
+  },
+  "url": "https://nodesudbury.com/",
+  "basepath": "/",
+  "shortName": "NODE",
+  "image": "images/node/talk.jpeg",
+  "icon": "images/node/node-logo.svg",
+  "organizer": {
+    "name": "Northern Ontario Dev Exchange",
+    "twitter": "nodesudbury",
+    "blog": "https://nodesudbury.com/",
+    "url": "https://nodesudbury.com/",
+    "email": "admin@nodesudbury.com",
+    "legalName": "Northern Ontario Dev Exchange",
+    "registrationNumber": "OCN 1001716490",
+    "address": {
+      "streetAddress": "73 Elm St Ste 203",
+      "addressLocality": "Sudbury",
+      "addressRegion": "ON",
+      "postalCode": "P3C 1R6",
+      "addressCountry": "CA"
+    }
+  },
+  "event": {
+    "startDate": "2026-10-21",
+    "endDate": "2026-10-21",
+    "timezone": "America/Toronto",
+    "location": {
+      "name": "Norcat Innovation Hub",
+      "city": "Greater Sudbury",
+      "short": "Greater Sudbury, ON",
+      "address": "1545 Maley Dr, Greater Sudbury, ON P3A 4R7",
+      "pointer": {
+        "latitude": 46.4697,
+        "longitude": -80.9936,
+        "zoom": 14
+      },
+      "mapCenter": {
+        "latitude": 46.4697,
+        "longitude": -80.9936
+      }
+    }
+  },
+  "schedule": {
+    "published": true,
+    "tracks": [
+      {
+        "id": "hackathons",
+        "title": "Hackathons"
+      },
+      {
+        "id": "community-events",
+        "title": "Community Events"
+      },
+      {
+        "id": "norcat-series",
+        "title": "Norcat Series"
+      }
+    ]
+  },
+  "locales": {
+    "source": "en",
+    "targets": []
+  },
+  "social": {
+    "hashtag": "NODESudbury",
+    "follow": [
+      {
+        "name": "x",
+        "url": "https://x.com/nodesudbury"
+      },
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/nodesudbury"
+      },
+      {
+        "name": "facebook",
+        "url": "https://www.facebook.com/nodesudbury"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/company/node-northern-ontario-dev-exchange"
+      }
+    ]
+  },
+  "auth": {
+    "providers": ["emailLink", "google"]
+  },
+  "theme": {
+    "tagColors": {
+      "general": "#9e9e9e",
+      "android": "#78c257",
+      "web": "#2196f3",
+      "cloud": "#3f51b5",
+      "community": "#e91e63",
+      "design": "#e91e63"
+    }
+  },
+  "integrations": {
+    "googleMapsApiKey": "AIzaSyCJqlRVGIe6bfU43rga3cnK7tSXXwc7JD8"
+  },
+  "features": {
+    "demo": false,
+    "notifications": false,
+    "forkMe": false,
+    "mySchedule": false,
+    "feedback": false,
+    "reactions": false
+  },
+  "navigation": [
+    {
+      "route": "home",
+      "permalink": "/"
+    },
+    {
+      "route": "schedule",
+      "permalink": "/events"
+    },
+    {
+      "route": "team",
+      "permalink": "/team"
+    },
+    {
+      "route": "openSource",
+      "permalink": "/open-source"
+    },
+    {
+      "route": "blog",
+      "permalink": "/blog"
+    }
+  ]
+}

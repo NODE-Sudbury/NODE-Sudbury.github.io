@@ -1,0 +1,236 @@
+{
+  "$schema": "../../web/schemas/resources.schema.json",
+  "title": "NODE - Northern Ontario Dev Exchange",
+  "description": "NODE is a not-for-profit supporting software developers across Northern Ontario with events, hackathons, a monthly speaker series and a community network.",
+  "keywords": "node, northern ontario dev exchange, sudbury, northern ontario, software developers, hackathons, speaker series, norcat, community, not-for-profit, tech",
+  "heroDescriptions": {
+    "home": "NODE supports careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners.",
+    "attending": "How to get to the Norcat Innovation Hub in Greater Sudbury, and what to expect at a NODE session.",
+    "speakers": "Hear from the developers, founders, and employers building in Northern Ontario. Speakers for the Norcat series will be announced soon.",
+    "openSource": "Projects built in the open by the NODE community. Browse the code, see who is contributing the most, and join in."
+  },
+  "aboutBlock": {
+    "callToAction": {
+      "featuredSessions": {
+        "description": "Our programs: 4 hackathons a year, a monthly speaker series at the Norcat Innovation Hub (12 sessions, September 2026 to August 2027, 6:00 PM to 7:00 PM), and community meetups with Cursor Sudbury and GDG Sudbury.",
+        "label": "Explore the schedule",
+        "link": "/events"
+      },
+      "howItWas": {
+        "description": "Highlights video coming soon.",
+        "label": "See how it was",
+        "youtubeId": "TdpbgRgz6eE"
+      }
+    },
+    "statisticsBlock": {
+      "attendees": {
+        "label": "Founded",
+        "number": "2026",
+        "emoji": "🎉"
+      },
+      "days": {
+        "label": "Hackathons a year",
+        "number": "4"
+      },
+      "sessions": {
+        "label": "Norcat sessions",
+        "number": "12"
+      },
+      "tracks": {
+        "label": "Program tracks",
+        "number": "3"
+      }
+    }
+  },
+  "aboutOrganizerBlock": {
+    "image": "/images/node/talk.jpeg",
+    "blocks": [
+      {
+        "title": "Organizer",
+        "description": "Northern Ontario Dev Exchange (NODE) is an Ontario not-for-profit corporation (OCN 1001716490). Office: 73 Elm St Ste 203, Sudbury, ON P3C 1R6.",
+        "callToAction": {
+          "label": "Meet the board",
+          "link": "/team"
+        }
+      },
+      {
+        "title": "Our mission",
+        "description": "NODE supports careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners. Programs: 4 hackathons a year, a monthly speaker series at the Norcat Innovation Hub (12 sessions, September 2026 to August 2027, 6:00 PM to 7:00 PM), and community meetups with Cursor Sudbury and GDG Sudbury.",
+        "callToAction": {
+          "label": "Explore the schedule",
+          "link": "/events"
+        }
+      },
+      {
+        "title": "Official domain",
+        "description": "nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490).",
+        "callToAction": {
+          "label": "Contact NODE",
+          "link": "mailto:admin@nodesudbury.com",
+          "newTab": true
+        }
+      }
+    ]
+  },
+  "team": {
+    "description": "NODE is led by a volunteer Board of Directors: President, Treasurer, Technical Lead, Secretary, Marketing, Promotion / Sponsorship, Membership Leader, and AI and Emerging Technologies.<br><br> NODE supports careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners.<br><br> Northern Ontario Dev Exchange is an Ontario not-for-profit corporation (OCN 1001716490), based at 73 Elm St Ste 203, Sudbury, ON P3C 1R6."
+  },
+  "ticketsBlock": {
+    "ticketsDetails": "Membership is $60 per year, or $10 per year for students. Membership details are coming soon.\nNODE is a not-for-profit - membership fees help cover our small management costs, event costs, swag, and more."
+  },
+  "featuredVideos": {
+    "title": "Featured videos",
+    "callToAction": {
+      "link": "https://nodesudbury.com/"
+    }
+  },
+  "nfpBlock": {
+    "title": "Northern Ontario Dev Exchange (NODE)",
+    "lines": [
+      "Our mission: NODE is an Ontario not-for-profit supporting careers in software development across Northern Ontario through professional growth events, business attraction initiatives, and a network connecting workers, employers, and government partners.",
+      "Programs: 4 hackathons a year | monthly speaker series | community meetups with Cursor Sudbury and GDG Sudbury",
+      "Ontario Corporation Number (OCN): 1001716490 | 73 Elm St Ste 203, Sudbury, ON P3C 1R6",
+      "nodesudbury.com is the official domain of Northern Ontario Dev Exchange, an Ontario not-for-profit corporation (OCN 1001716490)."
+    ]
+  },
+  "galleryBlock": {
+    "title": "Community highlights",
+    "description": "Photos from NODE events and community meetups across Northern Ontario.",
+    "callToAction": {
+      "link": "https://photos.google.com/share/AF1QipNeS4xsLFimEdU9iTQbH91PnlMnojCS6efCQPYu6-q3hIxKbJ5wKlCsZ0MvFqxxYg?key=VVBidE9XM1ZVMnN0aWcyTUFkSVlBTXk4UUREZFdR"
+    }
+  },
+  "subscribeBlock": {
+    "formTitle": "Get the latest updates, events and news from NODE sent to your inbox."
+  },
+  "codeOfConductBlock": {
+    "form": "mailto:admin@nodesudbury.com",
+    "contacts": ["NODE organizers, [admin@nodesudbury.com](mailto:admin@nodesudbury.com)"]
+  },
+  "footerRelBlock": [
+    {
+      "title": "About",
+      "links": [
+        {
+          "name": "NODE",
+          "url": "https://nodesudbury.com/",
+          "newTab": true
+        },
+        {
+          "name": "Meet the Board",
+          "url": "/team",
+          "newTab": false
+        },
+        {
+          "name": "Contact",
+          "url": "mailto:admin@nodesudbury.com",
+          "newTab": true
+        }
+      ]
+    },
+    {
+      "title": "Follow NODE",
+      "links": [
+        {
+          "name": "X",
+          "url": "https://x.com/nodesudbury",
+          "newTab": true
+        },
+        {
+          "name": "Instagram",
+          "url": "https://www.instagram.com/nodesudbury",
+          "newTab": true
+        },
+        {
+          "name": "Facebook",
+          "url": "https://www.facebook.com/nodesudbury",
+          "newTab": true
+        },
+        {
+          "name": "LinkedIn",
+          "url": "https://www.linkedin.com/company/node-northern-ontario-dev-exchange",
+          "newTab": true
+        }
+      ]
+    },
+    {
+      "title": "Resources",
+      "links": [
+        {
+          "name": "Events",
+          "url": "/events",
+          "newTab": false
+        },
+        {
+          "name": "Code of Conduct",
+          "url": "/coc",
+          "newTab": false
+        },
+        {
+          "name": "FAQs",
+          "url": "/faq",
+          "newTab": false
+        }
+      ]
+    }
+  ],
+  "mapBlock": {
+    "description": "The monthly NODE speaker series is hosted at the Norcat Innovation Hub, 1545 Maley Dr, Greater Sudbury."
+  },
+  "attendingPage": {
+    "description": "How to get to the Norcat Innovation Hub in Greater Sudbury, when the doors open, and what to expect at a NODE session.",
+    "online": "Online attendance details, if any, will be shared with each session.",
+    "gettingThere": [
+      {
+        "mode": "train",
+        "text": "Details coming soon."
+      },
+      {
+        "mode": "plane",
+        "text": "Details coming soon."
+      },
+      {
+        "mode": "parking",
+        "text": "Parking details coming soon."
+      },
+      {
+        "mode": "other",
+        "title": "Other options",
+        "text": "Details coming soon."
+      }
+    ],
+    "doors": [
+      {
+        "day": "2026-10-21",
+        "open": "18:00",
+        "close": "19:00",
+        "note": "The session runs from 6:00 PM to 7:00 PM. Doors details coming soon."
+      }
+    ],
+    "accessibility": "Accessibility details for the Norcat Innovation Hub are coming soon. Tell us what you need at admin@nodesudbury.com.",
+    "accommodation": {
+      "text": "Accommodation information is coming soon.",
+      "hotels": [
+        {
+          "name": "To be announced",
+          "address": "Greater Sudbury, ON",
+          "note": "Details coming soon."
+        }
+      ]
+    },
+    "atVenue": [
+      {
+        "topic": "wifi",
+        "text": "Wi-Fi details will be shared at the event."
+      },
+      {
+        "topic": "food",
+        "text": "Food and drink details are coming soon."
+      },
+      {
+        "topic": "cloakroom",
+        "text": "Details coming soon."
+      }
+    ]
+  }
+}

@@ -1,0 +1,413 @@
+import { Success } from '@abraham/remotedata';
+import { msg, str } from '@lit/localize';
+import { css, html, nothing, type TemplateResult } from 'lit';
+import { displayFont } from '../../styles/shared';
+import { customElement, property, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  aboutBlock,
+  attendance,
+  decorations,
+  eventDates,
+  heroDescriptions,
+  heroSettings,
+  location,
+  siteAttendance,
+  siteLocation,
+  stream,
+  timeZone,
+  title,
+} from '../../config/site';
+import { fromStore } from '../../controllers/from-store';
+import type { Ticket } from '../../models/ticket';
+import { type TicketsState, selectTickets } from '../../store/tickets';
+import { openVideoDialog } from '../../store/ui';
+import { currentTime } from '../../utils/clock';
+import { type ContentPresence, hasContent } from '../../utils/content-presence';
+import { getScheduleDay } from '../../utils/dates';
+import { type EventState, daysUntilStart, eventState } from '../../utils/event-state';
+import {
+  type NextStep,
+  callForPapersOpen,
+  nextSteps,
+  ticketOnSale,
+  ticketsGoOnSale,
+} from '../../utils/next-step';
+import { eventPlace, type Attending } from '../../utils/place';
+import '../shared/add-to-calendar';
+import '../shared/node-icon';
+import { nextStepLink } from '../shared/next-step-link';
+import { ThemedComponent } from '../themed-component';
+import '../ui/hb-button';
+import '../ui/hb-chip';
+import '../ui/hb-sticker';
+
+/** NODE's community on Discord. */
+const DISCORD_URL = 'https://discord.gg/a79bt42c4';
+
+/**
+ * The top of the home page: the event state, the event name, dates and place, and the calls to
+ * action for the event state. "Buy ticket" fires `show-tickets` for the page to scroll to them.
+ */
+@customElement('home-hero')
+export class HomeHero extends ThemedComponent {
+  static override styles = css`
+    :host {
+      display: block;
+      container-type: inline-size;
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: var(--hb-space-8) var(--hb-gutter) var(--hb-space-9);
+      background-color: color-mix(
+        in srgb,
+        var(--hb-tone-accent-1-background) var(--hb-tint-opacity),
+        transparent
+      );
+      color: var(--hb-tone-accent-1-color);
+    }
+
+    .pattern::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: var(--hb-hero-pattern);
+      opacity: var(--hb-decorations, 1);
+    }
+
+    /* Light text on the darkened photo: the dark scheme's colors, which the build checks. */
+    .photo {
+      color-scheme: dark;
+      background-color: var(--hb-color-surface);
+      color: var(--hb-color-on-surface);
+    }
+
+    .photo::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background-color: var(--hb-color-scrim);
+    }
+
+    .background {
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+    .inner {
+      display: grid;
+      align-items: center;
+      gap: var(--hb-space-7);
+      max-inline-size: var(--hb-content-max);
+      margin-inline: auto;
+    }
+
+    .copy {
+      padding: var(--hb-hero-panel-padding, 0);
+      border-radius: var(--hb-radius-l);
+      background: var(--hb-hero-panel-background, transparent);
+      backdrop-filter: var(--hb-backdrop-filter);
+      box-shadow: var(--hb-hero-panel-shadow, none);
+      text-align: var(--hb-hero-align);
+    }
+
+    .title {
+      margin: var(--hb-space-4) 0 var(--hb-space-5);
+      padding: 0;
+      ${displayFont('display', '6xl', 0.95, -0.02)};
+      font-style: var(--hb-hero-title-style, var(--hb-display-style, normal));
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: var(--hb-hero-align);
+      gap: var(--hb-space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .details hb-chip {
+      --hb-chip-border-color: currentColor;
+    }
+
+    /* Inline, so the hero's text alignment places it too. */
+    .lede {
+      display: inline-block;
+      max-inline-size: 32ch;
+      margin: var(--hb-space-5) 0 var(--hb-space-6);
+      font-size: var(--hb-text-xl);
+      vertical-align: top;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: var(--hb-hero-align);
+      gap: var(--hb-space-3);
+    }
+
+    .sale {
+      margin: var(--hb-space-4) 0 0;
+      font-weight: 600;
+    }
+
+    .art {
+      display: none;
+      justify-self: center;
+      inline-size: 100%;
+      max-inline-size: var(--hb-hero-art-max-width, none);
+      order: var(--hb-hero-art-order);
+      background: var(--hb-hero-art-background, none);
+    }
+
+    .art svg,
+    .art img {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    @container (width > 800px) {
+      .inner {
+        grid-template-columns: var(--hb-hero-columns);
+      }
+
+      .art {
+        display: var(--hb-decorations-display, var(--hb-hero-art-display, block));
+      }
+    }
+
+    @media (forced-colors: active) {
+      .pattern::before {
+        display: none;
+      }
+    }
+  `;
+
+  /** The event state when the page was built, so the first render matches the server's. */
+  @property({ attribute: 'event-state' })
+  accessor eventState: EventState = 'upcoming';
+
+  @property({ type: Number, attribute: 'days-to-go' })
+  accessor daysToGo = 0;
+
+  /** When the page was built, for the call for papers and ticket sales. The browser updates it. */
+  @property({ type: Number })
+  accessor time = currentTime();
+
+  /** Which features had content when the site was built. Buttons to the others are hidden. */
+  @property({ attribute: false })
+  accessor presence: ContentPresence = {};
+
+  @fromStore(selectTickets)
+  private accessor tickets!: TicketsState;
+
+  // Site.json's on the server and in the first render, so hydration matches. A demo can change it.
+  @state()
+  private accessor where: Attending = { attendance: siteAttendance, location: siteLocation };
+
+  // The event may have come closer, started or ended since the build.
+  override firstUpdated() {
+    this.time = currentTime();
+    const now = new Date(this.time);
+    const dates = { startDate: eventDates.start, endDate: eventDates.end, timezone: timeZone };
+    this.eventState = eventState(now, dates);
+    this.daysToGo = daysUntilStart(now, dates);
+    this.where = { attendance, location };
+  }
+
+  override render() {
+    const photo = heroSettings?.home?.background?.image;
+    return html`
+      <section class="hero ${photo ? 'photo' : 'pattern'}" aria-labelledby="hero-title">
+        ${photo ? html`<img class="background" src="${photo}" alt="" />` : nothing}
+        <div class="inner">
+          <div class="copy">
+            <hb-sticker class="state" tilt="-4" accent="${this.stickerAccent}"
+              >${this.stateLabel}</hb-sticker
+            >
+            <h1 id="hero-title" class="title">${title.replace(/^NODE\s+-\s+/, '')}</h1>
+            <ul class="details" aria-label="${msg('Event details', { id: 'home.hero.details' })}">
+              <li>
+                <hb-chip>
+                  <node-icon slot="icon" name="registration"></node-icon>
+                  OCN 1001716490
+                </hb-chip>
+              </li>
+              <li>
+                <hb-chip
+                  class="place"
+                  href="${ifDefined(__HB_FEATURES__.attending ? '/attending' : undefined)}"
+                >
+                  <node-icon
+                    slot="icon"
+                    name="${this.where.location ? 'location' : 'monitor'}"
+                  ></node-icon>
+                  ${eventPlace(({ short }) => short, this.where)}
+                </hb-chip>
+              </li>
+            </ul>
+            <p class="lede">${heroDescriptions.home}</p>
+            <div class="actions">${this.renderActions()}</div>
+            ${this.renderSaleDate()}
+          </div>
+          ${
+            // The demo banner can turn decorations on, so a demo site always has the drawing.
+            decorations || __HB_FEATURES__.demo
+              ? html`<div class="art" aria-hidden="true">
+                  <img src="/images/node/node-logo.svg" alt="NODE logo" width="187" height="103" />
+                </div>`
+              : nothing
+          }
+        </div>
+      </section>
+    `;
+  }
+
+  /** NODE shows its short name in the badge, not the event countdown. */
+  private get stateLabel(): string {
+    return 'N.O.D.E.';
+  }
+
+  /** The countdown label the template shows. Kept for its translation ids. */
+  private get eventStatusLabel(): string {
+    if (this.eventState === 'live') return msg('Live now', { id: 'home.hero.live' });
+    if (this.eventState === 'over') return msg('Thanks for coming!', { id: 'home.hero.over' });
+    if (this.daysToGo === 1) return msg('Starts tomorrow', { id: 'home.hero.tomorrow' });
+    if (this.daysToGo > 1) {
+      return msg(str`${this.daysToGo} days to go`, { id: 'home.hero.days-to-go' });
+    }
+    return msg('Coming soon', { id: 'home.hero.coming-soon' });
+  }
+
+  private get stickerAccent() {
+    if (this.eventState === 'live') return '2';
+    if (this.eventState === 'over') return '4';
+    return '3';
+  }
+
+  private renderActions(): TemplateResult[] {
+    const steps = nextSteps({
+      eventState: this.eventState,
+      presence: this.presence,
+      callForPapers: callForPapersOpen(this.time),
+      ticket: this.ticket,
+      attendance: this.where.attendance,
+      stream,
+    });
+    const actions = steps
+      .slice(0, 2)
+      .map((step, index) => this.renderStep(step, index === 0 ? 'cta' : 'outlined'));
+    if (actions.length < 2 && aboutBlock.callToAction.howItWas) {
+      actions.push(html`
+        <hb-button variant="outlined" size="l" class="watch-video" @click="${this.playVideo}">
+          <node-icon slot="icon" name="play"></node-icon>
+          ${msg('View Highlights', { id: 'pages.home.view-highlights' })}
+        </hb-button>
+      `);
+    }
+    actions.push(html`
+      <hb-button variant="outlined" size="l" href="/#organization">
+        <node-icon slot="icon" name="registration"></node-icon>
+        ${msg('View OCN details', { id: 'home.hero.ocn-details' })}
+      </hb-button>
+    `);
+    actions.push(html`
+      <hb-button variant="outlined" size="l" href="${DISCORD_URL}" target="_blank">
+        <node-icon slot="icon" name="discord"></node-icon>
+        ${msg('Join Discord', { id: 'home.hero.discord' })}
+      </hb-button>
+    `);
+    return actions;
+  }
+
+  private renderStep(step: NextStep, variant: 'cta' | 'outlined'): TemplateResult {
+    const { href, label: stepLabel, icon, external } = nextStepLink(step);
+    const label =
+      step === 'schedule' ? msg('Our events', { id: 'home.hero.our-events' }) : stepLabel;
+    const content = html`<node-icon slot="icon" name="${icon}"></node-icon>${label}`;
+    // The tickets are on this page, so it scrolls to them.
+    if (step === 'tickets') {
+      return html`<hb-button
+        size="l"
+        variant="${variant}"
+        class="${STEP_CLASSES[step]}"
+        @click="${this.showTickets}"
+        >${content}</hb-button
+      >`;
+    }
+    return html`<hb-button
+      size="l"
+      variant="${variant}"
+      class="${STEP_CLASSES[step]}"
+      href="${href}"
+      target="${ifDefined(external ? '_blank' : undefined)}"
+      >${content}</hb-button
+    >`;
+  }
+
+  private get ticket(): Ticket | undefined {
+    return __HB_FEATURES__.tickets && this.tickets instanceof Success
+      ? ticketOnSale(this.tickets.data, this.time)
+      : undefined;
+  }
+
+  // Before any ticket is on sale, so the sticker keeps the countdown.
+  private renderSaleDate() {
+    const date =
+      __HB_FEATURES__.tickets &&
+      this.eventState === 'upcoming' &&
+      hasContent(this.presence, 'tickets') &&
+      this.tickets instanceof Success
+        ? ticketsGoOnSale(this.tickets.data, this.time)
+        : undefined;
+    if (!date) return nothing;
+    const day = getScheduleDay(date);
+    return html`<p class="sale">
+      ${msg(str`Tickets on sale ${day}`, {
+        id: 'home.hero.tickets-on-sale',
+        desc: 'The day the first tickets go on sale, such as "Tickets on sale July 1".',
+      })}
+    </p>`;
+  }
+
+  private readonly showTickets = () => {
+    this.dispatchEvent(new CustomEvent('show-tickets', { bubbles: true, composed: true }));
+  };
+
+  private readonly playVideo = () => {
+    const video = aboutBlock.callToAction.howItWas;
+    if (video) openVideoDialog({ title: video.label, youtubeId: video.youtubeId });
+  };
+}
+
+const STEP_CLASSES: Record<NextStep, string> = {
+  submitTalk: 'submit-talk',
+  tickets: 'buy-ticket',
+  watchLive: 'watch-live',
+  onNow: 'schedule',
+  attending: 'attending',
+  schedule: 'schedule',
+  updates: 'updates',
+  videos: 'videos',
+  photos: 'photos',
+};
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'home-hero': HomeHero;
+  }
+}

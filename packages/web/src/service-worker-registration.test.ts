@@ -1,0 +1,98 @@
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+
+type Listener = (event: { isUpdate?: boolean }) => void;
+
+const mocks = vi.hoisted(() => {
+  const listeners = new Map<string, Listener[]>();
+  const addEventListener = vi.fn((type: string, listener: Listener) => {
+    listeners.set(type, [...(listeners.get(type) ?? []), listener]);
+  });
+  const emit = (type: string, event: { isUpdate?: boolean } = {}) =>
+    listeners.get(type)?.forEach((listener) => listener(event));
+  const register = vi.fn<() => Promise<void>>();
+  const messageSkipWaiting = vi.fn();
+  const Workbox = vi.fn(function () {
+    return { addEventListener, register, messageSkipWaiting };
+  });
+  return { Workbox, addEventListener, emit, listeners, messageSkipWaiting, register };
+});
+vi.mock('workbox-window', () => ({ Workbox: mocks.Workbox }));
+
+const { dispatch } = vi.hoisted(() => ({ dispatch: vi.fn() }));
+vi.mock('./store', () => ({ store: { dispatch } }));
+
+vi.mock('./config/site', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./config/site')>()),
+  basepath: '/base/',
+}));
+
+const { queueComplexSnackbar, queueSnackbar } = await import('./store/snackbars');
+
+// `clearMocks` (enabled project-wide) clears each mock's recorded calls
+// before every test, so capture what the module constructed once, up-front.
+let constructorArgs: unknown[];
+
+beforeAll(async () => {
+  // The test DOM environment doesn't implement service workers.
+  Object.defineProperty(navigator, 'serviceWorker', { configurable: true, value: {} });
+  mocks.register.mockResolvedValue(undefined);
+  await import('./service-worker-registration');
+  constructorArgs = mocks.Workbox.mock.calls[0] as unknown[];
+});
+
+describe('service-worker-registration', () => {
+  it('registers the service worker scoped to the configured basepath', () => {
+    expect(constructorArgs).toEqual(['service-worker.js', { scope: '/base/' }]);
+    expect(mocks.listeners.size).toBeGreaterThan(0);
+  });
+
+  it('does not announce the first install or an update, or a worker that starts installing', () => {
+    mocks.emit('installed', { isUpdate: false });
+    mocks.emit('installed', { isUpdate: true });
+    mocks.emit('installing');
+
+    expect(dispatch).not.toHaveBeenCalled();
+  });
+
+  it('prompts to activate a waiting worker and reloads once it takes control', () => {
+    mocks.emit('waiting');
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    const [action] = dispatch.mock.calls[0]!;
+    expect(action).toEqual(
+      queueComplexSnackbar({
+        label: 'A new version of this app is available.',
+        action: { title: 'Refresh', callback: expect.any(Function) },
+      }),
+    );
+
+    const reload = vi.fn();
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...window.location, reload },
+    });
+    action.payload.action.callback();
+
+    expect(mocks.messageSkipWaiting).toHaveBeenCalledTimes(1);
+    expect(reload).not.toHaveBeenCalled();
+
+    mocks.emit('controlling');
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('logs and queues a snackbar on registration error', async () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const registrationError = new Error('registration failed');
+    mocks.register.mockRejectedValueOnce(registrationError);
+
+    vi.resetModules();
+    await import('./service-worker-registration');
+    await vi.waitFor(() =>
+      expect(dispatch).toHaveBeenCalledWith(queueSnackbar('Error caching for offline use.')),
+    );
+
+    expect(error).toHaveBeenCalledWith('Service worker registration failed:', registrationError);
+    error.mockRestore();
+  });
+});

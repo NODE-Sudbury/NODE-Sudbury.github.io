@@ -1,0 +1,269 @@
+import { msg, str } from '@lit/localize';
+import { css, html, nothing, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
+import type { BuiltSession } from '../../schedule/build-schedule';
+import { sessionPath } from '../../utils/navigation';
+import { openFeedbackDialog } from '../../store/dialogs';
+import { acceptingFeedback } from '../../utils/feedback';
+import { getLocale } from '../../utils/localization';
+import { isLive, sessionStream } from '../../utils/stream';
+import { tagColor } from '../../utils/styles';
+import '../shared/node-icon';
+import '../shared/speaker-photo';
+import '../ui/hb-icon-button';
+import './save-button';
+import './session-chips';
+import { ThemedComponent } from '../themed-component';
+
+/** "1 hr 30 min", in the page locale. */
+export const formatDuration = ({ hh, mm }: { hh: number; mm: number }) =>
+  (
+    [
+      [hh, 'hour'],
+      [mm, 'minute'],
+    ] as const
+  )
+    .filter(([value]) => value)
+    .map(([value, unit]) =>
+      new Intl.NumberFormat(getLocale(), { style: 'unit', unit, unitDisplay: 'short' }).format(
+        value,
+      ),
+    )
+    .join(' ');
+
+/**
+ * A session in the schedule: a stripe in its main tag's color, its chips, the title as the link to
+ * the session page, speakers, and the track and duration. The save button sits above
+ * the link, and turns into a feedback button while the session takes feedback.
+ */
+@customElement('session-card')
+export class SessionCard extends ThemedComponent {
+  static override styles = css`
+    :host {
+      display: block;
+    }
+
+    .session {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--hb-space-2);
+      box-sizing: border-box;
+      block-size: 100%;
+      padding: var(--hb-space-4) var(--hb-space-4) var(--hb-space-4) calc(var(--hb-space-4) + 6px);
+      border: var(--hb-border-width) solid var(--hb-border-color);
+      border-radius: var(--hb-radius-m);
+      background-color: var(--hb-panel-background);
+      backdrop-filter: var(--hb-backdrop-filter);
+      background-image: linear-gradient(
+        to right,
+        var(--stripe, var(--hb-color-outline-variant)) 0 6px,
+        transparent 6px
+      );
+      color: var(--hb-color-on-surface);
+      box-shadow: var(--hb-shadow-card);
+      transition:
+        translate var(--hb-duration-short) var(--hb-ease-press),
+        rotate var(--hb-duration-short) var(--hb-ease-press),
+        box-shadow var(--hb-duration-short) var(--hb-ease-standard);
+    }
+
+    .session:hover {
+      translate: var(--hb-hover-translate);
+      rotate: calc(var(--hb-hover-rotate, 0deg) * var(--hb-decorations, 1));
+      box-shadow: var(--hb-shadow-card-hover);
+    }
+
+    .session:has(.title a:focus-visible) {
+      outline: 3px solid var(--hb-color-focus);
+      outline-offset: 2px;
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .chips {
+      --hb-session-chips-gap: var(--hb-space-1);
+
+      padding-inline-end: var(--hb-target-min);
+    }
+
+    .title {
+      margin: 0;
+      padding-inline-end: var(--hb-target-min);
+      font: 700 var(--hb-text-lg) / 1.3 var(--hb-font-body);
+      overflow-wrap: anywhere;
+    }
+
+    .title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .title a:focus-visible {
+      outline: none;
+    }
+
+    /* The whole card is the link. */
+    .title a::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    .speakers {
+      gap: var(--hb-space-2) var(--hb-space-4);
+      font-size: var(--hb-text-sm);
+    }
+
+    .speakers li {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--hb-space-2);
+    }
+
+    .meta {
+      margin: auto 0 0;
+      color: var(--hb-color-on-surface-variant);
+      font: var(--hb-text-sm) / 1.4 var(--hb-font-mono);
+    }
+
+    .live {
+      display: inline-block;
+      margin-inline-end: var(--hb-space-1);
+      padding: 0 var(--hb-space-2);
+      border-radius: var(--hb-radius-control);
+      background-color: var(--hb-color-error);
+      color: var(--hb-color-on-error);
+      font-weight: 700;
+    }
+
+    .action {
+      position: absolute;
+      z-index: 2;
+      inset-block-start: var(--hb-space-1);
+      inset-inline-end: var(--hb-space-1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .session:hover {
+        translate: none;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .session {
+        border-color: CanvasText;
+        border-inline-start-width: 6px;
+      }
+    }
+  `;
+
+  @property({ attribute: false })
+  accessor session: BuiltSession | undefined;
+  /** The time, which the schedule sets in the browser each minute. Without it, the card isn't live. */
+  @property({ attribute: false })
+  accessor now: Date | undefined;
+  /** The title's heading level: 2 right under the page title, 3 under a section heading. */
+  @property({ type: Number, attribute: 'heading-level' })
+  accessor headingLevel: 2 | 3 = 3;
+
+  // Depends on the time, so it is only set in the browser.
+  @state()
+  private accessor acceptingFeedback = false;
+
+  override updated(changed: PropertyValues<this>) {
+    if (changed.has('session')) {
+      this.acceptingFeedback =
+        __HB_FEATURES__.feedback && !!this.session && acceptingFeedback(this.session);
+    }
+  }
+
+  override render() {
+    const session = this.session;
+    if (!session) return nothing;
+    const meta = [
+      session.track?.title,
+      session.duration && formatDuration(session.duration),
+      session.complexity,
+      session.language,
+    ].filter(Boolean);
+    const speakers = session.speakers?.filter((speaker) => speaker.name) ?? [];
+    const live = !!this.now && isLive(session, this.now.getTime()) && !!sessionStream(session);
+    const title = html`<a href="${sessionPath(session.id)}">${session.title}</a>`;
+
+    return html`
+      <article
+        class="session"
+        style="${styleMap({ '--stripe': session.mainTag ? tagColor(session.mainTag) : undefined })}"
+      >
+        ${
+          session.sponsor || session.tags?.length
+            ? html`<session-chips class="chips" .session="${session}"></session-chips>`
+            : nothing
+        }
+        ${
+          this.headingLevel === 2
+            ? html`<h2 class="title">${title}</h2>`
+            : html`<h3 class="title">${title}</h3>`
+        }
+        ${
+          speakers.length
+            ? html`<ul class="speakers">
+                ${speakers.map(
+                  (speaker) => html`
+                    <li>
+                      <speaker-photo size="xs" src="${speaker.photoUrl}"></speaker-photo>
+                      ${speaker.name}
+                    </li>
+                  `,
+                )}
+              </ul>`
+            : nothing
+        }
+        ${
+          meta.length || live
+            ? html`<p class="meta">
+                ${live ? html`<span class="live">${msg('Live', { id: 'schedule.session.live' })}</span>` : nothing}${meta.join(' · ')}
+              </p>`
+            : nothing
+        }
+        ${this.renderAction(session)}
+      </article>
+    `;
+  }
+
+  private renderAction(session: BuiltSession) {
+    if (this.acceptingFeedback) {
+      return html`
+        <hb-icon-button
+          class="action feedback"
+          label="${msg(str`Rate ${session.title}`, { id: 'schedule.session.rate' })}"
+          @click="${this.openFeedback}"
+        >
+          <node-icon name="insert-comment"></node-icon>
+        </hb-icon-button>
+      `;
+    }
+    if (!__HB_FEATURES__.mySchedule) return nothing;
+    return html`<save-button class="action save" .session="${session}"></save-button>`;
+  }
+
+  private readonly openFeedback = () => {
+    if (this.session) openFeedbackDialog(this.session);
+  };
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'session-card': SessionCard;
+  }
+}

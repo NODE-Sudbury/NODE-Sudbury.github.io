@@ -1,0 +1,17 @@
+---
+import { loadOpenSource } from '../../data/open-source';
+import { pageMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import Base from '../../layouts/base.astro';
+import { OpenSourcePage } from '../../views/open-source-page';
+
+const { org, generatedAt, projects } = loadOpenSource();
+---
+
+<Base
+  {...pageMetadata('openSource')}
+  content={seedPage({})}
+  breadcrumbs={[{ name: 'Open Source', path: '/open-source' }]}
+>
+  <OpenSourcePage projects={projects} org={org} syncedAt={generatedAt} client:load />
+</Base>

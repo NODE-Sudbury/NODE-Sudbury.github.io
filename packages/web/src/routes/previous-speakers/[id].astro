@@ -1,0 +1,30 @@
+---
+import { loadContent } from '../../data/content';
+import { itemMetadata } from '../../data/metadata';
+import { pageTitle } from '../../utils/page-text';
+import { seedPage } from '../../data/page';
+import type { PreviousSpeaker } from '../../models/previous-speaker';
+import Base from '../../layouts/base.astro';
+import { PreviousSpeakerPage } from '../../views/previous-speaker-page';
+
+export const getStaticPaths = async () => {
+  const { previousSpeakers = [] } = await loadContent();
+  return previousSpeakers.map((speaker) => ({ params: { id: speaker.id }, props: { speaker } }));
+};
+
+const { speaker } = Astro.props as { speaker: PreviousSpeaker };
+const { previousSpeakers } = await loadContent();
+const content = seedPage({ previousSpeakers });
+---
+
+<Base
+  {...itemMetadata(pageTitle('previousSpeakers', speaker.name), speaker.bio, speaker.photoUrl)}
+  content={content}
+  noindex={/\bTBD\b/i.test(speaker.name)}
+  breadcrumbs={[
+    { name: 'Previous Speakers', path: '/previous-speakers' },
+    { name: speaker.name, path: `/previous-speakers/${speaker.id}` },
+  ]}
+>
+  <PreviousSpeakerPage speakerId={speaker.id} client:load />
+</Base>

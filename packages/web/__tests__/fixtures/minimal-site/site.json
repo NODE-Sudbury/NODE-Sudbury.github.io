@@ -1,0 +1,54 @@
+{
+  "$schema": "../../../schemas/site.schema.json",
+  "firebase": {
+    "projectId": "minimal-site"
+  },
+  "shortName": "Minimal",
+  "organizer": {
+    "name": "Organizer",
+    "email": "organizer@example.com"
+  },
+  "event": {
+    "attendance": "online",
+    "stream": "https://stream.example/minimal",
+    "startDate": "2027-10-15",
+    "endDate": "2027-10-15",
+    "timezone": "UTC"
+  },
+  "social": {
+    "hashtag": "Minimal",
+    "follow": []
+  },
+  "theme": {
+    "name": "spotlight",
+    "decorations": false
+  },
+  "heroSettings": {
+    "home": {
+      "background": { "image": "/images/backgrounds/home.jpg" }
+    }
+  },
+  "features": {
+    "attending": false,
+    "blog": false,
+    "codeOfConduct": false,
+    "demo": false,
+    "faq": false,
+    "feedback": false,
+    "forkMe": false,
+    "gallery": false,
+    "map": false,
+    "mySchedule": false,
+    "notifications": false,
+    "partners": false,
+    "previousSpeakers": false,
+    "reactions": false,
+    "schedule": false,
+    "socialImages": false,
+    "speakers": false,
+    "subscribe": false,
+    "team": false,
+    "tickets": false,
+    "videos": false
+  }
+}

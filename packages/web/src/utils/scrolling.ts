@@ -1,0 +1,22 @@
+// The sticky header's height, `--hb-header-height` in base.css.
+const HEADER_HEIGHT = 88;
+
+export enum POSITION {
+  TOP = 'top',
+  BOTTOM = 'bottom',
+}
+
+export const scrollToElement = (element: Element, position: POSITION = POSITION.TOP) => {
+  const top = element.getBoundingClientRect()[position] + window.scrollY - HEADER_HEIGHT;
+  window.scrollTo({ top, behavior: 'smooth' });
+};
+
+export const scrollToTop = () => {
+  // Remove anchor from URL
+  history.pushState('', document.title, window.location.pathname + window.location.search);
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+};

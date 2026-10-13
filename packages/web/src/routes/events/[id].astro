@@ -1,0 +1,47 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import sharp from 'sharp';
+import { site } from 'virtual:node-site/site';
+import { CONFIG_PATHS } from '../../../build/resolve-config';
+import { eventDescription, loadEvents, shortTitle } from '../../data/events';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import { absoluteUrl, eventPageStructuredData } from '../../data/structured-data';
+import type { CommunityEvent } from '../../models/event';
+import Base from '../../layouts/base.astro';
+import { EventPage } from '../../views/event-page';
+
+export const getStaticPaths = () =>
+  loadEvents().events.map((event) => ({ params: { id: event.slug }, props: { event } }));
+
+const { event } = Astro.props as { event: CommunityEvent };
+const title = shortTitle(event.title);
+const pageUrl = absoluteUrl(`/events/${event.slug}`, site.url);
+
+// The share image is the event's cover on this site, with its real size for link previews.
+const file = event.image?.startsWith('/') ? join(CONFIG_PATHS.public[0]!, event.image) : undefined;
+const size = file && existsSync(file) ? await sharp(file).metadata() : undefined;
+const image = event.image ? absoluteUrl(event.image, site.url) : undefined;
+---
+
+<Base
+  {...itemMetadata(title, eventDescription(event), {
+    ...(image ? { image, imageAlt: event.title } : {}),
+    ...(size?.width && size.height ? { imageWidth: size.width, imageHeight: size.height } : {}),
+  })}
+  content={seedPage({})}
+  breadcrumbs={[
+    { name: 'Events', path: '/events' },
+    { name: title, path: `/events/${event.slug}` },
+  ]}
+  jsonLd={[
+    eventPageStructuredData(event, {
+      pageUrl,
+      ...(image ? { image } : {}),
+      organization: `${site.url}#organization`,
+    }),
+  ]}
+>
+  <EventPage event={event} client:load />
+</Base>

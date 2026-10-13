@@ -1,0 +1,122 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { html, nothing, render as litRender } from 'lit';
+import { expectNoAxeViolations } from '../../../__tests__/helpers/axe';
+import { fixture } from '../../../__tests__/helpers/fixtures';
+import type { HbIconButton } from './hb-icon-button';
+import type { HbPopover } from './hb-popover';
+import './hb-icon-button';
+import './hb-popover';
+
+const render = () =>
+  fixture<HbPopover>(html`
+    <hb-popover>
+      <button slot="trigger" type="button">Help</button>
+      <p>Details</p>
+    </hb-popover>
+  `);
+
+describe('hb-popover', () => {
+  afterEach(() => {
+    litRender(nothing, document.body);
+  });
+
+  it('opens and closes from its trigger, which says whether it is open', async () => {
+    const { element, shadowRoot } = await render();
+    const trigger = element.querySelector('button')!;
+    const panel = shadowRoot.querySelector('.panel')!;
+
+    expect(getComputedStyle(panel).display).toBe('none');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    trigger.click();
+    await element.updateComplete;
+
+    expect(element).toHaveAttribute('open');
+    expect(getComputedStyle(panel).display).toBe('block');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    trigger.click();
+    await element.updateComplete;
+
+    expect(element.open).toBe(false);
+  });
+
+  it('sets `expanded` on a trigger that has it', async () => {
+    const { element } = await fixture<HbPopover>(html`
+      <hb-popover>
+        <hb-icon-button slot="trigger" label="Notifications"></hb-icon-button>
+      </hb-popover>
+    `);
+    const trigger = element.querySelector<HbIconButton>('hb-icon-button')!;
+
+    element.show();
+    await element.updateComplete;
+
+    expect(trigger.expanded).toBe(true);
+  });
+
+  it('closes on a click outside, but not on a click inside', async () => {
+    const { element } = await render();
+    element.show();
+    await element.updateComplete;
+
+    element.querySelector('p')!.click();
+    await element.updateComplete;
+    expect(element.open).toBe(true);
+
+    document.body.click();
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+  });
+
+  it('closes on Escape and gives focus back to the trigger', async () => {
+    const { element } = await render();
+    const trigger = element.querySelector('button')!;
+    element.show();
+    await element.updateComplete;
+
+    element
+      .querySelector('p')!
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await element.updateComplete;
+
+    expect(element.open).toBe(false);
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it.each([false, true])('has no axe violations with open %s', async (open) => {
+    const { element } = await render();
+    if (open) element.show();
+    await element.updateComplete;
+
+    await expectNoAxeViolations(element);
+  });
+
+  describe('in the viewport', () => {
+    const openAt = async (left: number, right: number) => {
+      vi.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(400);
+      const { element, shadowRoot } = await render();
+      const panel = shadowRoot.querySelector<HTMLElement>('.panel')!;
+      vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue({ left, right } as DOMRect);
+      element.show();
+      await element.updateComplete;
+      return panel;
+    };
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('stays where it opens when it fits', async () => {
+      expect((await openAt(100, 300)).style.translate).toBe('');
+    });
+
+    it('moves right when it would open past the start of the viewport', async () => {
+      expect((await openAt(-150, 50)).style.translate).toBe('166px');
+    });
+
+    it('moves left when it would open past the end of the viewport', async () => {
+      expect((await openAt(300, 420)).style.translate).toBe('-36px');
+    });
+  });
+});

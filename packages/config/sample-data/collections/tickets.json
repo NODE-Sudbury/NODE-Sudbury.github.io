@@ -1,0 +1,24 @@
+{
+  "tickets/000": {
+    "available": true,
+    "currency": "$",
+    "info": "CAD per year, for students",
+    "name": "Student Membership",
+    "price": 10,
+    "soldOut": false,
+    "url": "https://nodesudbury.com",
+    "order": "0"
+  },
+  "tickets/001": {
+    "available": true,
+    "currency": "$",
+    "info": "CAD per year",
+    "name": "NODE Membership",
+    "price": 60,
+    "primary": true,
+    "regular": true,
+    "soldOut": false,
+    "url": "https://nodesudbury.com",
+    "order": "1"
+  }
+}
