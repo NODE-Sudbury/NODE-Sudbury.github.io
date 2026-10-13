@@ -1,0 +1,121 @@
+import { Success } from '@abraham/remotedata';
+import { msg } from '@lit/localize';
+import { css, html, nothing, type PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import '../components/hero/hero-block';
+import { heroText } from '../components/hero/hero-block';
+import { PAGE_TONES } from '../components/hero/simple-hero';
+import '../components/markdown/short-markdown';
+import '../components/shared/hoverboard-icon';
+import '../components/shared/previous-speakers-block';
+import '../components/shared/previous-talks';
+import '../components/shared/social-links';
+import '../components/shared/speaker-profile';
+import '../components/ui/hb-progress';
+import type { PreviousSpeaker } from '../models/previous-speaker';
+import { goto } from '../utils/navigation';
+import { store } from '../store';
+import { selectPreviousSpeaker } from '../store/previous-speakers/selectors';
+import {
+  type PreviousSpeakersState,
+  selectPreviousSpeakersState,
+} from '../store/previous-speakers';
+import { updateImageMetadata } from '../utils/metadata';
+import { pageTitle } from '../utils/page-text';
+import { profile } from '../styles/profile';
+import { fromStore } from '../controllers/from-store';
+import { ThemedComponent } from '../components/themed-component';
+
+/** A speaker from earlier years: their photo, details, social links, bio and talks. */
+@customElement('previous-speaker-page')
+export class PreviousSpeakerPage extends ThemedComponent {
+  static override styles = [
+    heroText,
+    profile,
+    css`
+      :host {
+        display: block;
+        background-color: var(--hb-section-background);
+        color: var(--hb-color-on-surface);
+      }
+    `,
+  ];
+
+  @property({ attribute: false })
+  accessor speaker: PreviousSpeaker | undefined;
+  @fromStore((state) => selectPreviousSpeakersState(state))
+  accessor speakers!: PreviousSpeakersState;
+  @property({ attribute: false })
+  accessor speakerId: string | undefined;
+
+  // Runs on the server too, so the page renders the speaker. Side effects wait for `updated`.
+  override willUpdate(changed: PropertyValues<this>) {
+    if ((changed.has('speakers') || changed.has('speakerId')) && this.isLoaded) {
+      this.speaker = selectPreviousSpeaker(store.getState(), this.speakerId!);
+    }
+  }
+
+  override updated(changed: PropertyValues<this>) {
+    if ((changed.has('speakers') || changed.has('speakerId')) && this.isLoaded) {
+      if (!this.speaker) {
+        goto('/404');
+      } else {
+        updateImageMetadata(pageTitle('previousSpeakers', this.speaker.name), this.speaker.bio, {
+          image: this.speaker.photoUrl,
+          imageAlt: this.speaker.name,
+        });
+      }
+    }
+  }
+
+  private get isLoaded() {
+    return !!this.speakerId && this.speakers instanceof Success;
+  }
+
+  override render() {
+    const speaker = this.speaker;
+
+    return html`
+      <hero-block tone="${PAGE_TONES.previousSpeakers}">
+        <a class="back" href="/previous-speakers">
+          <hoverboard-icon name="arrow-left"></hoverboard-icon>
+          ${msg('All previous speakers', { id: 'pages.previous-speaker.all' })}
+        </a>
+        <speaker-profile kind="previous-speaker" .speaker="${speaker}"></speaker-profile>
+      </hero-block>
+
+      <hb-progress ?hidden="${!!speaker}"></hb-progress>
+
+      ${
+        speaker
+          ? html`
+              <div class="inner">
+                <social-links
+                  variant="tonal"
+                  label="${msg('Social links', { id: 'pages.speaker.socials' })}"
+                  .socials="${speaker.socials ?? []}"
+                ></social-links>
+                <short-markdown class="bio" .content="${speaker.bio ?? ''}"></short-markdown>
+                ${
+                  Object.keys(speaker.sessions ?? {}).length
+                    ? html`<h2 class="section-title">
+                          ${msg('Talks', { id: 'pages.previous-speaker.talks' })}
+                        </h2>
+                        <previous-talks .sessions="${speaker.sessions}"></previous-talks>`
+                    : nothing
+                }
+              </div>
+            `
+          : nothing
+      }
+
+      <previous-speakers-block></previous-speakers-block>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'previous-speaker-page': PreviousSpeakerPage;
+  }
+}

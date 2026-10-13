@@ -1,0 +1,54 @@
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { beforeEach, describe, it } from 'vitest';
+import { expect } from '../helpers';
+import { anonContext, authedContext, seed } from './setup';
+
+// Event content: anyone can read it, and every write is denied, since only organizers write it
+// with the Admin SDK.
+const PUBLIC_READ_ONLY_COLLECTIONS = [
+  'blog',
+  'gallery',
+  'previousSpeakers',
+  'speakers',
+  'tickets',
+  'videos',
+  'sessions',
+];
+
+describe.each(PUBLIC_READ_ONLY_COLLECTIONS)('%s rules', (collectionName) => {
+  const docPath = `${collectionName}/doc-1`;
+
+  beforeEach(() => seed({ [docPath]: { title: 'Existing' } }));
+
+  describe.each([
+    ['unauthenticated', anonContext],
+    ['authenticated', () => authedContext('user-1')],
+  ] as const)('%s', (_label, getContext) => {
+    it('allows reading a single document', async () => {
+      const context = getContext();
+      await expect(getDoc(doc(context.firestore(), docPath))).toAllow();
+    });
+
+    it('allows listing the collection', async () => {
+      const context = getContext();
+      await expect(getDocs(collection(context.firestore(), collectionName))).toAllow();
+    });
+
+    it('denies creating a document', async () => {
+      const context = getContext();
+      await expect(
+        addDoc(collection(context.firestore(), collectionName), { title: 'New' }),
+      ).toDeny();
+    });
+
+    it('denies updating a document', async () => {
+      const context = getContext();
+      await expect(updateDoc(doc(context.firestore(), docPath), { title: 'Changed' })).toDeny();
+    });
+
+    it('denies deleting a document', async () => {
+      const context = getContext();
+      await expect(deleteDoc(doc(context.firestore(), docPath))).toDeny();
+    });
+  });
+});

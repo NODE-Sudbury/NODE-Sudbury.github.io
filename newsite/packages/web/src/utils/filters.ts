@@ -1,0 +1,39 @@
+import { isServer } from 'lit';
+import type { Filter } from '../models/filter';
+import { FilterGroupKey } from '../models/filter-group';
+import { setFilters } from '../store/filters';
+import { logPageView } from './analytics';
+
+const setQueryString = (search: string): void => {
+  const [url] = location.href.split('?');
+
+  window.history.pushState({}, '', [url, search].filter(Boolean).join('?'));
+  setFilters(parseFilters());
+  logPageView();
+};
+
+export const clearFilters = () => setQueryString('');
+
+export const parseFilters = (): Filter[] => {
+  // Pages are built without a query string.
+  if (isServer) return [];
+  const searchParams = new URLSearchParams(window.location.search);
+  return [FilterGroupKey.tags, FilterGroupKey.complexity, FilterGroupKey.track].flatMap((group) =>
+    searchParams.getAll(group).map((tag) => ({ group, tag })),
+  );
+};
+
+const matchingFilter = (filterA: Filter, filterB: Filter) => {
+  return filterA.tag === filterB.tag && filterA.group === filterB.group;
+};
+
+export const toggleFilter = (filter: Filter): void => {
+  let filters = parseFilters();
+  if (filters.some((item) => matchingFilter(filter, item))) {
+    filters = filters.filter((item) => !matchingFilter(filter, item));
+  } else {
+    filters.push(filter);
+  }
+  const queryString = filters.map(({ group, tag }) => `${group}=${tag}`).join('&');
+  setQueryString(queryString);
+};

@@ -1,0 +1,26 @@
+---
+import { loadContent } from '../../data/content';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import { sessionContent } from '../../data/schedule';
+import { sessionImage, socialImageMetadata } from '../../data/social-images';
+import type { Session } from '../../models/session';
+import Base from '../../layouts/base.astro';
+import { SessionPage } from '../../views/session-page';
+
+export const getStaticPaths = async () => {
+  const { sessions = [] } = await loadContent();
+  return sessions.map((session) => ({ params: { id: session.id }, props: { session } }));
+};
+
+const { session } = Astro.props as { session: Session };
+const all = await loadContent();
+const content = seedPage(sessionContent(all, session.id));
+const image = __HB_FEATURES__.socialImages
+  ? socialImageMetadata(sessionImage(session, all.speakers ?? []))
+  : content.speakers.find(({ id }) => id === session.speakers?.[0])?.photoUrl;
+---
+
+<Base {...itemMetadata(session.title, session.description, image)} content={content}>
+  <SessionPage sessionId={session.id} client:load />
+</Base>

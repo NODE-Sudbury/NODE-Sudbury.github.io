@@ -1,0 +1,43 @@
+---
+import { loadContent } from '../../data/content';
+import { buildContentSchedule } from '../../data/schedule';
+import { pageMetadata } from '../../data/metadata';
+import { scheduleDetail } from '../../utils/page-text';
+import { seedPage } from '../../data/page';
+import type { RouteLocation } from '../../utils/navigation';
+import Base from '../../layouts/base.astro';
+import { SchedulePage } from '../../views/schedule-page';
+import { ScheduleDay } from '../../views/schedule/schedule-day';
+
+export const getStaticPaths = async () => {
+  const { schedule } = buildContentSchedule(await loadContent());
+  // `/schedule` shows the first day.
+  return [
+    { params: { day: undefined } },
+    ...schedule.map(({ date }) => ({ params: { day: date } })),
+  ];
+};
+
+const { day } = Astro.params;
+const location: RouteLocation = {
+  pathname: day ? `/schedule/${day}` : '/schedule',
+  search: '',
+  params: { id: day },
+};
+const { sessions, speakers } = await loadContent();
+const content = seedPage({ sessions, speakers });
+---
+
+<Base {...pageMetadata('schedule', scheduleDetail(location))} content={content}>
+  <Fragment slot="head">
+    <script is:inline>
+      // Old links to a session were /schedule?sessionId=<id>.
+      const sessionId = new URLSearchParams(location.search).get('sessionId');
+      if (sessionId)
+        location.replace(new URL(`sessions/${encodeURIComponent(sessionId)}`, document.baseURI));
+    </script>
+  </Fragment>
+  <SchedulePage location={location} client:load>
+    <ScheduleDay location={location} client:load />
+  </SchedulePage>
+</Base>

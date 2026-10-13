@@ -1,0 +1,47 @@
+import { html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { coc } from '../config/site';
+import { PageMetadataController } from '../controllers/page-metadata-controller';
+import '../components/hero/simple-hero';
+import '../components/markdown/remote-markdown';
+import { pageInner } from '../styles/page';
+import { ThemedComponent } from '../components/themed-component';
+
+@customElement('coc-page')
+export class CocPage extends ThemedComponent {
+  static override styles = pageInner;
+
+  /** The code of conduct in the source locale, which the build passes in. */
+  @property({ attribute: false })
+  accessor content: string | undefined;
+
+  constructor() {
+    super();
+    new PageMetadataController(this, 'coc');
+  }
+
+  get source() {
+    return coc;
+  }
+
+  override render() {
+    return html`
+      <simple-hero page="coc"></simple-hero>
+
+      <div class="inner">
+        <remote-markdown
+          toc
+          path=${this.source}
+          page-path="/coc"
+          .content=${this.content}
+        ></remote-markdown>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'coc-page': CocPage;
+  }
+}

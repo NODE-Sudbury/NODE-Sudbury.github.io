@@ -1,0 +1,36 @@
+import { applicationDefault, initializeApp } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import { DEMO_PROJECT_ID, resolveFirebaseProjectId } from '../utils/firebase-project.js';
+import { findRepoRoot } from '../utils/node-version.js';
+import { useFirebaseLoginCredentials } from './google-cloud.js';
+import { target } from './target.js';
+
+const DEFAULT_EMULATOR_HOST = '127.0.0.1:8080';
+
+const repoRoot = findRepoRoot(process.cwd());
+if (!repoRoot) {
+  throw new Error('Could not find the repository root (no ancestor directory contains .git).');
+}
+
+/**
+ * The data commands use the local Firestore emulator by default, so running them can never
+ * read or write production data by accident. With `--production`, they connect to the project
+ * in site.json instead, signed in as the Firebase CLI's current account.
+ */
+if (target() === 'production') {
+  const projectId = resolveFirebaseProjectId(repoRoot);
+  if (!projectId) {
+    throw new Error('No Firebase project. Set firebase.projectId in packages/config/site.json.');
+  }
+  await useFirebaseLoginCredentials(repoRoot);
+  initializeApp({ credential: applicationDefault(), projectId });
+} else {
+  // The Admin SDK routes all requests to the Firestore emulator, without
+  // validating credentials, whenever FIRESTORE_EMULATOR_HOST is set.
+  process.env['FIRESTORE_EMULATOR_HOST'] ??= DEFAULT_EMULATOR_HOST;
+  initializeApp({ projectId: DEMO_PROJECT_ID });
+}
+
+const root: string = repoRoot;
+export { root as repoRoot };
+export const firestore = getFirestore();

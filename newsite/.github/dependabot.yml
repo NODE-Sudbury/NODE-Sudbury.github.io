@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+    # Releases younger than a week are skipped, so a compromised one is more likely caught first.
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+  - package-ecosystem: npm
+    directories:
+      - '/'
+      - '/packages/server/functions'
+      - '/packages/cli'
+      - '/packages/web'
+      - '/packages/storage'
+      - '/packages/translations'
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 25
+    groups:
+      rollup:
+        patterns:
+          - '*rollup*'
+      jest:
+        patterns:
+          - '*jest*'
+      eslint:
+        patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+          - '@*eslin*/*'
+      firebase:
+        patterns:
+          - '*firebase*'
+      typescript:
+        patterns:
+          - 'typescript'
+      node:
+        patterns:
+          - '@types/node'

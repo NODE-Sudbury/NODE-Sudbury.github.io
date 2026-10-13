@@ -1,0 +1,103 @@
+{
+  "$schema": "../web/schemas/site.schema.json",
+  "schemaVersion": 1,
+  "firebase": {
+    "projectId": "hoverboard-master"
+  },
+  "basepath": "/",
+  "shortName": "DevFest",
+  "image": "images/social-share.jpg",
+  "organizer": {
+    "name": "GDG Lviv",
+    "twitter": "gdglviv",
+    "blog": "https://medium.com/gdg-lviv",
+    "url": "http://lviv.gdg.org.ua/",
+    "email": "devfest@gdg.org.ua"
+  },
+  "event": {
+    "startDate": "2017-10-13",
+    "endDate": "2017-10-14",
+    "timezone": "Europe/Kyiv",
+    "location": {
+      "name": "Planeta kino",
+      "city": "Lviv",
+      "short": "Lviv, Ukraine",
+      "address": "36 Shchyretska St, Lviv, Ukraine",
+      "pointer": {
+        "latitude": 49.809841,
+        "longitude": 23.972805,
+        "zoom": 5
+      },
+      "mapCenter": {
+        "latitude": 48,
+        "longitude": 8
+      }
+    }
+  },
+  "schedule": {
+    "published": true,
+    "tracks": [
+      {
+        "id": "expo-hall",
+        "title": "Expo hall"
+      },
+      {
+        "id": "conference-hall",
+        "title": "Conference hall"
+      },
+      {
+        "id": "workshops-hall",
+        "title": "Workshops hall"
+      }
+    ]
+  },
+  "locales": {
+    "source": "en",
+    "targets": []
+  },
+  "social": {
+    "hashtag": "DevFest",
+    "follow": [
+      {
+        "name": "meetup",
+        "url": "https://www.meetup.com/GDG-Lviv/events/244342635/"
+      },
+      {
+        "name": "facebook",
+        "url": "https://www.facebook.com/devfest.ukraine/"
+      },
+      {
+        "name": "twitter",
+        "url": "https://twitter.com/devfest_ukraine/"
+      },
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/devfestukraine"
+      },
+      {
+        "name": "youtube",
+        "url": "https://www.youtube.com/playlist?list=PLt8lEzcLNl31AouwDkbLbLARlQFwNS2en"
+      }
+    ]
+  },
+  "auth": {
+    "providers": ["emailLink", "google"]
+  },
+  "theme": {
+    "tagColors": {
+      "general": "#9e9e9e",
+      "android": "#78c257",
+      "web": "#2196f3",
+      "cloud": "#3f51b5",
+      "community": "#e91e63",
+      "design": "#e91e63"
+    }
+  },
+  "integrations": {
+    "googleMapsApiKey": "AIzaSyCJqlRVGIe6bfU43rga3cnK7tSXXwc7JD8"
+  },
+  "features": {
+    "demo": true,
+    "forkMe": true
+  }
+}

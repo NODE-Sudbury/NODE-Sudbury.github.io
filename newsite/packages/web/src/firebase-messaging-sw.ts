@@ -1,0 +1,51 @@
+/* eslint spaced-comment: ["error", "always", { "markers": ["/"] }] */
+
+/// <reference no-default-lib="true"/>
+/// <reference lib="ESnext" />
+/// <reference lib="webworker" />
+
+// Default type of `self` is `WorkerGlobalScope & typeof globalThis`
+// https://github.com/microsoft/TypeScript/issues/14877
+declare const self: ServiceWorkerGlobalScope;
+
+import { type FirebaseOptions, initializeApp } from 'firebase/app';
+import { type MessagePayload, getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
+
+// Capture the config object from /__/firebase/init.js
+let firebaseConfig: FirebaseOptions | undefined;
+(self as unknown as { firebase: { initializeApp: (config: FirebaseOptions) => void } }).firebase = {
+  initializeApp: (config) => {
+    firebaseConfig = config;
+  },
+};
+importScripts('/__/firebase/init.js');
+
+if (!firebaseConfig) {
+  throw new Error('firebaseConfig is not defined');
+}
+
+const firebaseApp = initializeApp(firebaseConfig);
+const messaging = getMessaging(firebaseApp);
+
+const showNotification = (payload: MessagePayload) => {
+  const data = payload.data ?? {};
+  const body = data['body'] ?? '';
+  const icon = data['icon'] ?? '';
+  const title = data['title'] ?? '';
+  // A session reminder with a stream link gets a button that opens the stream.
+  const actions = data['stream'] ? [{ action: 'watch', title: 'Watch live' }] : [];
+  const notificationOptions = { body, icon, data, actions };
+
+  void self.registration.showNotification(title, notificationOptions);
+};
+
+onBackgroundMessage(messaging, showNotification);
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const { path, stream } = (event.notification.data ?? {}) as { path?: string; stream?: string };
+  const url = event.action === 'watch' && stream ? stream : path;
+  if (url) {
+    event.waitUntil(self.clients.openWindow(url));
+  }
+});

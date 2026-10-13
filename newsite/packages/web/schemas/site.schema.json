@@ -1,0 +1,692 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoverboard.dev/schemas/site.schema.json",
+  "title": "Hoverboard site config",
+  "description": "packages/config/site.json. Only the values a site changes need to be set. Defaults come from packages/web/defaults/site.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["firebase", "shortName", "organizer", "event", "social"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "description": "The version of this file's shape. `hb upgrade` moves it to the current one. Not in the defaults, since it describes this file.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "firebase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projectId"],
+      "properties": {
+        "projectId": {
+          "description": "The Firebase project the site deploys to.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
+        }
+      }
+    },
+    "url": {
+      "description": "The site's canonical URL, ending with a slash. Defaults to https://<firebase.projectId>.web.app/. Set it for a custom domain.",
+      "type": "string",
+      "pattern": "^https?://.+/$"
+    },
+    "basepath": {
+      "description": "The path the site is served from, starting and ending with a slash.",
+      "type": "string",
+      "pattern": "^/(.*/)?$"
+    },
+    "shortName": {
+      "description": "The name shown under the home screen icon.",
+      "type": "string",
+      "minLength": 1
+    },
+    "image": {
+      "description": "The image shown when the site is shared. A path in packages/web/public, or a full URL.",
+      "$ref": "#/$defs/link",
+      "type": "string",
+      "minLength": 1
+    },
+    "icon": {
+      "description": "The app icon, in packages/web/public. The build makes every size the site needs from it. A square SVG, or a square PNG of at least 512×512 pixels.",
+      "type": "string",
+      "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!//).+\\.(png|svg)$"
+    },
+    "organizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "email"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        },
+        "blog": {
+          "$ref": "#/$defs/url"
+        },
+        "email": {
+          "type": "string",
+          "pattern": "^[^@\\s]+@[^@\\s]+$"
+        },
+        "twitter": {
+          "description": "A handle, without the @.",
+          "type": "string"
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startDate", "endDate", "timezone"],
+      "if": { "properties": { "attendance": { "const": "online" } } },
+      "else": { "required": ["location"] },
+      "properties": {
+        "attendance": {
+          "description": "How people attend: at the venue, online, or both.",
+          "enum": ["inPerson", "online", "hybrid"]
+        },
+        "stream": {
+          "description": "The link to watch the event online. Needed when `attendance` is `online`.",
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "startDate": {
+          "$ref": "#/$defs/date"
+        },
+        "endDate": {
+          "$ref": "#/$defs/date"
+        },
+        "timezone": {
+          "description": "The IANA time zone of the event, for example Europe/Kyiv. Session times are in this time zone.",
+          "type": "string",
+          "pattern": "^[A-Za-z_]+(/[A-Za-z0-9_+-]+)*$"
+        },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "city", "short", "address", "pointer", "mapCenter"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "short": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "pointer": {
+              "description": "The map marker.",
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["latitude", "longitude", "zoom"],
+              "properties": {
+                "latitude": {
+                  "$ref": "#/$defs/latitude"
+                },
+                "longitude": {
+                  "$ref": "#/$defs/longitude"
+                },
+                "zoom": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 22
+                }
+              }
+            },
+            "mapCenter": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["latitude", "longitude"],
+              "properties": {
+                "latitude": {
+                  "$ref": "#/$defs/latitude"
+                },
+                "longitude": {
+                  "$ref": "#/$defs/longitude"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "published": {
+          "description": "Shows session times and tracks. Keep it false until the schedule is final.",
+          "type": "boolean"
+        },
+        "tracks": {
+          "description": "The tracks or rooms of the schedule, in the order it shows them. Sessions name them by `id`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "title"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+              "title": { "type": "string", "minLength": 1 },
+              "stream": {
+                "description": "The link to watch the track's sessions live. It wins over `event.stream`.",
+                "type": "string",
+                "pattern": "^https://"
+              },
+              "days": {
+                "description": "The days the track is on. Without it, the track is on every day.",
+                "type": "array",
+                "uniqueItems": true,
+                "minItems": 1,
+                "items": { "$ref": "#/$defs/date" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "social": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hashtag", "follow"],
+      "properties": {
+        "hashtag": {
+          "description": "Without the #.",
+          "type": "string",
+          "pattern": "^[^#\\s]+$"
+        },
+        "follow": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "url"],
+            "properties": {
+              "name": {
+                "description": "The icon name, for example twitter.",
+                "type": "string"
+              },
+              "url": {
+                "$ref": "#/$defs/url"
+              }
+            }
+          }
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "providers": {
+          "description": "Sign-in methods, in the order they are shown. `emailLink` emails a sign-in link, with no password.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["emailLink", "google", "facebook", "twitter"]
+          }
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The built-in theme.",
+          "enum": ["festival", "spotlight", "paper", "glass", "minimalist"],
+          "enumDescriptions": [
+            "A screen-printed gig poster: bold headings, ink outlines, hard shadows and patterned pastel bands.",
+            "A keynote stage: dark, tall condensed headings, centered titles and grayscale speaker photos.",
+            "A sketchbook: serif headings, handwritten labels, watercolor washes and polaroid photos with tape.",
+            "Liquid Glass: frosted panels over soft color glows, large round corners and a centered layout.",
+            "A Japanese print: cream paper, wide-set light headings, hairlines, square controls and one vermilion sun."
+          ]
+        },
+        "colorScheme": {
+          "description": "system follows the visitor's browser setting. light or dark locks the site to one scheme and hides the footer toggle. Without it, the theme's own: dark for spotlight, system for the others.",
+          "enum": ["system", "light", "dark"]
+        },
+        "density": {
+          "description": "Spacing: compact, default or roomy. Type and touch targets keep their size.",
+          "enum": ["compact", "default", "roomy"]
+        },
+        "decorations": {
+          "description": "Section patterns, rotated stickers, confetti and the hero illustration.",
+          "type": "boolean"
+        },
+        "colors": {
+          "description": "Overrides for colors of the theme's light scheme. A color without a darkColors value gets a dark version with the same hue.",
+          "$ref": "#/$defs/themeColors"
+        },
+        "darkColors": {
+          "description": "Overrides for colors of the theme's dark scheme.",
+          "$ref": "#/$defs/themeColors"
+        },
+        "fonts": {
+          "description": "Overrides for the theme's fonts. Hoverboard assumes the site has the right to use them.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "display": {
+              "type": "object",
+              "$ref": "#/$defs/font",
+              "properties": {
+                "scale": {
+                  "description": "Multiplies the display type sizes, for very wide or narrow fonts.",
+                  "type": "number",
+                  "minimum": 0.75,
+                  "maximum": 1.25
+                }
+              },
+              "unevaluatedProperties": false
+            },
+            "body": {
+              "type": "object",
+              "$ref": "#/$defs/font",
+              "unevaluatedProperties": false
+            },
+            "mono": {
+              "type": "object",
+              "$ref": "#/$defs/font",
+              "unevaluatedProperties": false
+            },
+            "accent": {
+              "description": "Stickers, eyebrows and short notes. Without one, the theme's accent font, or the display font.",
+              "type": "object",
+              "$ref": "#/$defs/font",
+              "unevaluatedProperties": false
+            }
+          }
+        },
+        "tagColors": {
+          "description": "Session tag colors by tag name, in lowercase with dashes instead of spaces.",
+          "$ref": "#/$defs/colors"
+        },
+        "badgeColors": {
+          "description": "Speaker badge colors by badge name.",
+          "$ref": "#/$defs/colors"
+        }
+      }
+    },
+    "integrations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "googleMapsApiKey": {
+          "description": "A browser key, restricted by HTTP referrer to the site's domains. Without one, the venue block shows directions but no map.",
+          "type": "string"
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "csp": {
+          "description": "Sources to add to the site's Content-Security-Policy, by directive. The browser blocks scripts, frames and other resources from origins the policy doesn't list, such as a widget you add to the site.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "script-src": { "$ref": "#/$defs/cspSources" },
+            "style-src": { "$ref": "#/$defs/cspSources" },
+            "connect-src": { "$ref": "#/$defs/cspSources" },
+            "img-src": { "$ref": "#/$defs/cspSources" },
+            "font-src": { "$ref": "#/$defs/cspSources" },
+            "frame-src": { "$ref": "#/$defs/cspSources" },
+            "media-src": { "$ref": "#/$defs/cspSources" },
+            "worker-src": { "$ref": "#/$defs/cspSources" }
+          }
+        }
+      }
+    },
+    "locales": {
+      "description": "The languages of the site. Each one other than en needs UI translations in packages/translations.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "targets"],
+      "properties": {
+        "source": {
+          "description": "The default locale, and the language of the content in packages/config/content.",
+          "$ref": "#/$defs/locale"
+        },
+        "targets": {
+          "description": "The other locales the site offers.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/locale"
+          }
+        }
+      }
+    },
+    "navigation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["route", "permalink"],
+        "properties": {
+          "route": {
+            "description": "home, or a feature that has a page. The label comes from the UI text, in the current locale.",
+            "type": "string"
+          },
+          "permalink": {
+            "type": "string",
+            "pattern": "^/"
+          }
+        }
+      }
+    },
+    "heroSettings": {
+      "description": "The top block of the home page. The text under each page title is heroDescriptions in content/resources.json.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "home": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "background": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["image"],
+              "properties": {
+                "image": {
+                  "description": "A photo behind the hero text, in packages/web/public or a URL. The hero darkens it so the text stays readable.",
+                  "$ref": "#/$defs/link"
+                }
+              }
+            },
+            "illustration": {
+              "description": "An SVG in packages/web/public, such as a line drawing of the city, shown next to the hero text. Drawn in currentColor, it follows the theme.",
+              "type": "string",
+              "pattern": "\\.svg$"
+            }
+          }
+        }
+      }
+    },
+    "callForPapers": {
+      "description": "The call for papers. While it's open, the home page and the header ask speakers to submit a talk. Dates are in event.timezone.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "closes"],
+      "properties": {
+        "url": {
+          "description": "Where speakers submit a talk, such as a Sessionize page.",
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "opens": {
+          "description": "The first day talks can be submitted. Without it, the call is open from the first deploy.",
+          "$ref": "#/$defs/date"
+        },
+        "closes": {
+          "description": "The last day talks can be submitted. Before event.startDate.",
+          "$ref": "#/$defs/date"
+        }
+      }
+    },
+    "archive": {
+      "description": "Makes the site an archived edition: read-only, with a banner on every page that links to the current edition. `hb edition switch` sets it. The features that write, and blog, demo and forkMe, must be off.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year", "current"],
+      "properties": {
+        "year": {
+          "description": "The edition's year.",
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 2999
+        },
+        "current": {
+          "description": "The address of the current edition.",
+          "$ref": "#/$defs/url"
+        }
+      }
+    },
+    "features": {
+      "description": "Turns site features on or off. Every feature is on by default, except demo and forkMe.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "attending": {
+          "description": "An /attending page with the venue, its directions and map, and how to join online.",
+          "type": "boolean"
+        },
+        "blog": {
+          "type": "boolean"
+        },
+        "codeOfConduct": {
+          "type": "boolean"
+        },
+        "demo": {
+          "description": "A banner across the top that lets visitors try the themes, spacing and brightness. For demo sites.",
+          "type": "boolean"
+        },
+        "faq": {
+          "type": "boolean"
+        },
+        "feedback": {
+          "type": "boolean"
+        },
+        "forkMe": {
+          "type": "boolean"
+        },
+        "functions": {
+          "description": "Deploys the Cloud Functions, which need the Blaze plan. Off, the site can run on the free Spark plan, without notifications.",
+          "type": "boolean"
+        },
+        "gallery": {
+          "type": "boolean"
+        },
+        "map": {
+          "type": "boolean"
+        },
+        "mySchedule": {
+          "type": "boolean"
+        },
+        "notifications": {
+          "type": "boolean"
+        },
+        "openSource": {
+          "description": "The Open Source pages: the organization's public GitHub projects, with contributors and activity. Fill them with npm run sync:github.",
+          "type": "boolean"
+        },
+        "partners": {
+          "type": "boolean"
+        },
+        "previousSpeakers": {
+          "type": "boolean"
+        },
+        "reactions": {
+          "description": "Signed-in visitors react to sessions, under the name in their public profile. Session pages only exist with schedule on.",
+          "type": "boolean"
+        },
+        "schedule": {
+          "type": "boolean"
+        },
+        "socialImages": {
+          "description": "Builds a share image for each session and speaker page, with their photos, the logo, the date and the place. Off, those pages share the speaker's photo or the site's image.",
+          "type": "boolean"
+        },
+        "speakers": {
+          "type": "boolean"
+        },
+        "subscribe": {
+          "type": "boolean"
+        },
+        "team": {
+          "type": "boolean"
+        },
+        "tickets": {
+          "type": "boolean"
+        },
+        "videos": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "url": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "link": {
+      "description": "An http, https or mailto URL, or a path on the site. Other schemes, such as `javascript:`, could run code when clicked.",
+      "type": "string",
+      "pattern": "^(?![\\s\\u0000-\\u001f])(?!.*[\\t\\n\\r])(?:https?://|mailto:|(?![A-Za-z][A-Za-z0-9+.-]*:)(?!//))"
+    },
+    "date": {
+      "description": "An ISO date, for example 2027-10-15.",
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+    },
+    "locale": {
+      "description": "A BCP 47 locale code, for example en, pt-BR or zh-Hant.",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-([A-Z]{2}|\\d{3}))?$"
+    },
+    "latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "color": {
+      "description": "A hex color, for example #673ab7.",
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+    },
+    "opaqueColor": {
+      "description": "A hex color without transparency, for example #3557e6.",
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "themeColors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "$ref": "#/$defs/opaqueColor" },
+        "onPrimary": { "$ref": "#/$defs/opaqueColor" },
+        "primaryContainer": { "$ref": "#/$defs/opaqueColor" },
+        "onPrimaryContainer": { "$ref": "#/$defs/opaqueColor" },
+        "secondary": { "$ref": "#/$defs/opaqueColor" },
+        "onSecondary": { "$ref": "#/$defs/opaqueColor" },
+        "surface": { "$ref": "#/$defs/opaqueColor" },
+        "surfaceDim": { "$ref": "#/$defs/opaqueColor" },
+        "surfaceBright": { "$ref": "#/$defs/opaqueColor" },
+        "surfaceContainer": { "$ref": "#/$defs/opaqueColor" },
+        "surfaceContainerHigh": { "$ref": "#/$defs/opaqueColor" },
+        "onSurface": { "$ref": "#/$defs/opaqueColor" },
+        "onSurfaceVariant": { "$ref": "#/$defs/opaqueColor" },
+        "outline": { "$ref": "#/$defs/opaqueColor" },
+        "outlineVariant": { "$ref": "#/$defs/opaqueColor" },
+        "ink": { "$ref": "#/$defs/opaqueColor" },
+        "focus": { "$ref": "#/$defs/opaqueColor" },
+        "error": { "$ref": "#/$defs/opaqueColor" },
+        "onError": { "$ref": "#/$defs/opaqueColor" },
+        "success": { "$ref": "#/$defs/opaqueColor" },
+        "scrim": {
+          "description": "The overlay behind dialogs and over hero photos. It may be transparent.",
+          "$ref": "#/$defs/color"
+        },
+        "accent1": { "$ref": "#/$defs/opaqueColor" },
+        "accent1Container": { "$ref": "#/$defs/opaqueColor" },
+        "onAccent1Container": { "$ref": "#/$defs/opaqueColor" },
+        "accent2": { "$ref": "#/$defs/opaqueColor" },
+        "accent2Container": { "$ref": "#/$defs/opaqueColor" },
+        "onAccent2Container": { "$ref": "#/$defs/opaqueColor" },
+        "accent3": { "$ref": "#/$defs/opaqueColor" },
+        "accent3Container": { "$ref": "#/$defs/opaqueColor" },
+        "onAccent3Container": { "$ref": "#/$defs/opaqueColor" },
+        "accent4": { "$ref": "#/$defs/opaqueColor" },
+        "accent4Container": { "$ref": "#/$defs/opaqueColor" },
+        "onAccent4Container": { "$ref": "#/$defs/opaqueColor" }
+      }
+    },
+    "font": {
+      "description": "Local files in packages/config, a font service's stylesheet, or only a family to use installed fonts.",
+      "type": "object",
+      "required": ["family"],
+      "properties": {
+        "family": {
+          "description": "The CSS font family. With neither files nor a stylesheet, a whole font stack such as \"ui-monospace, Menlo, monospace\".",
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/fontFile" }
+        },
+        "stylesheet": {
+          "description": "An https URL of a stylesheet that defines the family, such as an Adobe Fonts kit.",
+          "type": "string",
+          "pattern": "^https://"
+        }
+      },
+      "not": { "required": ["files", "stylesheet"] }
+    },
+    "fontFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "weight"],
+      "properties": {
+        "src": {
+          "description": "A woff2 or woff file, as a path in packages/config, for example fonts/brand.woff2.",
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\.\\./).+\\.woff2?$"
+        },
+        "weight": {
+          "description": "A weight such as 400, or a range such as \"300 900\" for a variable font.",
+          "oneOf": [
+            { "type": "integer", "minimum": 1, "maximum": 1000 },
+            { "type": "string", "pattern": "^\\d{1,4} \\d{1,4}$" }
+          ]
+        },
+        "style": {
+          "enum": ["normal", "italic"]
+        },
+        "unicodeRange": {
+          "description": "The characters this file covers, for example U+0000-00FF, U+0400-045F.",
+          "type": "string",
+          "pattern": "^U\\+[0-9A-Fa-f?]{1,6}(-[0-9A-Fa-f]{1,6})?( *, *U\\+[0-9A-Fa-f?]{1,6}(-[0-9A-Fa-f]{1,6})?)*$"
+        }
+      }
+    },
+    "colors": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/color"
+      }
+    },
+    "cspSources": {
+      "description": "CSP sources, such as https://widget.example.com or https://*.example.com.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[^\\s;,\"]+$"
+      }
+    }
+  }
+}

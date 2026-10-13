@@ -1,0 +1,15 @@
+import type { RootState } from '..';
+import { type CollectionState, createCollectionSlice } from '../create-collection-slice';
+import type { TeamWithoutMembers } from '../../models/team';
+import { subscribeToTeams } from '../../db/teams';
+
+export type TeamsState = CollectionState<TeamWithoutMembers>;
+
+const { reducer, selectOrFetch } = createCollectionSlice<TeamWithoutMembers>(
+  'teams',
+  subscribeToTeams,
+);
+
+export const selectTeams = (state: RootState): TeamsState => selectOrFetch(state.teams);
+
+export default reducer;

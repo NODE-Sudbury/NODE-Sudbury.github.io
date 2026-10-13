@@ -1,0 +1,1055 @@
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { dirname, join } from 'path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { deepMerge } from '../src/config/merge';
+import { FEATURES, type Feature } from '../src/config/features';
+import { festival } from '../src/themes/festival';
+import { THEMES } from '../src/themes/index';
+import { COLOR_ROLES } from '../src/themes/tokens';
+import {
+  ARCHIVE_OFF,
+  ConfigError,
+  configPaths,
+  loadConfig,
+  resolveConfig,
+  withDevBar,
+} from './resolve-config';
+import {
+  buildMarkdown,
+  customCss,
+  featureDefines,
+  heroIllustrationSvg,
+  layoutThemeCss,
+  markdownTranslations,
+  siteModule,
+  templateRenderer,
+} from './vite-plugin-site';
+
+const repoPaths = configPaths(join(import.meta.dirname, '..'), { demo: true });
+const dirsToClean: string[] = [];
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  for (const dir of dirsToClean.splice(0)) rmSync(dir, { recursive: true, force: true });
+});
+
+const readJson = (path: string): object => JSON.parse(readFileSync(path, 'utf8')) as object;
+
+const writeJson = (path: string, data: unknown) => {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, JSON.stringify(data));
+};
+
+/** The repository's config, with `site` and `resources` merged over the site files. */
+const makePaths = ({ site = {}, resources = {} }: { site?: object; resources?: object } = {}) => {
+  const root = mkdtempSync(join(tmpdir(), 'hoverboard-config-'));
+  dirsToClean.push(root);
+  writeJson(
+    join(root, 'config/site.json'),
+    deepMerge(readJson(join(repoPaths.site, 'site.json')), site),
+  );
+  writeJson(
+    join(root, 'config/content/resources.json'),
+    deepMerge(readJson(join(repoPaths.site, 'content/resources.json')), resources),
+  );
+  return { ...repoPaths, site: join(root, 'config') };
+};
+
+describe('resolveConfig', () => {
+  it('resolves the repository config', () => {
+    const { site, resources } = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    expect(site.url).toMatch(/^https:\/\//);
+    expect(site.navigation.length).toBeGreaterThan(0);
+    expect(resources.title).toBeTruthy();
+  });
+
+  it('reads the site.json defaults, then the site config over them, in separate namespaces', () => {
+    const { site, resources } = resolveConfig({
+      paths: makePaths({
+        site: { features: { forkMe: true }, navigation: [] },
+        resources: { title: 'My DevFest' },
+      }),
+      nodeEnv: 'production',
+    });
+
+    expect(site.features).toMatchObject({ forkMe: true, blog: true });
+    expect(site.navigation).toEqual([]);
+    expect(resources.title).toBe('My DevFest');
+    expect(site).not.toHaveProperty('title');
+  });
+
+  it('has no upstream defaults for content', () => {
+    const { resources } = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    expect(resources).toEqual(readJson(join(repoPaths.site, 'content/resources.json')));
+  });
+
+  it('defaults the URL to the Firebase Hosting address of the project', () => {
+    const paths = makePaths({ site: { firebase: { projectId: 'my-devfest' } } });
+
+    const { site } = resolveConfig({ paths, nodeEnv: 'production' });
+
+    expect(site.url).toBe('https://my-devfest.web.app/');
+    expect(site.image).toBe('https://my-devfest.web.app/images/social-share.jpg');
+  });
+
+  it('keeps a custom domain URL', () => {
+    const paths = makePaths({ site: { url: 'https://devfest.example.com/' } });
+
+    expect(resolveConfig({ paths, nodeEnv: 'production' }).site.url).toBe(
+      'https://devfest.example.com/',
+    );
+  });
+
+  it('makes the share image an absolute URL', () => {
+    const paths = makePaths({ site: { url: 'https://example.web.app/' } });
+
+    expect(resolveConfig({ paths, nodeEnv: 'production' }).site.image).toBe(
+      'https://example.web.app/images/social-share.jpg',
+    );
+  });
+
+  it('keeps an absolute share image URL', () => {
+    const paths = makePaths({ site: { image: 'https://cdn.example.com/share.jpg' } });
+
+    expect(resolveConfig({ paths, nodeEnv: 'production' }).site.image).toBe(
+      'https://cdn.example.com/share.jpg',
+    );
+  });
+
+  it('resolves the same config for development and production builds', () => {
+    const development = resolveConfig({ paths: repoPaths, nodeEnv: 'development' });
+    const production = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    expect(development.site).toEqual(production.site);
+    expect(development.resources).toEqual(production.resources);
+    expect(development.NODE_ENV).toBe('development');
+  });
+});
+
+describe('withDevBar', () => {
+  const config = resolveConfig({
+    paths: makePaths({ site: { features: { demo: false } } }),
+    nodeEnv: 'production',
+  });
+
+  it('turns the bar on for a build that reads the emulator', () => {
+    const dev = withDevBar(config, undefined);
+
+    expect(dev.site.features.demo).toBe(true);
+    expect({ ...dev.site.features, demo: false }).toEqual(config.site.features);
+    expect(config.site.features.demo).toBe(false);
+  });
+
+  it('leaves the features alone for every other target', () => {
+    for (const target of ['production', 'none', 'sample']) {
+      expect(withDevBar(config, target)).toBe(config);
+    }
+  });
+});
+
+describe('config validation', () => {
+  const errorsFor = (overrides: Parameters<typeof makePaths>[0]) =>
+    loadConfig({ paths: makePaths(overrides), nodeEnv: 'production' }).errors;
+
+  it('accepts the repository config', () => {
+    expect(loadConfig({ paths: repoPaths, nodeEnv: 'production' }).errors).toEqual([]);
+  });
+
+  it('reports every error with its file and path', () => {
+    expect(
+      errorsFor({
+        site: { url: 'example.com', typo: true, event: { startDate: '2027-13-01' } },
+        resources: { titel: 'DevFest' },
+      }),
+    ).toEqual([
+      'site.json: must NOT have additional properties "typo"',
+      'site.json/url: must match pattern "^https?://.+/$"',
+      'site.json/event/startDate: must match pattern "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"',
+      'content/resources.json: must NOT have additional properties "titel"',
+    ]);
+  });
+
+  it('reports missing site values', () => {
+    const paths = makePaths();
+    const site = readJson(join(paths.site, 'site.json')) as Record<string, unknown>;
+    delete site['organizer'];
+    writeJson(join(paths.site, 'site.json'), site);
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([
+      "site.json: must have required property 'organizer'",
+    ]);
+  });
+
+  it('rejects an unknown time zone', () => {
+    expect(errorsFor({ site: { event: { timezone: 'Europe/Atlantis' } } })).toEqual([
+      'site.json/event/timezone: "Europe/Atlantis" is not a known time zone',
+    ]);
+    expect(errorsFor({ site: { event: { timezone: '+03:00' } } })).toEqual([
+      'site.json/event/timezone: must match pattern "^[A-Za-z_]+(/[A-Za-z0-9_+-]+)*$"',
+    ]);
+  });
+
+  describe('attendance', () => {
+    const stream = 'https://www.youtube.com/@example/live';
+
+    it('needs the features that write off in an archived edition', () => {
+      const archive = { year: 2027, current: 'https://devfest.example/' };
+      expect(errorsFor({ site: { archive } })).toEqual(
+        ARCHIVE_OFF.map(
+          (feature) => `site.json/features/${feature}: must be off in an archived edition`,
+        ),
+      );
+      const off = Object.fromEntries(ARCHIVE_OFF.map((feature) => [feature, false]));
+      expect(errorsFor({ site: { archive, features: off } })).toEqual([]);
+      expect(errorsFor({ site: { archive: { year: 2027 } } })).toEqual([
+        "site.json/archive: must have required property 'current'",
+      ]);
+    });
+
+    it('is in person by default', () => {
+      const { site } = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+      expect(site.event.attendance).toBe('inPerson');
+      expect(site.event).not.toHaveProperty('stream');
+    });
+
+    it('needs a stream link and no map online', () => {
+      expect(errorsFor({ site: { event: { attendance: 'online' } } })).toEqual([
+        'site.json/features/map: needs a venue, and event.attendance is online',
+        'site.json/event/stream: an online event needs a link to watch it',
+      ]);
+      expect(
+        errorsFor({ site: { event: { attendance: 'online', stream }, features: { map: false } } }),
+      ).toEqual([]);
+    });
+
+    it('keeps the map and an optional stream in person and hybrid', () => {
+      expect(errorsFor({ site: { event: { attendance: 'inPerson' } } })).toEqual([]);
+      expect(errorsFor({ site: { event: { attendance: 'hybrid', stream } } })).toEqual([]);
+    });
+
+    it('warns about a hybrid event without a stream link', () => {
+      const warningsFor = (event: object) =>
+        loadConfig({ paths: makePaths({ site: { event } }), nodeEnv: 'production' }).warnings;
+
+      expect(warningsFor({ attendance: 'hybrid' })).toContain(
+        'site.json/event/stream: a hybrid event has no link to watch it, so people online have nowhere to go',
+      );
+      expect(warningsFor({ attendance: 'hybrid', stream })).toEqual([]);
+      expect(warningsFor({ attendance: 'inPerson' })).toEqual([]);
+      expect(
+        loadConfig({
+          paths: makePaths({
+            site: {
+              event: { attendance: 'hybrid' },
+              schedule: { tracks: [{ id: 'main', title: 'Main', stream }] },
+            },
+          }),
+          nodeEnv: 'production',
+        }).warnings,
+      ).toEqual([]);
+    });
+
+    it('needs a venue, except online', () => {
+      const errorsWithoutVenue = (event: object) => {
+        const paths = makePaths({ site: { event, features: { map: false } } });
+        const site = readJson(join(paths.site, 'site.json')) as { event: Record<string, unknown> };
+        delete site.event['location'];
+        writeJson(join(paths.site, 'site.json'), site);
+        return loadConfig({ paths, nodeEnv: 'production' }).errors;
+      };
+
+      expect(errorsWithoutVenue({ attendance: 'online', stream })).toEqual([]);
+      for (const attendance of ['inPerson', 'hybrid']) {
+        expect(errorsWithoutVenue({ attendance, stream })).toEqual([
+          "site.json/event: must have required property 'location'",
+        ]);
+      }
+    });
+
+    it('rejects an unknown attendance and a stream that is not https', () => {
+      expect(
+        errorsFor({ site: { event: { attendance: 'remote', stream: 'http://example.com/live' } } }),
+      ).toEqual([
+        'site.json/event/attendance: must be equal to one of the allowed values',
+        'site.json/event/stream: must match pattern "^https://"',
+      ]);
+    });
+  });
+
+  it('requires a valid Firebase project ID', () => {
+    const paths = makePaths();
+    const site = readJson(join(paths.site, 'site.json')) as Record<string, unknown>;
+    delete site['firebase'];
+    writeJson(join(paths.site, 'site.json'), site);
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([
+      "site.json: must have required property 'firebase'",
+    ]);
+    expect(errorsFor({ site: { firebase: { projectId: 'My Project' } } })).toEqual([
+      'site.json/firebase/projectId: must match pattern "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"',
+    ]);
+  });
+
+  it('rejects colors that are not hex colors', () => {
+    expect(errorsFor({ site: { theme: { tagColors: { web: 'red; } body {' } } } })).toEqual([
+      'site.json/theme/tagColors/web: must match pattern "^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"',
+    ]);
+  });
+
+  it('rejects unknown sign-in providers', () => {
+    expect(errorsFor({ site: { auth: { providers: ['myspace'] } } })).toEqual([
+      'site.json/auth/providers/0: must be equal to one of the allowed values',
+    ]);
+  });
+
+  it('rejects tracks with the same ID, and track days outside the event', () => {
+    const event = { startDate: '2027-10-15', endDate: '2027-10-16' };
+    const tracks = [
+      { id: 'main', title: 'Main hall' },
+      { id: 'main', title: 'Room 2', days: ['2027-10-16', '2027-10-17'] },
+    ];
+
+    expect(
+      errorsFor({
+        site: { event, schedule: { tracks } },
+        resources: { attendingPage: { doors: [] } },
+      }),
+    ).toEqual([
+      'site.json/schedule/tracks/1/id: "main" is the ID of another track',
+      'site.json/schedule/tracks/1/days/1: "2027-10-17" is not between event.startDate and event.endDate',
+    ]);
+    expect(errorsFor({ site: { schedule: { tracks: [{ id: 'Main Hall', title: '' }] } } })).toEqual(
+      [
+        'site.json/schedule/tracks/0/id: must match pattern "^[a-z0-9]+(-[a-z0-9]+)*$"',
+        'site.json/schedule/tracks/0/title: must NOT have fewer than 1 characters',
+      ],
+    );
+  });
+
+  it('takes a call for papers that closes before the event, and opens before it closes', () => {
+    const event = { startDate: '2027-10-15', endDate: '2027-10-16' };
+    const url = 'https://example.com/cfp';
+    const errorsWith = (callForPapers: object) =>
+      errorsFor({ site: { event, callForPapers }, resources: { attendingPage: { doors: [] } } });
+
+    expect(errorsWith({ url, closes: '2027-10-14' })).toEqual([]);
+    expect(errorsWith({ url, opens: '2027-10-16', closes: '2027-10-15' })).toEqual([
+      'site.json/callForPapers/closes: "2027-10-15" is not before event.startDate',
+      'site.json/callForPapers/opens: "2027-10-16" is after callForPapers.closes',
+    ]);
+    expect(errorsWith({ url: 'http://example.com', closes: '2027' })).toEqual([
+      'site.json/callForPapers/url: must match pattern "^https://"',
+      'site.json/callForPapers/closes: must match pattern "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"',
+    ]);
+  });
+
+  it('needs a sign-in method when a feature needs sign-in', () => {
+    expect(errorsFor({ site: { auth: { providers: [] } } })).toEqual([
+      'site.json/auth/providers: mySchedule and feedback need a way to sign in, and there is none',
+    ]);
+    expect(
+      errorsFor({
+        site: { auth: { providers: [] }, features: { mySchedule: false, feedback: false } },
+      }),
+    ).toEqual([]);
+  });
+
+  it('rejects navigation to unknown routes', () => {
+    expect(
+      errorsFor({
+        site: { navigation: [{ route: 'sponsors', permalink: '/sponsors' }] },
+      }),
+    ).toEqual(['site.json/navigation/0/route: "sponsors" is not home or a feature with a page']);
+  });
+
+  it('rejects navigation to a feature without a page', () => {
+    expect(
+      errorsFor({
+        site: { navigation: [{ route: 'gallery', permalink: '/#gallery' }] },
+      }),
+    ).toEqual(['site.json/navigation/0/route: "gallery" is not home or a feature with a page']);
+  });
+
+  it('rejects images that do not exist', () => {
+    expect(errorsFor({ site: { image: 'images/missing.jpg' } })).toEqual([
+      'site.json/image: "images/missing.jpg" is not in packages/config/public or packages/web/public',
+    ]);
+  });
+
+  describe('attendingPage', () => {
+    it('is optional', () => {
+      const paths = makePaths();
+      const file = join(paths.site, 'content/resources.json');
+      const resources = readJson(file) as Record<string, unknown>;
+      delete resources['attendingPage'];
+      writeJson(file, resources);
+
+      expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([]);
+    });
+
+    it('needs images that exist, each with alt text', () => {
+      expect(
+        errorsFor({
+          resources: {
+            attendingPage: {
+              photo: { image: '/images/missing.jpg', alt: 'The venue' },
+              floorPlan: { image: '/images/team.jpg' },
+            },
+          },
+        }),
+      ).toEqual([
+        "content/resources.json/attendingPage/floorPlan: must have required property 'alt'",
+      ]);
+      expect(
+        errorsFor({
+          resources: {
+            attendingPage: {
+              photo: { image: '/images/missing.jpg', alt: 'The venue' },
+              floorPlan: { image: '/images/team.jpg', alt: 'The floor plan' },
+            },
+          },
+        }),
+      ).toEqual([
+        'content/resources.json/attendingPage/photo/image: "/images/missing.jpg" is not in packages/config/public or packages/web/public',
+      ]);
+    });
+
+    it('needs a title for other ways to get there and other topics', () => {
+      expect(
+        errorsFor({
+          resources: {
+            attendingPage: {
+              gettingThere: [{ mode: 'other', text: 'Land on the roof.' }],
+              atVenue: [{ topic: 'teleporter', text: 'Room 2.' }],
+            },
+          },
+        }),
+      ).toEqual([
+        "content/resources.json/attendingPage/gettingThere/0: must have required property 'title'",
+        'content/resources.json/attendingPage/atVenue/0/topic: must be equal to one of the allowed values',
+      ]);
+    });
+
+    it("rejects doors outside the event's days, at bad times, or closing before they open", () => {
+      const event = { startDate: '2027-10-15', endDate: '2027-10-16' };
+      const doors = [
+        { day: '2027-10-15', open: '08:00', close: '20:00' },
+        { day: '2027-10-17', open: '09:00', close: '08:00' },
+      ];
+
+      expect(errorsFor({ site: { event }, resources: { attendingPage: { doors } } })).toEqual([
+        'content/resources.json/attendingPage/doors/1/day: "2027-10-17" is not between event.startDate and event.endDate',
+        'content/resources.json/attendingPage/doors/1/close: "08:00" is not after open, "09:00"',
+      ]);
+      expect(
+        errorsFor({
+          site: { event },
+          resources: {
+            attendingPage: { doors: [{ day: '2027-10-15', open: '8:00', close: '24:00' }] },
+          },
+        }),
+      ).toEqual([
+        'content/resources.json/attendingPage/doors/0/open: must match pattern "^([01]\\d|2[0-3]):[0-5]\\d$"',
+        'content/resources.json/attendingPage/doors/0/close: must match pattern "^([01]\\d|2[0-3]):[0-5]\\d$"',
+      ]);
+    });
+
+    it('rejects booking links that could run code', () => {
+      expect(
+        errorsFor({
+          resources: {
+            attendingPage: {
+              accommodation: { hotels: [{ name: 'Hotel', url: 'javascript:alert(1)' }] },
+            },
+          },
+        }),
+      ).toHaveLength(1);
+    });
+  });
+
+  it('rejects an icon that is not a PNG or SVG in packages/web/public', () => {
+    expect(errorsFor({ site: { icon: 'images/missing.png' } })).toEqual([
+      'site.json/icon: "images/missing.png" is not in packages/config/public or packages/web/public',
+    ]);
+    expect(errorsFor({ site: { icon: 'https://example.com/icon.png' } })).toEqual([
+      expect.stringMatching(/^site\.json\/icon: must match pattern/),
+    ]);
+    expect(errorsFor({ site: { icon: 'images/social-share.jpg' } })).toEqual([
+      expect.stringMatching(/^site\.json\/icon: must match pattern/),
+    ]);
+  });
+
+  it('rejects a hero illustration that is not an SVG in packages/web/public', () => {
+    expect(
+      errorsFor({ site: { heroSettings: { home: { illustration: '/images/missing.svg' } } } }),
+    ).toEqual([
+      'site.json/heroSettings/home/illustration: "/images/missing.svg" is not in packages/config/public or packages/web/public',
+    ]);
+    expect(
+      errorsFor({
+        site: { heroSettings: { home: { illustration: 'https://example.com/city.svg' } } },
+      }),
+    ).toEqual([
+      'site.json/heroSettings/home/illustration: "https://example.com/city.svg" is not in packages/config/public or packages/web/public',
+    ]);
+    expect(
+      errorsFor({ site: { heroSettings: { home: { illustration: '/images/logo.png' } } } }),
+    ).toEqual(['site.json/heroSettings/home/illustration: must match pattern "\\.svg$"']);
+  });
+
+  it('rejects a hero illustration with content that could run on the site', () => {
+    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    dirsToClean.push(publicDir);
+    writeFileSync(
+      join(publicDir, 'city.svg'),
+      '<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"><script>alert(1)</script></svg>',
+    );
+    const paths = {
+      ...makePaths({ site: { heroSettings: { home: { illustration: '/city.svg' } } } }),
+      public: [publicDir],
+    };
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toContain(
+      'site.json/heroSettings/home/illustration: "/city.svg" has content that could run on the site, which the build would remove: onload on <svg>, <script>',
+    );
+  });
+
+  it('accepts CSP sources and rejects ones that would add a directive', () => {
+    expect(
+      errorsFor({ site: { security: { csp: { 'frame-src': ['https://widget.example.com'] } } } }),
+    ).toEqual([]);
+    expect(
+      errorsFor({
+        site: {
+          security: { csp: { 'script-src': ["'self'; frame-ancestors *"], 'base-uri': [] } },
+        },
+      }),
+    ).toEqual([
+      'site.json/security/csp: must NOT have additional properties "base-uri"',
+      expect.stringMatching(/^site\.json\/security\/csp\/script-src\/0: must match pattern/),
+    ]);
+  });
+
+  it('rejects links that could run code', () => {
+    expect(
+      errorsFor({
+        resources: {
+          galleryBlock: { callToAction: { link: 'javascript:alert(1)' } },
+          footerRelBlock: [
+            { title: 'Links', links: [{ name: 'x', url: ' javascript:alert(1)', newTab: false }] },
+          ],
+        },
+      }),
+    ).toEqual([
+      expect.stringMatching(
+        /^content\/resources\.json\/galleryBlock\/callToAction\/link: must match pattern/,
+      ),
+      expect.stringMatching(
+        /^content\/resources\.json\/footerRelBlock\/0\/links\/0\/url: must match pattern/,
+      ),
+    ]);
+  });
+
+  it('checks the hero text over a photo against the scrim', () => {
+    const photo = {
+      heroSettings: { home: { background: { image: '/images/backgrounds/home.jpg' } } },
+    };
+
+    expect(errorsFor({ site: photo })).toEqual([]);
+    expect(
+      errorsFor({ site: { ...photo, theme: { darkColors: { scrim: '#00000033' } } } }),
+    ).toEqual([
+      'site.json/heroSettings/home/background: onSurface on the scrim over a white photo has a contrast of 1.40:1 in the dark scheme, and needs 4.5:1. Make theme.darkColors.scrim darker.',
+    ]);
+  });
+
+  it('takes hero descriptions from content/resources.json, not site.json', () => {
+    expect(
+      errorsFor({
+        site: { heroSettings: { home: { description: 'Welcome' } } },
+        resources: { heroDescriptions: { teams: 'Organizers' } },
+      }),
+    ).toEqual([
+      'site.json/heroSettings/home: must NOT have additional properties "description"',
+      'content/resources.json/heroDescriptions: must NOT have additional properties "teams"',
+    ]);
+  });
+
+  it('defaults to English only', () => {
+    const { site } = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    expect(site.locales).toEqual({ source: 'en', targets: [] });
+  });
+
+  it('requires UI translations for every locale other than en', () => {
+    expect(errorsFor({ site: { locales: { source: 'es', targets: ['en', 'pt-BR'] } } })).toEqual([
+      'site.json/locales: "es" has no UI translations in packages/translations/xliff',
+      'site.json/locales: "pt-BR" has no UI translations in packages/translations/xliff',
+    ]);
+  });
+
+  it('accepts locales that have UI translations', () => {
+    const translations = mkdtempSync(join(tmpdir(), 'hoverboard-translations-'));
+    dirsToClean.push(translations);
+    writeJson(join(translations, 'xliff/es.xlf'), '');
+    const paths = {
+      ...makePaths({ site: { locales: { source: 'es', targets: ['en'] } } }),
+      translations,
+    };
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([]);
+  });
+
+  it('rejects the source locale in the targets', () => {
+    expect(errorsFor({ site: { locales: { source: 'en', targets: ['en'] } } })).toEqual([
+      'site.json/locales/targets: includes the source locale "en"',
+    ]);
+  });
+
+  it('rejects locale codes that are not BCP 47', () => {
+    expect(errorsFor({ site: { locales: { source: 'en', targets: ['../es'] } } })).toEqual([
+      'site.json/locales/targets/0: must match pattern "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-([A-Z]{2}|\\d{3}))?$"',
+    ]);
+  });
+
+  describe('event content translations', () => {
+    /** A site with `es` as a target, its UI translations, and `content/locales/es/resources.json`. */
+    const spanishSite = (
+      translation?: unknown,
+      site: object = {},
+      files: Record<string, string> = {},
+    ) => {
+      const translations = mkdtempSync(join(tmpdir(), 'hoverboard-translations-'));
+      dirsToClean.push(translations);
+      writeJson(join(translations, 'xliff/es.xlf'), '');
+      const paths = {
+        ...makePaths({ site: { locales: { source: 'en', targets: ['es'] }, ...site } }),
+        translations,
+      };
+      if (translation !== undefined) {
+        writeJson(join(paths.site, 'content/locales/es/resources.json'), translation);
+      }
+      for (const [name, text] of Object.entries(files)) {
+        mkdirSync(join(paths.site, 'content/locales/es'), { recursive: true });
+        writeFileSync(join(paths.site, 'content/locales/es', name), text);
+      }
+      return { ...loadConfig({ paths, nodeEnv: 'production' }), paths };
+    };
+
+    it('has none for the repository config', () => {
+      expect(
+        loadConfig({ paths: repoPaths, nodeEnv: 'production' }).config.contentTranslations,
+      ).toEqual({});
+    });
+
+    it('reads the translated keys of each target locale, without $schema', () => {
+      const { config, errors } = spanishSite({
+        $schema: '../../../../web/schemas/resources.schema.json',
+        title: 'DevFest en español',
+        aboutBlock: { statisticsBlock: { days: { label: 'Días' } } },
+      });
+
+      expect(errors).toEqual([]);
+      expect(config.contentTranslations).toEqual({
+        es: {
+          title: 'DevFest en español',
+          aboutBlock: { statisticsBlock: { days: { label: 'Días' } } },
+        },
+      });
+    });
+
+    it('allows a target locale without content translations', () => {
+      const { config, errors } = spanishSite();
+
+      expect(errors).toEqual([]);
+      expect(config.contentTranslations).toEqual({});
+    });
+
+    it('rejects keys that are not in content/resources.json', () => {
+      expect(
+        spanishSite({ titel: 'DevFest', aboutBlock: { heading: 'Acerca' }, faq: '/x.md' }).errors,
+      ).toEqual([
+        'content/locales/es/resources.json/titel: is not in content/resources.json',
+        'content/locales/es/resources.json/aboutBlock/heading: is not in content/resources.json',
+        'content/locales/es/resources.json/faq: is not in content/resources.json',
+      ]);
+    });
+
+    it('rejects values the schema does not allow', () => {
+      expect(spanishSite({ title: 5 }).errors).toEqual([
+        'content/locales/es/resources.json/title: must be string',
+      ]);
+    });
+
+    it("checks the attending page's doors that the translation sets", () => {
+      expect(
+        spanishSite({
+          attendingPage: { doors: [{ day: '2017-10-20', open: '08:00', close: '20:00' }] },
+        }).errors,
+      ).toEqual([
+        'content/locales/es/resources.json/attendingPage/doors/0/day: "2017-10-20" is not between event.startDate and event.endDate',
+      ]);
+    });
+
+    it('rejects a file that is not an object', () => {
+      expect(spanishSite(['DevFest']).errors).toEqual([
+        'content/locales/es/resources.json: must be an object',
+      ]);
+    });
+
+    it('rejects a locale folder that is not a target', () => {
+      expect(
+        spanishSite({ title: 'DevFest' }, { locales: { source: 'en', targets: [] } }).errors,
+      ).toEqual(['content/locales/es: "es" is not in site.json/locales/targets']);
+    });
+
+    it('lists the translated markdown pages of each locale', () => {
+      const { config, errors, paths } = spanishSite(
+        undefined,
+        {},
+        {
+          'faq.md': '# Preguntas',
+          '.DS_Store': '',
+        },
+      );
+
+      expect(errors).toEqual([]);
+      expect(config.contentMarkdown).toEqual({
+        es: { faq: join(paths.site, 'content/locales/es/faq.md') },
+      });
+      expect(config.contentTranslations).toEqual({});
+    });
+
+    it('rejects other files in a locale folder', () => {
+      expect(spanishSite(undefined, {}, { 'FAQ.md': '# Preguntas' }).errors).toEqual([
+        'content/locales/es/FAQ.md: is not resources.json, faq.md, or coc.md',
+      ]);
+    });
+  });
+
+  it('rejects unknown features', () => {
+    expect(errorsFor({ site: { features: { sponsors: true } } })).toEqual([
+      'site.json/features: must NOT have additional properties "sponsors"',
+    ]);
+  });
+
+  it('rejects features whose required features are off', () => {
+    expect(errorsFor({ site: { features: { schedule: false } } })).toEqual([
+      'site.json/features/feedback: needs schedule, which is off',
+      'site.json/features/mySchedule: needs schedule, which is off',
+    ]);
+  });
+
+  it('accepts the map without a Google Maps key, which then shows only directions', () => {
+    const paths = makePaths();
+    const site = readJson(join(paths.site, 'site.json')) as Record<string, unknown>;
+    delete site['integrations'];
+    writeJson(join(paths.site, 'site.json'), site);
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([]);
+  });
+
+  it('rejects content links to features that are off', () => {
+    expect(errorsFor({ site: { features: { faq: false, team: false } } })).toEqual([
+      'content/resources.json/footerRelBlock/2/links/4/url: "/faq" links to faq, which is off',
+      'content/resources.json/aboutOrganizerBlock/blocks/0/callToAction/link: "/team" links to team, which is off',
+    ]);
+  });
+
+  it('lists every feature in the schema', () => {
+    const schema = readJson(join(repoPaths.schemas, 'site.schema.json')) as {
+      properties: { features: { properties: object } };
+    };
+
+    expect(Object.keys(schema.properties.features.properties)).toEqual([...FEATURES]);
+  });
+
+  it('names the file with invalid JSON', () => {
+    const paths = makePaths();
+    writeFileSync(join(paths.site, 'content/resources.json'), '{\n  "title": "DevFest",\n}\n');
+
+    expect(() => loadConfig({ paths, nodeEnv: 'production' })).toThrow(ConfigError);
+    expect(() => loadConfig({ paths, nodeEnv: 'production' })).toThrow(
+      /content\/resources\.json: is not valid JSON\. .*\(line 3 column 1\)/,
+    );
+  });
+
+  it('fails the build with every error', () => {
+    const paths = makePaths({ site: { typo: true }, resources: { titel: 'DevFest' } });
+
+    expect(() => resolveConfig({ paths, nodeEnv: 'production' })).toThrow(ConfigError);
+    expect(() => resolveConfig({ paths, nodeEnv: 'production' })).toThrow(/typo[\s\S]*titel/);
+  });
+});
+
+describe('featureDefines', () => {
+  it('defines each flag as a literal, and the object for dynamic lookups', () => {
+    const features = Object.fromEntries(
+      FEATURES.map((feature) => [feature, feature !== 'blog']),
+    ) as Record<Feature, boolean>;
+
+    const defines = featureDefines(features);
+
+    expect(defines['__HB_FEATURES__.blog']).toBe('false');
+    expect(defines['__HB_FEATURES__.team']).toBe('true');
+    expect(JSON.parse(defines['__HB_FEATURES__'] ?? '')).toEqual(features);
+  });
+});
+
+describe('markdownTranslations', () => {
+  it('renders each translated page into a hashed file and points the translation at it', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-markdown-'));
+    dirsToClean.push(dir);
+    writeFileSync(join(dir, 'faq.md'), '# Preguntas de {{ name }}');
+    const config = {
+      ...resolveConfig({ paths: repoPaths, nodeEnv: 'production' }),
+      contentTranslations: { es: { title: 'DevFest en español' } },
+      contentMarkdown: { es: { faq: join(dir, 'faq.md') } },
+    };
+
+    const { files, contentTranslations } = markdownTranslations(config, (template) =>
+      template.replace('{{ name }}', 'DevFest'),
+    );
+
+    expect(files).toEqual([
+      {
+        fileName: expect.stringMatching(/^locales\/es-faq-[0-9a-f]{8}\.md$/),
+        source: '# Preguntas de DevFest',
+      },
+    ]);
+    expect(contentTranslations).toEqual({
+      es: { title: 'DevFest en español', faq: `/${files[0]!.fileName}` },
+    });
+    expect(config.contentTranslations).toEqual({ es: { title: 'DevFest en español' } });
+  });
+});
+
+describe('buildMarkdown', () => {
+  it('renders the markdown pages with the site config and reads the posts', () => {
+    const { pages, posts } = buildMarkdown(repoPaths.site, (template) =>
+      template.replaceAll('{{', '[').replaceAll('}}', ']'),
+    );
+
+    expect(Object.keys(pages)).toEqual(['faq', 'coc']);
+    expect(pages.faq).not.toContain('{{');
+    expect(Object.keys(posts)).toContain('2017-02-12-c4p.md');
+  });
+
+  it('skips markdown that a site does not have', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-markdown-'));
+    dirsToClean.push(dir);
+
+    expect(buildMarkdown(dir, (template) => template)).toEqual({ pages: {}, posts: {} });
+  });
+});
+
+describe('templateRenderer', () => {
+  it('renders the site config into a template', () => {
+    const config = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+    const site = { ...config.site, locales: { source: 'es', targets: [] } };
+
+    expect(templateRenderer({ ...config, site })('{{ site.locales.source }}')).toBe('es');
+  });
+});
+
+describe('siteModule', () => {
+  const config = {
+    ...resolveConfig({ paths: repoPaths, nodeEnv: 'production' }),
+    contentTranslations: { es: { title: 'DevFest en español' } },
+  };
+  const plugin = siteModule(config, {
+    siteDir: repoPaths.site,
+    publicDirs: repoPaths.public,
+    build: { sha: 'abc1234', time: '2027-10-15T09:00:00.000Z' },
+  });
+  const resolveId = plugin.resolveId as (id: string) => string | undefined;
+  const load = plugin.load as (id: string) => Promise<string | undefined>;
+
+  it('lazy-loads each content translation from its own module', async () => {
+    const code = (await load(resolveId('virtual:hoverboard/site')!))!;
+
+    expect(code).toContain(`export const resources = ${JSON.stringify(config.resources)};`);
+    expect(code).toContain(
+      'export const contentTranslations = {"es": () => import("virtual:hoverboard/content/es")};',
+    );
+    expect(code).toContain('export const heroIllustration = undefined;');
+    expect(code).toContain(
+      'export const build = {"sha":"abc1234","time":"2027-10-15T09:00:00.000Z"};',
+    );
+    expect(await load(resolveId('virtual:hoverboard/content/es')!)).toBe(
+      'export default {"title":"DevFest en español"};\n',
+    );
+  });
+
+  it('resolves only the locales that have a translation', () => {
+    expect(resolveId('virtual:hoverboard/content/fr')).toBeUndefined();
+    expect(resolveId('virtual:hoverboard/content/constructor')).toBeUndefined();
+  });
+
+  it('serves the theme and head data to the layout', async () => {
+    const code = (await load(resolveId('virtual:hoverboard/layout')!))!;
+
+    expect(code).toContain(`export const theme = ${JSON.stringify(config.theme)};`);
+    expect(code).toContain(
+      `export const themeCss = ${JSON.stringify(layoutThemeCss(config, repoPaths.public))};`,
+    );
+    expect(code).toContain('--hb-logo-dark-image');
+  });
+
+  it("serves the site's custom.css, which can't close its style element", () => {
+    const dir = mkdtempSync(join(tmpdir(), 'hoverboard-custom-'));
+    dirsToClean.push(dir);
+    expect(customCss(dir)).toBe('');
+
+    writeFileSync(join(dir, 'custom.css'), ':root { --hb-color-primary: red; }\n');
+    expect(customCss(dir)).toBe(':root { --hb-color-primary: red; }\n');
+
+    writeFileSync(join(dir, 'custom.css'), '</STYLE><script>alert(1)</script>');
+    expect(() => customCss(dir)).toThrow('custom.css: must not contain "</style"');
+    const paths = makePaths();
+    writeFileSync(join(paths.site, 'custom.css'), '</style>');
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([
+      'custom.css: must not contain "</style"',
+    ]);
+  });
+
+  it('serves the theme fonts with imported file URLs', async () => {
+    const code = (await load(resolveId('virtual:hoverboard/fonts')!))!;
+
+    expect(code).toContain(
+      'import font0 from "@fontsource-variable/unbounded/files/unbounded-cyrillic-ext-wght-normal.woff2?url&no-inline";',
+    );
+    expect(code).toContain(
+      '--hb-font-display:\\"Unbounded Variable\\", \\"Unbounded Variable Fallback\\", Arial, sans-serif;',
+    );
+    expect(code).toContain('export const fontStylesheets = [];');
+  });
+});
+
+describe('heroIllustrationSvg', () => {
+  const siteWith = (illustration?: string) =>
+    ({ heroSettings: { home: { illustration } } }) as unknown as Parameters<
+      typeof heroIllustrationSvg
+    >[0];
+
+  it('reads the SVG from packages/web/public without its XML declaration', () => {
+    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    dirsToClean.push(publicDir);
+    mkdirSync(join(publicDir, 'images'));
+    writeFileSync(
+      join(publicDir, 'images/city.svg'),
+      '<?xml version="1.0"?>\n<svg viewBox="0 0 1 1"></svg>\n',
+    );
+
+    expect(heroIllustrationSvg(siteWith('/images/city.svg'), [publicDir])).toBe(
+      '<svg viewBox="0 0 1 1"></svg>',
+    );
+  });
+
+  it('is undefined without an illustration', () => {
+    expect(heroIllustrationSvg(siteWith())).toBeUndefined();
+  });
+
+  it('removes scripts and event handlers', () => {
+    const publicDir = mkdtempSync(join(tmpdir(), 'hoverboard-public-'));
+    dirsToClean.push(publicDir);
+    writeFileSync(
+      join(publicDir, 'city.svg'),
+      '<svg viewBox="0 0 1 1" onload="alert(1)"><script>alert(1)</script><path d="M0 0"/></svg>',
+    );
+
+    expect(heroIllustrationSvg(siteWith('/city.svg'), [publicDir])).toBe(
+      '<svg viewBox="0 0 1 1"><path d="M0 0"></path></svg>',
+    );
+  });
+});
+
+describe('layoutThemeCss', () => {
+  it('writes the theme with the badge and tag colors', () => {
+    const config = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    const css = layoutThemeCss(config);
+
+    expect(css).toContain(
+      `--hb-color-primary: light-dark(${festival.light.primary}, ${festival.dark.primary});`,
+    );
+    expect(css).toContain('--hb-tag-gde: #3d5afe;');
+    expect(css).toContain(`--hb-tag-android: ${config.site.theme.tagColors.android};`);
+  });
+});
+
+describe('theme', () => {
+  it('uses the festival theme, following the system color scheme', () => {
+    const { theme } = resolveConfig({ paths: repoPaths, nodeEnv: 'production' });
+
+    expect(theme).toMatchObject({
+      name: 'festival',
+      colorScheme: 'system',
+      density: 'default',
+      decorations: true,
+      light: festival.light,
+      dark: festival.dark,
+    });
+  });
+
+  it('overrides colors of the theme', () => {
+    const paths = makePaths({
+      site: { theme: { colors: { primary: '#c2185b' }, darkColors: { primary: '#ff8fb8' } } },
+    });
+
+    const { theme } = resolveConfig({ paths, nodeEnv: 'production' });
+
+    expect(theme.light.primary).toBe('#c2185b');
+    expect(theme.dark.primary).toBe('#ff8fb8');
+  });
+
+  it('rejects unknown themes, settings and colors', () => {
+    const paths = makePaths({
+      site: {
+        theme: {
+          name: 'default',
+          colorScheme: 'auto',
+          density: 'tight',
+          colors: { brand: '#000000', primary: '#3557e680' },
+        },
+      },
+    });
+
+    expect(loadConfig({ paths, nodeEnv: 'production' }).errors).toEqual([
+      'site.json/theme/name: must be equal to one of the allowed values',
+      'site.json/theme/colorScheme: must be equal to one of the allowed values',
+      'site.json/theme/density: must be equal to one of the allowed values',
+      'site.json/theme/colors: must NOT have additional properties "brand"',
+      'site.json/theme/colors/primary: must match pattern "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"',
+    ]);
+  });
+
+  it('rejects colors with too little contrast in the schemes the site uses', () => {
+    const errorsFor = (theme: object) =>
+      loadConfig({ paths: makePaths({ site: { theme } }), nodeEnv: 'production' }).errors;
+
+    expect(errorsFor({ darkColors: { onPrimary: '#ffffff' } })).toEqual([
+      'site.json/theme: onPrimary on primary has a contrast of 2.02:1 in the dark scheme, and needs 4.5:1. Change theme.darkColors.',
+    ]);
+    expect(errorsFor({ colorScheme: 'light', darkColors: { onPrimary: '#ffffff' } })).toEqual([]);
+  });
+
+  it('lists every theme and color in the schema', () => {
+    const schema = readJson(join(repoPaths.schemas, 'site.schema.json')) as {
+      properties: {
+        theme: { properties: { name: { enum: string[]; enumDescriptions: string[] } } };
+      };
+      $defs: { themeColors: { properties: object } };
+    };
+
+    expect(schema.properties.theme.properties.name.enum).toEqual(Object.keys(THEMES));
+    expect(schema.properties.theme.properties.name.enumDescriptions).toHaveLength(
+      Object.keys(THEMES).length,
+    );
+    expect(Object.keys(schema.$defs.themeColors.properties)).toEqual([...COLOR_ROLES]);
+  });
+});

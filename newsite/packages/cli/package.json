@@ -1,0 +1,36 @@
+{
+  "name": "@hoverboard/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CLI to help developers set up, run, and deploy the Hoverboard site",
+  "type": "module",
+  "bin": {
+    "hoverboard": "bin/hoverboard.js",
+    "hb": "bin/hoverboard.js"
+  },
+  "engines": {
+    "node": "22",
+    "npm": "10"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
+    "start": "tsx src/index.ts",
+    "doctor": "tsx src/index.ts doctor",
+    "setup": "tsx src/index.ts setup",
+    "emulators": "tsx src/index.ts emulators",
+    "deploy": "tsx src/index.ts deploy",
+    "config:validate": "tsx src/index.ts config validate"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "commander": "^15.0.0",
+    "firebase-admin": "^14.5.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.6",
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,100 @@
+import { msg } from '@lit/localize';
+import { navigationLabel } from '../components/shell/navigation-label';
+import { attendingPage } from '../config/site';
+import { getScheduleDay } from './dates';
+import type { RouteLocation } from './navigation';
+
+export type Page =
+  | 'attending'
+  | 'blog'
+  | 'coc'
+  | 'faq'
+  | 'notFound'
+  | 'offline'
+  | 'openSource'
+  | 'previousSpeakers'
+  | 'schedule'
+  | 'speakers'
+  | 'team';
+
+interface PageText {
+  title: string;
+  /** For the description meta tag. The visible hero description is site content. */
+  metaDescription: string;
+}
+
+const PAGES: Record<Page, () => PageText> = {
+  attending: () => ({
+    title: msg('Attending', { id: 'pages.attending.title' }),
+    metaDescription:
+      attendingPage?.description ??
+      msg('How to get to the event, and how to join online', {
+        id: 'pages.attending.description',
+      }),
+  }),
+  blog: () => ({
+    title: msg('Blog', { id: 'pages.blog.title' }),
+    metaDescription: msg('Read stories from our team', { id: 'pages.blog.description' }),
+  }),
+  coc: () => ({
+    title: msg('Code of Conduct', { id: 'pages.coc.title' }),
+    metaDescription: msg(
+      'Learn more about our expectations for all those who participate in our community',
+      { id: 'pages.coc.description' },
+    ),
+  }),
+  faq: () => ({
+    title: msg('FAQs', { id: 'pages.faq.title' }),
+    metaDescription: msg('Find you answer right here!', { id: 'pages.faq.description' }),
+  }),
+  notFound: () => ({
+    title: msg('Not Found', { id: 'pages.not-found.title' }),
+    metaDescription: msg('Page not found', { id: 'pages.not-found.description' }),
+  }),
+  offline: () => ({
+    title: msg('Offline', { id: 'pages.offline.title' }),
+    metaDescription: msg('This page is not available offline', {
+      id: 'pages.offline.description',
+    }),
+  }),
+  openSource: () => ({
+    title: msg('Open Source', { id: 'pages.open-source.title' }),
+    metaDescription: msg('Open source projects built by the NODE community', {
+      id: 'pages.open-source.description',
+    }),
+  }),
+  previousSpeakers: () => ({
+    title: msg('Previous Speakers', { id: 'pages.previous-speakers.title' }),
+    metaDescription: msg('Check who was with us last years', {
+      id: 'pages.previous-speakers.description',
+    }),
+  }),
+  schedule: () => ({
+    title: msg('Events', { id: 'pages.schedule.title' }),
+    metaDescription: msg('Choose your sessions to visit', { id: 'pages.schedule.description' }),
+  }),
+  speakers: () => ({
+    title: msg('Speakers', { id: 'pages.speakers.title' }),
+    metaDescription: msg(
+      'Hear from the Googlers, Partners, and Guest Speakers who are building the future of cloud. Check back often as we add more speakers, including our customers and partners.',
+      { id: 'pages.speakers.description' },
+    ),
+  }),
+  team: () => ({
+    title: msg('Board', { id: 'pages.team.title' }),
+    metaDescription: msg('Get more info about organizers', { id: 'pages.team.description' }),
+  }),
+};
+
+/** A page's title and meta description in the current locale. Call it when rendering. */
+export const pageText = (page: Page): PageText => PAGES[page]();
+
+/** A page's title, after what it shows when that differs between pages, such as `October 13 | Schedule`. */
+export const pageTitle = (page: Page, detail?: string): string =>
+  detail ? `${detail} | ${pageText(page).title}` : pageText(page).title;
+
+/** What a schedule page shows, for its title: a day or My Schedule. `/schedule` has none. */
+export const scheduleDetail = ({ pathname, params }: RouteLocation): string | undefined => {
+  if (pathname.endsWith('/my-schedule')) return navigationLabel('mySchedule');
+  return params['id'] ? getScheduleDay(params['id']) : undefined;
+};

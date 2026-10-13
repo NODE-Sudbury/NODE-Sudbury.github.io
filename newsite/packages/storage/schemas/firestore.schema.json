@@ -1,0 +1,492 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hoverboard.dev/schemas/firestore.schema.json",
+  "title": "Hoverboard Firestore data",
+  "description": "Every Firestore document Hoverboard uses, independent of how it is shown. `$defs` describes each document, and `packages/storage/collections.ts` says which collection uses which.",
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "time": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" },
+    "order": {
+      "description": "Sort position. Lower comes first.",
+      "type": ["number", "string"]
+    },
+    "source": {
+      "description": "Where the record was imported from, for example `sessionize`. Absent for records edited in Hoverboard.",
+      "type": "string"
+    },
+    "externalId": {
+      "description": "The record's ID in `source`, so a later import updates it instead of adding a duplicate.",
+      "type": "string"
+    },
+    "link": {
+      "description": "An http, https or mailto URL, or a path on the site. Other schemes, such as `javascript:`, could run code when clicked.",
+      "type": "string",
+      "pattern": "^(?![\\s\\u0000-\\u001f])(?!.*[\\t\\n\\r])(?:https?://|mailto:|(?![A-Za-z][A-Za-z0-9+.-]*:)(?!//))"
+    },
+    "social": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["icon", "link", "name"],
+      "properties": {
+        "icon": { "type": "string" },
+        "link": { "$ref": "#/$defs/link" },
+        "name": { "type": "string" }
+      }
+    },
+    "badge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "link", "name"],
+      "properties": {
+        "description": { "type": "string" },
+        "link": { "$ref": "#/$defs/link" },
+        "name": { "type": "string" }
+      }
+    },
+    "post": {
+      "description": "A blog post. Firestore: `blog/{postId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backgroundColor", "brief", "content", "image", "published", "title"],
+      "properties": {
+        "backgroundColor": { "type": "string" },
+        "brief": { "type": "string" },
+        "content": { "type": "string" },
+        "image": { "$ref": "#/$defs/link" },
+        "published": { "$ref": "#/$defs/date" },
+        "source": {
+          "description": "Path to a markdown file with the full post.",
+          "$ref": "#/$defs/link"
+        },
+        "title": { "type": "string" }
+      }
+    },
+    "photo": {
+      "description": "A gallery photo. Firestore: `gallery/{photoId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "order"],
+      "properties": {
+        "alt": {
+          "description": "What the photo shows, for screen readers, such as \"Attendees dance at the after party.\" Without it, screen readers hear \"Gallery photo\".",
+          "type": "string"
+        },
+        "url": { "$ref": "#/$defs/link" },
+        "order": { "$ref": "#/$defs/order" }
+      }
+    },
+    "partnerGroup": {
+      "description": "A group of partners, such as a sponsor level. Firestore: `partners/{groupId}`.",
+      "type": "object",
+      "required": ["order", "title"],
+      "properties": {
+        "order": { "$ref": "#/$defs/order" },
+        "title": { "type": "string" }
+      }
+    },
+    "partnerGroupDocument": {
+      "type": "object",
+      "$ref": "#/$defs/partnerGroup",
+      "unevaluatedProperties": false
+    },
+    "partner": {
+      "description": "A partner in a group. Firestore: `partners/{groupId}/items/{partnerId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logoUrl", "name", "order", "url"],
+      "properties": {
+        "logoUrl": { "$ref": "#/$defs/link" },
+        "name": { "type": "string" },
+        "order": { "$ref": "#/$defs/order" },
+        "url": { "$ref": "#/$defs/link" }
+      }
+    },
+    "previousSession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tags", "title"],
+      "properties": {
+        "presentation": { "$ref": "#/$defs/link" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "title": { "type": "string" },
+        "videoId": { "type": "string" }
+      }
+    },
+    "previousSpeaker": {
+      "description": "A speaker from an earlier edition. Firestore: `previousSpeakers/{speakerId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bio",
+        "company",
+        "country",
+        "id",
+        "name",
+        "order",
+        "photoUrl",
+        "sessions",
+        "socials",
+        "title"
+      ],
+      "properties": {
+        "bio": { "type": "string" },
+        "company": { "type": "string" },
+        "companyLogo": { "$ref": "#/$defs/link" },
+        "country": { "type": "string" },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "order": { "$ref": "#/$defs/order" },
+        "photoUrl": { "$ref": "#/$defs/link" },
+        "sessions": {
+          "description": "Sessions by year.",
+          "type": "object",
+          "propertyNames": { "pattern": "^\\d{4}$" },
+          "additionalProperties": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/previousSession" }
+          }
+        },
+        "socials": { "type": "array", "items": { "$ref": "#/$defs/social" } },
+        "title": { "type": "string" }
+      }
+    },
+    "session": {
+      "description": "A session. Firestore: `sessions/{sessionId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "title"],
+      "properties": {
+        "complexity": { "type": "string" },
+        "day": {
+          "description": "The day of the session. Without it, the session is not on the schedule yet.",
+          "$ref": "#/$defs/date"
+        },
+        "description": { "type": "string" },
+        "endTime": {
+          "description": "When the session ends, in the event time zone.",
+          "$ref": "#/$defs/time"
+        },
+        "externalId": { "$ref": "#/$defs/externalId" },
+        "icon": { "type": "string" },
+        "image": { "$ref": "#/$defs/link" },
+        "language": { "type": "string" },
+        "presentation": { "$ref": "#/$defs/link" },
+        "source": { "$ref": "#/$defs/source" },
+        "speakers": {
+          "description": "Speaker IDs.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sponsor": {
+          "description": "The sponsor's name, for a session given to a sponsor. The schedule labels it as sponsored.",
+          "type": "string"
+        },
+        "startTime": {
+          "description": "When the session starts, in the event time zone.",
+          "$ref": "#/$defs/time"
+        },
+        "stream": {
+          "description": "The https link to watch the session live. It wins over its track's `stream` and `event.stream` in site.json.",
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "title": { "type": "string" },
+        "track": {
+          "description": "A track ID from `schedule.tracks` in site.json. Without it, the session spans every track.",
+          "type": "string"
+        },
+        "videoId": { "type": "string" }
+      },
+      "dependentRequired": {
+        "day": ["startTime", "endTime"],
+        "startTime": ["day", "endTime"],
+        "endTime": ["day", "startTime"],
+        "track": ["day"]
+      }
+    },
+    "speaker": {
+      "description": "A speaker. Firestore: `speakers/{speakerId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bio",
+        "company",
+        "companyLogo",
+        "companyLogoUrl",
+        "country",
+        "featured",
+        "name",
+        "photo",
+        "photoUrl",
+        "shortBio",
+        "socials",
+        "title"
+      ],
+      "properties": {
+        "badges": { "type": "array", "items": { "$ref": "#/$defs/badge" } },
+        "bio": { "type": "string" },
+        "company": { "type": "string" },
+        "companyLogo": { "$ref": "#/$defs/link" },
+        "companyLogoUrl": { "$ref": "#/$defs/link" },
+        "country": { "type": "string" },
+        "externalId": { "$ref": "#/$defs/externalId" },
+        "featured": { "type": "boolean" },
+        "name": { "type": "string" },
+        "order": {
+          "description": "The place of a featured speaker in the home page's speakers block. Without it on any, they shuffle.",
+          "$ref": "#/$defs/order"
+        },
+        "photo": { "$ref": "#/$defs/link" },
+        "photoUrl": { "$ref": "#/$defs/link" },
+        "pronouns": { "type": "string" },
+        "shortBio": { "type": "string" },
+        "socials": { "type": "array", "items": { "$ref": "#/$defs/social" } },
+        "source": { "$ref": "#/$defs/source" },
+        "title": { "type": "string" }
+      }
+    },
+    "team": {
+      "description": "A team. Firestore: `team/{teamId}`.",
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" }
+      }
+    },
+    "teamDocument": {
+      "type": "object",
+      "$ref": "#/$defs/team",
+      "unevaluatedProperties": false
+    },
+    "member": {
+      "description": "A team member. Firestore: `team/{teamId}/members/{memberId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "order", "photo", "photoUrl", "socials", "title"],
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "$ref": "#/$defs/order" },
+        "photo": { "$ref": "#/$defs/link" },
+        "photoUrl": { "$ref": "#/$defs/link" },
+        "socials": { "type": "array", "items": { "$ref": "#/$defs/social" } },
+        "title": { "type": "string" }
+      }
+    },
+    "ticket": {
+      "description": "A ticket. Firestore: `tickets/{ticketId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "currency", "info", "name", "price", "soldOut", "url"],
+      "properties": {
+        "available": { "type": "boolean" },
+        "currency": { "type": "string" },
+        "ends": { "type": "string" },
+        "inDemand": { "type": "boolean" },
+        "info": { "type": "string" },
+        "name": { "type": "string" },
+        "order": { "$ref": "#/$defs/order" },
+        "price": { "type": "number" },
+        "primary": { "type": "boolean" },
+        "regular": { "type": "boolean" },
+        "salesClose": {
+          "description": "The last day of sales, in event.timezone. After it, the ticket says sales are closed.",
+          "$ref": "#/$defs/date"
+        },
+        "salesOpen": {
+          "description": "The first day of sales, in event.timezone. Before it, the ticket says when it goes on sale.",
+          "$ref": "#/$defs/date"
+        },
+        "soldOut": { "type": "boolean" },
+        "starts": { "type": "string" },
+        "url": { "$ref": "#/$defs/link" }
+      }
+    },
+    "video": {
+      "description": "A featured video. Firestore: `videos/{videoId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["speakers", "thumbnail", "title", "youtubeId"],
+      "properties": {
+        "order": { "$ref": "#/$defs/order" },
+        "speakers": { "type": "string" },
+        "thumbnail": { "$ref": "#/$defs/link" },
+        "title": { "type": "string" },
+        "youtubeId": { "type": "string" }
+      }
+    },
+    "timestamp": {
+      "description": "A Firestore timestamp, written as JSON for validation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$timestamp"],
+      "properties": {
+        "$timestamp": {
+          "description": "ISO 8601 in UTC.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$"
+        }
+      }
+    },
+    "reference": {
+      "description": "A Firestore document reference, written as JSON for validation. Hoverboard stores IDs, not references.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$reference"],
+      "properties": {
+        "$reference": { "description": "The document's path.", "type": "string" }
+      }
+    },
+    "email": {
+      "type": "string",
+      "maxLength": 254,
+      "pattern": "^[^@ ]+@[^@ ]+[.][^@ ]+$"
+    },
+    "name": { "type": "string", "maxLength": 100 },
+    "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+    "feedback": {
+      "description": "A signed-in visitor's rating of a session. Firestore: `sessions/{sessionId}/feedback/{userId}`, where `userId` is also the document ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comment", "contentRating", "styleRating", "userId"],
+      "properties": {
+        "comment": { "type": "string", "maxLength": 256 },
+        "contentRating": { "$ref": "#/$defs/rating" },
+        "styleRating": { "$ref": "#/$defs/rating" },
+        "userId": { "type": "string" }
+      }
+    },
+    "featuredSessions": {
+      "description": "A signed-in visitor's saved sessions, by session ID. Firestore: `featuredSessions/{userId}`.",
+      "type": "object",
+      "maxProperties": 500,
+      "additionalProperties": { "type": "boolean" }
+    },
+    "profile": {
+      "description": "What other visitors see of a signed-in visitor, such as who reacted to a session. Firestore: `profiles/{userId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "photoUrl", "updatedAt"],
+      "properties": {
+        "name": { "type": "string", "maxLength": 100, "pattern": "\\S" },
+        "photoUrl": {
+          "description": "The photo from the visitor's sign-in provider, or an empty string.",
+          "type": "string"
+        },
+        "updatedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "reactionId": {
+      "enum": ["applause", "love", "insightful", "mind-blown", "funny"]
+    },
+    "reaction": {
+      "description": "A signed-in visitor's reactions to a session. Firestore: `sessions/{sessionId}/reactions/{userId}`, where `userId` is also the document ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reactions", "updatedAt", "userId"],
+      "properties": {
+        "reactions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/reactionId" }
+        },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "userId": { "type": "string" }
+      }
+    },
+    "notificationsUser": {
+      "description": "The push tokens of a signed-in visitor's devices, for session reminders. Firestore: `notificationsUsers/{userId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokens"],
+      "properties": {
+        "tokens": {
+          "type": "object",
+          "maxProperties": 20,
+          "additionalProperties": { "const": true }
+        }
+      }
+    },
+    "notificationsSubscriber": {
+      "description": "A device subscribed to general notifications. Firestore: `notificationsSubscribers/{token}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["updatedAt", "value"],
+      "properties": {
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "value": { "const": true }
+      }
+    },
+    "subscriber": {
+      "description": "A visitor who asked for updates by email. Firestore: `subscribers/{subscriberId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["email", "firstName", "lastName"],
+      "properties": {
+        "email": { "$ref": "#/$defs/email" },
+        "firstName": { "$ref": "#/$defs/name" },
+        "lastName": { "$ref": "#/$defs/name" }
+      }
+    },
+    "potentialPartner": {
+      "description": "A company that asked about partnering. Firestore: `potentialPartners/{partnerId}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["companyName", "email", "fullName"],
+      "properties": {
+        "companyName": { "$ref": "#/$defs/name" },
+        "email": { "$ref": "#/$defs/email" },
+        "fullName": { "$ref": "#/$defs/name" }
+      }
+    },
+    "notificationsConfig": {
+      "description": "Settings for push notifications. Firestore: `config/notifications`.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "icon": {
+          "description": "The icon notifications show, unless one sets its own.",
+          "$ref": "#/$defs/link"
+        }
+      }
+    },
+    "notification": {
+      "description": "A general notification. Adding one sends it to every subscribed device. Firestore: `notifications/{id}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body", "title"],
+      "properties": {
+        "body": { "type": "string" },
+        "icon": { "$ref": "#/$defs/link" },
+        "path": {
+          "description": "The page the notification opens.",
+          "$ref": "#/$defs/link"
+        },
+        "title": { "type": "string" }
+      }
+    },
+    "sentNotification": {
+      "description": "A session reminder that was sent, so it is sent once. Firestore: `sentNotifications/{id}`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["createdAt"],
+      "properties": {
+        "createdAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "migrations": {
+      "description": "The data migrations that `hb data check --fix` ran, by ID. Firestore: `config/migrations`.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["documents", "ranAt"],
+        "properties": {
+          "documents": { "description": "How many documents it changed.", "type": "number" },
+          "ranAt": { "$ref": "#/$defs/timestamp" }
+        }
+      }
+    }
+  }
+}
