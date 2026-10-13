@@ -1,0 +1,17 @@
+---
+import { loadOpenSource } from '../../data/open-source';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import type { OpenSourceProject } from '../../models/open-source';
+import Base from '../../layouts/base.astro';
+import { OpenSourceProjectPage } from '../../views/open-source-project-page';
+
+export const getStaticPaths = () =>
+  loadOpenSource().projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+
+const { project } = Astro.props as { project: OpenSourceProject };
+---
+
+<Base {...itemMetadata(project.name, project.description)} content={seedPage({})}>
+  <OpenSourceProjectPage project={project} client:load />
+</Base>
