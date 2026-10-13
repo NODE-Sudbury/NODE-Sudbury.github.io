@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This is the NODE website, the new site of the Northern Ontario Dev Exchange. It lives in `newsite/` of the `NODE-Sudbury.github.io` repository, next to the older Next.js app at the repository root. The web app is Lit components that Astro renders to static pages at build time. Most of the code and the conventions below come from the conference website template it started from, so some sections still describe Firebase, which NODE does not use for sign-in anymore.
+This is the NODE website, the site of the Northern Ontario Dev Exchange. The web app is Lit components that Astro renders to static pages at build time. Most of the code and the conventions below come from the conference website template it started from, so some sections still describe Firebase, which NODE does not use for sign-in anymore. The older Next.js site is in `archive/`.
 
 ## NODE specifics
 

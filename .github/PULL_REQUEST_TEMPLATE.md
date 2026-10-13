@@ -12,7 +12,7 @@
 
 ## Checklist
 
-- [ ] Tested locally (`npm run dev`)
+- [ ] `npm run lint` and `npm test` pass for what I changed
 - [ ] No `.env` files or API keys included
 - [ ] PR is targeting `dev` (not `main`)
 
