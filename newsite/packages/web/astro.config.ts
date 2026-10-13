@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import { env } from 'node:process';
 import { chunkFileNames } from './build/chunk-names';
 import { sitemapFilter, sitemapItem } from './build/sitemap';
+import { sitemapNoindex } from './build/sitemap-noindex';
 import { csp, type CspSite } from './build/csp';
 import { decorators } from './build/decorators';
 import { CONFIG_PATHS, production, resolveConfig, withDevBar } from './build/resolve-config';
@@ -40,6 +41,7 @@ export default defineConfig({
     },
     routes(config.site.features),
     sitemap({ filter: sitemapFilter, serialize: (item) => sitemapItem(item) }),
+    sitemapNoindex(config.site.url),
     sitePublic(CONFIG_PATHS.public[0]!),
     // Before the service worker, which precaches the pages it changes. Deploys build with
     // FIRESTORE_TARGET=production, and every other build may run on the emulators.
