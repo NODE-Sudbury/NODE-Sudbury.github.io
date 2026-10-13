@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   handleProblem,
+  memberSince,
+  publicPath,
   normalizeProfileUrl,
   profileHeadline,
   profileSocials,
@@ -118,5 +120,27 @@ describe('profileHeadline', () => {
         school: 'Laurentian University',
       }),
     ).toBe('Computer Science, Laurentian University');
+  });
+});
+
+describe('publicPath', () => {
+  const profile = { id: 'cea1bd28-92ce-42ef-98b0-0c1967f1355a', handle: 'hannan', isPublic: true };
+
+  it('is the handle address when there is a handle', () => {
+    expect(publicPath(profile)).toBe('/members/hannan');
+  });
+
+  it('is the older address with the id when there is no handle', () => {
+    expect(publicPath({ ...profile, handle: '' })).toBe(`/profile/${profile.id}`);
+  });
+
+  it('is nothing for a private profile', () => {
+    expect(publicPath({ ...profile, isPublic: false })).toBe('');
+  });
+});
+
+describe('memberSince', () => {
+  it('names the month and year they joined', () => {
+    expect(memberSince('2026-08-29T01:11:00Z')).toBe('August 2026');
   });
 });

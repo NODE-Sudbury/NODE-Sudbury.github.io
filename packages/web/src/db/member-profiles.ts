@@ -6,12 +6,15 @@ type Row = Record<string, string | boolean | null>;
 const text = (value: unknown): string => (typeof value === 'string' ? value : '');
 
 const OWN_COLUMNS =
-  'handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url, discord_tag, is_public';
+  'id, created_at, is_exclusive_member, handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url, discord_tag, is_public';
 
 const PUBLIC_COLUMNS =
-  'handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url';
+  'id, created_at, is_exclusive_member, handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url';
 
 const toPublic = (row: Row): PublicProfile => ({
+  id: text(row['id']),
+  createdAt: text(row['created_at']),
+  isExclusiveMember: row['is_exclusive_member'] === true,
   handle: text(row['handle']),
   fullName: text(row['full_name']),
   avatarUrl: text(row['avatar_url']),
@@ -81,16 +84,58 @@ export const saveOwnProfile = async (uid: string, profile: MemberProfile): Promi
   if (error) throw error;
 };
 
+/** How to find a public profile: by the handle in its address, or by the id older links use. */
+export type ProfileKey = { handle: string } | { id: string };
+
 /**
- * A public profile by its handle, from a view that never has the email or the role. Gone when the
- * member made it private or has no such handle.
+ * A public profile, from a view that never has the email or the role. Gone when the member made
+ * it private or there is no such member.
  */
-export const fetchPublicProfile = async (handle: string): Promise<PublicProfile | undefined> => {
-  const { data, error } = await getSupabase()
-    .from('public_profiles')
-    .select(PUBLIC_COLUMNS)
-    .eq('handle', handle)
-    .maybeSingle();
+export const fetchPublicProfile = async (key: ProfileKey): Promise<PublicProfile | undefined> => {
+  const query = getSupabase().from('public_profiles').select(PUBLIC_COLUMNS);
+  const { data, error } = await (
+    'handle' in key ? query.eq('handle', key.handle) : query.eq('id', key.id)
+  ).maybeSingle();
   if (error) throw error;
   return data ? toPublic(data as Row) : undefined;
+};
+
+/** The photo's largest size on disk, as the old site allowed. */
+export const AVATAR_MAX_BYTES = 5 * 1024 * 1024;
+
+/**
+ * Saves a photo for the signed-in member in the public `avatars` bucket, in their own folder
+ * (the bucket only lets a member write there), and makes it their profile photo. Returns its
+ * address. The address changes each time, so browsers do not show the old photo.
+ */
+export const uploadAvatar = async (uid: string, photo: Blob): Promise<string> => {
+  const supabase = getSupabase();
+  const path = `${uid}/avatar.jpg`;
+  const { error } = await supabase.storage
+    .from('avatars')
+    .upload(path, photo, { upsert: true, contentType: 'image/jpeg', cacheControl: '3600' });
+  if (error) throw error;
+  const url = `${supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl}?v=${Date.now()}`;
+  const { error: saveError } = await supabase
+    .from('members')
+    .update({ avatar_url: url })
+    .eq('id', uid);
+  if (saveError) throw saveError;
+  return url;
+};
+
+/** Takes the profile photo off the member's profile. Their uploaded file stays in storage. */
+export const removeAvatar = async (uid: string): Promise<void> => {
+  const { error } = await getSupabase().from('members').update({ avatar_url: null }).eq('id', uid);
+  if (error) throw error;
+};
+
+/**
+ * Whether a handle is free for the signed-in member: nobody else has it, private profiles
+ * included. A database function answers, and says nothing about who has it.
+ */
+export const isHandleAvailable = async (handle: string): Promise<boolean> => {
+  const { data, error } = await getSupabase().rpc('handle_available', { candidate: handle });
+  if (error) throw error;
+  return data === true;
 };
