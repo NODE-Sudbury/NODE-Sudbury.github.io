@@ -3,7 +3,6 @@ import { msg, str } from '@lit/localize';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import '../components/hero/simple-hero';
-import '../components/schedule/schedule-tabs';
 import '../components/shared/coming-soon';
 import '../components/shared/filter-menu';
 import '../components/ui/hb-progress';
@@ -26,14 +25,14 @@ import { ThemedComponent } from '../components/themed-component';
 const zoneName = (zone: string) => zone.replaceAll('_', ' ');
 
 /**
- * The schedule's frame: the hero, the day tabs that stay under the header, the time zone switch and
+ * The schedule's frame: the hero, the title, the time zone switch and
  * the filters. The day or My schedule is the slotted content.
  */
 @customElement('schedule-page')
 export class SchedulePage extends ThemedComponent {
   static override styles = css`
     :host {
-      --hb-schedule-tabs-height: calc(var(--hb-target-min) + 4px + 2 * var(--hb-space-3));
+      --hb-schedule-tabs-height: 0px;
       --hb-schedule-sticky-top: calc(var(--hb-header-height) + var(--hb-schedule-tabs-height));
 
       display: block;
@@ -49,27 +48,11 @@ export class SchedulePage extends ThemedComponent {
       padding-inline: var(--hb-gutter);
     }
 
-    .tabs {
-      position: sticky;
-      z-index: 5;
-      inset-block-start: var(--hb-header-height);
-      display: flex;
-      align-items: center;
-      box-sizing: border-box;
-      block-size: var(--hb-schedule-tabs-height);
-      border-block-end: 1px solid var(--hb-color-outline-variant);
-      background-color: var(--hb-bar-background);
-      backdrop-filter: var(--hb-backdrop-filter);
-    }
-
-    .tabs schedule-tabs {
-      flex: 1;
-      min-inline-size: 0;
-    }
-
-    .tabs .inner {
-      flex: 1;
-      min-inline-size: 0;
+    .title {
+      margin: 0;
+      padding-block-start: var(--hb-space-7);
+      font-size: var(--hb-text-2xl, 1.75rem);
+      font-weight: 700;
     }
 
     .toolbar {
@@ -149,11 +132,8 @@ export class SchedulePage extends ThemedComponent {
     return html`
       <simple-hero page="schedule"></simple-hero>
 
-      <div class="tabs">
-        <div class="inner"><schedule-tabs .location="${this.location}"></schedule-tabs></div>
-      </div>
-
       <div class="inner">
+        <h2 class="title">${msg('Upcoming events', { id: 'schedule.page.title' })}</h2>
         <div class="toolbar">
           <p class="zone">
             ${msg(html`Times in <strong>${zoneName(shownZone)}</strong>`, {
