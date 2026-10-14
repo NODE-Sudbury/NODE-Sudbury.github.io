@@ -40,6 +40,8 @@ jobs:
           mkdir -p "$out/images"
           cp packages/config/content/open-source.json "$out/"
           cp -r packages/config/public/images/github/. "$out/images/"
+          # Vercel builds every branch that is pushed. This one is only data, so it must not be built.
+          echo '{ "git": { "deploymentEnabled": false } }' > "$out/vercel.json"
           cd "$out"
           git init -q -b open-source-data
           git config user.name "github-actions[bot]"
