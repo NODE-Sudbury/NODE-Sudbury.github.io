@@ -14,6 +14,7 @@ import { scheduleTracks } from '../config/site';
 import { scheduleErrors } from '../schedule/build-schedule';
 import type { Content } from '../store/content';
 import { withSupabaseBoard } from './board';
+import { withSupabasePartners } from './partners';
 import { connectFirestore } from './firestore';
 import { sampleFirestore } from './sample';
 
@@ -152,8 +153,9 @@ export const loadContent = async (): Promise<Partial<Content>> => {
   if (env['FIRESTORE_TARGET'] === 'none') return emptyContent();
   const connect = async () =>
     env['FIRESTORE_TARGET'] === 'sample' ? sampleFirestore() : connectFirestore();
-  // The board is kept in Supabase, so its cards, photos and links are the ones the admins edit.
-  const read = async () => withSupabaseBoard(await readContent(await connect()));
+  // The board, the partners and the sponsors are kept in Supabase, so they are the ones the admins edit.
+  const read = async () =>
+    withSupabasePartners(await withSupabaseBoard(await readContent(await connect())));
   if (import.meta.env.DEV) return read();
   content ??= read();
   return content;

@@ -2,8 +2,7 @@ import type { Member } from '../models/member';
 import type { Team } from '../models/team';
 import type { Content } from '../store/content';
 import { profileSocials } from '../utils/member-profile';
-
-type Row = Record<string, unknown>;
+import { fetchPublicRows, type Row } from './public-rows';
 
 const text = (value: unknown): string => (typeof value === 'string' ? value : '');
 
@@ -57,26 +56,11 @@ export const withBoard = (
  * The board cards from Supabase, read with the public key as any visitor could. Undefined when this
  * build has no Supabase project or cannot reach it, so the site builds with its own board instead.
  */
-export const fetchBoardRows = async (
+export const fetchBoardRows = (
   url: string | undefined,
   anonKey: string | undefined,
-): Promise<Row[] | undefined> => {
-  if (!url || !anonKey) return undefined;
-  try {
-    const response = await fetch(
-      `${url}/rest/v1/board_members?select=*&order=sort_order.asc,name.asc`,
-      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } },
-    );
-    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-    const rows = (await response.json()) as unknown;
-    return Array.isArray(rows) ? (rows as Row[]) : undefined;
-  } catch (error) {
-    console.warn(
-      `Could not read the board from Supabase, so the site uses its own board: ${error instanceof Error ? error.message : String(error)}`,
-    );
-    return undefined;
-  }
-};
+): Promise<Row[] | undefined> =>
+  fetchPublicRows('board_members', 'sort_order.asc,name.asc', 'the board', url, anonKey);
 
 /** The content with the board from Supabase when this build can read it. */
 export const withSupabaseBoard = async (
