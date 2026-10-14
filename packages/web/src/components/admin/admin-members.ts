@@ -4,7 +4,9 @@ import { customElement, property, state } from 'lit/decorators.js';
 import type { AdminMember } from '../../models/admin-member';
 import { memberSince, profileHeadline } from '../../utils/member-profile';
 import { ThemedComponent } from '../themed-component';
+import '../shared/node-icon';
 import '../shared/speaker-photo';
+import '../ui/hb-icon-button';
 import '../ui/hb-chip';
 import '../ui/hb-text-field';
 import type { HbTextField } from '../ui/hb-text-field';
@@ -12,6 +14,9 @@ import type { HbTextField } from '../ui/hb-text-field';
 /** What the search looks at: a member's name, email, handle and where they work or study. */
 const searchText = (member: AdminMember): string =>
   [member.fullName, member.email, member.handle, profileHeadline(member)].join(' ').toLowerCase();
+
+/** How many members a page can show. The first is the default. */
+export const PAGE_SIZES = [10, 30, 50] as const;
 
 /** The members list for the admin dashboard, with a search box. Read only. */
 @customElement('admin-members')
@@ -91,6 +96,38 @@ export class AdminMembers extends ThemedComponent {
       color: inherit;
     }
 
+    .pager {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--hb-space-3) var(--hb-space-6);
+    }
+
+    .size,
+    .pages {
+      display: flex;
+      align-items: center;
+      gap: var(--hb-space-3);
+      font-size: var(--hb-text-sm);
+    }
+
+    select {
+      min-block-size: var(--hb-target-min);
+      padding: var(--hb-space-1) var(--hb-space-3);
+      border: var(--hb-border-width) solid var(--hb-border-color);
+      border-radius: var(--hb-radius-control);
+      background-color: var(--hb-color-surface-container);
+      color: inherit;
+      font: inherit;
+    }
+
+    .position {
+      min-inline-size: 4rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
     .empty {
       margin: 0;
       padding: var(--hb-space-6);
@@ -104,6 +141,15 @@ export class AdminMembers extends ThemedComponent {
 
   @state()
   private accessor query = '';
+  @state()
+  private accessor pageSize: number = PAGE_SIZES[0];
+  // Counted from 1.
+  @state()
+  private accessor page = 1;
+
+  private get pageCount(): number {
+    return Math.max(1, Math.ceil(this.shown.length / this.pageSize));
+  }
 
   private get shown(): AdminMember[] {
     const words = this.query.toLowerCase().split(/\s+/).filter(Boolean);
@@ -116,13 +162,16 @@ export class AdminMembers extends ThemedComponent {
 
   override render() {
     const { shown } = this;
+    // The list can shrink under the page, such as when the members reload.
+    const page = Math.min(this.page, this.pageCount);
+    const start = (page - 1) * this.pageSize;
     return html`
       <hb-text-field
         type="search"
         name="search"
         label="${msg('Search members', { id: 'pages.admin.members-search' })}"
         .value="${this.query}"
-        @input="${(event: Event) => (this.query = (event.target as HbTextField).value)}"
+        @input="${this.onSearch}"
       ></hb-text-field>
       <p class="summary" role="status">
         ${
@@ -133,8 +182,57 @@ export class AdminMembers extends ThemedComponent {
             : msg(str`${this.members.length} members`, { id: 'pages.admin.members-total' })
         }
       </p>
-      ${shown.length ? this.renderTable(shown) : html`<p class="empty">${this.emptyText()}</p>`}
+      ${
+        shown.length
+          ? html`${this.renderTable(shown.slice(start, start + this.pageSize))}
+            ${this.renderPager(page)}`
+          : html`<p class="empty">${this.emptyText()}</p>`
+      }
     `;
+  }
+
+  private readonly onSearch = (event: Event) => {
+    this.query = (event.target as HbTextField).value;
+    this.page = 1;
+  };
+
+  private readonly onPageSize = (event: Event) => {
+    this.pageSize = Number((event.target as HTMLSelectElement).value);
+    this.page = 1;
+  };
+
+  private renderPager(page: number) {
+    const { pageCount } = this;
+    return html`<div class="pager">
+      <label class="size">
+        ${msg('Rows per page', { id: 'pages.admin.rows-per-page' })}
+        <select @change="${this.onPageSize}">
+          ${PAGE_SIZES.map(
+            (size) =>
+              html`<option value="${size}" ?selected="${size === this.pageSize}">${size}</option>`,
+          )}
+        </select>
+      </label>
+      <nav class="pages" aria-label="${msg('Pages', { id: 'pages.admin.pages' })}">
+        <hb-icon-button
+          label="${msg('Previous page', { id: 'pages.admin.previous' })}"
+          ?disabled="${page <= 1}"
+          @click="${() => (this.page = page - 1)}"
+        >
+          <node-icon name="chevron-left"></node-icon>
+        </hb-icon-button>
+        <span class="position" role="status">
+          ${msg(str`${page} of ${pageCount}`, { id: 'pages.admin.page-of' })}
+        </span>
+        <hb-icon-button
+          label="${msg('Next page', { id: 'pages.admin.next' })}"
+          ?disabled="${page >= pageCount}"
+          @click="${() => (this.page = page + 1)}"
+        >
+          <node-icon name="chevron-right"></node-icon>
+        </hb-icon-button>
+      </nav>
+    </div>`;
   }
 
   private emptyText() {

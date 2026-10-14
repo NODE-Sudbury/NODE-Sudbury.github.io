@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/dom';
 import { html, nothing, render as litRender } from 'lit';
 import { deepQuerySelector, deepQuerySelectorAll, screen } from 'shadow-dom-testing-library';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -103,6 +104,90 @@ describe('admin-members', () => {
     litRender(nothing, document.body);
     const empty = await render([]);
     expect(empty.shadowRoot).toHaveTextContent('There are no members yet.');
+  });
+
+  describe('pagination', () => {
+    const many = Array.from({ length: 25 }, (_, index) => ({
+      ...base,
+      id: `m${index}`,
+      fullName: `Member ${String(index + 1).padStart(2, '0')}`,
+      email: `member${index + 1}@example.com`,
+      handle: `member-${index + 1}`,
+    }));
+
+    const rowCount = () => screen.getAllByShadowRole('row').length - 1;
+    const select = (shadowRoot: ShadowRoot) =>
+      deepQuerySelector<HTMLSelectElement>(shadowRoot, 'select')!;
+
+    it('shows 10 members to a page, with the page as 1 of 3', async () => {
+      const { shadowRoot } = await render(many);
+
+      expect(rowCount()).toBe(10);
+      expect(shadowRoot).toHaveTextContent('25 members');
+      expect(shadowRoot).toHaveTextContent('1 of 3');
+      expect(screen.getByShadowRole('button', { name: 'Previous page' })).toBeDisabled();
+      expect(screen.getByShadowRole('button', { name: 'Next page' })).toBeEnabled();
+    });
+
+    it('offers 10, 30 and 50 a page, and nothing else', async () => {
+      const { shadowRoot } = await render(many);
+
+      const options = [...select(shadowRoot).options].map((option) => option.value);
+      expect(options).toEqual(['10', '30', '50']);
+      expect(select(shadowRoot).value).toBe('10');
+    });
+
+    it('moves between pages, and the last page has what is left', async () => {
+      const { element, shadowRoot } = await render(many);
+
+      fireEvent.click(screen.getByShadowRole('button', { name: 'Next page' }));
+      await element.updateComplete;
+      expect(shadowRoot).toHaveTextContent('2 of 3');
+      expect(screen.getAllByShadowRole('row')[1]).toHaveTextContent('Member 11');
+
+      fireEvent.click(screen.getByShadowRole('button', { name: 'Next page' }));
+      await element.updateComplete;
+      expect(rowCount()).toBe(5);
+      expect(screen.getByShadowRole('button', { name: 'Next page' })).toBeDisabled();
+
+      fireEvent.click(screen.getByShadowRole('button', { name: 'Previous page' }));
+      await element.updateComplete;
+      expect(shadowRoot).toHaveTextContent('2 of 3');
+    });
+
+    it('shows more at once when the page size is raised, and goes back to page 1', async () => {
+      const { element, shadowRoot } = await render(many);
+      fireEvent.click(screen.getByShadowRole('button', { name: 'Next page' }));
+      await element.updateComplete;
+
+      select(shadowRoot).value = '30';
+      fireEvent.change(select(shadowRoot));
+      await element.updateComplete;
+
+      expect(rowCount()).toBe(25);
+      expect(shadowRoot).toHaveTextContent('1 of 1');
+      expect(screen.getByShadowRole('button', { name: 'Next page' })).toBeDisabled();
+    });
+
+    it('goes back to page 1 when the search changes, and pages the matches', async () => {
+      const { element, shadowRoot } = await render(many);
+      fireEvent.click(screen.getByShadowRole('button', { name: 'Next page' }));
+      await element.updateComplete;
+
+      await search(element, 'member 2');
+
+      expect(shadowRoot).toHaveTextContent('1 of 1');
+      // Member 02, 12, and 20 to 25: every name with a 2 in it.
+      expect(rowCount()).toBe(8);
+    });
+
+    it('is 1 of 1 for a short list', async () => {
+      const { shadowRoot } = await render(members);
+
+      expect(shadowRoot).toHaveTextContent('1 of 1');
+      expect(screen.getByShadowRole('button', { name: 'Previous page' })).toBeDisabled();
+      expect(screen.getByShadowRole('button', { name: 'Next page' })).toBeDisabled();
+    });
   });
 
   it('has no accessibility violations', async () => {
