@@ -49,15 +49,33 @@ Copy `packages/web/.env.example` to both files and fill in each project's URL an
 
 ## Open source data
 
-The Open Source page lists the public repositories of the organization, with contributors and activity. The numbers come from GitHub, and count the commits on each repository's default branch (`main`), so work on `dev` counts once it is released.
+The Open Source page lists the public repositories of the organization, with contributors and activity. The numbers come from GitHub and count the commits on each repository's default branch (`main`), so work on `dev` counts once it is released to `main`.
 
-Every day a workflow reads them with its own GitHub token, publishes them on the `open-source-data` branch and asks the host for a new build. The build also asks GitHub itself, and when GitHub refuses (a build has no token), it takes the published data instead. Refresh it by hand with:
+### How it stays current
+
+- **Every day** (about 09:17 UTC) the workflow `.github/workflows/refresh-open-source.yml` reads the data from GitHub with its own token, publishes it and the contributors' avatars on the `open-source-data` branch, and asks Vercel for a new build. The repository secret `SITE_DEPLOY_HOOK_URL` is the address that starts the build.
+- **Every build** also asks GitHub itself (`SYNC_GITHUB=1` is in the build command). That often fails, because a build has no token: GitHub allows 60 requests an hour for an address, and the host's builders share addresses, so GitHub refuses the build. The build then takes the data published on the `open-source-data` branch, if it is newer than what the build has, and otherwise keeps the data saved in the repository. This is why the page once showed numbers from weeks before.
+- **A new commit** shows on the page after it reaches `main`, and after the next daily run or any other build.
+
+### Refreshing it now
+
+Run the workflow, which reads GitHub, publishes the data and starts a build (about 3 minutes):
+
+```console
+gh workflow run refresh-open-source.yml
+```
+
+Or read GitHub from your own computer, which writes `packages/config/content/open-source.json` and the avatars for you to review and commit:
 
 ```console
 npm --prefix packages/web run sync:github
 ```
 
-Set `GITHUB_TOKEN` for a higher rate limit. Building with `SYNC_GITHUB=1` refreshes it first.
+Set `GITHUB_TOKEN` for a higher rate limit. Building with `SYNC_GITHUB=1` refreshes the data first.
+
+### If the numbers look old
+
+Check the `generatedAt` time at the top of the published file, `https://raw.githubusercontent.com/NODE-Sudbury/NODE-Sudbury.github.io/open-source-data/open-source.json`, and the run history of the workflow with `gh run list --workflow refresh-open-source.yml`. The build log says "Using the open source data that the daily workflow published" when it took the published data, and "Keeping the open source data from the last successful sync" when it had nothing newer.
 
 ## Events
 
