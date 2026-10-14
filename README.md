@@ -1,6 +1,19 @@
-# NODE website
+# NODE - Northern Ontario Dev Exchange
 
-The new website for NODE, the Northern Ontario Dev Exchange: events, board, blog, membership, partners and the open source projects of the NODE-Sudbury organization.
+Official website for NODE Sudbury - a community-driven tech org based in Greater Sudbury, Ontario: events, board, blog, membership, partners and the open source projects of the NODE-Sudbury organization.
+
+**Live site:** [nodesudbury.com](https://nodesudbury.com)
+**Dev site:** [dev.nodesudbury.com](https://dev.nodesudbury.com)
+
+## Tech stack
+
+- [Astro](https://astro.build) and [Lit](https://lit.dev) - static pages with web components
+- [Supabase](https://supabase.com) - sign-in, members and subscribers
+- [Vercel](https://vercel.com) - hosting and preview deployments
+
+## Contributing
+
+NODE is open to everyone - no experience level required. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get started.
 
 ## Run it
 
@@ -50,7 +63,7 @@ The Events page and each event's own page come from the event links in `packages
 
 ## License
 
-Parts of this project are used under the MIT License. See [LICENSE.md](./LICENSE.md).
+Free to use and contribute to. Commercial use is not permitted. See [LICENSE](./LICENSE) for details.
 
 ## Search engines and sharing
 

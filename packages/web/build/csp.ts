@@ -76,6 +76,10 @@ export const cspPolicy = (
   );
   const policy: CspPolicy = {
     'default-src': ["'self'"],
+    // No plugins, no <base> tag that redirects relative links, and forms only post to the site.
+    'object-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'"],
     'script-src': [
       "'self'",
       // Firebase Auth loads Google's API loader for popups, and on Safari and mobile when it starts.

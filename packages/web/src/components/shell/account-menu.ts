@@ -1,8 +1,10 @@
 import { Success } from '@abraham/remotedata';
 import { msg, str } from '@lit/localize';
 import { css, html, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { fromStore } from '../../controllers/from-store';
+import { fetchOwnAdminRole } from '../../db/admins';
+import { type AdminRole, canOpenDashboard } from '../../models/admin';
 import { signOut } from '../../store/auth';
 import { openSigninDialog } from '../../store/dialogs';
 import type { UserState } from '../../store/user';
@@ -38,6 +40,12 @@ export class AccountMenu extends ThemedComponent {
       font-weight: 600;
     }
 
+    /* Gold, so the way into the admin side stands out from the member's own links. */
+    .admin {
+      color: var(--hb-color-accent-3);
+      font-weight: 600;
+    }
+
     .email {
       color: var(--hb-color-on-surface-variant);
       font-size: var(--hb-text-sm);
@@ -46,6 +54,29 @@ export class AccountMenu extends ThemedComponent {
 
   @fromStore((state) => state.user)
   private accessor user!: UserState;
+
+  // The signed-in member's admin role, once it is known. Most members have none.
+  @state()
+  private accessor adminRole: AdminRole | undefined;
+
+  private adminRoleFor: string | undefined;
+
+  override updated() {
+    const uid = this.user instanceof Success ? this.user.data.uid : undefined;
+    if (uid === this.adminRoleFor) return;
+    this.adminRoleFor = uid;
+    this.adminRole = undefined;
+    if (uid) void this.loadAdminRole(uid);
+  }
+
+  private async loadAdminRole(uid: string) {
+    try {
+      const role = await fetchOwnAdminRole(uid);
+      if (uid === this.adminRoleFor) this.adminRole = role;
+    } catch {
+      // Without the role the menu is the member's own, which is the safe answer.
+    }
+  }
 
   override render() {
     if (!(this.user instanceof Success)) {
@@ -90,6 +121,13 @@ export class AccountMenu extends ThemedComponent {
         <a role="menuitem" href="/account"
           >${msg('My profile', { id: 'shell.account-menu.profile' })}</a
         >
+        ${
+          canOpenDashboard(this.adminRole)
+            ? html`<a class="admin" role="menuitem" href="/admin"
+                >${msg('Admin Dashboard', { id: 'shell.account-menu.admin' })}</a
+              >`
+            : nothing
+        }
         <button role="menuitem" type="button" @click="${this.signOut}">
           ${msg('Sign out', { id: 'shell.header.sign-out' })}
         </button>

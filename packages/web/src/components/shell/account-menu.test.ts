@@ -3,9 +3,10 @@ import type { User } from 'firebase/auth';
 import { fireEvent } from '@testing-library/dom';
 import { html, render as litRender, nothing } from 'lit';
 import { deepQuerySelector, screen, within } from 'shadow-dom-testing-library';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setFeatures } from '../../../__tests__/helpers/features';
 import { fixture } from '../../../__tests__/helpers/fixtures';
+import { fetchOwnAdminRole } from '../../db/admins';
 import { signOut } from '../../store/auth';
 import { openSigninDialog } from '../../store/dialogs';
 import type { AccountMenu } from './account-menu';
@@ -15,6 +16,8 @@ vi.mock('../../store/auth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../store/auth')>()),
   signOut: vi.fn(),
 }));
+
+vi.mock('../../db/admins', () => ({ fetchOwnAdminRole: vi.fn() }));
 
 vi.mock('../../store/dialogs', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../store/dialogs')>()),
@@ -36,6 +39,10 @@ const render = async (user: AccountMenu['user'] = new Initialized()) => {
 };
 
 describe('account-menu', () => {
+  beforeEach(() => {
+    vi.mocked(fetchOwnAdminRole).mockResolvedValue(undefined);
+  });
+
   afterEach(() => {
     litRender(nothing, document.body);
     vi.clearAllMocks();
@@ -85,5 +92,36 @@ describe('account-menu', () => {
     expect(
       menu().getByShadowRole('menuitem', { name: 'My profile', hidden: true }),
     ).toHaveAttribute('href', '/account');
+  });
+
+  it('puts Admin Dashboard between My profile and Sign out for an admin', async () => {
+    vi.mocked(fetchOwnAdminRole).mockResolvedValue('super_admin');
+    const { element, menu } = await render(ada);
+
+    await vi.waitFor(() => expect(element['adminRole']).toBe('super_admin'));
+    await element.updateComplete;
+
+    const link = menu().getByShadowRole('menuitem', { name: 'Admin Dashboard' });
+    expect(link).toHaveAttribute('href', '/admin');
+    const names = menu()
+      .getAllByShadowRole('menuitem')
+      .map((item) => item.textContent?.trim());
+    expect(names.indexOf('My profile')).toBeLessThan(names.indexOf('Admin Dashboard'));
+    expect(names.indexOf('Admin Dashboard')).toBeLessThan(names.indexOf('Sign out'));
+  });
+
+  it('has no Admin Dashboard for a member, or a check-in volunteer', async () => {
+    const { menu } = await render(ada);
+    await new Promise((resolve) => setTimeout(resolve));
+
+    expect(menu().queryByShadowRole('menuitem', { name: 'Admin Dashboard' })).toBeNull();
+
+    litRender(nothing, document.body);
+    vi.mocked(fetchOwnAdminRole).mockResolvedValue('check_in_volunteer');
+    const volunteer = await render(ada);
+    await vi.waitFor(() => expect(volunteer.element['adminRole']).toBe('check_in_volunteer'));
+    await volunteer.element.updateComplete;
+
+    expect(volunteer.menu().queryByShadowRole('menuitem', { name: 'Admin Dashboard' })).toBeNull();
   });
 });

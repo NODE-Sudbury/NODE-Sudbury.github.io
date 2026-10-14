@@ -236,6 +236,16 @@ export const HYDRATION_PAGES: Record<string, HydrationPage> = {
     load: () => import('../../src/views/account-page'),
     template: () => html`<account-page></account-page>`,
   },
+  'admin page': {
+    content: {},
+    load: () => import('../../src/views/admin-page'),
+    template: () => html`<admin-page section="members"></admin-page>`,
+  },
+  'unsubscribe page': {
+    content: {},
+    load: () => import('../../src/views/unsubscribe-page'),
+    template: () => html`<unsubscribe-page></unsubscribe-page>`,
+  },
   'public profile page': {
     content: {},
     load: () => import('../../src/views/public-profile-page'),

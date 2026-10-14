@@ -2,6 +2,468 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="pages.admin.action-insert">
+  <source>Added</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-update">
+  <source>Changed</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-delete">
+  <source>Deleted</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-admins">
+  <source>Team access</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-board">
+  <source>Board card</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-partners">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-sponsors">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-members">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-subscribers">
+  <source>Subscriber</source>
+</trans-unit>
+<trans-unit id="pages.admin.empty-value">
+  <source>(empty)</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-search">
+  <source>Search the activity</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-table">
+  <source>What</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-all">
+  <source>Everything</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-action">
+  <source>Action</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-any">
+  <source>Any action</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-failed">
+  <source>The activity could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-count">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.entries.length}"/> entries</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-note">
+  <source>The log shows the latest entries. Nobody can change or delete it.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-none">
+  <source>Nothing has been logged yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-when">
+  <source>When</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-who">
+  <source>Who</source>
+</trans-unit>
+<trans-unit id="pages.admin.system">
+  <source>The system</source>
+</trans-unit>
+<trans-unit id="pages.admin.details">
+  <source>Details</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-today">
+  <source>Today</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-7">
+  <source>7 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-30">
+  <source>30 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-90">
+  <source>90 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range">
+  <source>Range</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-failed">
+  <source>The numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-views">
+  <source>Page views</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-pages">
+  <source>Pages opened</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-top">
+  <source>Most viewed</source>
+</trans-unit>
+<trans-unit id="pages.admin.top-pages">
+  <source>Most viewed pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-note">
+  <source>Only the address of each page and the day are counted. No cookies, no visitor addresses, and nothing about who looked. Visitors who ask not to be tracked are not counted.</source>
+</trans-unit>
+<trans-unit id="pages.admin.chart-label">
+  <source>Views per day, from <x id="0" equiv-text="${dayLabel(first.day)}"/> to <x id="1" equiv-text="${dayLabel(last.day)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-none">
+  <source>Nothing has been counted in this range yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-search">
+  <source>Search pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-page">
+  <source>Page</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-views">
+  <source>Views</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-share">
+  <source>Share</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-none-match">
+  <source>Nothing matches your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-failed">
+  <source>The board could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${cards.length}"/> board members</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-total">
+  <source><x id="0" equiv-text="${cards.length}"/> board members</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-member">
+  <source>Add board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-note">
+  <source>These cards are not on the home page yet. The home page keeps its own board for now.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-search">
+  <source>Search the board</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-none-match">
+  <source>Nobody matches your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-none">
+  <source>There are no board members yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-title">
+  <source>Title</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-account">
+  <source>Account</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-actions">
+  <source>Actions</source>
+</trans-unit>
+<trans-unit id="pages.admin.linked">
+  <source>Linked</source>
+</trans-unit>
+<trans-unit id="pages.admin.not-linked">
+  <source>Not linked</source>
+</trans-unit>
+<trans-unit id="pages.admin.edit-board-title">
+  <source>Edit a board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-member-title">
+  <source>Add a board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-photo">
+  <source>No photo</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-choose">
+  <source>Choose photo</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-type">
+  <source>Choose a JPG, PNG or WebP photo.</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-size">
+  <source>That photo is over 2 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.admin.link-taken">
+  <source>That member already has a card. Choose someone else.</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-card-body">
+  <source>The card and its photo are deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-search">
+  <source>Search members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-total">
+  <source><x id="0" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none-match">
+  <source>No members match your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none">
+  <source>There are no members yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-member">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-email">
+  <source>Email</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-type">
+  <source>Type</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-profile">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-joined">
+  <source>Joined</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-name">
+  <source>No name yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.inactive">
+  <source>Inactive</source>
+</trans-unit>
+<trans-unit id="pages.members.student">
+  <source>Student</source>
+</trans-unit>
+<trans-unit id="pages.members.professional">
+  <source>Professional</source>
+</trans-unit>
+<trans-unit id="pages.admin.public-no-handle">
+  <source>Public, no handle</source>
+</trans-unit>
+<trans-unit id="pages.admin.private">
+  <source>Private</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-platinum">
+  <source>Platinum</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-gold">
+  <source>Gold</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-silver">
+  <source>Silver</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-bronze">
+  <source>Bronze</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-community">
+  <source>Community</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-missing">
+  <source>That sponsor or partner could not be found.</source>
+</trans-unit>
+<trans-unit id="pages.admin.back-sponsors">
+  <source>Back to sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor-title">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-partner-title">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-tier">
+  <source>Tier</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-logo">
+  <source>Logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-logo">
+  <source>No logo yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-change">
+  <source>Change logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-choose">
+  <source>Choose logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-input">
+  <source>Choose a logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-note">
+  <source>JPG, PNG or WebP, up to 2 MB.</source>
+</trans-unit>
+<trans-unit id="pages.admin.save-changes">
+  <source>Save changes</source>
+</trans-unit>
+<trans-unit id="pages.admin.add">
+  <source>Add</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-type">
+  <source>Choose a JPG, PNG or WebP logo.</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-size">
+  <source>That logo is over 2 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.admin.name-needed">
+  <source>Add a name.</source>
+</trans-unit>
+<trans-unit id="pages.admin.saved">
+  <source>Saved.</source>
+</trans-unit>
+<trans-unit id="pages.admin.rows-per-page">
+  <source>Rows per page</source>
+</trans-unit>
+<trans-unit id="pages.admin.pages">
+  <source>Pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.previous">
+  <source>Previous page</source>
+</trans-unit>
+<trans-unit id="pages.admin.page-of">
+  <source><x id="0" equiv-text="${page}"/> of <x id="1" equiv-text="${pageCount}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.next">
+  <source>Next page</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor">
+  <source>sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-partners">
+  <source>Partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-partner">
+  <source>partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.tabs">
+  <source>Sponsors and partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-failed">
+  <source>The list could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.org-total">
+  <source><x id="0" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.add-sponsor">
+  <source>Add sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-partner">
+  <source>Add partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-sponsors">
+  <source>Search sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-partners">
+  <source>Search partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.sponsors-none">
+  <source>There are no sponsors yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.partners-none">
+  <source>There are no partners yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete">
+  <source>Delete</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-title">
+  <source>Delete <x id="0" equiv-text="${deleting.name}"/>?</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-body">
+  <source>It is removed from the list and its logo is deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleting">
+  <source>Deleting...</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleted">
+  <source>Deleted.</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-super">
+  <source>Super admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-board">
+  <source>Dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-volunteer-short">
+  <source>Volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-boards">
+  <source>Boards</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-activity">
+  <source>Activity</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-board">
+  <source>Dashboard admins</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-volunteers">
+  <source>Volunteers</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-tabs">
+  <source>Boards, dashboard admins and volunteers</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-failed">
+  <source>The team could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${all.length} ${this.tabLabel(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.team-total">
+  <source><x id="0" equiv-text="${all.length} ${this.tabLabel(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board">
+  <source>Add dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-volunteer">
+  <source>Add volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.board-note">
+  <source>Only the super admin can add or remove dashboard admins.</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-search">
+  <source>Search the team</source>
+</trans-unit>
+<trans-unit id="pages.admin.board-none">
+  <source>There are no dashboard admins yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.volunteers-none">
+  <source>There are no volunteers yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-role">
+  <source>Role</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-added">
+  <source>Added</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove">
+  <source>Remove</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-title">
+  <source>Add a dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-volunteer-title">
+  <source>Add a volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.pick-search">
+  <source>Search members by name or email</source>
+</trans-unit>
+<trans-unit id="pages.admin.pick-none">
+  <source>No members to add. Someone has to sign in to the site once first.</source>
+</trans-unit>
+<trans-unit id="pages.admin.close">
+  <source>Close</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-added">
+  <source><x id="0" equiv-text="${member.fullName || member.email}"/> was added.</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove-title">
+  <source>Remove <x id="0" equiv-text="${removing.fullName || removing.email}"/>?</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove-body">
+  <source>They lose their access straight away. They stay a member of NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.removing">
+  <source>Removing...</source>
+</trans-unit>
+<trans-unit id="pages.admin.removed">
+  <source>Removed.</source>
+</trans-unit>
 <trans-unit id="attending.accommodation.book">
   <source>Book</source>
 </trans-unit>
@@ -566,6 +1028,9 @@
 <trans-unit id="shell.account-menu.profile">
   <source>My profile</source>
 </trans-unit>
+<trans-unit id="shell.account-menu.admin">
+  <source>Admin Dashboard</source>
+</trans-unit>
 <trans-unit id="shell.header.sign-out">
   <source>Sign out</source>
 </trans-unit>
@@ -1052,6 +1517,111 @@
 <trans-unit id="pages.account.saved">
   <source>Profile saved.</source>
 </trans-unit>
+<trans-unit id="pages.admin.nav-home">
+  <source>Home</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-analytics">
+  <source>Analytics</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-events">
+  <source>Events</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-emails">
+  <source>Emails</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-settings">
+  <source>Settings</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-analytics">
+  <source>See how the community and the site are growing.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-events">
+  <source>Create events and see who signed up.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-emails">
+  <source>Write to subscribers and members.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-members">
+  <source>Everyone who has joined NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-settings">
+  <source>Who helps run NODE: the board, dashboard admins and volunteers.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-sponsors">
+  <source>Keep track of the sponsors and partners of NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-admin">
+  <source>Admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-volunteer">
+  <source>Check-in volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.title">
+  <source>Admin dashboard</source>
+</trans-unit>
+<trans-unit id="pages.admin.description">
+  <source>Where the people who run NODE manage the site.</source>
+</trans-unit>
+<trans-unit id="pages.admin.sign-in">
+  <source>Sign in to open the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.denied">
+  <source>You do not have access to the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.home">
+  <source>Back to the home page</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav">
+  <source>Admin sections</source>
+</trans-unit>
+<trans-unit id="pages.admin.view-site">
+  <source>View site</source>
+</trans-unit>
+<trans-unit id="pages.admin.load-failed">
+  <source>Some numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-title">
+  <source>Add a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.edit-title">
+  <source>Edit a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.home-title">
+  <source>NODE</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-public">
+  <source>Public profiles</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-exclusive">
+  <source>Exclusive members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-subscribers">
+  <source>Subscribers</source>
+</trans-unit>
+<trans-unit id="pages.admin.overview">
+  <source>Overview</source>
+</trans-unit>
+<trans-unit id="pages.admin.jump">
+  <source>Jump to</source>
+</trans-unit>
+<trans-unit id="pages.admin.upcoming">
+  <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon">
+  <source>Coming soon</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon-body">
+  <source>This part of the dashboard is on its way.</source>
+</trans-unit>
 <trans-unit id="attending.where">
   <source>Where it is</source>
 </trans-unit>
@@ -1163,12 +1733,6 @@
 <trans-unit id="pages.members.missing">
   <source>This profile is private, or there is no member with this handle.</source>
 </trans-unit>
-<trans-unit id="pages.members.student">
-  <source>Student</source>
-</trans-unit>
-<trans-unit id="pages.members.professional">
-  <source>Professional</source>
-</trans-unit>
 <trans-unit id="schedule.page.coming-soon">
   <source>The schedule is coming soon.</source>
 </trans-unit>
@@ -1234,6 +1798,30 @@
 </trans-unit>
 <trans-unit id="pages.team.error">
   <source>Error loading teams.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.title">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.description">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.lede">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.done">
+  <source>If that email was on our list, it has been removed. You can subscribe again any time from the home page.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.error">
+  <source>Could not unsubscribe. Please try again.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.sending">
+  <source>Unsubscribing...</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.button">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.note">
+  <source>Use the same email you subscribed with.</source>
 </trans-unit>
 <trans-unit id="dialogs.signin.or">
   <source>or</source>
