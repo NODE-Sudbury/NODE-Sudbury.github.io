@@ -14,6 +14,8 @@ import { type AdminPage, type AdminSection, adminPath } from './admin-page';
 import './admin-page';
 
 vi.mock('../db/admins', () => ({ fetchOwnAdminRole: vi.fn() }));
+vi.mock('../db/admin-team', () => ({ fetchTeam: vi.fn().mockResolvedValue([]) }));
+vi.mock('../db/admin-board', () => ({ fetchBoardMembers: vi.fn().mockResolvedValue([]) }));
 vi.mock('../db/admin-members', () => ({
   fetchAdminMembers: vi.fn(),
   fetchSubscriberCount: vi.fn(),
@@ -169,6 +171,14 @@ describe('admin-page', () => {
     expect(deepQuerySelector(shadowRoot, 'admin-organization-form')).toBeInTheDocument();
     expect(deepQuerySelector(shadowRoot, 'admin-sponsors')).toBeNull();
     expect(shadowRoot).toHaveTextContent('Add a sponsor or partner');
+  });
+
+  it('shows the team on the settings section, with the role of whoever is looking', async () => {
+    const { shadowRoot } = await render('admin', { section: 'settings' });
+
+    const team = deepQuerySelector(shadowRoot, 'admin-team')!;
+    expect(team).toHaveProperty('viewerRole', 'admin');
+    expect(team).toHaveProperty('members', members);
   });
 
   it('says a section is coming soon when it has no tools yet', async () => {

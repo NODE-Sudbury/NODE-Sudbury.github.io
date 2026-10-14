@@ -5,6 +5,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import '../components/admin/admin-members';
 import '../components/admin/admin-organization-form';
 import '../components/admin/admin-sponsors';
+import '../components/admin/admin-team';
 import '../components/shared/node-icon';
 import '../components/ui/hb-button';
 import '../components/ui/hb-chip';
@@ -66,7 +67,9 @@ const about = (section: AdminSection) =>
     events: msg('Create events and see who signed up.', { id: 'pages.admin.about-events' }),
     emails: msg('Write to subscribers and members.', { id: 'pages.admin.about-emails' }),
     members: msg('Everyone who has joined NODE.', { id: 'pages.admin.about-members' }),
-    settings: msg('Settings for the site and the team.', { id: 'pages.admin.about-settings' }),
+    settings: msg('Who helps run NODE: the board, dashboard admins and volunteers.', {
+      id: 'pages.admin.about-settings',
+    }),
     sponsors: msg('Keep track of the sponsors and partners of NODE.', {
       id: 'pages.admin.about-sponsors',
     }),
@@ -432,7 +435,12 @@ export class AdminPage extends ThemedComponent {
               ? this.action
                 ? html`<admin-organization-form></admin-organization-form>`
                 : html`<admin-sponsors></admin-sponsors>`
-              : this.renderSoon(section)
+              : section === 'settings'
+                ? html`<admin-team
+                    .viewerRole="${this.adminRole}"
+                    .members="${this.members}"
+                  ></admin-team>`
+                : this.renderSoon(section)
       }
     `;
   }
