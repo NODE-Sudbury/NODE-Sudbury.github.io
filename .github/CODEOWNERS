@@ -1,0 +1,10 @@
+# Changes to these need a review from a code owner before they can merge.
+# Anything that touches the database, the pipelines, the deployment or what gets installed.
+/supabase/            @hannanmax
+/.github/             @hannanmax
+/vercel.json          @hannanmax
+/package.json         @hannanmax
+/package-lock.json    @hannanmax
+/packages/*/package.json @hannanmax
+/packages/web/build/  @hannanmax
+/packages/web/astro.config.ts @hannanmax

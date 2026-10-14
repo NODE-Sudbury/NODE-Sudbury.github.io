@@ -50,7 +50,8 @@ describe('event-card', () => {
 describe('eventDate', () => {
   it('shows the start in the event zone, or in the zone asked for', () => {
     expect(eventDate(event)).toContain('8:30');
-    expect(eventDate(event, 'America/Vancouver')).toContain('5:30');
+    // UTC, because a zone with changing rules, such as Vancouver's, differs between tzdata versions.
+    expect(eventDate(event, 'UTC')).toContain('1:30');
   });
 });
 

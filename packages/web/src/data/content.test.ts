@@ -1,7 +1,7 @@
 import type { Firestore } from 'firebase-admin/firestore';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import sampleBlog from '../../../../docs/sample-data/collections/blog.json';
-import sampleSpeakers from '../../../../docs/sample-data/collections/speakers.json';
+import sampleBlog from '../../../config/sample-data/collections/blog.json';
+import sampleSpeakers from '../../../config/sample-data/collections/speakers.json';
 import { setFeatures } from '../../__tests__/helpers/features';
 import { connectFirestore } from './firestore';
 import { loadContent, readContent } from './content';
@@ -251,7 +251,7 @@ describe('loadContent', () => {
     expect(content).not.toHaveProperty('teams');
   });
 
-  it('reads docs/sample-data without Firestore with FIRESTORE_TARGET=sample', async () => {
+  it('reads the sample data without Firestore with FIRESTORE_TARGET=sample', async () => {
     vi.stubEnv('FIRESTORE_TARGET', 'sample');
     vi.stubEnv('DEV', true);
     vi.mocked(connectFirestore).mockClear();

@@ -1,0 +1,69 @@
+name: CI
+
+# Runs on every pull request, with no secrets: a pull request from a fork gets none, and the site
+# builds from its sample data without a database. A failing check blocks the merge.
+
+on:
+  pull_request:
+    branches: [dev, main]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Lint and types
+        run: npm run lint
+      - name: Tests
+        run: |
+          npx vitest run --project web
+          npx vitest run --project Hydration
+      - name: Build, from the sample data
+        run: FIRESTORE_TARGET=sample npm run build
+
+  migrations:
+    name: Risky lines in the migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Look for risky lines
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: node packages/web/build/migration-guard.mjs
+
+  database:
+    name: Database from the migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
+      - name: Build the stack folder
+        run: echo "STACK=$(bash supabase/local/build-stack.sh)" >> "$GITHUB_ENV"
+      - name: Start a local Supabase
+        run: supabase start --workdir "$STACK" -x studio,imgproxy,edge-runtime,realtime,logflare,vector,mailpit,postgres-meta,supavisor
+      - name: Build the database from the baseline, the migrations and the seed
+        run: supabase db reset --local --yes --workdir "$STACK"
+      - name: Run the security checks
+        run: psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 -f supabase/tests/security.sql

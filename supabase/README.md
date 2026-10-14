@@ -38,3 +38,16 @@ The connection strings and passwords live in a gitignored env file, never in the
 The first five are applied to both projects. The public Team page and the home page board read the `board_members` table, and the home page's partner logos read the `partners` and `sponsors` tables, when the build can reach Supabase. They keep the sample data otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth to nineteenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
 
 See [SECURITY.md](./SECURITY.md) for how the database is protected and how to check it.
+
+## A private database for contributors
+
+`supabase/local/` builds a private Supabase on a contributor's own computer (`npm run db:local`), so nobody needs the keys of the real projects:
+
+| File           | What it is                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `baseline.sql` | The early `members` table and the few old functions that the first migrations start from. Only for a local database: the real projects already have them. Never run it against them. |
+| `seed.sql`     | Made-up people, partners and board cards.                                                                                                                                            |
+| `config.toml`  | The settings of the local Supabase (ports, sign-in redirect for `localhost:4321`).                                                                                                   |
+| `reset.sh`     | Copies these and the migrations into the ignored folder `supabase/.local-stack/`, starts Supabase there, resets the database and writes `packages/web/.env.development.local`.       |
+
+When a new migration needs something the baseline lacks, add it to `baseline.sql`. The whole chain was checked on an empty database: the baseline, all migrations and the seed, then `supabase/tests/security.sql` (99 checks passed).

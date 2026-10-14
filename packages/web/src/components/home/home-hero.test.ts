@@ -85,13 +85,13 @@ describe('home-hero', () => {
     config.callForPapers = undefined;
   });
 
-  it('names the event in the page heading, with its dates, place and description', async () => {
+  it('names the event in the page heading, with its registration number, place and description', async () => {
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
 
     expect(shadowRoot.querySelector('h1')).toHaveTextContent(title);
     const details = shadowRoot.querySelector('ul.details')!;
     expect(details).toHaveAttribute('aria-label', 'Event details');
-    expect(details).toHaveTextContent('October 13 – 14, 2017');
+    expect(details).toHaveTextContent('OCN 1001716490');
     expect(details).toHaveTextContent(location!.short);
     expect(shadowRoot).toHaveTextContent(heroDescriptions.home);
   });
@@ -132,7 +132,6 @@ describe('home-hero', () => {
     const showTickets = vi.fn();
     element.addEventListener('show-tickets', showTickets);
 
-    expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('12 days to go');
     expect(shadowRoot.querySelector('.buy-ticket')).toHaveAttribute('variant', 'cta');
     expect(shadowRoot.querySelector('.schedule')).toHaveAttribute('variant', 'outlined');
     expect(shadowRoot.querySelector('.watch-video')).toBeNull();
@@ -195,10 +194,13 @@ describe('home-hero', () => {
     expect(closed.querySelector('.submit-talk')).toBeNull();
   });
 
-  it('says the event starts tomorrow on the day before', async () => {
-    const { shadowRoot } = await renderOn('2017-10-12T12:00:00Z');
+  it('shows the short name of NODE in the sticker, before, during and after the event', async () => {
+    for (const date of ['2017-10-01T12:00:00Z', '2017-10-13T12:00:00Z', '2017-10-20T12:00:00Z']) {
+      const { shadowRoot } = await renderOn(date);
 
-    expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('Starts tomorrow');
+      expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('N.O.D.E.');
+      render(nothing, document.body);
+    }
   });
 
   it('links to the schedule when tickets are off', async () => {
@@ -224,7 +226,6 @@ describe('home-hero', () => {
   it('is live during the event, and links to what is on now, then the attending page', async () => {
     const { shadowRoot } = await renderOn('2017-10-13T12:00:00Z');
 
-    expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('Live now');
     expect(shadowRoot.querySelector('.buy-ticket')).toBeNull();
     expect(shadowRoot.querySelector('.watch-live')).toBeNull();
     expect(shadowRoot.querySelector('.schedule')).toHaveTextContent("See what's on now");
@@ -254,7 +255,6 @@ describe('home-hero', () => {
 
     expect(shadowRoot.querySelector('.buy-ticket')).toBeNull();
     expect(shadowRoot.querySelector('.sale')).toHaveTextContent('Tickets on sale August 15');
-    expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('73 days to go');
     await expectNoAxeViolations(shadowRoot.host);
     render(nothing, document.body);
 
@@ -283,23 +283,9 @@ describe('home-hero', () => {
     expect(shadowRoot.querySelector('.schedule')).toHaveAttribute('variant', 'outlined');
   });
 
-  it('adds the event to a calendar while it is upcoming', async () => {
-    const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
-    const calendar = shadowRoot.querySelector('add-to-calendar');
-
-    expect(calendar).toHaveAttribute('size', 'l');
-    expect(calendar!.event).toMatchObject({ title, allDay: true });
-    render(nothing, document.body);
-
-    const { shadowRoot: live } = await renderOn('2017-10-13T12:00:00Z');
-
-    expect(live.querySelector('add-to-calendar')).toBeNull();
-  });
-
   it('thanks attendees after the event, and links to the videos and photos', async () => {
     const { shadowRoot } = await renderOn('2017-10-20T12:00:00Z');
 
-    expect(shadowRoot.querySelector('hb-sticker')).toHaveTextContent('Thanks for coming!');
     expect(shadowRoot.querySelector('.buy-ticket')).toBeNull();
     expect(shadowRoot.querySelector('.videos')).toHaveAttribute(
       'href',

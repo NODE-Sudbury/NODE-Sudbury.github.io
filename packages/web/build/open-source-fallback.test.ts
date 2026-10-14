@@ -20,6 +20,9 @@ const published = (generatedAt: string) => ({
   ],
 });
 
+const addressOf = (input: RequestInfo | URL) =>
+  typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+
 const reply = (body: unknown, ok = true, status = 200) =>
   ({
     ok,
@@ -53,8 +56,10 @@ describe('open source fallback', () => {
 
   it('takes the published data, and the avatars it names, when it is newer', async () => {
     writeFileSync(out, JSON.stringify({ generatedAt: '2026-10-13T00:00:00Z', projects: [] }));
-    const fetchFn = vi.fn(async (url: string) =>
-      url.endsWith('open-source.json') ? reply(published('2026-10-14T09:17:00Z')) : reply(null),
+    const fetchFn = vi.fn(async (url: RequestInfo | URL) =>
+      addressOf(url).endsWith('open-source.json')
+        ? reply(published('2026-10-14T09:17:00Z'))
+        : reply(null),
     );
 
     const taken = await takePublishedData({
@@ -73,15 +78,17 @@ describe('open source fallback', () => {
   });
 
   it('never fetches or writes an avatar whose name is not a plain file name', async () => {
-    const fetchFn = vi.fn(async (url: string) =>
-      url.endsWith('open-source.json') ? reply(published('2026-10-14T09:17:00Z')) : reply(null),
+    const fetchFn = vi.fn(async (url: RequestInfo | URL) =>
+      addressOf(url).endsWith('open-source.json')
+        ? reply(published('2026-10-14T09:17:00Z'))
+        : reply(null),
     );
 
     await takePublishedData({ base: 'https://data.example', out, imagesDir, fetchFn, warn });
 
-    expect(fetchFn.mock.calls.map(([url]) => url).some((url) => url.includes('passwd'))).toBe(
-      false,
-    );
+    expect(
+      fetchFn.mock.calls.map(([url]) => addressOf(url)).some((url) => url.includes('passwd')),
+    ).toBe(false);
     expect(existsSync(join(dir, 'etc'))).toBe(false);
   });
 
@@ -97,8 +104,8 @@ describe('open source fallback', () => {
   });
 
   it('takes it when the build has no data at all', async () => {
-    const fetchFn = vi.fn(async (url: string) =>
-      url.endsWith('open-source.json')
+    const fetchFn = vi.fn(async (url: RequestInfo | URL) =>
+      addressOf(url).endsWith('open-source.json')
         ? reply(published('2026-10-14T09:17:00Z'))
         : reply(null, false, 404),
     );
