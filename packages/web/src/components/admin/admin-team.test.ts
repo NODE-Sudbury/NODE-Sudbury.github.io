@@ -13,6 +13,7 @@ import type { HbTextField } from '../ui/hb-text-field';
 import type { AdminTeam } from './admin-team';
 import './admin-team';
 
+vi.mock('../../db/admin-activity', () => ({ fetchActivity: vi.fn().mockResolvedValue([]) }));
 vi.mock('../../db/admin-board', () => ({
   fetchBoardMembers: vi.fn(),
   saveBoardMember: vi.fn(),
@@ -105,13 +106,13 @@ describe('admin-team', () => {
     litRender(nothing, document.body);
   });
 
-  it('has a Boards tab, a Dashboard admins tab and a Volunteers tab, and opens on Boards', async () => {
+  it('has Boards, Dashboard admins, Volunteers and, for the super admin, Activity, and opens on Boards', async () => {
     const { shadowRoot } = await render('super_admin');
 
     const tabs = screen
       .getAllByShadowRole('tab')
       .map((tab) => tab.textContent?.replace(/\s+/g, ' ').trim());
-    expect(tabs).toEqual(['Boards', 'Dashboard admins 2', 'Volunteers 1']);
+    expect(tabs).toEqual(['Boards', 'Dashboard admins 2', 'Volunteers 1', 'Activity']);
     expect(screen.getByShadowRole('tab', { name: 'Boards' })).toHaveAttribute(
       'aria-selected',
       'true',
@@ -221,6 +222,18 @@ describe('admin-team', () => {
 
     await vi.waitFor(() => expect(removeTeamMember).toHaveBeenCalledWith('u1'));
     await vi.waitFor(() => expect(screen.getAllByShadowRole('row')).toHaveLength(2));
+  });
+
+  it('gives the super admin an Activity tab, and nobody else', async () => {
+    const boss = await render('super_admin');
+    expect(screen.getByShadowRole('tab', { name: 'Activity' })).toBeInTheDocument();
+    fireEvent.click(screen.getByShadowRole('tab', { name: 'Activity' }));
+    await boss.element.updateComplete;
+    expect(deepQuerySelector(boss.shadowRoot, 'admin-activity')).toBeInTheDocument();
+    litRender(nothing, document.body);
+
+    await render('admin');
+    expect(screen.queryByShadowRole('tab', { name: 'Activity' })).toBeNull();
   });
 
   it('has no accessibility violations', async () => {

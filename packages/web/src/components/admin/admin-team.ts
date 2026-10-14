@@ -16,16 +16,20 @@ import '../ui/hb-dialog';
 import '../ui/hb-progress';
 import '../ui/hb-text-field';
 import type { HbTextField } from '../ui/hb-text-field';
+import './admin-activity';
 import './admin-boards';
 
 /**
  * The three tabs: the board's cards, the dashboard admins who hold the `admin` role, and the
  * check-in volunteers. Only the last two are people with access, so only they are in the table.
  */
-type Tab = 'boards' | 'admin' | 'check_in_volunteer';
-type AccessTab = Exclude<Tab, 'boards'>;
+type Tab = 'boards' | 'admin' | 'check_in_volunteer' | 'activity';
+type AccessTab = 'admin' | 'check_in_volunteer';
 
 const TABS: readonly Tab[] = ['boards', 'admin', 'check_in_volunteer'];
+
+/** The activity log can only be read by the super admin, so only they get its tab. */
+const SUPER_ADMIN_TABS: readonly Tab[] = [...TABS, 'activity'];
 
 /** How many members the add dialog lists at once. */
 const PICKER_SIZE = 8;
@@ -248,7 +252,7 @@ export class AdminTeam extends ThemedComponent {
   }
 
   private get shown(): TeamMember[] {
-    if (this.tab === 'boards') return [];
+    if (this.tab === 'boards' || this.tab === 'activity') return [];
     return this.inTab(this.tab).filter(({ fullName, email }) =>
       matches(this.query, fullName, email),
     );
@@ -265,6 +269,7 @@ export class AdminTeam extends ThemedComponent {
 
   private tabLabel(tab: Tab) {
     if (tab === 'boards') return msg('Boards', { id: 'pages.admin.tab-boards' });
+    if (tab === 'activity') return msg('Activity', { id: 'pages.admin.tab-activity' });
     return tab === 'admin'
       ? msg('Dashboard admins', { id: 'pages.admin.tab-board' })
       : msg('Volunteers', { id: 'pages.admin.tab-volunteers' });
@@ -276,7 +281,7 @@ export class AdminTeam extends ThemedComponent {
         role="tablist"
         aria-label="${msg('Boards, dashboard admins and volunteers', { id: 'pages.admin.team-tabs' })}"
       >
-        ${TABS.map(
+        ${this.tabs.map(
           (tab) =>
             html`<button
               role="tab"
@@ -289,7 +294,7 @@ export class AdminTeam extends ThemedComponent {
               @keydown="${this.onKeydown}"
             >
               ${this.tabLabel(tab)}
-              ${tab === 'boards' ? nothing : html`<span class="count">${this.inTab(tab).length}</span>`}
+              ${tab === 'boards' || tab === 'activity' ? nothing : html`<span class="count">${this.inTab(tab).length}</span>`}
             </button>`,
         )}
       </div>
@@ -310,13 +315,19 @@ export class AdminTeam extends ThemedComponent {
     );
   };
 
+  private get tabs(): readonly Tab[] {
+    return this.viewerRole === 'super_admin' ? SUPER_ADMIN_TABS : TABS;
+  }
+
   private nextTab(step: number): Tab {
-    const index = TABS.indexOf(this.tab);
-    return TABS[(index + step + TABS.length) % TABS.length] ?? 'boards';
+    const { tabs } = this;
+    const index = tabs.indexOf(this.tab);
+    return tabs[(index + step + tabs.length) % tabs.length] ?? 'boards';
   }
 
   private renderPanel() {
     const { tab, shown } = this;
+    if (tab === 'activity') return html`<admin-activity></admin-activity>`;
     if (tab === 'boards') {
       return html`<admin-boards
         .members="${this.members}"
@@ -518,7 +529,7 @@ export class AdminTeam extends ThemedComponent {
 
   private async add(member: AdminMember) {
     // Only the two access tabs add people with a role.
-    if (this.busy || this.tab === 'boards') return;
+    if (this.busy || this.tab === 'boards' || this.tab === 'activity') return;
     this.busy = true;
     try {
       await addTeamMember(member.id, this.tab);
