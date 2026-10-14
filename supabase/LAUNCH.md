@@ -6,7 +6,7 @@ What has to happen to the production Supabase project (`Node Website`) when `dev
 
 | What                                                        | Moves how                                           |
 | ----------------------------------------------------------- | --------------------------------------------------- |
-| Tables, rules, functions and buckets (migrations 0006-0018) | `supabase/migrations/`, in order                    |
+| Tables, rules, functions and buckets (migrations 0006-0019) | `supabase/migrations/`, in order                    |
 | You as the super admin                                      | `supabase/seed/launch.sql`, found by email          |
 | The 4 partners                                              | `supabase/seed/launch.sql`                          |
 | The 8 board cards (yours linked to your account)            | `supabase/seed/launch.sql`                          |
@@ -21,7 +21,7 @@ What has to happen to the production Supabase project (`Node Website`) when `dev
 
 1. **Back up production.** `pg_dump "$SUPABASE_PROD_DB_URL" --schema=public --no-owner --no-privileges -f backup.sql`.
 2. **Make sure you have signed in once on the production site**, so your account is a member. The seed finds you by `hannanmaxdev@gmail.com`.
-3. **Run the migrations 0006 to 0018** from `supabase/migrations/`, each with `psql "$SUPABASE_PROD_DB_URL" -v ON_ERROR_STOP=1 --single-transaction -f <file>`. The hotfix in `supabase/hotfixes/` was already run, and the migrations are safe on top of it.
+3. **Run the migrations 0006 to 0019** from `supabase/migrations/`, each with `psql "$SUPABASE_PROD_DB_URL" -v ON_ERROR_STOP=1 --single-transaction -f <file>`. The hotfix in `supabase/hotfixes/` was already run, and the migrations are safe on top of it.
 4. **Run the seed:** `psql "$SUPABASE_PROD_DB_URL" -v ON_ERROR_STOP=1 --single-transaction -f supabase/seed/launch.sql`.
 5. **Upload the images** with `supabase/seed/upload-images.mjs`. It needs your access token from the production site; the steps are at the top of the file.
 6. **Run the security checks:** `psql "$SUPABASE_PROD_DB_URL" -v ON_ERROR_STOP=1 -f supabase/tests/security.sql`. It changes nothing. With only one member it skips the checks that need a second one.
