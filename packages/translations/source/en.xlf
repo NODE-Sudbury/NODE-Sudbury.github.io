@@ -11,6 +11,21 @@
 <trans-unit id="pages.admin.members-total">
   <source><x id="0" equiv-text="${this.members.length}"/> members</source>
 </trans-unit>
+<trans-unit id="pages.admin.rows-per-page">
+  <source>Rows per page</source>
+</trans-unit>
+<trans-unit id="pages.admin.pages">
+  <source>Pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.previous">
+  <source>Previous page</source>
+</trans-unit>
+<trans-unit id="pages.admin.page-of">
+  <source><x id="0" equiv-text="${page}"/> of <x id="1" equiv-text="${pageCount}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.next">
+  <source>Next page</source>
+</trans-unit>
 <trans-unit id="pages.admin.members-none-match">
   <source>No members match your search.</source>
 </trans-unit>
@@ -49,6 +64,24 @@
 </trans-unit>
 <trans-unit id="pages.admin.private">
   <source>Private</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-partners">
+  <source>Partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.tabs">
+  <source>Sponsors and partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon">
+  <source>Coming soon</source>
+</trans-unit>
+<trans-unit id="pages.admin.sponsors-none">
+  <source>There are no sponsors yet. They will be listed here once NODE has some.</source>
+</trans-unit>
+<trans-unit id="pages.admin.partners-none">
+  <source>There are no partners yet.</source>
 </trans-unit>
 <trans-unit id="attending.accommodation.book">
   <source>Book</source>
@@ -1198,9 +1231,6 @@
 </trans-unit>
 <trans-unit id="pages.admin.upcoming">
   <source>Upcoming events</source>
-</trans-unit>
-<trans-unit id="pages.admin.soon">
-  <source>Coming soon</source>
 </trans-unit>
 <trans-unit id="pages.admin.soon-body">
   <source>This part of the dashboard is on its way.</source>

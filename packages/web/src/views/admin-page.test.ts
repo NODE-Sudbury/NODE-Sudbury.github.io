@@ -6,6 +6,7 @@ import { expectNoAxeViolations } from '../../__tests__/helpers/axe';
 import { fixture } from '../../__tests__/helpers/fixtures';
 import { setStoreState } from '../../__tests__/helpers/store';
 import { fetchAdminMembers, fetchSubscriberCount } from '../db/admin-members';
+import { fetchAdminPartners } from '../db/admin-partners';
 import { fetchOwnAdminRole } from '../db/admins';
 import type { AdminRole } from '../models/admin';
 import type { AdminMember } from '../models/admin-member';
@@ -14,6 +15,7 @@ import { type AdminPage, type AdminSection, adminPath } from './admin-page';
 import './admin-page';
 
 vi.mock('../db/admins', () => ({ fetchOwnAdminRole: vi.fn() }));
+vi.mock('../db/admin-partners', () => ({ fetchAdminPartners: vi.fn() }));
 vi.mock('../db/admin-members', () => ({
   fetchAdminMembers: vi.fn(),
   fetchSubscriberCount: vi.fn(),
@@ -59,6 +61,9 @@ const render = async (
   vi.mocked(fetchOwnAdminRole).mockResolvedValue(role);
   vi.mocked(fetchAdminMembers).mockResolvedValue(members);
   vi.mocked(fetchSubscriberCount).mockResolvedValue(5);
+  vi.mocked(fetchAdminPartners).mockResolvedValue([
+    { id: 'p1', name: 'Norcat', websiteUrl: '', logoUrl: '', sortOrder: 0 },
+  ]);
   setStoreState(signedIn ? { user: new Success(user) } : {});
   const result = await fixture<AdminPage>(html`<admin-page .section="${section}"></admin-page>`);
   await vi.waitFor(() => expect(result.element['ready']).toBe(true));
@@ -146,11 +151,20 @@ describe('admin-page', () => {
     expect(table).toHaveProperty('members', members);
   });
 
-  it('says a section is coming soon when it has no tools yet', async () => {
+  it('shows the sponsors and partners tabs on the sponsors section', async () => {
     const { shadowRoot } = await render('super_admin', { section: 'sponsors' });
 
+    const sponsors = deepQuerySelector(shadowRoot, 'admin-sponsors')!;
+    expect(sponsors).toHaveProperty('partners', [
+      { id: 'p1', name: 'Norcat', websiteUrl: '', logoUrl: '', sortOrder: 0 },
+    ]);
+  });
+
+  it('says a section is coming soon when it has no tools yet', async () => {
+    const { shadowRoot } = await render('super_admin', { section: 'analytics' });
+
     expect(shadowRoot).toHaveTextContent('Coming soon');
-    expect(shadowRoot).toHaveTextContent('Keep track of the sponsors and partners of NODE.');
+    expect(shadowRoot).toHaveTextContent('See how the community and the site are growing.');
   });
 
   it('has no accessibility violations', async () => {

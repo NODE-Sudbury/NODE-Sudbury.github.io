@@ -3,6 +3,7 @@ import { msg } from '@lit/localize';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import '../components/admin/admin-members';
+import '../components/admin/admin-sponsors';
 import '../components/shared/node-icon';
 import '../components/ui/hb-button';
 import '../components/ui/hb-chip';
@@ -11,8 +12,10 @@ import { ThemedComponent } from '../components/themed-component';
 import { fromStore } from '../controllers/from-store';
 import { fetchOwnAdminRole } from '../db/admins';
 import { fetchAdminMembers, fetchSubscriberCount } from '../db/admin-members';
+import { fetchAdminPartners } from '../db/admin-partners';
 import { type AdminRole, canOpenDashboard } from '../models/admin';
 import type { AdminMember } from '../models/admin-member';
+import type { AdminPartner } from '../models/admin-partner';
 import { sessionRestored } from '../store/auth';
 import { openSigninDialog } from '../store/dialogs';
 import type { UserState } from '../store/user';
@@ -294,6 +297,8 @@ export class AdminPage extends ThemedComponent {
   @state()
   private accessor subscribers: number | undefined;
   @state()
+  private accessor partners: AdminPartner[] = [];
+  @state()
   private accessor failed = false;
 
   private loadedFor: string | undefined;
@@ -314,6 +319,7 @@ export class AdminPage extends ThemedComponent {
     this.loadedFor = uid;
     this.adminRole = undefined;
     this.members = [];
+    this.partners = [];
     this.subscribers = undefined;
     if (uid) void this.load(uid);
   }
@@ -326,13 +332,15 @@ export class AdminPage extends ThemedComponent {
       if (uid !== this.loadedFor) return;
       this.adminRole = role;
       if (canOpenDashboard(role)) {
-        const [members, subscribers] = await Promise.all([
+        const [members, subscribers, partners] = await Promise.all([
           fetchAdminMembers(),
           fetchSubscriberCount(),
+          fetchAdminPartners(),
         ]);
         if (uid !== this.loadedFor) return;
         this.members = members;
         this.subscribers = subscribers;
+        this.partners = partners;
       }
     } catch {
       // No role is the safe answer: the page then says there is no access.
@@ -418,7 +426,9 @@ export class AdminPage extends ThemedComponent {
           ? this.renderHome()
           : section === 'members'
             ? html`<admin-members .members="${this.members}"></admin-members>`
-            : this.renderSoon(section)
+            : section === 'sponsors'
+              ? html`<admin-sponsors .partners="${this.partners}"></admin-sponsors>`
+              : this.renderSoon(section)
       }
     `;
   }
