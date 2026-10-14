@@ -1,0 +1,15 @@
+---
+import { privacy } from '../data/legal';
+import { itemMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import Base from '../layouts/base.astro';
+import { LegalPage } from '../views/legal-page';
+---
+
+<Base
+  {...itemMetadata(privacy.title, privacy.description)}
+  content={seedPage({})}
+  breadcrumbs={[{ name: privacy.title, path: '/privacy' }]}
+>
+  <LegalPage document={privacy} client:load />
+</Base>

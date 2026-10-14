@@ -170,6 +170,16 @@
           "name": "FAQs",
           "url": "/faq",
           "newTab": false
+        },
+        {
+          "name": "Privacy",
+          "url": "/privacy",
+          "newTab": false
+        },
+        {
+          "name": "Terms",
+          "url": "/terms",
+          "newTab": false
         }
       ]
     }
