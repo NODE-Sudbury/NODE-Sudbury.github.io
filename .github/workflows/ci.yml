@@ -49,3 +49,21 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
         run: node packages/web/build/migration-guard.mjs
+
+  database:
+    name: Database from the migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
+      - name: Build the stack folder
+        run: echo "STACK=$(bash supabase/local/build-stack.sh)" >> "$GITHUB_ENV"
+      - name: Start a local Supabase
+        run: supabase start --workdir "$STACK" -x studio,imgproxy,edge-runtime,realtime,logflare,vector,mailpit,postgres-meta,supavisor
+      - name: Build the database from the baseline, the migrations and the seed
+        run: supabase db reset --local --yes --workdir "$STACK"
+      - name: Run the security checks
+        run: psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 -f supabase/tests/security.sql

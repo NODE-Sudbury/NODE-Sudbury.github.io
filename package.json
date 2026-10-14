@@ -11,6 +11,7 @@
   "scripts": {
     "build": "npm --prefix ./packages/web run build",
     "clean": "npm --prefix ./packages/web run clean",
+    "db:local": "bash supabase/local/reset.sh",
     "deploy": "npm --prefix ./packages/cli run deploy --",
     "doctor": "npm --prefix ./packages/cli run doctor",
     "emulators": "npm --prefix ./packages/cli run emulators",
