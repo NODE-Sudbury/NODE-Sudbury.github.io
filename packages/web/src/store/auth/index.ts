@@ -71,6 +71,20 @@ export const signIn = async (providerId: PROVIDER) => {
 };
 
 /**
+ * Signs in with the signed token that Google's own button gave back, with the raw nonce that the
+ * button's request was made with. Supabase checks both with Google before it opens a session.
+ */
+export const signInWithGoogleToken = async (token: string, nonce: string) => {
+  dispatch(pending());
+  const { error } = await getSupabase().auth.signInWithIdToken({
+    provider: 'google',
+    token,
+    nonce,
+  });
+  if (error) dispatch(failure({ message: error.message }));
+};
+
+/**
  * Emails a link that signs the member in when they open it, with no password. Someone new gets an
  * account, and the database adds their row to the members table.
  */
