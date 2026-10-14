@@ -1,20 +1,53 @@
 name: Refresh open source and events data
 
-# Rebuilds the site every day so the Open Source page shows current repositories, commits and
-# contributors, and the Events page shows current GDG and Luma details and sign-up numbers. The
-# build fetches them (SYNC_GITHUB=1 and SYNC_EVENTS=1 in the build command).
-# Add a repository secret named SITE_DEPLOY_HOOK_URL with your host's deploy hook URL
-# (Vercel, Netlify, Cloudflare Pages and others each give you one).
+# Every day this reads the open source data from GitHub with the workflow's own token, which
+# allows 5000 requests an hour, and publishes it on the `open-source-data` branch. Then it asks the
+# host for a new build. The build asks GitHub itself too, but its address is shared with other
+# builds, so GitHub often refuses it; the build then takes the data published here instead.
+# The site's host needs a deploy hook in the repository secret SITE_DEPLOY_HOOK_URL.
 
 on:
   schedule:
     - cron: '17 9 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Read the open source data from GitHub
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node packages/web/build/github-sync.mjs
+
+      - name: Publish the data on the open-source-data branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/open-source-data"
+          mkdir -p "$out/images"
+          cp packages/config/content/open-source.json "$out/"
+          cp -r packages/config/public/images/github/. "$out/images/"
+          cd "$out"
+          git init -q -b open-source-data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "data: the open source projects of the organization, read from GitHub"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" open-source-data
+
       - name: Trigger a site rebuild
         env:
           HOOK: ${{ secrets.SITE_DEPLOY_HOOK_URL }}
