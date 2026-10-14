@@ -629,7 +629,13 @@ export class AdminBoards extends ThemedComponent {
       );
       await this.load();
       this.formOpen = false;
-      store.dispatch(queueSnackbar(msg('Saved.', { id: 'pages.admin.saved' })));
+      store.dispatch(
+        queueSnackbar(
+          msg('Saved. The public site is rebuilding, and shows the change in about two minutes.', {
+            id: 'pages.admin.saved',
+          }),
+        ),
+      );
     } catch (error) {
       if (error instanceof CardLinkTakenError) {
         this.linkError = msg('That member already has a card. Choose someone else.', {
@@ -690,7 +696,14 @@ export class AdminBoards extends ThemedComponent {
       await deleteBoardMember(deleting);
       this.cards = this.cards.filter(({ id }) => id !== deleting.id);
       this.deleting = undefined;
-      store.dispatch(queueSnackbar(msg('Deleted.', { id: 'pages.admin.deleted' })));
+      store.dispatch(
+        queueSnackbar(
+          msg(
+            'Deleted. The public site is rebuilding, and shows the change in about two minutes.',
+            { id: 'pages.admin.deleted' },
+          ),
+        ),
+      );
     } catch {
       store.dispatch(
         queueSnackbar(

@@ -218,7 +218,11 @@ describe('admin-sponsors', () => {
     await vi.waitFor(() => expect(screen.getAllByShadowRole('row')).toHaveLength(2));
     expect(shadowRoot).not.toHaveTextContent('Norcat');
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'snackbars/queueSnackbar', payload: 'Deleted.' }),
+      expect.objectContaining({
+        type: 'snackbars/queueSnackbar',
+        payload:
+          'Deleted. The public site is rebuilding, and shows the change in about two minutes.',
+      }),
     );
   });
 
