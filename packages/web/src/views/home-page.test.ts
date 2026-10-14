@@ -18,11 +18,11 @@ vi.mock('../utils/scrolling', () => ({
 
 const BANDS = [
   'about-block',
-  'speakers-block',
+  'board-block',
   'tickets-block',
   'gallery-block',
   'about-organizer-block',
-  'featured-videos',
+  'nfp-block',
   'latest-posts-block',
   'map-block',
   'partners-block',
@@ -85,7 +85,7 @@ describe('home-page', () => {
   });
 
   it('keeps alternating when features are off', async () => {
-    setFeatures({ speakers: false, gallery: false });
+    setFeatures({ team: false, gallery: false });
 
     const { shadowRoot } = await fixture<HomePage>(html`<home-page></home-page>`);
 
@@ -94,33 +94,28 @@ describe('home-page', () => {
   });
 
   it('leaves out the blocks of disabled features', async () => {
-    setFeatures({ tickets: false, speakers: false, blog: false });
+    setFeatures({ tickets: false, team: false, blog: false });
 
     const { shadowRoot } = await fixture<HomePage>(html`<home-page></home-page>`);
 
     expect(shadowRoot.querySelector('tickets-block')).toBeNull();
-    expect(shadowRoot.querySelector('speakers-block')).toBeNull();
+    expect(shadowRoot.querySelector('board-block')).toBeNull();
     expect(shadowRoot.querySelector('latest-posts-block')).toBeNull();
     expect(shadowRoot.querySelector('about-block')).not.toBeNull();
     expect(shadowRoot.querySelector('gallery-block')).not.toBeNull();
   });
 
   it('leaves out the blocks of features the build found no content for', async () => {
-    const presence = { speakers: false, tickets: false, gallery: false, videos: true, blog: false };
+    const presence = { team: false, tickets: false, gallery: false, blog: false };
 
     const { shadowRoot } = await fixture<HomePage>(
       html`<home-page .presence="${presence}"></home-page>`,
     );
 
-    for (const block of [
-      'speakers-block',
-      'tickets-block',
-      'gallery-block',
-      'latest-posts-block',
-    ]) {
+    for (const block of ['board-block', 'tickets-block', 'gallery-block', 'latest-posts-block']) {
       expect(shadowRoot.querySelector(block)).toBeNull();
     }
-    expect(shadowRoot.querySelector('featured-videos')).not.toBeNull();
+    expect(shadowRoot.querySelector('nfp-block')).not.toBeNull();
     expect(shadowRoot.querySelector('partners-block')).not.toBeNull();
     expect(shadowRoot.querySelector('subscribe-block')).not.toBeNull();
     expect(tones(shadowRoot)).toEqual(['surface', 'accent-4', 'surface', 'accent-2', 'surface']);
