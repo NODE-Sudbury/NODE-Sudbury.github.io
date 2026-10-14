@@ -27,5 +27,10 @@ The connection strings and passwords live in a gitignored env file, never in the
 | `20261014000011_sponsors.sql` | Adds the `sponsors` table (with a tier) and the public `sponsor-logos` storage bucket, like partners. |
 | `20261014000012_team_permissions.sql` | Who may add and remove dashboard admins (super admin only) and volunteers (admins and the super admin). |
 | `20261014000013_board_members.sql` | Adds the `board_members` cards, optionally linked to an account, and the public `board-photos` bucket. |
+| `20261014000014_audit_log.sql` | The activity log: who added, changed or deleted what. Written by triggers, readable by the super admin only. |
+| `20261014000015_security_hardening.sql` | Closes the holes from the security review: narrow grants, no direct profile list, no legacy board role, no listing. |
+| `20261014000016_rate_limits.sql` | Rate limits on profile lookups, handle checks, subscribing and unsubscribing. |
 
-The first five are applied to both projects. The public Team page and the home page board read the `board_members` table when the build can reach Supabase, and keep the sample board otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth, eighth to thirteenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+The first five are applied to both projects. The public Team page and the home page board read the `board_members` table when the build can reach Supabase, and keep the sample board otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth and eighth to sixteenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+
+See [SECURITY.md](./SECURITY.md) for how the database is protected and how to check it.
