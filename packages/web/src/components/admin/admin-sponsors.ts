@@ -476,7 +476,14 @@ export class AdminSponsors extends ThemedComponent {
         this.partners = this.partners.filter(({ id }) => id !== deleting.id);
       }
       this.deleting = undefined;
-      store.dispatch(queueSnackbar(msg('Deleted.', { id: 'pages.admin.deleted' })));
+      store.dispatch(
+        queueSnackbar(
+          msg(
+            'Deleted. The public site is rebuilding, and shows the change in about two minutes.',
+            { id: 'pages.admin.deleted' },
+          ),
+        ),
+      );
     } catch {
       store.dispatch(
         queueSnackbar(

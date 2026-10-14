@@ -380,7 +380,13 @@ export class AdminOrganizationForm extends ThemedComponent {
         },
         this.editing,
       );
-      store.dispatch(queueSnackbar(msg('Saved.', { id: 'pages.admin.saved' })));
+      store.dispatch(
+        queueSnackbar(
+          msg('Saved. The public site is rebuilding, and shows the change in about two minutes.', {
+            id: 'pages.admin.saved',
+          }),
+        ),
+      );
       window.location.assign(
         this.kind === 'partner' ? '/admin/sponsors?tab=partners' : '/admin/sponsors',
       );
