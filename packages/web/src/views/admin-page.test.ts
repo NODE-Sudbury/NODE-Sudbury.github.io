@@ -14,6 +14,10 @@ import { type AdminPage, type AdminSection, adminPath } from './admin-page';
 import './admin-page';
 
 vi.mock('../db/admins', () => ({ fetchOwnAdminRole: vi.fn() }));
+vi.mock('../db/admin-analytics', () => ({
+  fetchTopPages: vi.fn().mockResolvedValue([]),
+  fetchDailyViews: vi.fn().mockResolvedValue([]),
+}));
 vi.mock('../db/admin-team', () => ({ fetchTeam: vi.fn().mockResolvedValue([]) }));
 vi.mock('../db/admin-board', () => ({ fetchBoardMembers: vi.fn().mockResolvedValue([]) }));
 vi.mock('../db/admin-members', () => ({
@@ -181,11 +185,17 @@ describe('admin-page', () => {
     expect(team).toHaveProperty('members', members);
   });
 
-  it('says a section is coming soon when it has no tools yet', async () => {
+  it('shows the page view numbers on the analytics section', async () => {
     const { shadowRoot } = await render('super_admin', { section: 'analytics' });
 
+    expect(deepQuerySelector(shadowRoot, 'admin-analytics')).toBeInTheDocument();
+  });
+
+  it('says a section is coming soon when it has no tools yet', async () => {
+    const { shadowRoot } = await render('super_admin', { section: 'emails' });
+
     expect(shadowRoot).toHaveTextContent('Coming soon');
-    expect(shadowRoot).toHaveTextContent('See how the community and the site are growing.');
+    expect(shadowRoot).toHaveTextContent('Write to subscribers and members.');
   });
 
   it('has no accessibility violations', async () => {

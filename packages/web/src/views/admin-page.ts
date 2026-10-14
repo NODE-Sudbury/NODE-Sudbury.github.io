@@ -2,6 +2,7 @@ import { Success } from '@abraham/remotedata';
 import { msg } from '@lit/localize';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import '../components/admin/admin-analytics';
 import '../components/admin/admin-members';
 import '../components/admin/admin-organization-form';
 import '../components/admin/admin-sponsors';
@@ -429,18 +430,20 @@ export class AdminPage extends ThemedComponent {
       ${
         section === 'home'
           ? this.renderHome()
-          : section === 'members'
-            ? html`<admin-members .members="${this.members}"></admin-members>`
-            : section === 'sponsors'
-              ? this.action
-                ? html`<admin-organization-form></admin-organization-form>`
-                : html`<admin-sponsors></admin-sponsors>`
-              : section === 'settings'
-                ? html`<admin-team
-                    .viewerRole="${this.adminRole}"
-                    .members="${this.members}"
-                  ></admin-team>`
-                : this.renderSoon(section)
+          : section === 'analytics'
+            ? html`<admin-analytics></admin-analytics>`
+            : section === 'members'
+              ? html`<admin-members .members="${this.members}"></admin-members>`
+              : section === 'sponsors'
+                ? this.action
+                  ? html`<admin-organization-form></admin-organization-form>`
+                  : html`<admin-sponsors></admin-sponsors>`
+                : section === 'settings'
+                  ? html`<admin-team
+                      .viewerRole="${this.adminRole}"
+                      .members="${this.members}"
+                    ></admin-team>`
+                  : this.renderSoon(section)
       }
     `;
   }
