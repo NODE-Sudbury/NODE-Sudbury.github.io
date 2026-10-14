@@ -11,6 +11,8 @@ import { buildSchedule } from '../src/schedule/build-schedule';
 import { siteStages } from '../src/utils/stages';
 import { configPaths, loadConfig } from './resolve-config';
 
+// The fixtures describe the demo event of 2017, so they read the demo's sample data, not NODE's.
+const demoSampleData = join(import.meta.dirname, '../../../docs/sample-data');
 const demo = configPaths(join(import.meta.dirname, '..'), { demo: true });
 const readJson = (path: string) =>
   JSON.parse(readFileSync(path, 'utf8')) as Record<string, unknown>;
@@ -49,7 +51,7 @@ const fixtureConfig = (changes: Record<string, unknown> = {}) => {
 
 describe.each(Object.entries(STAGE_FIXTURES))('the %s fixture', (_name, fixture) => {
   const { config, errors } = fixtureConfig('site' in fixture ? fixture.site : undefined);
-  const documents = fixtureDocuments(fixture, sampleDocuments());
+  const documents = fixtureDocuments(fixture, sampleDocuments(demoSampleData));
   const docs = <T>(collection: string) =>
     documents
       .filter(({ path }) => path.split('/').length === 2 && path.startsWith(`${collection}/`))
@@ -94,9 +96,10 @@ describe.each(Object.entries(STAGE_FIXTURES))('the %s fixture', (_name, fixture)
 
 describe('the fixtures', () => {
   it('move the sample sessions to the event days', () => {
-    const sessions = fixtureDocuments(STAGE_FIXTURES['returning-live'], sampleDocuments()).filter(
-      ({ path }) => path.startsWith('sessions/'),
-    );
+    const sessions = fixtureDocuments(
+      STAGE_FIXTURES['returning-live'],
+      sampleDocuments(demoSampleData),
+    ).filter(({ path }) => path.startsWith('sessions/'));
     const days = new Set(sessions.map(({ data }) => data['day']));
 
     expect([...days].filter(Boolean).sort()).toEqual(['2017-10-13', '2017-10-14']);
@@ -104,7 +107,7 @@ describe('the fixtures', () => {
 
   it('keep one track for the meetup', () => {
     const tracks = new Set(
-      fixtureDocuments(STAGE_FIXTURES['meetup-live'], sampleDocuments())
+      fixtureDocuments(STAGE_FIXTURES['meetup-live'], sampleDocuments(demoSampleData))
         .filter(({ path }) => path.startsWith('sessions/'))
         .map(({ data }) => data['track']),
     );

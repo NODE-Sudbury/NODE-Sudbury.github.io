@@ -19,7 +19,7 @@ describe('pageMetadata', () => {
   });
 
   it('puts what the page shows before its title, so pages of one kind differ', () => {
-    expect(pageMetadata('schedule', 'October 8').title).toBe(`October 8 | Schedule | ${title}`);
+    expect(pageMetadata('schedule', 'October 8').title).toBe(`October 8 | Events | ${title}`);
   });
 });
 
