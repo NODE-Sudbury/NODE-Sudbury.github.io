@@ -1,11 +1,13 @@
-/** The most a logo may weigh, and what the storage buckets accept. */
+/**
+ * The most a logo may weigh, and what the storage buckets accept. SVG files are left out, because
+ * they can carry scripts.
+ */
 export const LOGO_MAX_BYTES = 2 * 1024 * 1024;
 
 const LOGO_EXTENSIONS: Record<string, string> = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',
-  'image/svg+xml': 'svg',
 };
 
 export const LOGO_ACCEPT = Object.keys(LOGO_EXTENSIONS).join(',');

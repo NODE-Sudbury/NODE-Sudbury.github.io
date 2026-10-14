@@ -300,9 +300,7 @@ export class AdminOrganizationForm extends ThemedComponent {
             />
           </div>
         </div>
-        <p class="note">
-          ${msg('JPG, PNG, WebP or SVG, up to 2 MB.', { id: 'pages.admin.logo-note' })}
-        </p>
+        <p class="note">${msg('JPG, PNG or WebP, up to 2 MB.', { id: 'pages.admin.logo-note' })}</p>
         ${this.logoError ? html`<p class="error" role="alert">${this.logoError}</p>` : nothing}
       </div>
 
@@ -345,7 +343,7 @@ export class AdminOrganizationForm extends ThemedComponent {
     if (problem) {
       this.logoError =
         problem === 'type'
-          ? msg('Choose a JPG, PNG, WebP or SVG logo.', { id: 'pages.admin.logo-type' })
+          ? msg('Choose a JPG, PNG or WebP logo.', { id: 'pages.admin.logo-type' })
           : msg('That logo is over 2 MB. Choose a smaller one.', { id: 'pages.admin.logo-size' });
       return;
     }

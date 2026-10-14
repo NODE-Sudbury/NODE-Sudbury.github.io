@@ -578,7 +578,7 @@ export class AdminBoards extends ThemedComponent {
     if (problem) {
       this.photoError =
         problem === 'type'
-          ? msg('Choose a JPG, PNG, WebP or SVG photo.', { id: 'pages.admin.photo-type' })
+          ? msg('Choose a JPG, PNG or WebP photo.', { id: 'pages.admin.photo-type' })
           : msg('That photo is over 2 MB. Choose a smaller one.', {
               id: 'pages.admin.photo-size',
             });

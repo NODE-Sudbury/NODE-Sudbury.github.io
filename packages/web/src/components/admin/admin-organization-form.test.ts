@@ -102,7 +102,7 @@ describe('admin-organization-form', () => {
     const { element, shadowRoot } = await render();
 
     await chooseLogo(element, new File(['x'], 'cv.pdf', { type: 'application/pdf' }));
-    expect(shadowRoot).toHaveTextContent('Choose a JPG, PNG, WebP or SVG logo.');
+    expect(shadowRoot).toHaveTextContent('Choose a JPG, PNG or WebP logo.');
 
     await chooseLogo(
       element,
