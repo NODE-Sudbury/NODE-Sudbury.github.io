@@ -1235,6 +1235,30 @@
 <trans-unit id="pages.team.error">
   <source>Error loading teams.</source>
 </trans-unit>
+<trans-unit id="pages.unsubscribe.title">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.description">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.lede">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.done">
+  <source>If that email was on our list, it has been removed. You can subscribe again any time from the home page.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.error">
+  <source>Could not unsubscribe. Please try again.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.sending">
+  <source>Unsubscribing...</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.button">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.note">
+  <source>Use the same email you subscribed with.</source>
+</trans-unit>
 <trans-unit id="dialogs.signin.or">
   <source>or</source>
   <note from="lit-localize">Between signing in by email and signing in with another account.</note>

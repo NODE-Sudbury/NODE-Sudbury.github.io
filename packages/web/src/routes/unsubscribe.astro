@@ -1,0 +1,14 @@
+---
+import { itemMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import Base from '../layouts/base.astro';
+import { UnsubscribePage } from '../views/unsubscribe-page';
+---
+
+<Base
+  {...itemMetadata('Unsubscribe', 'Stop getting updates from NODE by email.')}
+  content={seedPage({})}
+  noindex
+>
+  <UnsubscribePage client:load />
+</Base>

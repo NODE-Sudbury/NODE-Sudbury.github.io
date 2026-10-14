@@ -80,6 +80,7 @@ export const ROUTES: readonly Route[] = [
   { pattern: '/account', entrypoint: 'account.astro' },
   { pattern: '/members', entrypoint: 'members/index.astro' },
   { pattern: '/profile', entrypoint: 'profile/index.astro' },
+  { pattern: '/unsubscribe', entrypoint: 'unsubscribe.astro' },
   { pattern: '/team', entrypoint: 'team.astro', feature: 'team' },
   { pattern: '/team/[id]', entrypoint: 'team/[id].astro', feature: 'team', content: 'team' },
   { pattern: '/attending', entrypoint: 'attending.astro', feature: 'attending' },
