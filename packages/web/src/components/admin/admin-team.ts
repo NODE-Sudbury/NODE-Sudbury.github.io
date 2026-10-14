@@ -17,16 +17,17 @@ import '../ui/hb-progress';
 import '../ui/hb-text-field';
 import type { HbTextField } from '../ui/hb-text-field';
 import './admin-activity';
+import './admin-general';
 import './admin-boards';
 
 /**
  * The three tabs: the board's cards, the dashboard admins who hold the `admin` role, and the
  * check-in volunteers. Only the last two are people with access, so only they are in the table.
  */
-type Tab = 'boards' | 'admin' | 'check_in_volunteer' | 'activity';
+type Tab = 'general' | 'boards' | 'admin' | 'check_in_volunteer' | 'activity';
 type AccessTab = 'admin' | 'check_in_volunteer';
 
-const TABS: readonly Tab[] = ['boards', 'admin', 'check_in_volunteer'];
+const TABS: readonly Tab[] = ['general', 'boards', 'admin', 'check_in_volunteer'];
 
 /** The activity log can only be read by the super admin, so only they get its tab. */
 const SUPER_ADMIN_TABS: readonly Tab[] = [...TABS, 'activity'];
@@ -211,7 +212,7 @@ export class AdminTeam extends ThemedComponent {
   accessor members: AdminMember[] = [];
 
   @state()
-  private accessor tab: Tab = 'boards';
+  private accessor tab: Tab = 'general';
   @state()
   private accessor team: TeamMember[] = [];
   @state()
@@ -252,7 +253,7 @@ export class AdminTeam extends ThemedComponent {
   }
 
   private get shown(): TeamMember[] {
-    if (this.tab === 'boards' || this.tab === 'activity') return [];
+    if (this.tab === 'general' || this.tab === 'boards' || this.tab === 'activity') return [];
     return this.inTab(this.tab).filter(({ fullName, email }) =>
       matches(this.query, fullName, email),
     );
@@ -268,6 +269,7 @@ export class AdminTeam extends ThemedComponent {
   }
 
   private tabLabel(tab: Tab) {
+    if (tab === 'general') return msg('General', { id: 'pages.admin.tab-general' });
     if (tab === 'boards') return msg('Boards', { id: 'pages.admin.tab-boards' });
     if (tab === 'activity') return msg('Activity', { id: 'pages.admin.tab-activity' });
     return tab === 'admin'
@@ -279,7 +281,7 @@ export class AdminTeam extends ThemedComponent {
     return html`
       <div
         role="tablist"
-        aria-label="${msg('Boards, dashboard admins and volunteers', { id: 'pages.admin.team-tabs' })}"
+        aria-label="${msg('General, boards, dashboard admins and volunteers', { id: 'pages.admin.team-tabs' })}"
       >
         ${this.tabs.map(
           (tab) =>
@@ -294,7 +296,7 @@ export class AdminTeam extends ThemedComponent {
               @keydown="${this.onKeydown}"
             >
               ${this.tabLabel(tab)}
-              ${tab === 'boards' || tab === 'activity' ? nothing : html`<span class="count">${this.inTab(tab).length}</span>`}
+              ${tab === 'general' || tab === 'boards' || tab === 'activity' ? nothing : html`<span class="count">${this.inTab(tab).length}</span>`}
             </button>`,
         )}
       </div>
@@ -322,11 +324,12 @@ export class AdminTeam extends ThemedComponent {
   private nextTab(step: number): Tab {
     const { tabs } = this;
     const index = tabs.indexOf(this.tab);
-    return tabs[(index + step + tabs.length) % tabs.length] ?? 'boards';
+    return tabs[(index + step + tabs.length) % tabs.length] ?? 'general';
   }
 
   private renderPanel() {
     const { tab, shown } = this;
+    if (tab === 'general') return html`<admin-general></admin-general>`;
     if (tab === 'activity') return html`<admin-activity></admin-activity>`;
     if (tab === 'boards') {
       return html`<admin-boards
@@ -529,7 +532,8 @@ export class AdminTeam extends ThemedComponent {
 
   private async add(member: AdminMember) {
     // Only the two access tabs add people with a role.
-    if (this.busy || this.tab === 'boards' || this.tab === 'activity') return;
+    if (this.busy || this.tab === 'general' || this.tab === 'boards' || this.tab === 'activity')
+      return;
     this.busy = true;
     try {
       await addTeamMember(member.id, this.tab);

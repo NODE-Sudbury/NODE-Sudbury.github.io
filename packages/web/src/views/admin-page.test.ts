@@ -18,6 +18,14 @@ vi.mock('../db/admin-analytics', () => ({
   fetchTopPages: vi.fn().mockResolvedValue([]),
   fetchDailyViews: vi.fn().mockResolvedValue([]),
 }));
+vi.mock('../db/admin-settings', () => ({
+  fetchSocialLinks: vi.fn().mockResolvedValue({
+    social_x: '',
+    social_instagram: '',
+    social_facebook: '',
+    social_linkedin: '',
+  }),
+}));
 vi.mock('../db/admin-team', () => ({ fetchTeam: vi.fn().mockResolvedValue([]) }));
 vi.mock('../db/admin-board', () => ({ fetchBoardMembers: vi.fn().mockResolvedValue([]) }));
 vi.mock('../db/admin-members', () => ({

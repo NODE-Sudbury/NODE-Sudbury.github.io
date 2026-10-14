@@ -32,7 +32,8 @@ The connection strings and passwords live in a gitignored env file, never in the
 | `20261014000015_security_hardening.sql` | Closes the holes from the security review: narrow grants, no direct profile list, no legacy board role, no listing. |
 | `20261014000016_rate_limits.sql` | Rate limits on profile lookups, handle checks, subscribing and unsubscribing. |
 | `20261014000017_page_views.sql` | Counts page views per page and day, with no personal data. The admin dashboard reads them. |
+| `20261014000018_site_settings.sql` | Adds the `site_settings` table for NODE's social links, which the footer shows. An empty link is left out of the footer. |
 
-The first five are applied to both projects. The public Team page and the home page board read the `board_members` table, and the home page's partner logos read the `partners` and `sponsors` tables, when the build can reach Supabase. They keep the sample data otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth to seventeenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+The first five are applied to both projects. The public Team page and the home page board read the `board_members` table, and the home page's partner logos read the `partners` and `sponsors` tables, when the build can reach Supabase. They keep the sample data otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth to eighteenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
 
 See [SECURITY.md](./SECURITY.md) for how the database is protected and how to check it.
