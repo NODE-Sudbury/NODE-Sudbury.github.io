@@ -10,6 +10,8 @@ import '../ui/hb-button';
 import '../ui/hb-chip';
 import '../ui/hb-dialog';
 import '../ui/hb-progress';
+import '../ui/hb-text-field';
+import type { HbTextField } from '../ui/hb-text-field';
 
 const TABS: readonly OrganizationKind[] = ['sponsor', 'partner'];
 
@@ -197,6 +199,8 @@ export class AdminSponsors extends ThemedComponent {
   private accessor deleting: Organization | undefined;
   @state()
   private accessor busy = false;
+  @state()
+  private accessor query = '';
 
   override async firstUpdated() {
     // A link can open the Partners tab, such as after adding one.
@@ -217,6 +221,25 @@ export class AdminSponsors extends ThemedComponent {
 
   private get list(): Organization[] {
     return this.tab === 'sponsor' ? this.sponsors : this.partners;
+  }
+
+  /** The organizations of this tab that match every word typed in the search box. */
+  private get shown(): Organization[] {
+    const words = this.query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length) return this.list;
+    return this.list.filter(({ name, websiteUrl, tier }) => {
+      const text = [name, websiteUrl, tier ? tierLabel(tier) : ''].join(' ').toLowerCase();
+      return words.every((word) => text.includes(word));
+    });
+  }
+
+  private readonly onSearch = (event: Event) => {
+    this.query = (event.target as HbTextField).value;
+  };
+
+  private selectTab(tab: OrganizationKind) {
+    this.tab = tab;
+    this.query = '';
   }
 
   private label(kind: OrganizationKind, plural = true) {
@@ -241,7 +264,7 @@ export class AdminSponsors extends ThemedComponent {
               aria-selected="${tab === this.tab}"
               aria-controls="panel-${tab}"
               tabindex="${tab === this.tab ? 0 : -1}"
-              @click="${() => (this.tab = tab)}"
+              @click="${() => this.selectTab(tab)}"
               @keydown="${this.onKeydown}"
             >
               ${this.label(tab)}
@@ -262,14 +285,14 @@ export class AdminSponsors extends ThemedComponent {
   private readonly onKeydown = (event: KeyboardEvent) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
-    this.tab = this.tab === 'sponsor' ? 'partner' : 'sponsor';
+    this.selectTab(this.tab === 'sponsor' ? 'partner' : 'sponsor');
     void this.updateComplete.then(() =>
       this.shadowRoot?.querySelector<HTMLElement>(`#tab-${this.tab}`)?.focus(),
     );
   };
 
   private renderPanel() {
-    const { tab, list } = this;
+    const { tab, list, shown } = this;
     return html`
       <div class="bar">
         <p class="summary" role="status">
@@ -278,7 +301,11 @@ export class AdminSponsors extends ThemedComponent {
               ? msg('The list could not be loaded. Please, try again later.', {
                   id: 'pages.admin.org-failed',
                 })
-              : msg(str`${list.length} ${this.label(tab)}`, { id: 'pages.admin.org-total' })
+              : this.query
+                ? msg(str`${shown.length} of ${list.length} ${this.label(tab)}`, {
+                    id: 'pages.admin.org-filtered',
+                  })
+                : msg(str`${list.length} ${this.label(tab)}`, { id: 'pages.admin.org-total' })
           }
         </p>
         <hb-button href="${addHref(tab)}">
@@ -289,7 +316,28 @@ export class AdminSponsors extends ThemedComponent {
           }
         </hb-button>
       </div>
-      ${list.length ? this.renderTable(list) : this.renderEmpty()}
+      ${
+        list.length
+          ? html`<hb-text-field
+                type="search"
+                name="search"
+                label="${
+                  tab === 'sponsor'
+                    ? msg('Search sponsors', { id: 'pages.admin.search-sponsors' })
+                    : msg('Search partners', { id: 'pages.admin.search-partners' })
+                }"
+                .value="${this.query}"
+                @input="${this.onSearch}"
+              ></hb-text-field>
+              ${
+                shown.length
+                  ? this.renderTable(shown)
+                  : html`<p class="empty">
+                      ${msg('Nothing matches your search.', { id: 'pages.admin.org-none-match' })}
+                    </p>`
+              }`
+          : this.renderEmpty()
+      }
     `;
   }
 

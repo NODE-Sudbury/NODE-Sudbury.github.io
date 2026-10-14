@@ -7,6 +7,7 @@ import { fixture } from '../../../__tests__/helpers/fixtures';
 import { deleteOrganization, fetchOrganizations } from '../../db/admin-organizations';
 import type { Organization, OrganizationKind } from '../../models/organization';
 import { store } from '../../store';
+import type { HbTextField } from '../ui/hb-text-field';
 import type { AdminSponsors } from './admin-sponsors';
 import './admin-sponsors';
 
@@ -48,6 +49,16 @@ const render = async (search = '') => {
   await vi.waitFor(() => expect(result.element['loading']).toBe(false));
   await result.element.updateComplete;
   return result;
+};
+
+const field = (shadowRoot: ShadowRoot) =>
+  deepQuerySelector<HbTextField>(shadowRoot, 'hb-text-field[name="search"]')!;
+
+const search = async (element: AdminSponsors, value: string) => {
+  const input = field(element.shadowRoot!);
+  input.value = value;
+  input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+  await element.updateComplete;
 };
 
 const openPartners = async (element: AdminSponsors) => {
@@ -148,6 +159,46 @@ describe('admin-sponsors', () => {
     await element.updateComplete;
 
     expect(shadowRoot).toHaveTextContent('There are no sponsors yet.');
+  });
+
+  it('searches the sponsors by name, website or tier', async () => {
+    const { element, shadowRoot } = await render();
+
+    await search(element, 'gold');
+    expect(screen.getAllByShadowRole('row')).toHaveLength(2);
+
+    await search(element, 'acme.example');
+    expect(screen.getAllByShadowRole('row')).toHaveLength(2);
+    expect(shadowRoot).toHaveTextContent('1 of 1 Sponsors');
+
+    await search(element, 'zzz');
+    expect(shadowRoot).toHaveTextContent('Nothing matches your search.');
+    expect(deepQuerySelector(shadowRoot, 'table')).toBeNull();
+  });
+
+  it('searches the partners, and starts fresh on each tab', async () => {
+    const { element, shadowRoot } = await render();
+    await search(element, 'acme');
+    await openPartners(element);
+
+    expect(field(shadowRoot).value).toBe('');
+    expect(screen.getAllByShadowRole('row')).toHaveLength(3);
+
+    await search(element, 'NORCAT');
+    expect(screen.getAllByShadowRole('row')).toHaveLength(2);
+    expect(screen.getAllByShadowRole('row')[1]).toHaveTextContent('Norcat');
+    expect(shadowRoot).toHaveTextContent('1 of 2 Partners');
+  });
+
+  it('has no search box when there is nothing to search', async () => {
+    vi.mocked(fetchOrganizations).mockResolvedValue([]);
+    const { element, shadowRoot } = await fixture<AdminSponsors>(
+      html`<admin-sponsors></admin-sponsors>`,
+    );
+    await vi.waitFor(() => expect(element['loading']).toBe(false));
+    await element.updateComplete;
+
+    expect(deepQuerySelector(shadowRoot, 'hb-text-field')).toBeNull();
   });
 
   it('asks before deleting, and then removes the row', async () => {

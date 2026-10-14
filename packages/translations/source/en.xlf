@@ -149,6 +149,9 @@
 <trans-unit id="pages.admin.org-failed">
   <source>The list could not be loaded. Please, try again later.</source>
 </trans-unit>
+<trans-unit id="pages.admin.org-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
 <trans-unit id="pages.admin.org-total">
   <source><x id="0" equiv-text="${list.length} ${this.label(tab)}"/></source>
 </trans-unit>
@@ -157,6 +160,15 @@
 </trans-unit>
 <trans-unit id="pages.admin.add-partner">
   <source>Add partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-sponsors">
+  <source>Search sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-partners">
+  <source>Search partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-none-match">
+  <source>Nothing matches your search.</source>
 </trans-unit>
 <trans-unit id="pages.admin.sponsors-none">
   <source>There are no sponsors yet.</source>
