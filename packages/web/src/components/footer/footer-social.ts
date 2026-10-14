@@ -64,24 +64,28 @@ export class FooterSocial extends ThemedComponent {
     const target = this.blogNewTab ? '_blank' : nothing;
     const rel = this.blogNewTab ? 'noopener noreferrer' : nothing;
     return html`
-      <div class="social-group social-networks">
-        <p class="title">${msg('Follow us', { id: 'footer.social.follow-us' })}</p>
-        <ul>
-          ${this.socialNetwork.follow.map(
-            (socFollow) => html`
-              <li>
-                <hb-icon-button
-                  label="${FOLLOW_LABELS[socFollow.name] ?? socFollow.name}"
-                  href="${socFollow.url}"
-                  target="_blank"
-                >
-                  <node-icon name="${socFollow.name}"></node-icon>
-                </hb-icon-button>
-              </li>
-            `,
-          )}
-        </ul>
-      </div>
+      ${
+        this.socialNetwork.follow.length
+          ? html`<div class="social-group social-networks">
+              <p class="title">${msg('Follow us', { id: 'footer.social.follow-us' })}</p>
+              <ul>
+                ${this.socialNetwork.follow.map(
+                  (socFollow) => html`
+                    <li>
+                      <hb-icon-button
+                        label="${FOLLOW_LABELS[socFollow.name] ?? socFollow.name}"
+                        href="${socFollow.url}"
+                        target="_blank"
+                      >
+                        <node-icon name="${socFollow.name}"></node-icon>
+                      </hb-icon-button>
+                    </li>
+                  `,
+                )}
+              </ul>
+            </div>`
+          : nothing
+      }
 
       <div class="social-group share">
         <p class="title">${msg('Share', { id: 'footer.social.share-title' })}</p>
