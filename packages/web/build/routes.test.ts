@@ -27,7 +27,12 @@ describe('routes', () => {
         ({ pattern, content }) =>
           pattern.includes('[') &&
           !content &&
-          !['/open-source/[id]', '/events/[id]', '/admin/[section]'].includes(pattern),
+          ![
+            '/open-source/[id]',
+            '/events/[id]',
+            '/admin/[section]',
+            '/admin/sponsors/[action]',
+          ].includes(pattern),
       ),
     ).toEqual([]);
   });
@@ -44,6 +49,7 @@ describe('routes', () => {
       '/profile',
       '/admin',
       '/admin/[section]',
+      '/admin/sponsors/[action]',
     ]);
   });
 
@@ -82,6 +88,12 @@ describe('routes', () => {
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
       [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
       [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
+      [
+        {
+          pattern: '/admin/sponsors/[action]',
+          entrypoint: './src/routes/admin/sponsors/[action].astro',
+        },
+      ],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -99,6 +111,12 @@ describe('routes', () => {
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
       [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
       [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
+      [
+        {
+          pattern: '/admin/sponsors/[action]',
+          entrypoint: './src/routes/admin/sponsors/[action].astro',
+        },
+      ],
     ]);
 
     injectRoute.mockClear();
@@ -110,6 +128,12 @@ describe('routes', () => {
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
       [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
       [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
+      [
+        {
+          pattern: '/admin/sponsors/[action]',
+          entrypoint: './src/routes/admin/sponsors/[action].astro',
+        },
+      ],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });

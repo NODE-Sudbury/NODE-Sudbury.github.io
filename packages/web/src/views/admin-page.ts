@@ -3,6 +3,7 @@ import { msg } from '@lit/localize';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import '../components/admin/admin-members';
+import '../components/admin/admin-organization-form';
 import '../components/admin/admin-sponsors';
 import '../components/shared/node-icon';
 import '../components/ui/hb-button';
@@ -12,10 +13,8 @@ import { ThemedComponent } from '../components/themed-component';
 import { fromStore } from '../controllers/from-store';
 import { fetchOwnAdminRole } from '../db/admins';
 import { fetchAdminMembers, fetchSubscriberCount } from '../db/admin-members';
-import { fetchAdminPartners } from '../db/admin-partners';
 import { type AdminRole, canOpenDashboard } from '../models/admin';
 import type { AdminMember } from '../models/admin-member';
-import type { AdminPartner } from '../models/admin-partner';
 import { sessionRestored } from '../store/auth';
 import { openSigninDialog } from '../store/dialogs';
 import type { UserState } from '../store/user';
@@ -282,6 +281,10 @@ export class AdminPage extends ThemedComponent {
   @property()
   accessor section: AdminSection = 'home';
 
+  /** `new` or `edit` while a page inside a section, such as adding a sponsor, is open. */
+  @property()
+  accessor action: '' | 'new' | 'edit' = '';
+
   @fromStore((state) => state.user)
   private accessor user!: UserState;
 
@@ -296,8 +299,6 @@ export class AdminPage extends ThemedComponent {
   private accessor members: AdminMember[] = [];
   @state()
   private accessor subscribers: number | undefined;
-  @state()
-  private accessor partners: AdminPartner[] = [];
   @state()
   private accessor failed = false;
 
@@ -319,7 +320,6 @@ export class AdminPage extends ThemedComponent {
     this.loadedFor = uid;
     this.adminRole = undefined;
     this.members = [];
-    this.partners = [];
     this.subscribers = undefined;
     if (uid) void this.load(uid);
   }
@@ -332,15 +332,13 @@ export class AdminPage extends ThemedComponent {
       if (uid !== this.loadedFor) return;
       this.adminRole = role;
       if (canOpenDashboard(role)) {
-        const [members, subscribers, partners] = await Promise.all([
+        const [members, subscribers] = await Promise.all([
           fetchAdminMembers(),
           fetchSubscriberCount(),
-          fetchAdminPartners(),
         ]);
         if (uid !== this.loadedFor) return;
         this.members = members;
         this.subscribers = subscribers;
-        this.partners = partners;
       }
     } catch {
       // No role is the safe answer: the page then says there is no access.
@@ -402,10 +400,8 @@ export class AdminPage extends ThemedComponent {
     return html`
       <header class="head">
         <div>
-          <h1>
-            ${section === 'home' ? msg('NODE', { id: 'pages.admin.home-title' }) : label(section)}
-          </h1>
-          ${about(section) ? html`<p class="lede">${about(section)}</p>` : nothing}
+          <h1>${this.heading()}</h1>
+          ${this.lede() ? html`<p class="lede">${this.lede()}</p>` : nothing}
         </div>
         <span>
           ${this.adminRole ? html`<hb-chip accent="3">${roleLabel(this.adminRole)}</hb-chip>` : nothing}
@@ -427,10 +423,27 @@ export class AdminPage extends ThemedComponent {
           : section === 'members'
             ? html`<admin-members .members="${this.members}"></admin-members>`
             : section === 'sponsors'
-              ? html`<admin-sponsors .partners="${this.partners}"></admin-sponsors>`
+              ? this.action
+                ? html`<admin-organization-form></admin-organization-form>`
+                : html`<admin-sponsors></admin-sponsors>`
               : this.renderSoon(section)
       }
     `;
+  }
+
+  private heading() {
+    const { section, action } = this;
+    if (section === 'sponsors' && action === 'new') {
+      return msg('Add a sponsor or partner', { id: 'pages.admin.add-title' });
+    }
+    if (section === 'sponsors' && action === 'edit') {
+      return msg('Edit a sponsor or partner', { id: 'pages.admin.edit-title' });
+    }
+    return section === 'home' ? msg('NODE', { id: 'pages.admin.home-title' }) : label(section);
+  }
+
+  private lede() {
+    return this.action ? '' : about(this.section);
   }
 
   private renderHome() {

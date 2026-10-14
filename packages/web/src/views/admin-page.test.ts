@@ -6,7 +6,6 @@ import { expectNoAxeViolations } from '../../__tests__/helpers/axe';
 import { fixture } from '../../__tests__/helpers/fixtures';
 import { setStoreState } from '../../__tests__/helpers/store';
 import { fetchAdminMembers, fetchSubscriberCount } from '../db/admin-members';
-import { fetchAdminPartners } from '../db/admin-partners';
 import { fetchOwnAdminRole } from '../db/admins';
 import type { AdminRole } from '../models/admin';
 import type { AdminMember } from '../models/admin-member';
@@ -15,7 +14,6 @@ import { type AdminPage, type AdminSection, adminPath } from './admin-page';
 import './admin-page';
 
 vi.mock('../db/admins', () => ({ fetchOwnAdminRole: vi.fn() }));
-vi.mock('../db/admin-partners', () => ({ fetchAdminPartners: vi.fn() }));
 vi.mock('../db/admin-members', () => ({
   fetchAdminMembers: vi.fn(),
   fetchSubscriberCount: vi.fn(),
@@ -56,16 +54,15 @@ const members = [
 
 const render = async (
   role: AdminRole | undefined,
-  { signedIn = true, section = 'home' as AdminSection } = {},
+  { signedIn = true, section = 'home' as AdminSection, action = '' as '' | 'new' | 'edit' } = {},
 ) => {
   vi.mocked(fetchOwnAdminRole).mockResolvedValue(role);
   vi.mocked(fetchAdminMembers).mockResolvedValue(members);
   vi.mocked(fetchSubscriberCount).mockResolvedValue(5);
-  vi.mocked(fetchAdminPartners).mockResolvedValue([
-    { id: 'p1', name: 'Norcat', websiteUrl: '', logoUrl: '', sortOrder: 0 },
-  ]);
   setStoreState(signedIn ? { user: new Success(user) } : {});
-  const result = await fixture<AdminPage>(html`<admin-page .section="${section}"></admin-page>`);
+  const result = await fixture<AdminPage>(
+    html`<admin-page .section="${section}" .action="${action}"></admin-page>`,
+  );
   await vi.waitFor(() => expect(result.element['ready']).toBe(true));
   if (signedIn) await vi.waitFor(() => expect(fetchOwnAdminRole).toHaveBeenCalled());
   await vi.waitFor(() => expect(result.element['loading']).toBe(false));
@@ -151,13 +148,19 @@ describe('admin-page', () => {
     expect(table).toHaveProperty('members', members);
   });
 
-  it('shows the sponsors and partners tabs on the sponsors section', async () => {
+  it('shows the sponsors and partners tables on the sponsors section', async () => {
     const { shadowRoot } = await render('super_admin', { section: 'sponsors' });
 
-    const sponsors = deepQuerySelector(shadowRoot, 'admin-sponsors')!;
-    expect(sponsors).toHaveProperty('partners', [
-      { id: 'p1', name: 'Norcat', websiteUrl: '', logoUrl: '', sortOrder: 0 },
-    ]);
+    expect(deepQuerySelector(shadowRoot, 'admin-sponsors')).toBeInTheDocument();
+    expect(deepQuerySelector(shadowRoot, 'admin-organization-form')).toBeNull();
+  });
+
+  it('shows the form to add or edit a sponsor or partner on the sponsors action pages', async () => {
+    const { shadowRoot } = await render('super_admin', { section: 'sponsors', action: 'new' });
+
+    expect(deepQuerySelector(shadowRoot, 'admin-organization-form')).toBeInTheDocument();
+    expect(deepQuerySelector(shadowRoot, 'admin-sponsors')).toBeNull();
+    expect(shadowRoot).toHaveTextContent('Add a sponsor or partner');
   });
 
   it('says a section is coming soon when it has no tools yet', async () => {

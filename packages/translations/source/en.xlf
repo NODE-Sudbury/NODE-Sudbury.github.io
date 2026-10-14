@@ -65,23 +65,119 @@
 <trans-unit id="pages.admin.private">
   <source>Private</source>
 </trans-unit>
+<trans-unit id="pages.admin.tier-platinum">
+  <source>Platinum</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-gold">
+  <source>Gold</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-silver">
+  <source>Silver</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-bronze">
+  <source>Bronze</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-community">
+  <source>Community</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-missing">
+  <source>That sponsor or partner could not be found.</source>
+</trans-unit>
+<trans-unit id="pages.admin.back-sponsors">
+  <source>Back to sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor-title">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-partner-title">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-tier">
+  <source>Tier</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-logo">
+  <source>Logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-logo">
+  <source>No logo yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-change">
+  <source>Change logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-choose">
+  <source>Choose logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-input">
+  <source>Choose a logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-note">
+  <source>JPG, PNG, WebP or SVG, up to 2 MB.</source>
+</trans-unit>
+<trans-unit id="pages.admin.save-changes">
+  <source>Save changes</source>
+</trans-unit>
+<trans-unit id="pages.admin.add">
+  <source>Add</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-type">
+  <source>Choose a JPG, PNG, WebP or SVG logo.</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-size">
+  <source>That logo is over 2 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.admin.name-needed">
+  <source>Add a name.</source>
+</trans-unit>
+<trans-unit id="pages.admin.saved">
+  <source>Saved.</source>
+</trans-unit>
 <trans-unit id="pages.admin.tab-sponsors">
   <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor">
+  <source>sponsor</source>
 </trans-unit>
 <trans-unit id="pages.admin.tab-partners">
   <source>Partners</source>
 </trans-unit>
+<trans-unit id="pages.admin.kind-partner">
+  <source>partner</source>
+</trans-unit>
 <trans-unit id="pages.admin.tabs">
   <source>Sponsors and partners</source>
 </trans-unit>
-<trans-unit id="pages.admin.soon">
-  <source>Coming soon</source>
+<trans-unit id="pages.admin.org-failed">
+  <source>The list could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-total">
+  <source><x id="0" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.add-sponsor">
+  <source>Add sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-partner">
+  <source>Add partner</source>
 </trans-unit>
 <trans-unit id="pages.admin.sponsors-none">
-  <source>There are no sponsors yet. They will be listed here once NODE has some.</source>
+  <source>There are no sponsors yet.</source>
 </trans-unit>
 <trans-unit id="pages.admin.partners-none">
   <source>There are no partners yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete">
+  <source>Delete</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-title">
+  <source>Delete <x id="0" equiv-text="${deleting.name}"/>?</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-body">
+  <source>It is removed from the list and its logo is deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleting">
+  <source>Deleting...</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleted">
+  <source>Deleted.</source>
 </trans-unit>
 <trans-unit id="attending.accommodation.book">
   <source>Book</source>
@@ -1202,14 +1298,20 @@
 <trans-unit id="pages.admin.nav">
   <source>Admin sections</source>
 </trans-unit>
-<trans-unit id="pages.admin.home-title">
-  <source>NODE</source>
-</trans-unit>
 <trans-unit id="pages.admin.view-site">
   <source>View site</source>
 </trans-unit>
 <trans-unit id="pages.admin.load-failed">
   <source>Some numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-title">
+  <source>Add a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.edit-title">
+  <source>Edit a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.home-title">
+  <source>NODE</source>
 </trans-unit>
 <trans-unit id="pages.admin.stat-members">
   <source>Members</source>
@@ -1231,6 +1333,9 @@
 </trans-unit>
 <trans-unit id="pages.admin.upcoming">
   <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon">
+  <source>Coming soon</source>
 </trans-unit>
 <trans-unit id="pages.admin.soon-body">
   <source>This part of the dashboard is on its way.</source>
