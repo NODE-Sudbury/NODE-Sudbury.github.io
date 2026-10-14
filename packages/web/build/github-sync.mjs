@@ -8,6 +8,7 @@ import { Buffer } from 'node:buffer';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { publishedBase, takePublishedData } from './open-source-fallback.mjs';
 
 const ORG = process.env.GITHUB_ORG ?? 'NODE-Sudbury';
 const TOKEN = process.env.GITHUB_TOKEN;
@@ -201,8 +202,25 @@ if (process.argv.includes('--if-requested') && process.env.SYNC_GITHUB !== '1') 
     'GitHub sync skipped. Set SYNC_GITHUB=1 to refresh the open source projects before a build.',
   );
 } else {
-  main().catch((error) => {
+  main().catch(async (error) => {
     console.error(error.message);
+    // Without a token, GitHub often says no to a builder. The daily workflow publishes the data, so
+    // a build takes that instead of keeping an older copy.
+    if (process.argv.includes('--if-requested')) {
+      const repository = process.env.GITHUB_REPOSITORY ?? `${ORG}/${ORG}.github.io`;
+      const taken = await takePublishedData({
+        base: publishedBase(repository),
+        out: OUT,
+        imagesDir: IMAGES,
+      }).catch((problem) => {
+        console.warn(`Could not read the published open source data: ${problem.message}`);
+        return false;
+      });
+      if (taken) {
+        console.log('Using the open source data that the daily workflow published.');
+        process.exit(0);
+      }
+    }
     // A failed refresh must not break a build or erase what the site already has.
     if (existsSync(OUT)) {
       console.warn('Keeping the open source data from the last successful sync.');
