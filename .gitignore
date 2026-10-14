@@ -96,3 +96,6 @@ serviceAccount.json
 
 # Local planning notes
 scratch/
+
+# The private project that supabase/local/reset.sh builds
+supabase/.local-stack/
