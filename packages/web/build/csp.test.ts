@@ -28,6 +28,7 @@ describe('cspPolicy', () => {
     expect(policy['script-src']).toEqual([
       "'self'",
       'https://apis.google.com',
+      'https://accounts.google.com/gsi/client',
       'https://*.googletagmanager.com',
     ]);
     expect(policy['connect-src']).toContain('https://*.googleapis.com');
@@ -36,6 +37,7 @@ describe('cspPolicy', () => {
       'https://my-devfest.firebaseapp.com',
       'https://www.youtube.com',
       'https://www.youtube-nocookie.com',
+      'https://accounts.google.com/gsi/',
     ]);
     expect(policy['img-src']).toEqual(["'self'", 'https:', 'data:']);
   });
@@ -82,6 +84,7 @@ describe('cspPolicy', () => {
     expect(policy['style-src']).toEqual([
       "'self'",
       "'unsafe-inline'",
+      'https://accounts.google.com/gsi/style',
       'https://fonts.googleapis.com',
       'https://fonts.example.com',
     ]);

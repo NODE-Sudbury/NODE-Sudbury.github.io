@@ -1,14 +1,15 @@
 import { Success } from '@abraham/remotedata';
 import { msg, str } from '@lit/localize';
 import { css, html, nothing, type PropertyValues } from 'lit';
-import { customElement, query } from 'lit/decorators.js';
+import { customElement, query, state } from 'lit/decorators.js';
 import { StoreController } from '../../controllers/store-controller';
 import { fromStore } from '../../controllers/from-store';
-import { signIn, signInAvailable } from '../../store/auth';
+import { signIn, signInAvailable, signInWithGoogleToken } from '../../store/auth';
 import { closeDialog, DIALOG, selectIsDialogOpen } from '../../store/dialogs';
 import { selectOnline } from '../../store/sync';
 import { emailLinkSignIn, signInProviders } from '../../config/site';
-import type { PROVIDER } from '../../utils/providers';
+import { googleClientId, renderGoogleButton } from '../../utils/google-identity';
+import { type PROVIDER, supabaseProvider } from '../../utils/providers';
 import { illustration, illustrationStyles } from '../../illustrations/illustration';
 import signInArt from '../../illustrations/sign-in.svg?raw';
 import '../shared/node-icon';
@@ -44,6 +45,13 @@ export class SigninDialog extends ThemedComponent {
         text-align: center;
       }
 
+      .google-button {
+        display: flex;
+        justify-content: center;
+        margin: 16px 0;
+        min-block-size: 44px;
+      }
+
       .offline {
         margin: 0 0 var(--hb-space-4);
         font-weight: 600;
@@ -59,6 +67,12 @@ export class SigninDialog extends ThemedComponent {
   private accessor online!: boolean;
   @query('email-link-form')
   private accessor emailLinkForm!: EmailLinkForm | null;
+  @query('.google-button')
+  private accessor googleButton!: HTMLElement | null;
+  /** Google's button could not be shown, so the sign-in by redirect takes its place. */
+  @state()
+  private accessor googleFailed = false;
+  private googleStarted = false;
 
   constructor() {
     super();
@@ -74,6 +88,26 @@ export class SigninDialog extends ThemedComponent {
     if (changed.has('open') && this.open) {
       this.emailLinkForm?.reset();
     }
+  }
+
+  override updated() {
+    if (!this.open || !this.online || this.googleStarted || this.googleFailed) return;
+    const container = this.googleButton;
+    if (!container) return;
+    this.googleStarted = true;
+    renderGoogleButton(container, (token, nonce) => void signInWithGoogleToken(token, nonce)).catch(
+      () => {
+        this.googleFailed = true;
+      },
+    );
+  }
+
+  private usesGoogleButton(provider: { url: string }) {
+    return (
+      Boolean(googleClientId) &&
+      !this.googleFailed &&
+      supabaseProvider(provider.url as PROVIDER) === 'google'
+    );
   }
 
   override render() {
@@ -110,22 +144,24 @@ export class SigninDialog extends ThemedComponent {
                         </p>`
                       : nothing
                   }
-                  ${this.signInProviders.providersData.map(
-                    (provider) => html`
-                      <hb-button
-                        variant="text"
-                        class="sign-in-button"
-                        ?disabled="${!this.online}"
-                        @click="${() => this.signIn(provider.url as PROVIDER)}"
-                      >
-                        <node-icon
-                          slot="icon"
-                          name="${provider.name}"
-                          class="icon-${provider.name}"
-                        ></node-icon>
-                        ${signInWith(provider.label)}
-                      </hb-button>
-                    `,
+                  ${this.signInProviders.providersData.map((provider) =>
+                    this.usesGoogleButton(provider)
+                      ? html`<div class="google-button" ?hidden="${!this.online}"></div>`
+                      : html`
+                          <hb-button
+                            variant="text"
+                            class="sign-in-button"
+                            ?disabled="${!this.online}"
+                            @click="${() => this.signIn(provider.url as PROVIDER)}"
+                          >
+                            <node-icon
+                              slot="icon"
+                              name="${provider.name}"
+                              class="icon-${provider.name}"
+                            ></node-icon>
+                            ${signInWith(provider.label)}
+                          </hb-button>
+                        `,
                   )}
                 </div>
               `

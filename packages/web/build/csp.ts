@@ -84,11 +84,18 @@ export const cspPolicy = (
       "'self'",
       // Firebase Auth loads Google's API loader for popups, and on Safari and mobile when it starts.
       'https://apis.google.com',
+      // Google's own sign-in button, which shows the site's name on its account chooser.
+      'https://accounts.google.com/gsi/client',
       // Firebase Analytics loads the Google tag.
       'https://*.googletagmanager.com',
     ],
     // Lit renders a <style> in every shadow root, and `styleMap` sets style attributes.
-    'style-src': ["'self'", "'unsafe-inline'", ...fontOrigins],
+    'style-src': [
+      "'self'",
+      "'unsafe-inline'",
+      'https://accounts.google.com/gsi/style',
+      ...fontOrigins,
+    ],
     'connect-src': [
       "'self'",
       'https://*.googleapis.com',
@@ -97,6 +104,8 @@ export const cspPolicy = (
       'https://*.googletagmanager.com',
       // The home page asks Discord how many members the server has.
       'https://discord.com',
+      // The sign-in button asks Google for the accounts of this browser.
+      'https://accounts.google.com/gsi/',
     ],
     // Content images can be on any host.
     'img-src': ["'self'", 'https:', 'data:'],
@@ -112,6 +121,8 @@ export const cspPolicy = (
       `https://${site.firebase.projectId}.firebaseapp.com`,
       'https://www.youtube.com',
       'https://www.youtube-nocookie.com',
+      // The frame of Google's sign-in button.
+      'https://accounts.google.com/gsi/',
     ],
     'worker-src': ["'self'"],
     'manifest-src': ["'self'"],
