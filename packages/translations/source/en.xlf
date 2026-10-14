@@ -2,6 +2,75 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="pages.admin.action-insert">
+  <source>Added</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-update">
+  <source>Changed</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-delete">
+  <source>Deleted</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-admins">
+  <source>Team access</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-board">
+  <source>Board card</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-partners">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-sponsors">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-members">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-subscribers">
+  <source>Subscriber</source>
+</trans-unit>
+<trans-unit id="pages.admin.empty-value">
+  <source>(empty)</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-search">
+  <source>Search the activity</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-table">
+  <source>What</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-all">
+  <source>Everything</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-action">
+  <source>Action</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-any">
+  <source>Any action</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-failed">
+  <source>The activity could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-count">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.entries.length}"/> entries</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-note">
+  <source>The log shows the latest entries. Nobody can change or delete it.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-none">
+  <source>Nothing has been logged yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-when">
+  <source>When</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-who">
+  <source>Who</source>
+</trans-unit>
+<trans-unit id="pages.admin.system">
+  <source>The system</source>
+</trans-unit>
+<trans-unit id="pages.admin.details">
+  <source>Details</source>
+</trans-unit>
 <trans-unit id="pages.admin.boards-failed">
   <source>The board could not be loaded. Please, try again later.</source>
 </trans-unit>
@@ -54,7 +123,7 @@
   <source>Choose photo</source>
 </trans-unit>
 <trans-unit id="pages.admin.photo-type">
-  <source>Choose a JPG, PNG, WebP or SVG photo.</source>
+  <source>Choose a JPG, PNG or WebP photo.</source>
 </trans-unit>
 <trans-unit id="pages.admin.photo-size">
   <source>That photo is over 2 MB. Choose a smaller one.</source>
@@ -174,7 +243,7 @@
   <source>Choose a logo</source>
 </trans-unit>
 <trans-unit id="pages.admin.logo-note">
-  <source>JPG, PNG, WebP or SVG, up to 2 MB.</source>
+  <source>JPG, PNG or WebP, up to 2 MB.</source>
 </trans-unit>
 <trans-unit id="pages.admin.save-changes">
   <source>Save changes</source>
@@ -183,7 +252,7 @@
   <source>Add</source>
 </trans-unit>
 <trans-unit id="pages.admin.logo-type">
-  <source>Choose a JPG, PNG, WebP or SVG logo.</source>
+  <source>Choose a JPG, PNG or WebP logo.</source>
 </trans-unit>
 <trans-unit id="pages.admin.logo-size">
   <source>That logo is over 2 MB. Choose a smaller one.</source>
@@ -265,6 +334,9 @@
 </trans-unit>
 <trans-unit id="pages.admin.tab-boards">
   <source>Boards</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-activity">
+  <source>Activity</source>
 </trans-unit>
 <trans-unit id="pages.admin.tab-board">
   <source>Dashboard admins</source>
