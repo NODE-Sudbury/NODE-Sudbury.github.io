@@ -1,76 +1,135 @@
 import { fireEvent } from '@testing-library/dom';
 import { html, nothing, render as litRender } from 'lit';
-import { deepQuerySelectorAll, screen } from 'shadow-dom-testing-library';
-import { afterEach, describe, expect, it } from 'vitest';
+import { deepQuerySelector, screen } from 'shadow-dom-testing-library';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { expectNoAxeViolations } from '../../../__tests__/helpers/axe';
 import { fixture } from '../../../__tests__/helpers/fixtures';
-import type { AdminPartner } from '../../models/admin-partner';
+import { deleteOrganization, fetchOrganizations } from '../../db/admin-organizations';
+import type { Organization, OrganizationKind } from '../../models/organization';
+import { store } from '../../store';
 import type { AdminSponsors } from './admin-sponsors';
 import './admin-sponsors';
 
-const partners: AdminPartner[] = [
-  {
-    id: 'p1',
-    name: 'Norcat',
-    websiteUrl: 'https://www.norcat.org/',
-    logoUrl: 'https://cdn.example/norcat.jpg',
-    sortOrder: 0,
-  },
-  { id: 'p2', name: 'GDG Sudbury', websiteUrl: '', logoUrl: '', sortOrder: 1 },
+vi.mock('../../db/admin-organizations', () => ({
+  fetchOrganizations: vi.fn(),
+  deleteOrganization: vi.fn(),
+}));
+
+const organization = (kind: OrganizationKind, over: Partial<Organization>): Organization => ({
+  id: 'o1',
+  kind,
+  name: 'Acme',
+  websiteUrl: 'https://www.acme.example/',
+  logoPath: 'a.png',
+  logoUrl: 'https://cdn.example/a.png',
+  tier: kind === 'sponsor' ? 'gold' : undefined,
+  sortOrder: 0,
+  ...over,
+});
+
+const sponsors = [organization('sponsor', {})];
+const partners = [
+  organization('partner', { id: 'p1', name: 'Norcat', websiteUrl: 'https://www.norcat.org/' }),
+  organization('partner', {
+    id: 'p2',
+    name: 'GDG Sudbury',
+    websiteUrl: '',
+    logoUrl: '',
+    logoPath: '',
+  }),
 ];
 
-const render = async (list: AdminPartner[] = partners) => {
-  const result = await fixture<AdminSponsors>(
-    html`<admin-sponsors .partners="${list}"></admin-sponsors>`,
+const render = async (search = '') => {
+  window.history.pushState({}, '', `/admin/sponsors${search}`);
+  vi.mocked(fetchOrganizations).mockImplementation(async (kind) =>
+    kind === 'sponsor' ? sponsors : partners,
   );
+  const result = await fixture<AdminSponsors>(html`<admin-sponsors></admin-sponsors>`);
+  await vi.waitFor(() => expect(result.element['loading']).toBe(false));
   await result.element.updateComplete;
   return result;
 };
 
+const openPartners = async (element: AdminSponsors) => {
+  fireEvent.click(screen.getByShadowRole('tab', { name: /Partners/ }));
+  await element.updateComplete;
+};
+
 describe('admin-sponsors', () => {
-  afterEach(() => {
-    litRender(nothing, document.body);
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it('has a Sponsors tab and a Partners tab, and opens on Sponsors', async () => {
-    const { shadowRoot } = await render();
+  afterEach(() => {
+    litRender(nothing, document.body);
+    window.history.pushState({}, '', '/');
+  });
 
-    const tabs = screen.getAllByShadowRole('tab');
-    expect(tabs.map((tab) => tab.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
-      'Sponsors',
-      'Partners 2',
-    ]);
-    expect(screen.getByShadowRole('tab', { name: 'Sponsors' })).toHaveAttribute(
+  it('has a Sponsors tab and a Partners tab with their counts, and opens on Sponsors', async () => {
+    await render();
+
+    const tabs = screen
+      .getAllByShadowRole('tab')
+      .map((tab) => tab.textContent?.replace(/\s+/g, ' ').trim());
+    expect(tabs).toEqual(['Sponsors 1', 'Partners 2']);
+    expect(screen.getByShadowRole('tab', { name: /Sponsors/ })).toHaveAttribute(
       'aria-selected',
       'true',
     );
-    expect(shadowRoot).toHaveTextContent('There are no sponsors yet.');
   });
 
-  it('lists the partners with their logos and sites on the Partners tab', async () => {
+  it('tables the sponsors with their logo, site and tier, and a way to add one', async () => {
+    const { shadowRoot } = await render();
+
+    const row = screen.getAllByShadowRole('row')[1]!;
+    expect(row).toHaveTextContent('Acme');
+    expect(row).toHaveTextContent('acme.example/');
+    expect(row).toHaveTextContent('Gold');
+    expect(deepQuerySelector(shadowRoot, 'tbody img')).toHaveAttribute(
+      'src',
+      'https://cdn.example/a.png',
+    );
+    expect(shadowRoot).toHaveTextContent('1 Sponsors');
+    expect(screen.getByShadowRole('link', { name: 'Add sponsor' })).toHaveAttribute(
+      'href',
+      '/admin/sponsors/new?kind=sponsor',
+    );
+    expect(screen.getByShadowRole('link', { name: 'Edit Acme' })).toHaveAttribute(
+      'href',
+      '/admin/sponsors/edit?kind=sponsor&id=o1',
+    );
+  });
+
+  it('tables the partners, who have no tier, and a way to add one', async () => {
     const { element, shadowRoot } = await render();
 
-    fireEvent.click(screen.getByShadowRole('tab', { name: /Partners/ }));
-    await element.updateComplete;
+    await openPartners(element);
 
-    const cards = deepQuerySelectorAll(shadowRoot, '.partner');
-    expect(cards).toHaveLength(2);
-    expect(cards[0]).toHaveTextContent('Norcat');
-    expect(deepQuerySelectorAll(shadowRoot, 'img')[0]).toHaveAttribute(
-      'src',
-      'https://cdn.example/norcat.jpg',
-    );
-    expect(screen.getByShadowRole('link', { name: 'norcat.org/' })).toHaveAttribute(
+    expect(screen.getAllByShadowRole('row')).toHaveLength(3);
+    expect(shadowRoot).not.toHaveTextContent('Tier');
+    expect(screen.getByShadowRole('link', { name: 'Add partner' })).toHaveAttribute(
       'href',
-      'https://www.norcat.org/',
+      '/admin/sponsors/new?kind=partner&tab=partners',
     );
-    expect(deepQuerySelectorAll(shadowRoot, 'img')).toHaveLength(1);
+    expect(screen.getByShadowRole('link', { name: 'Edit Norcat' })).toHaveAttribute(
+      'href',
+      '/admin/sponsors/edit?kind=partner&id=p1&tab=partners',
+    );
+  });
+
+  it('opens on Partners when the address asks for it', async () => {
+    await render('?tab=partners');
+
+    expect(screen.getByShadowRole('tab', { name: /Partners/ })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('moves between the tabs with the arrow keys', async () => {
     const { element } = await render();
 
-    fireEvent.keyDown(screen.getByShadowRole('tab', { name: 'Sponsors' }), { key: 'ArrowRight' });
+    fireEvent.keyDown(screen.getByShadowRole('tab', { name: /Sponsors/ }), { key: 'ArrowRight' });
     await element.updateComplete;
 
     expect(screen.getByShadowRole('tab', { name: /Partners/ })).toHaveAttribute(
@@ -79,13 +138,37 @@ describe('admin-sponsors', () => {
     );
   });
 
-  it('says so when there are no partners', async () => {
-    const { element, shadowRoot } = await render([]);
-
-    fireEvent.click(screen.getByShadowRole('tab', { name: /Partners/ }));
+  it('says so when there are none', async () => {
+    vi.mocked(fetchOrganizations).mockResolvedValue([]);
+    window.history.pushState({}, '', '/admin/sponsors');
+    const { element, shadowRoot } = await fixture<AdminSponsors>(
+      html`<admin-sponsors></admin-sponsors>`,
+    );
+    await vi.waitFor(() => expect(element['loading']).toBe(false));
     await element.updateComplete;
 
-    expect(shadowRoot).toHaveTextContent('There are no partners yet.');
+    expect(shadowRoot).toHaveTextContent('There are no sponsors yet.');
+  });
+
+  it('asks before deleting, and then removes the row', async () => {
+    vi.mocked(deleteOrganization).mockResolvedValue();
+    const dispatch = vi.spyOn(store, 'dispatch');
+    const { element, shadowRoot } = await render();
+    await openPartners(element);
+
+    fireEvent.click(screen.getByShadowRole('button', { name: 'Delete Norcat' }));
+    await element.updateComplete;
+    expect(deepQuerySelector(shadowRoot, 'hb-dialog')).toHaveAttribute('heading', 'Delete Norcat?');
+    expect(deleteOrganization).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getAllByShadowRole('button', { name: 'Delete' }).at(-1)!);
+
+    await vi.waitFor(() => expect(deleteOrganization).toHaveBeenCalledWith(partners[0]));
+    await vi.waitFor(() => expect(screen.getAllByShadowRole('row')).toHaveLength(2));
+    expect(shadowRoot).not.toHaveTextContent('Norcat');
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'snackbars/queueSnackbar', payload: 'Deleted.' }),
+    );
   });
 
   it('has no accessibility violations', async () => {
