@@ -29,6 +29,9 @@
 <trans-unit id="pages.admin.table-subscribers">
   <source>Subscriber</source>
 </trans-unit>
+<trans-unit id="pages.admin.table-settings">
+  <source>Site setting</source>
+</trans-unit>
 <trans-unit id="pages.admin.empty-value">
   <source>(empty)</source>
 </trans-unit>
@@ -187,6 +190,21 @@
 </trans-unit>
 <trans-unit id="pages.admin.delete-card-body">
   <source>The card and its photo are deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.general-title">
+  <source>Follow us links</source>
+</trans-unit>
+<trans-unit id="pages.admin.general-note">
+  <source>These are the links under "Follow us" in the footer of every page. Leave a box empty to hide that network from the footer. Changes show on the public site after the next deploy.</source>
+</trans-unit>
+<trans-unit id="pages.admin.general-failed">
+  <source>The links could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.general-hidden">
+  <source>Empty: hidden from the footer.</source>
+</trans-unit>
+<trans-unit id="pages.admin.general-saved">
+  <source>Saved. The footer shows the new links after the next deploy.</source>
 </trans-unit>
 <trans-unit id="pages.admin.members-search">
   <source>Search members</source>
@@ -383,6 +401,9 @@
 <trans-unit id="pages.admin.role-volunteer-short">
   <source>Volunteer</source>
 </trans-unit>
+<trans-unit id="pages.admin.tab-general">
+  <source>General</source>
+</trans-unit>
 <trans-unit id="pages.admin.tab-boards">
   <source>Boards</source>
 </trans-unit>
@@ -396,7 +417,7 @@
   <source>Volunteers</source>
 </trans-unit>
 <trans-unit id="pages.admin.team-tabs">
-  <source>Boards, dashboard admins and volunteers</source>
+  <source>General, boards, dashboard admins and volunteers</source>
 </trans-unit>
 <trans-unit id="pages.admin.team-failed">
   <source>The team could not be loaded. Please, try again later.</source>
