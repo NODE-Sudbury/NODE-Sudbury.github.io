@@ -79,6 +79,11 @@ const ICONS: Record<string, () => Promise<{ default: SVGTemplateResult }>> = {
   copy: () => import('./icons/copy'),
   link: () => import('./icons/link'),
   'open-in-new': () => import('./icons/open-in-new'),
+  dashboard: () => import('./icons/dashboard'),
+  analytics: () => import('./icons/analytics'),
+  mail: () => import('./icons/mail'),
+  settings: () => import('./icons/settings'),
+  storefront: () => import('./icons/storefront'),
   hotel: () => import('./icons/hotel'),
 };
 
