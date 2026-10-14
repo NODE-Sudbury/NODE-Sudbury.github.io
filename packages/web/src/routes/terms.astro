@@ -1,0 +1,15 @@
+---
+import { terms } from '../data/legal';
+import { itemMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import Base from '../layouts/base.astro';
+import { LegalPage } from '../views/legal-page';
+---
+
+<Base
+  {...itemMetadata(terms.title, terms.description)}
+  content={seedPage({})}
+  breadcrumbs={[{ name: terms.title, path: '/terms' }]}
+>
+  <LegalPage document={terms} client:load />
+</Base>

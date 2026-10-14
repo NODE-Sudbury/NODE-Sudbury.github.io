@@ -51,6 +51,8 @@ describe('routes', () => {
       '/admin/[section]',
       '/admin/sponsors/[action]',
       '/unsubscribe',
+      '/privacy',
+      '/terms',
     ]);
   });
 
@@ -96,6 +98,8 @@ describe('routes', () => {
         },
       ],
       [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
+      [{ pattern: '/privacy', entrypoint: './src/routes/privacy.astro' }],
+      [{ pattern: '/terms', entrypoint: './src/routes/terms.astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -120,6 +124,8 @@ describe('routes', () => {
         },
       ],
       [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
+      [{ pattern: '/privacy', entrypoint: './src/routes/privacy.astro' }],
+      [{ pattern: '/terms', entrypoint: './src/routes/terms.astro' }],
     ]);
 
     injectRoute.mockClear();
@@ -138,6 +144,8 @@ describe('routes', () => {
         },
       ],
       [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
+      [{ pattern: '/privacy', entrypoint: './src/routes/privacy.astro' }],
+      [{ pattern: '/terms', entrypoint: './src/routes/terms.astro' }],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });
