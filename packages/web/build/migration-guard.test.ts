@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { findRisks } from '../../../.github/scripts/migration-guard.mjs';
+import { findRisks } from './migration-guard.mjs';
 
 const diffOf = (...lines: string[]) =>
   ['+++ b/supabase/migrations/1.sql', ...lines.map((line) => `+${line}`)].join('\n');
