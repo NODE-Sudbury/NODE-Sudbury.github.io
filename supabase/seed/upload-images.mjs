@@ -12,6 +12,7 @@
 // Files that are already in storage are left alone.
 
 import { readdir, readFile } from 'node:fs/promises';
+import process from 'node:process';
 import { extname, join } from 'node:path';
 
 const { SUPABASE_URL, SUPABASE_ANON_KEY, ACCESS_TOKEN } = process.env;
