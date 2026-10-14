@@ -71,6 +71,60 @@
 <trans-unit id="pages.admin.details">
   <source>Details</source>
 </trans-unit>
+<trans-unit id="pages.admin.range-today">
+  <source>Today</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-7">
+  <source>7 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-30">
+  <source>30 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-90">
+  <source>90 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range">
+  <source>Range</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-failed">
+  <source>The numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-views">
+  <source>Page views</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-pages">
+  <source>Pages opened</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-top">
+  <source>Most viewed</source>
+</trans-unit>
+<trans-unit id="pages.admin.top-pages">
+  <source>Most viewed pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-note">
+  <source>Only the address of each page and the day are counted. No cookies, no visitor addresses, and nothing about who looked. Visitors who ask not to be tracked are not counted.</source>
+</trans-unit>
+<trans-unit id="pages.admin.chart-label">
+  <source>Views per day, from <x id="0" equiv-text="${dayLabel(first.day)}"/> to <x id="1" equiv-text="${dayLabel(last.day)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-none">
+  <source>Nothing has been counted in this range yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-search">
+  <source>Search pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-page">
+  <source>Page</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-views">
+  <source>Views</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-share">
+  <source>Share</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-none-match">
+  <source>Nothing matches your search.</source>
+</trans-unit>
 <trans-unit id="pages.admin.boards-failed">
   <source>The board could not be loaded. Please, try again later.</source>
 </trans-unit>
@@ -142,21 +196,6 @@
 </trans-unit>
 <trans-unit id="pages.admin.members-total">
   <source><x id="0" equiv-text="${this.members.length}"/> members</source>
-</trans-unit>
-<trans-unit id="pages.admin.rows-per-page">
-  <source>Rows per page</source>
-</trans-unit>
-<trans-unit id="pages.admin.pages">
-  <source>Pages</source>
-</trans-unit>
-<trans-unit id="pages.admin.previous">
-  <source>Previous page</source>
-</trans-unit>
-<trans-unit id="pages.admin.page-of">
-  <source><x id="0" equiv-text="${page}"/> of <x id="1" equiv-text="${pageCount}"/></source>
-</trans-unit>
-<trans-unit id="pages.admin.next">
-  <source>Next page</source>
 </trans-unit>
 <trans-unit id="pages.admin.members-none-match">
   <source>No members match your search.</source>
@@ -263,6 +302,21 @@
 <trans-unit id="pages.admin.saved">
   <source>Saved.</source>
 </trans-unit>
+<trans-unit id="pages.admin.rows-per-page">
+  <source>Rows per page</source>
+</trans-unit>
+<trans-unit id="pages.admin.pages">
+  <source>Pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.previous">
+  <source>Previous page</source>
+</trans-unit>
+<trans-unit id="pages.admin.page-of">
+  <source><x id="0" equiv-text="${page}"/> of <x id="1" equiv-text="${pageCount}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.next">
+  <source>Next page</source>
+</trans-unit>
 <trans-unit id="pages.admin.tab-sponsors">
   <source>Sponsors</source>
 </trans-unit>
@@ -298,9 +352,6 @@
 </trans-unit>
 <trans-unit id="pages.admin.search-partners">
   <source>Search partners</source>
-</trans-unit>
-<trans-unit id="pages.admin.org-none-match">
-  <source>Nothing matches your search.</source>
 </trans-unit>
 <trans-unit id="pages.admin.sponsors-none">
   <source>There are no sponsors yet.</source>
