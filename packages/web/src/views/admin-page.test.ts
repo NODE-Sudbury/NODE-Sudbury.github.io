@@ -127,6 +127,14 @@ describe('admin-page', () => {
     expect(shadowRoot).toHaveTextContent('Super admin');
   });
 
+  it('has a View site button that opens the site in a new tab', async () => {
+    await render('admin');
+
+    const button = screen.getByShadowRole('link', { name: 'View site' });
+    expect(button).toHaveAttribute('href', '/');
+    expect(button).toHaveAttribute('target', '_blank');
+  });
+
   it('shows the numbers on the home section', async () => {
     const { shadowRoot } = await render('admin');
 

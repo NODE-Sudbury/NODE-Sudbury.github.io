@@ -163,8 +163,11 @@ export class AdminPage extends ThemedComponent {
       color: var(--hb-color-on-surface-variant);
     }
 
-    .head a {
-      color: inherit;
+    .head-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--hb-space-3);
     }
 
     h2 {
@@ -403,10 +406,13 @@ export class AdminPage extends ThemedComponent {
           <h1>${this.heading()}</h1>
           ${this.lede() ? html`<p class="lede">${this.lede()}</p>` : nothing}
         </div>
-        <span>
+        <div class="head-actions">
           ${this.adminRole ? html`<hb-chip accent="3">${roleLabel(this.adminRole)}</hb-chip>` : nothing}
-          <a href="/">${msg('View site', { id: 'pages.admin.view-site' })}</a>
-        </span>
+          <hb-button variant="outlined" href="/" target="_blank" trailing-icon>
+            ${msg('View site', { id: 'pages.admin.view-site' })}
+            <node-icon slot="icon" name="open-in-new"></node-icon>
+          </hb-button>
+        </div>
       </header>
       ${
         this.failed
