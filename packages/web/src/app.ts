@@ -6,6 +6,7 @@ import { logPageView } from './utils/analytics';
 import { loadOtherBuildsInFull } from './utils/build';
 import { parseFilters } from './utils/filters';
 import { islandsHydrated } from './utils/islands';
+import { recordPageView } from './utils/page-views';
 import {
   type PreparationEvent,
   renderNextPageInSourceLocale,
@@ -37,8 +38,11 @@ export const startApp = async (): Promise<void> => {
   // Analytics logs the first page view itself.
   document.addEventListener('astro:after-swap', () => {
     logPageView();
+    recordPageView();
     void afterHydration();
   });
+  // The first page counts here, and each page after it when it swaps in.
+  recordPageView();
 
   await afterHydration();
   watchConnection();

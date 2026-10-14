@@ -4,6 +4,7 @@ import { store } from './store';
 import { onUser } from './store/auth';
 import { selectFilters } from './store/filters';
 import { logPageView } from './utils/analytics';
+import { recordPageView } from './utils/page-views';
 import { renderNextPageInSourceLocale, startLocalization } from './utils/localization';
 
 vi.mock('./store/auth', async (importOriginal) => ({
@@ -11,6 +12,7 @@ vi.mock('./store/auth', async (importOriginal) => ({
   onUser: vi.fn(),
 }));
 vi.mock('./utils/analytics', () => ({ logPageView: vi.fn() }));
+vi.mock('./utils/page-views', () => ({ recordPageView: vi.fn() }));
 vi.mock('./utils/localization', async (importOriginal) => ({
   ...(await importOriginal<typeof import('./utils/localization')>()),
   renderNextPageInSourceLocale: vi.fn(),
@@ -60,6 +62,15 @@ describe('startApp', () => {
 
     expect(logPageView).toHaveBeenCalledOnce();
     await vi.waitFor(() => expect(startLocalization).toHaveBeenCalledOnce());
+  });
+
+  it('counts the first page view when it starts, and each page that swaps in', () => {
+    // The first view was counted at startup, but the setup clears mocks, so swap once more.
+    vi.mocked(recordPageView).mockClear();
+
+    document.dispatchEvent(new Event('astro:after-swap'));
+
+    expect(recordPageView).toHaveBeenCalledOnce();
   });
 
   it('prepares each next page in the source locale', () => {
