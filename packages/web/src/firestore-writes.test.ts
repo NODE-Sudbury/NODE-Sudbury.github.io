@@ -18,13 +18,15 @@ const unwrappedWrites = (source: string) =>
   [...source.matchAll(WRITE)].filter(({ index }) => !IN_WRITE.test(source.slice(0, index)));
 
 /**
- * The functions a file imports from `src/db/`. The member profiles and everything for the admin
- * dashboard (`admin*.ts`) are in Supabase, which answers over the network, so their functions are
+ * The functions a file imports from `src/db/`. The member profiles, the subscribers and everything for
+ * the admin dashboard (`admin*.ts`) are in Supabase, which answers over the network, so their functions are
  * awaited and left out here.
  */
 const dbImports = (source: string) =>
   [
-    ...source.matchAll(/import\s*{([^}]+)}\s*from\s*'[./]*\/db\/(?!member-profiles|admin)[^']+'/g),
+    ...source.matchAll(
+      /import\s*{([^}]+)}\s*from\s*'[./]*\/db\/(?!member-profiles|admin|subscribers)[^']+'/g,
+    ),
   ].flatMap(([, names]) =>
     names!
       .split(',')

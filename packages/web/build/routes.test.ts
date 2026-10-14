@@ -50,6 +50,7 @@ describe('routes', () => {
       '/admin',
       '/admin/[section]',
       '/admin/sponsors/[action]',
+      '/unsubscribe',
     ]);
   });
 
@@ -94,6 +95,7 @@ describe('routes', () => {
           entrypoint: './src/routes/admin/sponsors/[action].astro',
         },
       ],
+      [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -117,6 +119,7 @@ describe('routes', () => {
           entrypoint: './src/routes/admin/sponsors/[action].astro',
         },
       ],
+      [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
     ]);
 
     injectRoute.mockClear();
@@ -134,6 +137,7 @@ describe('routes', () => {
           entrypoint: './src/routes/admin/sponsors/[action].astro',
         },
       ],
+      [{ pattern: '/unsubscribe', entrypoint: './src/routes/unsubscribe.astro' }],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });

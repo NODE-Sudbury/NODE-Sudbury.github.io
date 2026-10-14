@@ -1,16 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { saveSubscriber } from './subscribers';
+import { saveSubscriber, unsubscribeEmail } from './subscribers';
 
-const insert = vi.fn();
-const from = vi.fn(() => ({ insert }));
+const rpc = vi.fn();
 
 vi.mock('../supabase', () => ({
   isSupabaseConfigured: true,
-  getSupabase: () => ({ from }),
+  getSupabase: () => ({ rpc }),
 }));
 
 const subscriber = {
-  email: ' ada.lovelace+subscribe@example.com ',
+  email: 'ada.lovelace+subscribe@example.com',
   firstName: 'Ada',
   lastName: 'Lovelace',
 };
@@ -20,38 +19,41 @@ describe('db/subscribers', () => {
     vi.clearAllMocks();
   });
 
-  it('adds the subscriber to the subscribers table', async () => {
-    insert.mockResolvedValue({ error: null });
+  it('subscribes the email, which also turns back on one that had unsubscribed', async () => {
+    rpc.mockResolvedValue({ error: null });
     const onRejected = vi.fn();
 
     saveSubscriber(subscriber, onRejected);
 
-    expect(from).toHaveBeenCalledWith('subscribers');
-    expect(insert).toHaveBeenCalledWith({
-      email: 'ada.lovelace+subscribe@example.com',
-      first_name: 'Ada',
-      last_name: 'Lovelace',
+    expect(rpc).toHaveBeenCalledWith('subscribe_email', {
+      p_email: 'ada.lovelace+subscribe@example.com',
+      p_first_name: 'Ada',
+      p_last_name: 'Lovelace',
     });
-    await vi.waitFor(() => expect(insert).toHaveBeenCalled());
-    expect(onRejected).not.toHaveBeenCalled();
-  });
-
-  it('counts an email that is already subscribed as subscribed', async () => {
-    insert.mockResolvedValue({ error: { code: '23505', message: 'duplicate key' } });
-    const onRejected = vi.fn();
-
-    saveSubscriber(subscriber, onRejected);
     await new Promise((resolve) => setTimeout(resolve));
-
     expect(onRejected).not.toHaveBeenCalled();
   });
 
-  it('reports any other failure', async () => {
-    insert.mockResolvedValue({ error: { code: '42501', message: 'permission denied' } });
+  it('reports a failure to subscribe', async () => {
+    rpc.mockResolvedValue({ error: { message: 'permission denied' } });
     const onRejected = vi.fn();
 
     saveSubscriber(subscriber, onRejected);
 
     await vi.waitFor(() => expect(onRejected).toHaveBeenCalledWith(new Error('permission denied')));
+  });
+
+  it('unsubscribes an email', async () => {
+    rpc.mockResolvedValue({ error: null });
+
+    await unsubscribeEmail('ada@example.com');
+
+    expect(rpc).toHaveBeenCalledWith('unsubscribe_email', { candidate: 'ada@example.com' });
+  });
+
+  it('throws when unsubscribing fails', async () => {
+    rpc.mockResolvedValue({ error: { message: 'network' } });
+
+    await expect(unsubscribeEmail('ada@example.com')).rejects.toThrow('network');
   });
 });
