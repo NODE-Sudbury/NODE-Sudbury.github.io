@@ -23,5 +23,6 @@ The connection strings and passwords live in a gitignored env file, never in the
 | `20261014000006_subscribers.sql` | Adds the `subscribers` table for the home page's subscribe form, with row level security. |
 | `20261014000008_admins.sql` | Adds the `admins` table: one protected super admin, then admins and check-in volunteers. |
 | `20261014000009_admin_read_access.sql` | Lets the super admin and admins read the members and subscribers lists, read only, for the admin dashboard. |
+| `20261014000010_partners.sql` | Adds the `partners` table and the public `partner-logos` storage bucket. Anyone reads, only admins write. |
 
-The first five are applied to both projects. The sixth, eighth and ninth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+The first five are applied to both projects. The sixth, eighth, ninth and tenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
