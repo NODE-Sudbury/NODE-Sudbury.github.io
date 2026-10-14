@@ -171,6 +171,20 @@ begin
   perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$delete from public.audit_log$q$), 'the activity log cannot be emptied');
   perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$insert into public.audit_log(action, target_table) values ('insert', 'forged')$q$), 'nobody can write a log entry by hand');
 
+  -- Site settings -------------------------------------------------------------------------------
+  perform pg_temp.check_that(pg_temp.seen('anon', null, 'select 1 from public.site_settings') >= 0, 'visitor can read the site settings');
+  perform pg_temp.check_that(not pg_temp.can('anon', null, $q$update public.site_settings set value = 'https://evil.example'$q$), 'visitor cannot change the site settings');
+  perform pg_temp.check_that(not pg_temp.can('anon', null, $q$insert into public.site_settings(key, value) values ('social_x', 'https://evil.example')$q$), 'visitor cannot add a site setting');
+  perform pg_temp.check_that(pg_temp.can('authenticated', boss, $q$update public.site_settings set value = 'https://www.instagram.com/changed' where key = 'social_instagram'$q$) or not exists (select 1 from public.site_settings where key = 'social_instagram'), 'super admin can change a site setting');
+  perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$insert into public.site_settings(key, value) values ('anything_else', 'x')$q$), 'only the known settings can exist');
+  perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$update public.site_settings set value = 'javascript:alert(1)' where key = 'social_x'$q$), 'a setting must be a web address');
+  if other is not null then
+    perform pg_temp.check_that(not pg_temp.can('authenticated', other, $q$update public.site_settings set value = 'https://evil.example'$q$), 'member cannot change the site settings');
+    insert into public.admins (user_id, role) values (other, 'admin');
+    perform pg_temp.check_that(pg_temp.can('authenticated', other, $q$update public.site_settings set value = 'https://www.facebook.com/changed' where key = 'social_facebook'$q$) or not exists (select 1 from public.site_settings where key = 'social_facebook'), 'admin can change a site setting');
+    delete from public.admins where user_id = other;
+  end if;
+
   -- Page view counts -----------------------------------------------------------------------------
   perform pg_temp.check_that(pg_temp.seen('anon', null, 'select 1 from public.page_views') = -1, 'visitor cannot read the page view table');
   perform pg_temp.check_that(pg_temp.seen('authenticated', boss, 'select 1 from public.page_views') = -1, 'even the super admin reads page views only through the functions');

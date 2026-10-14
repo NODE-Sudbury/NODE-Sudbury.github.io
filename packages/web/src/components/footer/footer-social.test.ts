@@ -44,6 +44,44 @@ describe('footer-social', () => {
     }
   });
 
+  it('shows only the networks that have a link, as the admins set them', async () => {
+    const { follow } = socialNetwork;
+    const [first, ...others] = follow;
+    expect(first).toBeDefined();
+    socialNetwork.follow = [first!];
+
+    try {
+      await fixture(html`<footer-social></footer-social>`);
+
+      expect(
+        screen.getByShadowRole('link', { name: FOLLOW_LABELS[first!.name] ?? first!.name }),
+      ).toHaveAttribute('href', first!.url);
+      for (const { name } of others) {
+        expect(
+          screen.queryByShadowRole('link', { name: FOLLOW_LABELS[name] ?? name }),
+        ).not.toBeInTheDocument();
+      }
+    } finally {
+      socialNetwork.follow = follow;
+    }
+  });
+
+  it('leaves out the Follow us heading when no network has a link', async () => {
+    const { follow } = socialNetwork;
+    socialNetwork.follow = [];
+
+    try {
+      const { shadowRoot } = await fixture(html`<footer-social></footer-social>`);
+
+      expect(shadowRoot).not.toHaveTextContent('Follow us');
+      // The rest of the footer is still there.
+      expect(shadowRoot).toHaveTextContent('Share');
+      expect(screen.getByShadowRole('link', { name: 'Email us' })).toBeInTheDocument();
+    } finally {
+      socialNetwork.follow = follow;
+    }
+  });
+
   it('renders the email link', async () => {
     await fixture(html`<footer-social></footer-social>`);
 

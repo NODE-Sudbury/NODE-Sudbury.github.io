@@ -22,6 +22,7 @@ const TABLES = [
   'sponsors',
   'members',
   'subscribers',
+  'site_settings',
 ] as const;
 
 const actionLabel = (action: ActivityAction) =>
@@ -40,6 +41,7 @@ const tableLabel = (table: string) =>
       sponsors: msg('Sponsor', { id: 'pages.admin.table-sponsors' }),
       members: msg('Member', { id: 'pages.admin.table-members' }),
       subscribers: msg('Subscriber', { id: 'pages.admin.table-subscribers' }),
+      site_settings: msg('Site setting', { id: 'pages.admin.table-settings' }),
     }) as Record<string, string>
   )[table] ?? table;
 

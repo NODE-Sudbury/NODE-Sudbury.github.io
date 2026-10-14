@@ -14,6 +14,15 @@ import type { AdminTeam } from './admin-team';
 import './admin-team';
 
 vi.mock('../../db/admin-activity', () => ({ fetchActivity: vi.fn().mockResolvedValue([]) }));
+vi.mock('../../db/admin-settings', () => ({
+  fetchSocialLinks: vi.fn().mockResolvedValue({
+    social_x: '',
+    social_instagram: '',
+    social_facebook: '',
+    social_linkedin: '',
+  }),
+  saveSocialLinks: vi.fn(),
+}));
 vi.mock('../../db/admin-board', () => ({
   fetchBoardMembers: vi.fn(),
   saveBoardMember: vi.fn(),
@@ -106,17 +115,21 @@ describe('admin-team', () => {
     litRender(nothing, document.body);
   });
 
-  it('has Boards, Dashboard admins, Volunteers and, for the super admin, Activity, and opens on Boards', async () => {
-    const { shadowRoot } = await render('super_admin');
+  it('has General, Boards, Dashboard admins, Volunteers and, for the super admin, Activity, and opens on General', async () => {
+    const { element, shadowRoot } = await render('super_admin');
 
     const tabs = screen
       .getAllByShadowRole('tab')
       .map((tab) => tab.textContent?.replace(/\s+/g, ' ').trim());
-    expect(tabs).toEqual(['Boards', 'Dashboard admins 2', 'Volunteers 1', 'Activity']);
-    expect(screen.getByShadowRole('tab', { name: 'Boards' })).toHaveAttribute(
+    expect(tabs).toEqual(['General', 'Boards', 'Dashboard admins 2', 'Volunteers 1', 'Activity']);
+    expect(screen.getByShadowRole('tab', { name: 'General' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
+    expect(deepQuerySelector(shadowRoot, 'admin-general')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByShadowRole('tab', { name: 'Boards' }));
+    await element.updateComplete;
     expect(deepQuerySelector(shadowRoot, 'admin-boards')).toBeInTheDocument();
   });
 

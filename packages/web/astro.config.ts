@@ -12,17 +12,23 @@ import { CONFIG_PATHS, production, resolveConfig, withDevBar } from './build/res
 import { routes } from './build/routes';
 import { attendingPrecache, schedulePrecache, serviceWorker } from './build/service-worker';
 import { sitePublic } from './build/site-public';
+import { withSupabaseSiteSettings } from './build/site-settings';
 import { site } from './build/vite-plugin-site';
 
 if (CONFIG_PATHS.site.endsWith('demo-config')) {
   console.info('Using the demo site in packages/demo-config: packages/config has no site.json.');
 }
-const config = withDevBar(resolveConfig(), env['FIRESTORE_TARGET']);
 // The Supabase project the build signs in against: .env.development for `npm start`, else .env.production.
 const publicEnv = loadEnv(
   env['NODE_ENV'] === 'development' ? 'development' : 'production',
   process.cwd(),
   ['PUBLIC_', 'NEXT_PUBLIC_'],
+);
+// The social links in the footer are kept in Supabase, so the admins can change them.
+const config = await withSupabaseSiteSettings(
+  withDevBar(resolveConfig(), env['FIRESTORE_TARGET']),
+  publicEnv['NEXT_PUBLIC_SUPABASE_URL'],
+  publicEnv['NEXT_PUBLIC_SUPABASE_ANON_KEY'],
 );
 
 export default defineConfig({
