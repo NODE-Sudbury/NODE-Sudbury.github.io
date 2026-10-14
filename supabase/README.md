@@ -25,5 +25,7 @@ The connection strings and passwords live in a gitignored env file, never in the
 | `20261014000009_admin_read_access.sql` | Lets the super admin and admins read the members and subscribers lists, read only, for the admin dashboard. |
 | `20261014000010_partners.sql` | Adds the `partners` table and the public `partner-logos` storage bucket. Anyone reads, only admins write. |
 | `20261014000011_sponsors.sql` | Adds the `sponsors` table (with a tier) and the public `sponsor-logos` storage bucket, like partners. |
+| `20261014000012_team_permissions.sql` | Who may add and remove dashboard admins (super admin only) and volunteers (admins and the super admin). |
+| `20261014000013_board_members.sql` | Adds the `board_members` cards, optionally linked to an account, and the public `board-photos` bucket. |
 
-The first five are applied to both projects. The sixth, eighth, ninth, tenth and eleventh are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+The first five are applied to both projects. The sixth, eighth to thirteenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
