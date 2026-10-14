@@ -1,0 +1,20 @@
+---
+import { pages } from 'virtual:node-site/markdown';
+import { pageMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import { faqStructuredData } from '../data/structured-data';
+import Base from '../layouts/base.astro';
+import { FaqPage } from '../views/faq-page';
+
+const content = seedPage({});
+const faq = pages.faq ? faqStructuredData(pages.faq) : undefined;
+---
+
+<Base
+  {...pageMetadata('faq')}
+  content={content}
+  breadcrumbs={[{ name: 'FAQs', path: '/faq' }]}
+  jsonLd={faq ? [faq] : []}
+>
+  <FaqPage content={pages.faq} client:load />
+</Base>

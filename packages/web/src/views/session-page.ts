@@ -1,0 +1,338 @@
+import { Success } from '@abraham/remotedata';
+import { msg } from '@lit/localize';
+import { css, html, nothing, type PropertyValues } from 'lit';
+import { displayFont } from '../styles/shared';
+import { customElement, property, state } from 'lit/decorators.js';
+import '../components/shared/add-to-calendar';
+import '../components/shared/share-button';
+import '../components/shared/auth-required';
+import '../components/hero/hero-block';
+import { heroText } from '../components/hero/hero-block';
+import '../components/shared/node-icon';
+import '../components/shared/report-mistake';
+import '../components/shared/speaker-card';
+import '../components/markdown/short-markdown';
+import '../components/ui/hb-button';
+import '../components/ui/hb-progress';
+import { PAGE_TONES } from '../components/hero/simple-hero';
+import { formatDuration } from '../components/schedule/session-card';
+import '../components/schedule/save-button';
+import '../components/schedule/session-chips';
+import type { BuiltSession } from '../schedule/build-schedule';
+import { goto } from '../utils/navigation';
+import { store } from '../store';
+import { selectSession } from '../store/sessions/selectors';
+import { type SessionsState, selectSessionsState } from '../store/schedule';
+import { openVideoDialog, loadLocalTime, selectLocalTime } from '../store/ui';
+import { disabledSchedule } from '../config/site';
+import { acceptingFeedback } from '../utils/feedback';
+import { isLive, sessionStream } from '../utils/stream';
+import { getScheduleDay } from '../utils/dates';
+import { otherTimeZone, visitorClock, yourTime } from '../utils/visitor-time';
+import { updateImageMetadata, updateTextMetadata } from '../utils/metadata';
+import { fromStore } from '../controllers/from-store';
+import { ThemedComponent } from '../components/themed-component';
+
+/** The feedback block, which the page loads without waiting. Tests wait for it. */
+export const feedbackBlock = __HB_FEATURES__.feedback
+  ? import('../components/dialogs/feedback-block')
+  : Promise.resolve();
+
+/** The reactions row, which renders in the browser once it loads. Tests wait for it. */
+export const reactionsRow = __HB_FEATURES__.reactions
+  ? import('../components/schedule/session-reactions')
+  : Promise.resolve();
+
+/**
+ * A session: its title, when and where it is, its tags, actions to save, add to a calendar and
+ * share, the description, its speakers and, once it started, a place to leave feedback.
+ */
+@customElement('session-page')
+export class SessionPage extends ThemedComponent {
+  static override styles = [
+    heroText,
+    css`
+      :host {
+        display: block;
+        background-color: var(--hb-section-background);
+        color: var(--hb-color-on-surface);
+      }
+
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--hb-space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .details {
+        margin-block-start: var(--hb-space-5);
+      }
+
+      /* Content-box, so the text column lines up with the hero's. */
+      .inner {
+        box-sizing: content-box;
+        max-inline-size: var(--hb-content-max);
+        margin-inline: auto;
+        padding: var(--hb-space-6) var(--hb-gutter) var(--hb-space-9);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--hb-space-3);
+      }
+
+      /* Its height while the row loads, so the page doesn't move. */
+      .reactions {
+        display: flex;
+        min-block-size: 40px;
+        margin-block-start: var(--hb-space-4);
+      }
+
+      .description {
+        display: block;
+        max-inline-size: var(--hb-prose-max);
+        margin-block: var(--hb-space-6);
+        font-size: var(--hb-text-lg);
+        line-height: 1.6;
+      }
+
+      h2 {
+        margin: var(--hb-space-8) 0 var(--hb-space-4);
+        padding: 0;
+        ${displayFont('display', '2xl', 1.15)};
+      }
+
+      .speakers {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+        gap: var(--hb-space-5);
+      }
+
+      .speakers > li {
+        display: grid;
+      }
+    `,
+  ];
+
+  @fromStore((state) => selectSessionsState(state))
+  accessor sessions!: SessionsState;
+  @property({ attribute: false })
+  accessor session: BuiltSession | undefined;
+  @property({ type: String })
+  accessor sessionId: string | undefined;
+  @fromStore(selectLocalTime)
+  private accessor localTime!: boolean;
+
+  // Depends on the time, so it is only set in the browser.
+  @state()
+  private accessor acceptingFeedback = false;
+  @state()
+  private accessor live = false;
+  private liveTimer: ReturnType<typeof setInterval> | undefined;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    // Runs only in the browser. The live link comes and goes without a reload.
+    this.liveTimer = setInterval(() => this.checkLive(), 60 * 1000);
+  }
+
+  override firstUpdated() {
+    loadLocalTime();
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    clearInterval(this.liveTimer);
+  }
+
+  private checkLive() {
+    this.live = !!this.session && isLive(this.session);
+  }
+
+  // Runs on the server too, so the page renders the session. Side effects wait for `updated`.
+  override willUpdate(changed: PropertyValues<this>) {
+    if ((changed.has('sessions') || changed.has('sessionId')) && this.isLoaded) {
+      this.session = selectSession(store.getState(), this.sessionId!);
+    }
+  }
+
+  override updated(changed: PropertyValues<this>) {
+    if ((changed.has('sessions') || changed.has('sessionId')) && this.isLoaded) {
+      if (!this.session) {
+        goto('/404');
+      } else {
+        this.acceptingFeedback = __HB_FEATURES__.feedback && acceptingFeedback(this.session);
+        this.checkLive();
+        const speaker = this.session.speakers[0];
+        if (__HB_FEATURES__.socialImages) {
+          updateTextMetadata(this.session.title, this.session.description);
+        } else {
+          updateImageMetadata(this.session.title, this.session.description, {
+            image: speaker?.photoUrl ?? '',
+            imageAlt: speaker?.name ?? '',
+          });
+        }
+      }
+    }
+  }
+
+  private get isLoaded() {
+    return !!this.sessionId && this.sessions instanceof Success;
+  }
+
+  override render() {
+    const session = this.session;
+    return html`
+      <hero-block tone="${PAGE_TONES.schedule}">
+        <a class="back" href="${session?.day ? `/events/${session.day}` : '/events'}">
+          <node-icon name="arrow-left"></node-icon>
+          ${msg('Back to schedule', { id: 'pages.session.back-to-schedule' })}
+        </a>
+        <h1 class="hero-title">${session?.title ?? ''}</h1>
+        ${session ? this.renderDetails(session) : nothing}
+      </hero-block>
+
+      <hb-progress ?hidden="${!!session}"></hb-progress>
+
+      ${session ? this.renderContent(session) : nothing}
+    `;
+  }
+
+  private renderDetails(session: BuiltSession) {
+    const when = disabledSchedule ? [] : [...this.when(session), session.track?.title];
+    const details = [...when, session.complexity, session.language].filter(Boolean);
+    return html`
+      <session-chips
+        class="details"
+        label="${msg('Session details', { id: 'pages.session.details' })}"
+        .details="${details}"
+        .session="${session}"
+        name-sponsor
+      ></session-chips>
+    `;
+  }
+
+  private renderContent(session: BuiltSession) {
+    // A speaker document can be missing its name while it is being added.
+    const speakers = session.speakers.filter((speaker) => speaker.name);
+    const stream = this.live ? sessionStream(session) : undefined;
+    return html`
+      <div class="inner">
+        <div class="actions">
+          ${
+            stream
+              ? html`<hb-button class="live-button" href="${stream}" target="_blank">
+                  <node-icon slot="icon" name="play"></node-icon>
+                  ${msg('Watch live', { id: 'pages.session.watch-live' })}
+                </hb-button>`
+              : nothing
+          }
+          ${
+            __HB_FEATURES__.mySchedule
+              ? html`<save-button
+                  class="save"
+                  variant="button"
+                  .session="${session}"
+                ></save-button>`
+              : nothing
+          }
+          ${
+            session.videoId
+              ? html`<hb-button variant="outlined" class="video-button" @click="${this.openVideo}">
+                  <node-icon slot="icon" name="video"></node-icon>
+                  ${msg('View video', { id: 'common.view-video' })}
+                </hb-button>`
+              : nothing
+          }
+          ${
+            session.presentation
+              ? html`<hb-button variant="outlined" href="${session.presentation}" target="_blank">
+                  <node-icon slot="icon" name="presentation"></node-icon>
+                  ${msg('View presentation', { id: 'common.view-presentation' })}
+                </hb-button>`
+              : nothing
+          }
+          <add-to-calendar .session="${this.session}"></add-to-calendar>
+          <share-button
+            .data="${{ title: session.title, text: session.description }}"
+          ></share-button>
+        </div>
+
+        ${
+          __HB_FEATURES__.reactions
+            ? html`<session-reactions class="reactions" .session="${session}"></session-reactions>`
+            : nothing
+        }
+
+        <short-markdown class="description" .content="${session.description}"></short-markdown>
+
+        ${
+          speakers.length
+            ? html`
+                <h2>${msg('Speakers', { id: 'pages.session.speakers' })}</h2>
+                <ul class="speakers">
+                  ${speakers.map(
+                    (speaker) => html`<li><speaker-card .speaker="${speaker}"></speaker-card></li>`,
+                  )}
+                </ul>
+              `
+            : nothing
+        }
+        ${
+          this.acceptingFeedback
+            ? html`
+                <section id="feedback" aria-labelledby="feedback-title">
+                  <h2 id="feedback-title">
+                    ${msg('Review session', { id: 'common.review-session' })}
+                  </h2>
+                  <auth-required>
+                    <span slot="prompt">
+                      ${msg('to leave feedback', {
+                        id: 'pages.session.leave-feedback',
+                        desc: 'Follows a Sign in button: "Sign in to leave feedback".',
+                      })}
+                    </span>
+                    <feedback-block .sessionId="${session.id}"></feedback-block>
+                  </auth-required>
+                </section>
+              `
+            : nothing
+        }
+        <report-mistake subject="${session.title}"></report-mistake>
+      </div>
+    `;
+  }
+
+  /** The day, times and duration, in the visitor's time zone when they chose so. */
+  private when(session: BuiltSession) {
+    const { day, startTime, endTime } = session;
+    const duration = session.duration && formatDuration(session.duration);
+    if (this.localTime && day && startTime && endTime && otherTimeZone()) {
+      const start = visitorClock(day, startTime);
+      const end = visitorClock(day, endTime);
+      return [getScheduleDay(start.date), yourTime(`${start.time}–${end.time}`), duration];
+    }
+    return [
+      day && getScheduleDay(day),
+      startTime && [startTime, endTime].filter(Boolean).join('–'),
+      duration,
+    ];
+  }
+
+  private readonly openVideo = () => {
+    if (this.session?.videoId) {
+      openVideoDialog({ title: this.session.title, youtubeId: this.session.videoId });
+    }
+  };
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'session-page': SessionPage;
+  }
+}

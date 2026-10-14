@@ -1,0 +1,37 @@
+{
+  "gallery/000": {
+    "url": "/images/node/community/gallery-1.jpg",
+    "alt": "Attendees of the Grok Bot Sudbury meetup, the first event hosted by NODE, posing together in front of the presentation screen.",
+    "order": "0"
+  },
+  "gallery/001": {
+    "url": "/images/node/community/gallery-2.jpg",
+    "alt": "The opening slide of the Grok Bot Sudbury meetup: Welcome, the first event officially hosted by NODE.",
+    "order": "1"
+  },
+  "gallery/002": {
+    "url": "/images/node/community/gallery-3.jpg",
+    "alt": "An attendee in a face mask leans in to look at a screen showing the Grok Bot mascot while others look on.",
+    "order": "2"
+  },
+  "gallery/003": {
+    "url": "/images/node/community/gallery-4.jpg",
+    "alt": "Attendees and organizers gathered around the Grok Bot meetup banner for a group photo.",
+    "order": "3"
+  },
+  "gallery/004": {
+    "url": "/images/node/community/gallery-5.jpg",
+    "alt": "A wide view of the audience seated on orange benches while a speaker presents at the podium.",
+    "order": "4"
+  },
+  "gallery/005": {
+    "url": "/images/node/community/gallery-6.jpg",
+    "alt": "The whole meetup crowd posing together in front of the Meet your new AI teammates slide.",
+    "order": "5"
+  },
+  "gallery/006": {
+    "url": "/images/node/community/gallery-7.jpg",
+    "alt": "An attendee asks a question with a microphone during the Q&A, with the audience looking on.",
+    "order": "6"
+  }
+}

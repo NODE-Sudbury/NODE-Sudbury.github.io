@@ -1,0 +1,38 @@
+# Supabase
+
+The website's database changes. Two Supabase projects serve the site: `Node Website Dev` (ref `rakulrveqisxlcuqxzzw`) for development and previews, and `Node Website` (ref `cfqeyjsfmrnfanitxcso`) for production.
+
+Migrations here are plain SQL, named `<timestamp>_<name>.sql`, and written to be safe to run again. Apply one to the development project first, check the site, then to production. The projects were migrated by hand with `psql` (the history table does not list every change), so apply with `psql` too:
+
+```console
+psql "$SUPABASE_DEV_DB_URL" -v ON_ERROR_STOP=1 --single-transaction -f supabase/migrations/<file>.sql
+```
+
+The connection strings and passwords live in a gitignored env file, never in the repository.
+
+## Migrations
+
+| File                                    | Does                                                                                                                  |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `20261014000001_member_profiles.sql`    | Adds the member `handle`, a `public_profiles` view that never shows email or role, and a guard on who can set a role. |
+| `20261014000002_hide_member_emails.sql` | Closes the leak that lets the public key read every member's email. Not additive.                                     |
+| `20261014000003_exclusive_members.sql`  | Adds `is_exclusive_member` (only the board can change it) and the member id to the public view.                       |
+
+| `20261014000004_handle_available.sql` | Adds `handle_available()`, so a member can check a handle before saving it. |
+| `20261014000005_clean_slate.sql` | Drops every table, view, function and type from the old dashboard except what the new site uses. Cannot be undone. |
+| `20261014000006_subscribers.sql` | Adds the `subscribers` table for the home page's subscribe form, with row level security. |
+| `20261014000007_unsubscribe.sql` | Adds `subscribe_email()` and `unsubscribe_email()`, so a visitor can unsubscribe, and subscribe again, without signing in. |
+| `20261014000008_admins.sql` | Adds the `admins` table: one protected super admin, then admins and check-in volunteers. |
+| `20261014000009_admin_read_access.sql` | Lets the super admin and admins read the members and subscribers lists, read only, for the admin dashboard. |
+| `20261014000010_partners.sql` | Adds the `partners` table and the public `partner-logos` storage bucket. Anyone reads, only admins write. |
+| `20261014000011_sponsors.sql` | Adds the `sponsors` table (with a tier) and the public `sponsor-logos` storage bucket, like partners. |
+| `20261014000012_team_permissions.sql` | Who may add and remove dashboard admins (super admin only) and volunteers (admins and the super admin). |
+| `20261014000013_board_members.sql` | Adds the `board_members` cards, optionally linked to an account, and the public `board-photos` bucket. |
+| `20261014000014_audit_log.sql` | The activity log: who added, changed or deleted what. Written by triggers, readable by the super admin only. |
+| `20261014000015_security_hardening.sql` | Closes the holes from the security review: narrow grants, no direct profile list, no legacy board role, no listing. |
+| `20261014000016_rate_limits.sql` | Rate limits on profile lookups, handle checks, subscribing and unsubscribing. |
+| `20261014000017_page_views.sql` | Counts page views per page and day, with no personal data. The admin dashboard reads them. |
+
+The first five are applied to both projects. The public Team page and the home page board read the `board_members` table, and the home page's partner logos read the `partners` and `sponsors` tables, when the build can reach Supabase. They keep the sample data otherwise. Production has no such table yet, so it keeps the sample board until the migrations below are run there. The sixth to seventeenth are on development only: run them on production when `dev` goes to `main`, before the home page subscribe form is used there. Run them in this order. The structure of the tables is in [SCHEMA.md](./SCHEMA.md).
+
+See [SECURITY.md](./SECURITY.md) for how the database is protected and how to check it.

@@ -1,111 +1,19 @@
-# NODE Site - Claude Instructions
+# NODE Website - Claude Instructions
 
 ## Project Overview
 
-Next.js 14 app at `localhost:3000`. Wraps the **Keynote Framer template** (from `keynote.framer.website`) and rebrands it for **NODE - Northern Ontario Dev Exchange**. The Framer React bundle loads from `framerusercontent.com` CDN; we never touch Framer source directly. All branding overrides happen via three mechanisms:
+The NODE website: the Northern Ontario Dev Exchange site in Sudbury. Astro pages with Lit components, built to static HTML. Content comes from `packages/config`, sign-in and members come from Supabase, and events and open source data are synced from GDG, Luma and GitHub. Read [AGENTS.md](AGENTS.md) for the layout, commands and conventions, and [README.md](README.md) for how to run it.
 
-1. `NodeTextOverride.tsx` - client-side TreeWalker + MutationObserver text replacement
-2. `globals.css` - CSS `!important` overrides and `content: url()` image swaps
-3. `public/content_chunk.mjs` - direct patch of the Framer static bundle
-
-## CRITICAL: SWC Apostrophe Bug
-
-**NEVER use the Write tool or Edit tool on `NodeTextOverride.tsx`.**
-
-The Write tool converts ASCII apostrophes (`'`) to curly apostrophes (`’`), which breaks SWC compilation with a cryptic parse error. Always write this file via Python:
-
-```bash
-python3 - << 'PYEOF'
-content = open('src/components/NodeTextOverride.tsx').read()
-# make your change to `content` string
-open('src/components/NodeTextOverride.tsx', 'w', encoding='utf-8').write(content)
-PYEOF
-```
-
-Or use Bash with a heredoc + `printf` (no `echo`). Never use the Write/Edit tools for this file.
-
-## Key Files
-
-| File | Purpose |
-|------|---------|
-| `src/components/NodeTextOverride.tsx` | All text replacements, QR inject, footer fill |
-| `src/app/globals.css` | CSS overrides (image swap, hide Framer badges, NODE logo) |
-| `src/app/layout.tsx` | Modulepreload for content_chunk.mjs with cache-bust version |
-| `public/content_chunk.mjs` | Framer bundle - patched for OFFSCREEN and STUDIO DRAADLOOS strings |
-| `public/node-logo.svg` | NODE SVG logo (replaces hero person photo) |
-| `public/nodesudbury-qr.svg` | QR code pointing to nodesudbury.com |
-| `public/script_main.mjs` | Framer entry point - contains `import('/content_chunk.mjs?v=14')` |
-
-## NodeTextOverride.tsx Architecture
-
-- **`REPLACEMENTS`** array: `[from, to]` pairs run via TreeWalker on all text nodes
-- **`CHAR_ANIM_MAPS`** array: char-by-char animated text (Framer splits each char into its own span). Replacements MUST be same character count as original
-- **`fixCharAnimatedText()`**: matches combined span text and swaps char-by-char
-- **`fixExactTextNodes()`**: exact-match node replacements (e.g. bare `"design"` -> `"tech"`)
-- **`replaceQRCode()`**: clears the Framer QR SVG symbol, injects `<img src="/nodesudbury-qr.svg">` into `.framer-1a1p7qu` (ticket stub)
-- **`fillFooter()`**: injects 3-column info div into `.framer-1ilwqi8` (footer Column 1)
-- **`applyOverrides()`**: runs all of the above; called on mount and on every MutationObserver tick for 30s
-
-## QR Code Positioning
-
-The ticket stub (`.framer-1a1p7qu`) has a 3D `matrix3d` parent transform. Local CSS coordinates (offsetTop) are used for positioning, NOT viewport coordinates (getBoundingClientRect).
-
-- Stub height: 443px
-- SEAT "24" text ends at local y ~379px
-- QR injection: `top:393px; width:40px; height:40px` (14px gap below "24")
-
-## Footer Structure
-
-- Footer outer row: `.framer-b8450f`
-- Footer Column 1: `.framer-1ilwqi8` (1162px wide, mostly empty except logo)
-- "NODE" logo replacement: `[data-framer-name="Keynote"]` via CSS `::after { content: 'NODE' }`
-- Footer fill div injected as child of `.framer-1ilwqi8` with class `node-footer-fill`
-
-## content_chunk.mjs Cache Busting
-
-When patching `public/content_chunk.mjs`, bump the version query string in TWO places:
-1. `public/script_main.mjs`: `import('/content_chunk.mjs?v=N')`
-2. `src/app/layout.tsx`: `<link rel="modulepreload" href="/content_chunk.mjs?v=N" />`
-
-Current version: `?v=14`
-
-## Framer Scroll Behaviour
-
-- `window.scrollTo()` is intercepted by Framer - has no effect
-- `document.documentElement.scrollTop = value` also blocked
-- `Element.scrollIntoView()` blocked
-- Only mouse wheel events work (225px per scroll tick)
-- Page is ~18000px tall; footer absolute Y ~17847
-- Between sections: Framer renders a black void (scroll-driven animation transitions)
-- Screenshot tools can fail to capture GPU-composited Framer content at deep scroll positions - use DOM inspection to verify instead
+The older Next.js and Framer site is kept in `archive/`. Do not change it unless asked.
 
 ## Dev Server
 
 ```bash
-cd /Users/hannanmax/NorthCipherValley/NODE
-npm run dev
-# Server at localhost:3000
+FIRESTORE_TARGET=sample NODE_ENV=development npm --prefix packages/web run start:astro
+# Server at http://localhost:4321
 ```
 
-## CSS Overrides (globals.css) Key Rules
-
-```css
-/* Replace hero person photo with NODE logo */
-[data-framer-name="Man"] img[alt="Header image"] { content: url('/node-logo.svg') !important; }
-
-/* Hide Framer QR (replaced by JS injection) */
-.framer-g66ize { display: none !important; }
-
-/* Hide Framer promo links */
-a[href*="polar.sh"], a[href*="holygrid.studio"], .framer-zhlkhb { display: none !important; }
-
-/* Replace footer "KEYNOTE" SVG with "NODE" text */
-[data-framer-name="Keynote"] * { display: none !important; }
-[data-framer-name="Keynote"]::after { content: 'NODE'; ... }
-
-/* Force Framer appear animations visible */
-[data-framer-appear-id] { opacity: 1 !important; animation: none !important; }
-```
+Use Node 22 (`nvm use 22`). Restart the dev server after changing config, data or the list of pages.
 
 ## Git Branching Rules
 
@@ -120,17 +28,7 @@ a[href*="polar.sh"], a[href*="holygrid.studio"], .framer-zhlkhb { display: none 
 - NEVER include Claude session links in commit messages.
 - NEVER push to `https://github.com/NODE-Sudbury/NODE-Sudbury.github.io` unless the user explicitly says "push" in that specific message.
 
-## Completed Work (as of Oct 2026)
+## Secrets
 
-All original rebranding tasks are complete:
-- Social media: x.com/nodesudbury, Instagram nodesudbury, LinkedIn company/nodesudbury
-- Copyright: "NODE - Northern Ontario Dev Exchange"
-- Board members: 8 names set to TBD, 9th card hidden
-- Tabs: Hackathons, Community Events, Norcat Series (12 monthly sessions)
-- Scrolling ticker: hackathons, Norcat sessions, meetups text added
-- Schedule section: replaced Framer section with custom CSS/JS (1:1 visual match)
-- Partner logos: LU Foundry (hero), Norcat, GDG Sudbury, Cursor Sudbury
-- HQ address + venue section updated to Norcat Innovation Hub
-- framerBody.ts: 16 static strings patched for zero-flicker SSR
-- setTimeout delays reduced (social links 500/1500ms, Norcat tab 700/2000ms)
-- Partner logo sizing via MutationObserver per-figure with busy flag
+- `.env*` files are gitignored. The Supabase URL and anon key are in `packages/web/.env.development` and `.env.production`, with the names `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- Never use or commit the Supabase service role key in this site.

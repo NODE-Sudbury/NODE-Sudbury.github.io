@@ -1,0 +1,78 @@
+{
+  "previousSpeakers/tbd-1": {
+    "bio": "Details coming soon.",
+    "company": "TBD",
+    "id": "tbd-1",
+    "name": "TBD",
+    "order": 0,
+    "photoUrl": "/images/node/usercoming.jpg",
+    "sessions": {
+      "2026": [
+        {
+          "tags": ["General"],
+          "title": "Title TBD"
+        }
+      ]
+    },
+    "socials": [],
+    "title": "Speaker to be announced",
+    "country": "Sudbury, ON"
+  },
+  "previousSpeakers/tbd-2": {
+    "bio": "Details coming soon.",
+    "company": "TBD",
+    "id": "tbd-2",
+    "name": "TBD",
+    "order": 1,
+    "photoUrl": "/images/node/usercoming.jpg",
+    "sessions": {
+      "2026": [
+        {
+          "tags": ["General"],
+          "title": "Title TBD"
+        }
+      ]
+    },
+    "socials": [],
+    "title": "Speaker to be announced",
+    "country": "Sudbury, ON"
+  },
+  "previousSpeakers/tbd-3": {
+    "bio": "Details coming soon.",
+    "company": "TBD",
+    "id": "tbd-3",
+    "name": "TBD",
+    "order": 2,
+    "photoUrl": "/images/node/usercoming.jpg",
+    "sessions": {
+      "2026": [
+        {
+          "tags": ["General"],
+          "title": "Title TBD"
+        }
+      ]
+    },
+    "socials": [],
+    "title": "Speaker to be announced",
+    "country": "Sudbury, ON"
+  },
+  "previousSpeakers/tbd-4": {
+    "bio": "Details coming soon.",
+    "company": "TBD",
+    "id": "tbd-4",
+    "name": "TBD",
+    "order": 3,
+    "photoUrl": "/images/node/usercoming.jpg",
+    "sessions": {
+      "2026": [
+        {
+          "tags": ["General"],
+          "title": "Title TBD"
+        }
+      ]
+    },
+    "socials": [],
+    "title": "Speaker to be announced",
+    "country": "Sudbury, ON"
+  }
+}

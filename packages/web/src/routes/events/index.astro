@@ -1,0 +1,23 @@
+---
+import { site } from 'virtual:node-site/site';
+import { loadEvents, splitEvents } from '../../data/events';
+import { pageMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import { eventListStructuredData } from '../../data/structured-data';
+import Base from '../../layouts/base.astro';
+import { EventsPage } from '../../views/events-page';
+
+const { categories, events } = loadEvents();
+// The cards show the summary, so the long descriptions stay out of the page.
+const lean = events.map(({ description, ...event }) => event);
+const { upcoming, past } = splitEvents(lean);
+---
+
+<Base
+  {...pageMetadata('schedule')}
+  content={seedPage({})}
+  breadcrumbs={[{ name: 'Events', path: '/events' }]}
+  jsonLd={upcoming.length ? [eventListStructuredData(upcoming, site.url)] : []}
+>
+  <EventsPage upcoming={upcoming} past={past} categories={categories} client:load />
+</Base>

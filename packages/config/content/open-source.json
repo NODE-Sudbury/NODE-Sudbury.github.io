@@ -1,0 +1,777 @@
+{
+  "org": "NODE-Sudbury",
+  "generatedAt": "2026-10-13T17:10:00.418Z",
+  "projects": [
+    {
+      "id": "NODE-Sudbury.github.io",
+      "name": "NODE-Sudbury.github.io",
+      "description": "NODE Sudbury official website - sudburynode.com",
+      "url": "https://github.com/NODE-Sudbury/NODE-Sudbury.github.io",
+      "homepage": "https://node-sudbury.vercel.app",
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "percent": 75.4
+        },
+        {
+          "name": "JavaScript",
+          "percent": 14.2
+        },
+        {
+          "name": "HTML",
+          "percent": 8.4
+        },
+        {
+          "name": "PLpgSQL",
+          "percent": 1.8
+        },
+        {
+          "name": "CSS",
+          "percent": 0.3
+        }
+      ],
+      "topics": [],
+      "license": "Custom license",
+      "stars": 1,
+      "forks": 0,
+      "openIssues": 0,
+      "createdAt": "2026-09-03T05:00:54Z",
+      "pushedAt": "2026-10-07T04:24:58Z",
+      "contributors": [
+        {
+          "login": "hannanmax",
+          "url": "https://github.com/hannanmax",
+          "contributions": 64,
+          "avatar": "/images/github/hannanmax.jpg"
+        }
+      ],
+      "commitActivity": [
+        {
+          "week": "2025-10-19",
+          "commits": 0
+        },
+        {
+          "week": "2025-10-26",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-02",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-09",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-16",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-23",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-30",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-07",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-14",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-21",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-04",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-11",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-18",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-25",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-29",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-03",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-10",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-17",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-24",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-31",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-07",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-14",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-21",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-02",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-09",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-16",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-23",
+          "commits": 37
+        },
+        {
+          "week": "2026-08-30",
+          "commits": 16
+        },
+        {
+          "week": "2026-09-06",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-13",
+          "commits": 4
+        },
+        {
+          "week": "2026-09-20",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-27",
+          "commits": 0
+        },
+        {
+          "week": "2026-10-04",
+          "commits": 7
+        },
+        {
+          "week": "2026-10-11",
+          "commits": 0
+        }
+      ],
+      "readme": "# NODE - Northern Ontario Dev Exchange\n\nOfficial website for NODE Sudbury - a community-driven tech org based in Greater Sudbury, Ontario.\n\n**Live site:** [node-sudbury.vercel.app](https://node-sudbury.vercel.app) *(custom domain coming soon)*\n**Dev preview:** [node-sudbury-dev.vercel.app](https://node-sudbury-dev.vercel.app)\n\n---\n\n## Local Setup\n\n**Requirements:** Node.js 18+, npm\n\n```bash\ngit clone https://github.com/NODE-Sudbury/NODE-Sudbury.github.io.git\ncd NODE-Sudbury.github.io\nnpm install\nnpm run dev\n```\n\nRuns at `http://localhost:3000`.\n\n---\n\n## Tech Stack\n\n- [Next.js 14](https://nextjs.org) - App Router\n- [Tailwind CSS](https://tailwindcss.com)\n- [Supabase](https://supabase.com) - Auth and database\n- [Vercel](https://vercel.com) - Hosting and preview deployments\n\n---\n\n## Contributing\n\nNODE is open to everyone - no experience level required. See [CONTRIBUTING.md](https://github.com/NODE-Sudbury/NODE-Sudbury.github.io/blob/HEAD/./CONTRIBUTING.md) for how to get started.\n\n---\n\n## License\n\nFree to use and contribute to. Commercial use is not permitted. See [LICENSE](https://github.com/NODE-Sudbury/NODE-Sudbury.github.io/blob/HEAD/./LICENSE) for details."
+    },
+    {
+      "id": "NodeEvents",
+      "name": "NodeEvents",
+      "description": "Front end for Node Events, the Northern Ontario Dev Exchange — a workshops · seminars · hackathons platform.",
+      "url": "https://github.com/NODE-Sudbury/NodeEvents",
+      "language": "HTML",
+      "languages": [
+        {
+          "name": "HTML",
+          "percent": 48.7
+        },
+        {
+          "name": "JavaScript",
+          "percent": 39
+        },
+        {
+          "name": "CSS",
+          "percent": 12.1
+        },
+        {
+          "name": "PowerShell",
+          "percent": 0.1
+        }
+      ],
+      "topics": [],
+      "stars": 0,
+      "forks": 0,
+      "openIssues": 0,
+      "createdAt": "2026-08-19T16:05:29Z",
+      "pushedAt": "2026-10-07T04:03:35Z",
+      "contributors": [
+        {
+          "login": "baljindersinghmaan",
+          "url": "https://github.com/baljindersinghmaan",
+          "contributions": 146,
+          "avatar": "/images/github/baljindersinghmaan.png"
+        },
+        {
+          "login": "athifashaffy",
+          "url": "https://github.com/athifashaffy",
+          "contributions": 19,
+          "avatar": "/images/github/athifashaffy.jpg"
+        }
+      ],
+      "commitActivity": [
+        {
+          "week": "2025-10-19",
+          "commits": 0
+        },
+        {
+          "week": "2025-10-26",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-02",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-09",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-16",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-23",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-30",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-07",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-14",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-21",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-04",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-11",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-18",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-25",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-29",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-03",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-10",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-17",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-24",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-31",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-07",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-14",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-21",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-02",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-09",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-16",
+          "commits": 140
+        },
+        {
+          "week": "2026-08-23",
+          "commits": 3
+        },
+        {
+          "week": "2026-08-30",
+          "commits": 3
+        },
+        {
+          "week": "2026-09-06",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-13",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-20",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-27",
+          "commits": 0
+        },
+        {
+          "week": "2026-10-04",
+          "commits": 19
+        },
+        {
+          "week": "2026-10-11",
+          "commits": 0
+        }
+      ],
+      "readme": "# Node Events — UI\n\nFront end for Node Events, the Northern Ontario Dev Exchange — a workshops · seminars · hackathons platform.\n**UI only:** there is no backend. All data is mocked in `src/data/mock.js` and any changes you make are persisted to `localStorage` under `node.*` keys.\n\nFor a guided  tour (demo logins, test cards, walkthrough) see **[DEMO.md](https://github.com/NODE-Sudbury/NodeEvents/blob/HEAD/DEMO.md)**.\n\n## Run\n\n```bash\nnpm install\nnpm run dev        # http://localhost:3000\nnpm run build && npm start\nnpm test           # Vitest\nnpm run lint\n```\n\nDeploys to Vercel with no extra configuration (`npm run build` is the build command).\nSet `NEXT_PUBLIC_SITE_URL` in the Vercel project so social link previews use the real domain.\n\n## Stack\n\nNext.js 15 (App Router) · React · JavaScript · CSS Modules · Vitest + Testing Library.\nFont: Poppins (300–700) via `next/font`. Event covers are generated gradients — no image assets.\n\n## Routes\n\n| Public | |\n|---|---|\n| `/` | Marketing home |\n| `/discover`, `/discover/[city]` | Browse sessions, city pages |\n| `/e/[id]` | Event page + ticket flow (`?register=1` opens it) |\n| `/s/[id]` · `/u/[id]` · `/wrapup/[id]` | Series · host profile · post-event wrap-up |\n| `/search?q=` | Search results |\n| `/signin` | Demo sign-in (persona or any email) |\n\n| Signed in | |\n|---|---|\n| `/home` | Timeline of events you're attending and hosting |\n| `/tickets/[id]` | Ticket pass (QR, cancel) |\n| `/e/[id]/team` | Hackathon team project page — submit and edit your project (hackathon events only) |\n| `/create` | Create an event |\n| `/manage/[id]` | Organizer area: overview, guests, registration, emails, check-in, insights, teams, submissions, judging, settings |\n| `/settings` | Profile, notifications, payment methods, demo controls |\n| `/sponsor` | Sponsor account |\n\nOld prototype URLs (`/browse`, `/events/:id`, `/dashboard`, …) redirect to their new homes via `next.config.mjs`.\n\n## Structure\n\n```\nsrc/\n├── app/                  routes — thin server components rendering feature pages\n├── components/\n│   ├── layout/           Header, MobileNav, Footer, ScreenIndex (dev screen switcher)\n│   └── ui/               Button, Chip, Cover, Field, Modal/Sheet, Dialog, Toast,\n│                         Avatar, Stepper, Tabs, CopyField, EmptyState, EventCard…\n├── context/              Auth · Registrations · Organizer · App (+ Providers)\n├── features/             one folder per screen (event, checkout, home, organizer, …)\n├── lib/                  pure logic: tiers, payment, tax, registrationState, dates, cities\n├── data/                 mock.js (seed data), personas.js, store.js (localStorage)\n└── styles/global.css     design tokens + utility classes\n```\n\n## Locale\n\nEverything is written for Canada: Canadian English, prices in Canadian dollars listed before tax, dates month-first (`Fri, Nov 6`, `Nov 6–8`) and times on a 12-hour clock (`5:00 PM`, `Fri 8 PM`).\n\n- **Sales tax** — `src/lib/tax.js` picks the tax from the event's province or territory: 13% HST in Ontario, 5% GST in Nunavut, the Northwest Territories, Yukon and Alberta, 5% GST + 7% PST in British Columbia. Online seats are taxed as Ontario supplies (NODE is based in Ontario). Promo codes come off before tax. Checkout, the receipt and sponsor invoices all price through `priceOrder()` / `taxFor()`.\n- **Dates and times** — `src/lib/dates.js` parses the mock `when` / `whenLong` strings and formats clock times (`clock`, `timeRange`, `parseTimeRange`).\n- **Money** — `cad()` in `src/utils/format.js` prints whole dollars as `$149` and anything with cents as `$168.37`.\n\n## Design source\n\n`design/` holds the Claude Design canvases the UI was built from — `node-events-original.dc.html` (the design system and first 12 screens) and `node-events-screens.dc.html` (11 product screens), with rendered previews in `design/previews/`.\n\n## Scripts\n\n- `scripts/shot.mjs` — headless-Chrome screenshots with a true mobile viewport\n  (`node scripts/shot.mjs --base http://localhost:3000 --out shots --width 390 --height 2400 \"/e/rust\"`)\n- `scripts/e2e-purchase.mjs` — drives the whole ticket purchase with real clicks and screenshots each step\n- `scripts/probe.mjs` — quick DOM/localStorage probe for a list of routes\n\n> When using these against `npm start`, don't rebuild `.next` while the server is running — the served chunks 404/400 and the app stops hydrating.\n\n## Docs\n\n- `docs/superpowers/specs/2026-08-19-node-events-product-ui-design.md` — product design spec\n- `docs/superpowers/plans/2026-08-19-wave1-attendee-organizer.md` — implementation plan\n- `docs/HANDOFF.md` — state of the build and how work is picked up between sessions"
+    },
+    {
+      "id": "grokbot-mocap",
+      "name": "grokbot-mocap",
+      "description": "Live face motion capture projected onto an animated SVG avatar. Built by the NODE Sudbury community for the Grok event.",
+      "url": "https://github.com/NODE-Sudbury/grokbot-mocap",
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "percent": 64.3
+        },
+        {
+          "name": "Vue",
+          "percent": 30
+        },
+        {
+          "name": "CSS",
+          "percent": 3.7
+        },
+        {
+          "name": "Python",
+          "percent": 0.8
+        },
+        {
+          "name": "HTML",
+          "percent": 0.8
+        },
+        {
+          "name": "JavaScript",
+          "percent": 0.3
+        }
+      ],
+      "topics": ["face-tracking", "grok", "mediapipe", "motion-capture", "svg", "vue"],
+      "license": "MIT",
+      "stars": 1,
+      "forks": 0,
+      "openIssues": 0,
+      "createdAt": "2026-09-10T18:39:23Z",
+      "pushedAt": "2026-09-10T18:45:48Z",
+      "contributors": [
+        {
+          "login": "hannanmax",
+          "url": "https://github.com/hannanmax",
+          "contributions": 30,
+          "avatar": "/images/github/hannanmax.jpg"
+        }
+      ],
+      "commitActivity": [
+        {
+          "week": "2025-10-19",
+          "commits": 0
+        },
+        {
+          "week": "2025-10-26",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-02",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-09",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-16",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-23",
+          "commits": 0
+        },
+        {
+          "week": "2025-11-30",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-07",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-14",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-21",
+          "commits": 0
+        },
+        {
+          "week": "2025-12-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-04",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-11",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-18",
+          "commits": 0
+        },
+        {
+          "week": "2026-01-25",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-02-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-01",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-08",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-15",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-22",
+          "commits": 0
+        },
+        {
+          "week": "2026-03-29",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-04-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-03",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-10",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-17",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-24",
+          "commits": 0
+        },
+        {
+          "week": "2026-05-31",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-07",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-14",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-21",
+          "commits": 0
+        },
+        {
+          "week": "2026-06-28",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-05",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-12",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-19",
+          "commits": 0
+        },
+        {
+          "week": "2026-07-26",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-02",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-09",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-16",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-23",
+          "commits": 0
+        },
+        {
+          "week": "2026-08-30",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-06",
+          "commits": 30
+        },
+        {
+          "week": "2026-09-13",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-20",
+          "commits": 0
+        },
+        {
+          "week": "2026-09-27",
+          "commits": 0
+        },
+        {
+          "week": "2026-10-04",
+          "commits": 0
+        },
+        {
+          "week": "2026-10-11",
+          "commits": 0
+        }
+      ],
+      "readme": "# grokbot-mocap\n\nLive face motion capture projected onto an animated SVG avatar. Point a camera at a\nperson and the bot mirrors their head, eyes, blinks and mood in real time. Put a crowd in\nfront of it and every face gets its own bot on a dark stage.\n\nBuilt by the NODE Sudbury community for the Grok event. Everything runs in the browser;\nno data leaves the machine. MIT licensed, contributions welcome.\n\n**Try it:** https://grokbot-mocap.vercel.app/live\n\n## Running it\n\nNode 22 is required. The repo carries an `.nvmrc`.\n\n```bash\nnvm use\npnpm install     # also downloads the MediaPipe models into public/mediapipe/\npnpm dev\n```\n\n- http://localhost:5190/live.html — the mirror. Click Start, then **F** fullscreen,\n  **H** hide the overlay, **C** hide the camera preview.\n- http://localhost:5190/ — the customiser: shape, colour and rest expression, plus an\n  animation editor and PNG/SVG/GIF/MP4 export.\n\n```bash\npnpm test     # vitest, ~290 tests, no browser needed\npnpm build    # vue-tsc --noEmit && vite build\n```\n\n## What it does\n\n**One person in front of the camera** gets the big bot. Head turns, blinks, wide eyes,\nsquints and brows are mirrored continuously; a smile, a jaw drop or a frown pulls the\neyes towards the matching expression. Raise a hand and a dock rises: colours on top,\nshapes below. Close your fist to grab the cursor, move sideways to pick, up or down to\nswitch row, open your hand to lock the choice.\n\n**Two to eight people** each get their own bot in a random shape and colour, laid out\nlike a poster on a night background. Positions follow where people stand. Gestures are\noff in crowd mode.\n\nURL switches: `?forme=goutte&couleur=bleu&expression=curieux` presets the single bot,\n`?res=720` raises the capture resolution for a far camera, `?demo=5` previews a crowd\nscene without a camera, `?worker=0` runs detection on the page thread.\n\n## How it works\n\n- `src/bot/` is the avatar engine: a pure, clock-free `engine.sample(t)` that renders one\n  body path and two eye holes from a radial profile and a head pose on a sphere.\n- `src/ui/detection.worker.ts` runs MediaPipe's face and hand landmarkers in a Web\n  Worker. The page only hands frames over and applies results.\n- `src/ui/mirror.ts` turns blendshapes and the head matrix into the engine's levers;\n  `poing.ts`, `curseur.ts` and `rangee.ts` read the fist, the hand position and the row;\n  `suivi.ts` keeps each person glued to their bot across frames; `scene.ts` places a crowd.\n- `src/components/LiveView.vue` is the mirror page; `Dock.vue` and `Foule.vue` the dock\n  and the crowd.\n\nEvery pure module has tests beside it. See [INSTRUCTIONS.md](https://github.com/NODE-Sudbury/grokbot-mocap/blob/HEAD/INSTRUCTIONS.md) for the\ndesign notes and tuning constants, and [CONTRIBUTING.md](https://github.com/NODE-Sudbury/grokbot-mocap/blob/HEAD/CONTRIBUTING.md) to get involved.\n\n## License\n\nMIT. See [LICENSE](https://github.com/NODE-Sudbury/grokbot-mocap/blob/HEAD/LICENSE). Not affiliated with, endorsed by or connected to x.ai;\n\"Grok\" and \"x.ai\" belong to their owners."
+    }
+  ]
+}

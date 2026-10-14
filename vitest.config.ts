@@ -1,0 +1,242 @@
+import { fileURLToPath } from 'node:url';
+import { configDefaults, defineConfig, type TestProjectInlineConfiguration } from 'vitest/config';
+import { decorators } from './packages/web/build/decorators';
+import { configPaths, resolveConfig } from './packages/web/build/resolve-config';
+import { siteModule } from './packages/web/build/vite-plugin-site';
+import { STAGE_FIXTURES } from './packages/web/__tests__/fixtures/stages';
+import { FEATURES } from './packages/web/src/config/features';
+import { deepMerge } from './packages/web/src/config/merge';
+
+const webRoot = fileURLToPath(new URL('./packages/web', import.meta.url));
+// Tests use the demo config, whatever the site's own, so a fork's content can't fail them.
+const paths = configPaths(webRoot, { demo: true });
+const siteConfig = resolveConfig({ paths, nodeEnv: 'test' });
+// Vitest runs from the repo root, so the plugin's paths relative to packages/web would miss.
+const pluginPaths = { siteDir: paths.site, publicDirs: paths.public };
+// The locale that packages/web/__tests__/fake-locale.global-setup.ts builds.
+const FAKE_LOCALE = 'en-XA';
+
+const web = {
+  plugins: [decorators(), siteModule(siteConfig, { defineFeatures: false, ...pluginPaths })],
+  // Vitest resolves lit-html's `isServer` with the Node condition (true), which
+  // makes Lit controllers skip browser setup under jsdom.
+  resolve: {
+    alias: {
+      'lit-html/is-server.js': fileURLToPath(
+        new URL('./packages/web/node_modules/lit-html/development/is-server.js', import.meta.url),
+      ),
+    },
+  },
+  test: {
+    name: 'Web',
+    environment: 'jsdom',
+    // Set so Vitest stops suggesting others: `vitest doctor` found they fail or save under 10%.
+    pool: 'forks',
+    isolate: true,
+    environmentOptions: {
+      jsdom: {
+        // Match jest-environment-jsdom's default testURL so tests that
+        // assert on absolute URLs (e.g. window.location) stay stable.
+        url: 'http://localhost/',
+      },
+    },
+    globalSetup: ['./packages/web/__tests__/localize.global-setup.ts'],
+    setupFiles: ['./packages/web/__tests__/web.setup.ts'],
+    // `lit` is inlined so its `isServer` re-export also goes through the alias above.
+    server: { deps: { inline: [/@lit-labs\/observers/, /node_modules\/lit\//] } },
+    include: [
+      'packages/web/*.test.ts',
+      'packages/web/src/**/*.test.ts',
+      'packages/web/build/**/*.test.ts',
+    ],
+    exclude: [
+      ...configDefaults.exclude,
+      '**/*.smoke.test.ts',
+      '**/*.server.test.ts',
+      '**/*.emulator.test.ts',
+    ],
+  },
+} satisfies TestProjectInlineConfiguration;
+
+const BUILD_TIMEOUT = 5 * 60 * 1000;
+
+export default defineConfig({
+  test: {
+    projects: [
+      web,
+      // One build per feature, with that feature and the features that need it off.
+      ...FEATURES.map((feature): TestProjectInlineConfiguration => ({
+        test: {
+          name: `Smoke (${feature} off)`,
+          environment: 'node',
+          include: ['packages/web/build/features.smoke.test.ts'],
+          provide: { featureOff: feature },
+          testTimeout: BUILD_TIMEOUT,
+          hookTimeout: BUILD_TIMEOUT,
+        },
+      })),
+      {
+        ...web,
+        // Loads locales from the pseudo-translated build in test-locales/, so the fake locale stays
+        // out of the other projects and of production builds.
+        plugins: [
+          {
+            name: 'fake-locales',
+            enforce: 'pre',
+            transform(code, id) {
+              if (!id.endsWith('/src/utils/localization.ts')) return;
+              return code.replaceAll('../generated/locales/', '../generated/test-locales/');
+            },
+          },
+          decorators(),
+          siteModule(
+            {
+              ...siteConfig,
+              contentTranslations: { [FAKE_LOCALE]: { title: `[${siteConfig.resources.title}]` } },
+            },
+            { defineFeatures: false, ...pluginPaths },
+          ),
+        ],
+        test: {
+          ...web.test,
+          name: 'Smoke (fake locale)',
+          globalSetup: [
+            ...web.test.globalSetup,
+            './packages/web/__tests__/fake-locale.global-setup.ts',
+          ],
+          include: ['packages/web/src/localization.smoke.test.ts'],
+          exclude: configDefaults.exclude,
+        },
+      },
+      {
+        // Renders pages with Lit SSR in the global setup, then hydrates them in jsdom.
+        ...web,
+        test: {
+          ...web.test,
+          name: 'Hydration',
+          globalSetup: [
+            ...web.test.globalSetup,
+            './packages/web/__tests__/hydration/global-setup.ts',
+          ],
+          setupFiles: ['./packages/web/__tests__/hydration/setup.ts', ...web.test.setupFiles],
+          server: {
+            deps: { inline: [...web.test.server.deps.inline, /@lit-labs\/ssr-client/] },
+          },
+          include: ['packages/web/__tests__/hydration/*.hydration.test.ts'],
+          exclude: configDefaults.exclude,
+          // axe on a whole page in jsdom takes seconds, more when other projects run alongside.
+          testTimeout: 30000,
+        },
+      },
+      {
+        test: {
+          name: 'Smoke (build)',
+          environment: 'node',
+          include: ['packages/web/build/build.smoke.test.ts'],
+          testTimeout: BUILD_TIMEOUT,
+          hookTimeout: BUILD_TIMEOUT,
+        },
+      },
+      {
+        test: {
+          name: 'Smoke (archive)',
+          environment: 'node',
+          include: ['packages/web/build/archive.smoke.test.ts'],
+          testTimeout: BUILD_TIMEOUT,
+          hookTimeout: BUILD_TIMEOUT,
+        },
+      },
+      {
+        // Renders components with Lit SSR, as the build does. `isServer` is true here.
+        plugins: [decorators(), siteModule(siteConfig, pluginPaths)],
+        test: {
+          name: 'Server',
+          environment: 'node',
+          setupFiles: ['./packages/web/__tests__/server.setup.ts'],
+          include: ['packages/web/src/**/*.server.test.ts'],
+        },
+      },
+      // One per stage fixture, since each has its own site config and feature flags.
+      ...Object.entries(STAGE_FIXTURES).map(([name, fixture]): TestProjectInlineConfiguration => ({
+        plugins: [
+          decorators(),
+          siteModule(
+            {
+              ...siteConfig,
+              site: deepMerge(siteConfig.site, 'site' in fixture ? fixture.site : {}),
+            },
+            pluginPaths,
+          ),
+        ],
+        test: {
+          name: `Stages (${name})`,
+          environment: 'node',
+          setupFiles: ['./packages/web/__tests__/server.setup.ts'],
+          include: ['packages/web/__tests__/stages/*.stages.test.ts'],
+          provide: { stageFixture: name },
+        },
+      })),
+      {
+        // Checks that FIRESTORE_TARGET=sample reads what the emulator seeded with the sample data does.
+        plugins: [decorators(), siteModule(siteConfig, pluginPaths)],
+        test: {
+          name: 'Sample data',
+          environment: 'node',
+          globalSetup: ['./packages/web/__tests__/emulator.global-setup.ts'],
+          include: ['packages/web/src/**/*.emulator.test.ts'],
+        },
+      },
+      {
+        // Builds the demo and minimal sites, serves them on the Hosting emulator and runs axe in Chromium.
+        test: {
+          name: 'A11y',
+          environment: 'node',
+          globalSetup: ['./packages/web/__tests__/a11y/global-setup.ts'],
+          include: ['packages/web/__tests__/a11y/*.a11y.test.ts'],
+          testTimeout: 60000,
+          maxConcurrency: 6,
+        },
+      },
+      {
+        test: {
+          name: 'Functions',
+          environment: 'node',
+          setupFiles: ['./packages/server/functions/__tests__/functions.setup.ts'],
+          include: ['packages/server/functions/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'CLI',
+          environment: 'node',
+          include: ['packages/cli/src/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'Translations',
+          environment: 'node',
+          include: ['packages/translations/__tests__/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'Storage',
+          environment: 'node',
+          include: ['packages/storage/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'Firestore',
+          environment: 'node',
+          // Starts/stops the Firestore emulator once for the whole run (not
+          // per test file), since spinning it up is slow.
+          globalSetup: ['./packages/storage/__tests__/rules/globalSetup.ts'],
+          setupFiles: ['./packages/storage/__tests__/rules/setup.ts'],
+          include: ['packages/storage/__tests__/rules/*.rules.test.ts'],
+        },
+      },
+    ],
+  },
+});

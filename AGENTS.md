@@ -1,0 +1,97 @@
+# AGENTS.md
+
+This is the NODE website, the site of the Northern Ontario Dev Exchange. The web app is Lit components that Astro renders to static pages at build time. Most of the code and the conventions below come from the conference website template it started from, so some sections still describe Firebase, which NODE does not use for sign-in anymore. The older Next.js site is in `archive/`.
+
+## NODE specifics
+
+- **Content** comes from `packages/config`: `site.json`, `content/` (text, FAQ, events, open source data) and `sample-data/` (board, partners, blog, gallery). Run the site with `FIRESTORE_TARGET=sample NODE_ENV=development npm --prefix packages/web run start:astro`. Events come from GDG and Luma pages (`npm --prefix packages/web run sync:events`) and open source data from GitHub (`sync:github`).
+- **Sign-in** uses Supabase Auth: an emailed sign-in link and Google. It is the same Supabase project as the older app's member dashboard, so the same members table and roles (`member`, `staff`, `board`) apply. `src/supabase.ts` makes the client and `src/store/auth` holds the sign-in state.
+- **Two Supabase projects.** `Node Website Dev` is for development and previews, and `Node Website` is production. Vite reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from `packages/web/.env.development` (for `npm start`) or `.env.production` (for builds). Both files are gitignored, and `packages/web/.env.example` shows the names. On Vercel, the Production environment points at the production project and Preview points at the dev one. Use only the public anon key in the browser, never the service role key.
+- **Each Supabase project lists the addresses it may send members back to** (Authentication, URL Configuration). A site that is not on the list gets sent to the project's default Site URL instead. Add `http://localhost:4321/**` to the dev project and the live site's address to the production one.
+- **The two databases are not at the same migration.** The dev project has the full schema (`supabase/migrations` at the repository root). Check the production project before relying on a table, and apply migrations to it only when asked.
+- **Branches.** `main` is production and only takes pull requests from `dev`. Work goes on a feature branch off `dev` and into `dev` with a pull request. Never push to `main`, and never force-push.
+- **Commits** say what changed in plain words, as Conventional Commits (`feat:`, `fix:`, `docs:`), with no co-author lines and no links to AI sessions.
+- **Never commit** `.env*` files (except `.env.example`), keys or service account files.
+
+## Layout
+
+| Path                        | What it is                                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `packages/web`              | The web app: Astro pages, Lit components, Redux Toolkit store, Workbox service worker                                     |
+| `packages/server/functions` | Cloud Functions (v2 API). Must stay self-contained, because `firebase.json` deploys it alone                              |
+| `packages/cli`              | The `hb` CLI (`./hb <command>`), run with `tsx`, no build step                                                            |
+| `packages/storage`          | Firestore and Storage security rules, indexes, the Firestore schema, the collection registry and the rules tests          |
+| `packages/translations`     | UI translations (XLIFF) from upstream's Crowdin project, read by `packages/web`. No dependencies                          |
+| `packages/config`           | The site's own config and content, which upstream only has a README in. `./hb init` creates it from the demo              |
+| `packages/demo-config`      | The demo site: `site.json`, `content/`, images in `public/`. Used when `packages/config` has no `site.json`, and by tests |
+| `packages/web/defaults`     | Upstream `site.json` defaults that the site's config overrides. Objects merge, and arrays and other values replace        |
+| `docs/`                     | Tutorials and the release policy                                                                                          |
+
+Each package with dependencies has its own `package.json` and `package-lock.json`. The root is a thin orchestrator: its scripts delegate with `npm --prefix ./packages/<name>`.
+
+## Setup
+
+- Node.js and npm versions come from `engines` in the root `package.json`. CI uses the same file.
+- `npm ci` at the root also installs every package through `postinstall`.
+- Java is needed for the Firestore emulator, which the rules tests and `npm start` use.
+- Chromium is needed for the `A11y` tests: `npx --prefix packages/web playwright install chromium`.
+- Production Firestore commands sign in with the Firebase CLI login (`npx firebase login`). There are no service account key files.
+
+## Commands
+
+Run from the repo root.
+
+| Command                        | Does                                                                                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm test`                     | All Vitest projects: Web, Server, Stages, Hydration, Functions, CLI, Storage, Firestore and Sample data (both start the emulator), Translations, Smoke and A11y                                                                                  |
+| `npx vitest run --project Web` | One project. Add a path to run one file                                                                                                                                                                                                          |
+| `npm run lint`                 | ESLint, Prettier, syncpack, lit-analyzer, site config, `astro check` and type checks for web, server and storage                                                                                                                                 |
+| `npm run fix`                  | ESLint and Prettier autofix                                                                                                                                                                                                                      |
+| `npm run build`                | Production build of every page to `packages/web/dist`. Reads content from the Firestore emulator, see `FIRESTORE_TARGET` below                                                                                                                   |
+| `npm start`                    | Emulators, functions and the Astro dev server at http://localhost:4321                                                                                                                                                                           |
+| `npm run serve`                | Builds from the emulator data, then serves `dist` on the Hosting emulator at http://localhost:5000                                                                                                                                               |
+| `./hb doctor`                  | Checks the local setup, Firebase login, project, billing plan, deployed functions, deploy roles, service account keys and browser API keys                                                                                                       |
+| `./hb init`                    | Sets up a site: Firebase project and web app, event details, text and images in `packages/config`, the Firestore database, billing, starting content, backups, first deploy and GitHub repository. Changes production, so only run it when asked |
+| `./hb status`                  | Shows the project, versions, features, last deploy, the fork's changes, document counts and the site's stages (emulator, or `--production`)                                                                                                      |
+
+Before finishing a change, run `npm run lint` and `npm test`, or at least the affected Vitest project and type check.
+
+## Conventions
+
+- **TypeScript** is strict, with `verbatimModuleSyntax`. Use `import type` for type-only imports. Custom elements register as a side effect, so import them with `import './my-element'` where they are used.
+- **Components** use `@customElement`, extend `ThemedComponent` (which adds the shared theme styles), and read store state with the `@fromStore` decorator. Use the color tokens from `src/themes/tokens.ts` as CSS variables, never hex colors. A test fails on hex colors outside `src/themes/`.
+- **Pages** are Astro files in `src/routes/`. `build/routes.ts` adds the pages of enabled features, and `src/pages/` has the pages every site has. Each page reads its content with `loadContent()`, passes the collections its components read to `seedPage()` in its frontmatter, and renders its view with `client:load`. Components render on the server first, so their first render in the browser must match: no `window`, `document`, randomness or viewport checks before `firstUpdated()`. Use CSS media queries for layout by screen size.
+- **Build content** comes from `FIRESTORE_TARGET`: unset reads the emulator, `production` reads production Firestore (deploys only), `none` builds without content (CI checks and smoke tests), and `sample` reads `docs/sample-data` without Firestore (`src/data/sample.ts`). The `Sample data` project checks that `sample` reads the same content as the emulator seeded with it.
+- **CSP.** `build/csp.ts` adds the same Content-Security-Policy to every built page, with the hashes of the inline scripts. Inline scripts must be in the `<head>` (`<Fragment slot="head">` in a page), or the build fails. A new origin the site loads from goes in `cspPolicy()`. `npm start` runs without the policy, so check with `npm run serve`.
+- **Site config.** Client code reads site config only through `src/config/site.ts`, never from the data files directly. Build-time config reads live in `packages/web/build/`. Upstream's site is the demo in `packages/demo-config`: edit it there, never in `packages/config`, which belongs to each fork. The build, `npm start` and the CLI use `packages/config` once it has a `site.json`, and tests always use the demo. Images go in the config's `public/`, which the build lays over `packages/web/public`. When you add or rename a key in `packages/demo-config` or `packages/web/defaults`, update the schema in `packages/web/schemas/` too. `./hb config validate` checks it. A change that breaks an existing `site.json` needs a config migration, see [docs/releases.md](docs/releases.md#migrations).
+- **Firestore data.** Every collection NODE site uses is in `packages/storage/collections.ts`, with its features and its definition in `packages/storage/schemas/firestore.schema.json`. A new collection or field goes in both, and in `firestore.rules` when the site reads or writes it. The `Firestore` tests fail when they disagree.
+- **UI text** uses `msg()` from `@lit/localize` with an explicit `id` such as `footer.locale-picker.label`. After adding or changing one, run `npm --prefix packages/web run localize:extract` and commit `packages/translations/source/en.xlf`. `npm run lint` fails when it is out of date.
+- **Tests** sit next to the code as `*.test.ts`. Web tests run in jsdom: render with `fixture` from `packages/web/__tests__/helpers/fixtures.ts`, set state with `setStoreState`, turn features off with `setFeatures` from `helpers/features.ts`, switch locale with `useLocale` from `helpers/locale.ts` (only the `Smoke (fake locale)` project has a second locale), and assert with the jest-dom matchers. Every bug fix or feature needs a test.
+- **Accessibility.** Find elements by role and name in tests. A new component calls `expectNoAxeViolations()` from `helpers/axe.ts` in its test, in each state, and a new page goes in `hydration-pages.ts`, whose pages are checked with axe after they hydrate. UI changes keep the `A11y` project passing. [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) has the target and what to keep in mind.
+- **Server tests** are `*.server.test.ts` files in the `Server` project. They render components with Lit SSR in Node, as the build does: fill the store with `seedPage()` from `src/data/page.ts`, then render with `render()` from `@lit-labs/ssr`. A component that reads content the page did not seed fails with "db is not available on the server".
+- **Hydration tests** are in the `Hydration` project. Its global setup renders each page in `packages/web/__tests__/fixtures/hydration-pages.ts` with Lit SSR, and `pages.hydration.test.ts` hydrates them in jsdom. It fails when the first client render does not match the server HTML. Add a page there when a component renders differently in the browser.
+- **Stage tests** are in a `Stages (<fixture>)` project per fixture in `packages/web/__tests__/fixtures/stages.ts`: a site in one or more event stages, such as `first-call` or `returning-live`, with its `site.json` changes, part of the sample data and a moment in time. `pages.stages.test.ts` renders the header, footer, home, speakers and schedule pages with Lit SSR at that moment, and checks the fixture's stages, the hero's and header's next steps, the home bands with content, links only to pages with content, and the "coming soon" pages. Run them with `npx vitest run --project 'Stages*'`. A change to what a stage shows updates a fixture's `steps`.
+- **Smoke tests** are `*.smoke.test.ts` files in their own Vitest projects. `features.smoke.test.ts` builds the site once per feature with that feature off (`--project 'Smoke (blog off)'`), and checks its pages, links and chunks are gone. `build.smoke.test.ts` builds the minimal site in `packages/web/__tests__/fixtures/minimal-site`. Run them all with `npx vitest run --project 'Smoke*'`.
+- **A11y tests** are in the `A11y` project. Its global setup builds the demo site with the sample data, the minimal site, and an empty first edition (the demo's config without content, with the dev bar's clock at the `first-announced` fixture's time), and serves them on the Hosting emulator. `pages.a11y.test.ts` runs axe in Chromium on each page template in every theme and scheme (the empty first edition's home page only), and fails on any WCAG 2.2 AA violation. Best-practice rules are only reported. axe's `region` rule flags the minimal site's skip link, because it can't compare link order across shadow roots. `checks.a11y.test.ts` checks what axe can't, on each template: one `h1`, the landmarks and a unique title, a Tab walk to the footer where every stop is visible, changes when focused and isn't entirely covered, no sideways scrolling at 320px, and no animations with reduced motion. It reports, without failing, text that WCAG 1.4.12 text spacing clips. Shared page setup is in `browser.ts`. Results and screenshots go to `packages/web/test-results/a11y`.
+- **Features** are gated with `__HB_FEATURES__.<name>` where the code of a disabled feature should be left out of the build. The build replaces it with `true` or `false`. Use `isFeatureEnabled(name)` only for names known at runtime.
+- **Vitest** is configured once in the root `vitest.config.ts`. Do not add `vitest` to a package's `package.json`, because a second copy breaks `expect.extend` from setup files.
+- **Dependencies** shared by several packages must use the same version range. `npm run lint:syncpack` checks this.
+- **Paths.** Astro and Vite run with `packages/web` as the working directory, so their relative paths resolve from there. The site's config is `../config` or `../demo-config`: use `CONFIG_PATHS` from `build/resolve-config.ts`, or `siteConfigPath()` in the CLI.
+- **Local development** always uses the `demo-node-site` project on the emulators, whatever `firebase use` selects. The web app connects to the emulators and skips Analytics and Performance Monitoring when the project ID starts with `demo-`.
+- **Data commands** (`./hb data …`, `./hb backup …`, `./hb notify` and `./hb upgrade --migrations-only`) use the emulator by default. Only target production with `--production` when explicitly asked. `./hb backup schedule` and `./hb data push` always change production, so only run them when asked. `./hb edition new`, `switch` and `rebuild` create, change and archive Firebase projects, so only run them when asked. `./hb upgrade` without `--migrations-only` merges a NODE site release into a fork, so don't run it in this repository. The CLI no longer reads `FIRESTORE_TARGET`, which only the build uses.
+- **Sample data** is `docs/sample-data`, an export in the format `hb data export` writes (`src/lib/data-format.ts`): a manifest and one JSON file per collection, by document path. `hb data seed` imports it. Tests read its files directly. Keep it valid: a CLI test imports it with no problems and no pending migration.
+- **CLI commands** are grouped by topic, as `hb <topic> <action>` (`hb data check`), and load their modules inside their action, after the target is set. A command that can change production takes `--dry-run` and `--yes`, and asks with `confirmChange()`. Commands return a `CommandResult` or a boolean, and throw `UsageError` for a usage error. `src/program.ts` turns them into exit codes (0, 1 for a problem to fix, 2 for a usage error) and `--json` output.
+- **Formatting.** Prettier formats everything, including Markdown, JSON and YAML. Run `npx prettier --write <files>` after editing them.
+- **Docs** use short, plain sentences. Mark claims that were not tested with "verify".
+
+## Pull requests and releases
+
+- Pull request titles follow [Conventional Commits](https://www.conventionalcommits.org/), for example `fix(web): show session times in the event time zone`. They are squash merged, and the title becomes the release note.
+- Mark breaking changes with `!` and explain what organizers must do in a `BREAKING CHANGE:` paragraph. [docs/releases.md](docs/releases.md) defines what counts as breaking.
+- release-please opens the release pull request and updates [CHANGELOG.md](CHANGELOG.md). Do not edit the changelog by hand.
+
+## Do not commit
+
+- `serviceAccount.json`, `*-adminsdk-*.json`, `.firebaserc`, or any other credentials.
+- Emulator debug logs (`*-debug.log`).
+- `NEXT.md` and the planning specs in `docs/` that it lists. They are local working documents. Do not link to them from committed files.

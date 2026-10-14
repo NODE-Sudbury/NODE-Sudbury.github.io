@@ -1,0 +1,286 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { fontCss, fontStylesheets } from 'virtual:node-site/fonts';
+import { customCss, theme, themeCss } from 'virtual:node-site/layout';
+import { resources, site, build } from 'virtual:node-site/site';
+import '../styles/base.css';
+import { FooterBlock } from '../components/footer/footer-block';
+import { AppHeader, demoBanner } from '../components/shell/app-header';
+import { AppOverlays } from '../components/shell/app-overlays';
+import { loadContent } from '../data/content';
+import { iconPath } from '../data/icons';
+import '../data/markdown';
+import { imageType, pageMetadata } from '../data/metadata';
+import { seedPage } from '../data/page';
+import { contentPresence } from '../data/presence';
+import {
+  type Crumb,
+  absoluteUrl,
+  breadcrumbStructuredData,
+  openGraphLocale,
+  organizationStructuredData,
+  serializeJsonLd,
+  websiteStructuredData,
+} from '../data/structured-data';
+import { type Content, PAGE_CONTENT_ID, serializeContent } from '../store/content';
+import { BUILD_META } from '../utils/build';
+import { colorSchemeScript } from '../utils/color-scheme';
+import { demoScript } from '../utils/demo';
+import { eventState } from '../utils/event-state';
+import { eventPlace } from '../utils/place';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  imageType?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  /** The content from `seedPage()`, which the browser's store starts from. */
+  content?: Partial<Content>;
+  /** Keeps the page out of search results and the sitemap: errors, offline and empty pages. */
+  noindex?: boolean;
+  /** `og:type`: `article` for a post, `website` for the rest. */
+  ogType?: 'website' | 'article';
+  /** The trail from the home page to this page, for search results. */
+  breadcrumbs?: Crumb[];
+  /** More JSON-LD for the page, such as an event or a post. */
+  jsonLd?: object[];
+}
+
+const {
+  title = resources.title,
+  description = resources.description,
+  image = site.image,
+  imageAlt,
+  imageWidth,
+  imageHeight,
+  content: pageContent = {},
+  noindex = false,
+  ogType = 'website',
+  breadcrumbs,
+  jsonLd = [],
+} = Astro.props;
+const { imageType: type = imageType(image) } = Astro.props;
+// The header links to tickets on every page. The page's own content has already rendered.
+const siteContent = await loadContent();
+const content = seedPage({ ...pageContent, tickets: siteContent.tickets ?? [] });
+const presence = contentPresence(siteContent);
+// The build sees file paths such as /index.html. Hosting serves them without `.html`.
+const path = Astro.url.pathname.replace(/(index)?\.html$/, '').slice(1);
+const url = new URL(path, site.url).href;
+// What every page says about the organization and the site, and its own trail and data.
+const structuredData = [
+  organizationStructuredData(
+    site,
+    site.social.follow.map(({ url: profile }) => profile),
+    absoluteUrl('images/icon.png', site.url),
+  ),
+  websiteStructuredData(site, resources.title, resources.description),
+  ...(breadcrumbs
+    ? [breadcrumbStructuredData([{ name: 'Home', path: '/' }, ...breadcrumbs], site.url)]
+    : []),
+  ...jsonLd,
+];
+
+// Only a site on Firebase Hosting has /__/firebase/init.js. NODE is on Vercel, with a demo project.
+const hostedOnFirebase = !site.firebase.projectId.startsWith('demo-');
+
+// Local development always uses the demo project on the emulators, and `astro dev` has no `/__/`.
+const demoFirebaseConfig = {
+  apiKey: 'demo-api-key',
+  authDomain: 'demo-node-site.firebaseapp.com',
+  projectId: 'demo-node-site',
+  storageBucket: 'demo-node-site.appspot.com',
+};
+
+// The browser toolbar color follows the color scheme, unless the site locks one. Both colors ride
+// along, so the footer toggle can pick one.
+const themeColors =
+  theme.colorScheme === 'system'
+    ? [
+        { color: theme.light.primary, media: '(prefers-color-scheme: light)' },
+        { color: theme.dark.primary, media: '(prefers-color-scheme: dark)' },
+      ]
+    : [{ color: theme[theme.colorScheme].primary, media: undefined }];
+const fontOrigins = [...new Set(fontStylesheets.map((href) => new URL(href).origin))];
+// At build time. The header checks again in the browser.
+const builtAt = new Date();
+const builtEventState = eventState(builtAt, site.event);
+// The header loads the banner without waiting, so wait here for the server to render it.
+await demoBanner;
+---
+
+<!doctype html>
+<html
+  data-color-scheme={theme.colorScheme === 'system' ? undefined : theme.colorScheme}
+  data-decorations={theme.decorations ? undefined : 'off'}
+  lang={site.locales.source}
+>
+  <head>
+    <base href={site.basepath} />
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes"
+      name="viewport"
+    />
+    <meta content={description} name="description" />
+    <meta
+      content={
+        noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'
+      }
+      name="robots"
+    />
+    <meta content={resources.keywords} name="keywords" />
+    <meta content={site.organizer.name} name="author" />
+    <meta content={build.time} name={BUILD_META} />
+
+    <title>{title}</title>
+
+    <link href={url} rel="canonical" />
+
+    {([16, 32] as const).map((size) => (
+      <link href={iconPath(size)} rel="icon" sizes={`${size}x${size}`} type="image/png" />
+    ))}
+
+    <meta
+      content={theme.colorScheme === 'system' ? 'light dark' : theme.colorScheme}
+      name="color-scheme"
+    />
+    {themeColors.map(({ color, media }) => (
+      <meta
+        content={color}
+        data-dark={theme.dark.primary}
+        data-light={theme.light.primary}
+        media={media}
+        name="theme-color"
+      />
+    ))}
+    {/* After the theme-color tags it updates, and before any style, so the first paint is right. */}
+    {theme.colorScheme === 'system' && <script is:inline set:html={colorSchemeScript} />}
+    {__HB_FEATURES__.demo && <script is:inline set:html={demoScript} />}
+    <link href="manifest.json" rel="manifest" />
+    {__HB_FEATURES__.blog && (
+      <link
+        href="blog/rss.xml"
+        rel="alternate"
+        title={pageMetadata('blog').title}
+        type="application/rss+xml"
+      />
+    )}
+
+    <meta content="yes" name="mobile-web-app-capable" />
+    <meta content={resources.title} name="application-name" />
+
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" />
+    <meta content={resources.title} name="apple-mobile-web-app-title" />
+
+    <link href={iconPath(48)} rel="apple-touch-icon" />
+    {([72, 96, 144, 192] as const).map((size) => (
+      <link href={iconPath(size)} rel="apple-touch-icon" sizes={`${size}x${size}`} />
+    ))}
+
+    <meta content={iconPath(144)} name="msapplication-TileImage" />
+    <meta content={theme.light.primary} name="msapplication-TileColor" />
+    <meta content="no" name="msapplication-tap-highlight" />
+
+    <meta content={title} property="og:title" />
+    <meta content={resources.title} property="og:site_name" />
+    <meta content={ogType} property="og:type" />
+    <meta content={openGraphLocale(site.locales.source)} property="og:locale" />
+    <meta content={url} property="og:url" />
+    <meta content={description} property="og:description" />
+    <meta content={image} property="og:image" />
+    {type && <meta content={type} property="og:image:type" />}
+    {imageWidth && <meta content={String(imageWidth)} property="og:image:width" />}
+    {imageHeight && <meta content={String(imageHeight)} property="og:image:height" />}
+    {imageAlt && <meta content={imageAlt} property="og:image:alt" />}
+
+    <meta content="summary_large_image" name="twitter:card" />
+    {site.organizer.twitter && (
+      <meta content={`@${site.organizer.twitter}`} name="twitter:creator" />
+    )}
+    <meta content={title} name="twitter:title" />
+    <meta content={description} name="twitter:description" />
+    <meta content={image} name="twitter:image" />
+    {imageAlt && <meta content={imageAlt} name="twitter:image:alt" />}
+    <meta name="twitter:label1" value="Location" />
+    <meta name="twitter:data1" value={eventPlace(({ name }) => name)} />
+
+    {fontOrigins.map((origin) => (
+      <link crossorigin href={origin} rel="preconnect" />
+    ))}
+    <link href="https://firestore.googleapis.com" rel="preconnect" />
+    {fontStylesheets.map((href) => (
+      <link href={href} rel="stylesheet" />
+    ))}
+    {structuredData.map((data) => (
+      <script is:inline type="application/ld+json" set:html={serializeJsonLd(data)} />
+    ))}
+    <slot name="head" />
+
+    <style is:inline set:html={themeCss} />
+    <style is:inline set:html={fontCss} />
+    {customCss && <style is:inline set:html={customCss} />}
+
+    {import.meta.env.DEV ? (
+      <script is:inline define:vars={{ demoFirebaseConfig }}>
+        window.firebaseConfig = demoFirebaseConfig;
+      </script>
+    ) : hostedOnFirebase ? (
+      <Fragment>
+        <script is:inline>
+          // Capture the config object from /__/firebase/init.js for src/firebase.ts
+          window.firebase = {
+            initializeApp: (config) => {
+              window.firebaseConfig = config;
+              delete window.firebase;
+            },
+          };
+        </script>
+        <script is:inline src="/__/firebase/init.js" />
+      </Fragment>
+    ) : null}
+
+    {import.meta.env.DEV && <script is:inline define:vars={{ features: site.features }}>
+      // The build inlines the flags. In development Vite sets them in /@vite/env, which loads too late.
+      globalThis.__HB_FEATURES__ = features;
+    </script>}
+
+    <script
+      is:inline
+      type="application/json"
+      id={PAGE_CONTENT_ID}
+      set:html={serializeContent(content)}
+    />
+    <script>
+      // The app loads Lit, which must find hydration support first, or components render twice.
+      // Static imports would let the bundler run the shared Lit chunk before it.
+      await import('@awesome.me/astro-lit/hydration-support.js');
+      await import('../service-worker-registration');
+      const { startApp } = await import('../app');
+
+      void startApp();
+    </script>
+    <ClientRouter />
+  </head>
+
+  <body>
+    <AppHeader
+      path={`/${path}`}
+      eventState={builtEventState}
+      time={builtAt.getTime()}
+      presence={presence}
+      client:load
+      transition:persist="header"
+      transition:persist-props
+    />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <FooterBlock client:load transition:persist="footer" />
+    <AppOverlays client:load transition:persist="overlays" />
+  </body>
+</html>

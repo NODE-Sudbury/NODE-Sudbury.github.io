@@ -1,0 +1,15 @@
+{
+  "categories": ["Hackathons", "Community Events", "Norcat Series"],
+  "sources": [
+    {
+      "provider": "gdg",
+      "url": "https://gdg.community.dev/events/details/google-gdg-sudbury-presents-devfest-sudbury-2026-build-secure-scale-developers-and-builders-in-the-agentic-era/",
+      "category": "Community Events"
+    },
+    {
+      "provider": "luma",
+      "url": "https://luma.com/cursor-nmzu",
+      "category": "Community Events"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+---
+// One page serves every /members/<handle> and the older /profile/<id>: Vercel rewrites both to it, and the page reads
+// the handle from the address. Profiles are made by members, so the page itself stays out of search.
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import Base from '../../layouts/base.astro';
+import { PublicProfilePage } from '../../views/public-profile-page';
+---
+
+<Base
+  {...itemMetadata('NODE member', 'A member of the Northern Ontario Dev Exchange.')}
+  content={seedPage({})}
+  noindex
+>
+  <PublicProfilePage client:load />
+</Base>

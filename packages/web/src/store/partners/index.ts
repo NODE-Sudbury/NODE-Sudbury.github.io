@@ -1,0 +1,145 @@
+import { Failure, Initialized, Pending, type RemoteData, Success } from '@abraham/remotedata';
+import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Unsubscribe } from 'firebase/firestore';
+import type { RootState } from '..';
+import {
+  subscribeToPartnerGroups as subscribeGroupsDb,
+  subscribeToPartners as subscribePartnersDb,
+} from '../../db/partners';
+import type { Partner } from '../../models/partner';
+import type { PartnerGroup, PartnerGroupWithoutItems } from '../../models/partner-group';
+import { registerContentSubscriber, resetContent, seedContent } from '../content';
+import { dispatch } from '../dispatch';
+
+export type PartnerGroupsState = RemoteData<Error, PartnerGroup[]>;
+
+export interface PartnersState {
+  groups: RemoteData<Error, PartnerGroupWithoutItems[]>;
+  partners: RemoteData<Error, Partner[]>;
+  partnersSubscription: RemoteData<Error, Unsubscribe>;
+  groupsSubscription: RemoteData<Error, Unsubscribe>;
+}
+
+export const initialState = {
+  groups: new Initialized(),
+  partners: new Initialized(),
+  partnersSubscription: new Initialized(),
+  groupsSubscription: new Initialized(),
+} as PartnersState;
+
+const subscribeToPartners = () => {
+  return subscribePartnersDb(
+    (partners) => {
+      dispatch(setPartnersSuccess(partners));
+    },
+    (error) => dispatch(setPartnersFailure(error)),
+  );
+};
+
+const subscribeToGroups = () => {
+  return subscribeGroupsDb(
+    (groups) => {
+      dispatch(setGroupsSuccess(groups));
+    },
+    (error) => dispatch(setGroupsFailure(error)),
+  );
+};
+
+const partnersSlice = createSlice({
+  name: 'partners',
+  initialState,
+  reducers: {
+    subscribe(state) {
+      // Seeded data stays on screen while the subscriptions start.
+      if (state.partnersSubscription instanceof Initialized) {
+        state.partnersSubscription = new Success(subscribeToPartners());
+        if (!(state.partners instanceof Success)) state.partners = new Pending();
+      }
+      if (state.groupsSubscription instanceof Initialized) {
+        state.groupsSubscription = new Success(subscribeToGroups());
+        if (!(state.groups instanceof Success)) state.groups = new Pending();
+      }
+    },
+    unsubscribe(state) {
+      if (state.partnersSubscription instanceof Success) {
+        state.partnersSubscription.data();
+      }
+      if (state.groupsSubscription instanceof Success) {
+        state.groupsSubscription.data();
+      }
+      state.partnersSubscription = new Initialized();
+      state.partners = new Initialized();
+      state.groupsSubscription = new Initialized();
+      state.groups = new Initialized();
+    },
+    setPartnersSuccess(state, action: PayloadAction<Partner[]>) {
+      state.partners = new Success(action.payload);
+    },
+    setPartnersFailure(state, action: PayloadAction<Error>) {
+      state.partners = new Failure(action.payload);
+    },
+    setGroupsSuccess(state, action: PayloadAction<PartnerGroupWithoutItems[]>) {
+      state.groups = new Success(action.payload);
+    },
+    setGroupsFailure(state, action: PayloadAction<Error>) {
+      state.groups = new Failure(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetContent, () => initialState);
+    builder.addCase(seedContent, (state, { payload }) => {
+      if (payload.partners) state.partners = new Success(payload.partners);
+      if (payload.partnerGroups) state.groups = new Success(payload.partnerGroups);
+    });
+  },
+});
+
+const selectPartners = (state: RootState) => state.partners.partners;
+const selectGroups = (state: RootState) => state.partners.groups;
+
+export const selectPartnerGroups = createSelector(
+  selectGroups,
+  selectPartners,
+  (groups: PartnersState['groups'], partners: PartnersState['partners']): PartnerGroupsState => {
+    if (groups instanceof Initialized || partners instanceof Initialized) {
+      dispatch(subscribe());
+      return new Pending();
+    }
+
+    if (groups instanceof Success && partners instanceof Success) {
+      const partnerGroups = groups.data.map((group) => {
+        return {
+          ...group,
+          items: partners.data.filter((partner: Partner) => partner.parentId === group.id),
+        };
+      });
+      return new Success(partnerGroups);
+    }
+
+    if (groups instanceof Failure) {
+      return groups;
+    }
+
+    if (partners instanceof Failure) {
+      return partners;
+    }
+
+    return new Pending();
+  },
+);
+
+const {
+  subscribe,
+  unsubscribe,
+  setPartnersSuccess,
+  setPartnersFailure,
+  setGroupsSuccess,
+  setGroupsFailure,
+} = partnersSlice.actions;
+
+for (const name of ['partners', 'partnerGroups']) {
+  registerContentSubscriber(name, () => dispatch(subscribe()));
+}
+
+export { subscribe, unsubscribe };
+export default partnersSlice.reducer;

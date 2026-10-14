@@ -1,0 +1,46 @@
+---
+import { site } from 'virtual:node-site/site';
+import { loadContent } from '../../data/content';
+import { boardMembers } from '../../data/members';
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import { absoluteUrl, personStructuredData } from '../../data/structured-data';
+import type { Member } from '../../models/member';
+import { memberSlug } from '../../utils/members';
+import Base from '../../layouts/base.astro';
+import { MemberPage } from '../../views/member-page';
+
+export const getStaticPaths = async () => {
+  const { teams, members } = await loadContent();
+  return boardMembers(teams, members).map((member) => ({
+    params: { id: memberSlug(member) },
+    props: { member },
+  }));
+};
+
+const { member } = Astro.props as { member: Member };
+const slug = memberSlug(member);
+const image = member.photoUrl ? absoluteUrl(member.photoUrl, site.url) : undefined;
+---
+
+<Base
+  {...itemMetadata(
+    `${member.name}, ${member.title}`,
+    `${member.name} is ${member.title} of the NODE board of directors, the volunteer team behind Northern Ontario Dev Exchange in Sudbury.`,
+    image,
+  )}
+  content={seedPage({})}
+  jsonLd={[
+    personStructuredData(member, {
+      pageUrl: absoluteUrl(`/team/${slug}`, site.url),
+      ...(image ? { image } : {}),
+      organization: `${site.url}#organization`,
+    }),
+  ]}
+  breadcrumbs={[
+    { name: 'Board', path: '/team' },
+    { name: member.name, path: `/team/${slug}` },
+  ]}
+>
+  <MemberPage member={member} client:load />
+</Base>

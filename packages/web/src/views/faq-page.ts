@@ -1,0 +1,48 @@
+import { html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { faq } from '../config/site';
+import { PageMetadataController } from '../controllers/page-metadata-controller';
+import '../components/hero/simple-hero';
+import '../components/markdown/remote-markdown';
+import { pageInner } from '../styles/page';
+import { ThemedComponent } from '../components/themed-component';
+
+@customElement('faq-page')
+export class FaqPage extends ThemedComponent {
+  static override styles = pageInner;
+
+  /** The FAQ in the source locale, which the build passes in. */
+  @property({ attribute: false })
+  accessor content: string | undefined;
+
+  constructor() {
+    super();
+    new PageMetadataController(this, 'faq');
+  }
+
+  get source() {
+    return faq;
+  }
+
+  override render() {
+    return html`
+      <simple-hero page="faq"></simple-hero>
+
+      <div class="inner">
+        <remote-markdown
+          toc
+          disclosures
+          path=${this.source}
+          page-path="/faq"
+          .content=${this.content}
+        ></remote-markdown>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'faq-page': FaqPage;
+  }
+}

@@ -1,0 +1,21 @@
+---
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import Base from '../../layouts/base.astro';
+import { ADMIN_SECTIONS, AdminPage } from '../../views/admin-page';
+
+export const getStaticPaths = () =>
+  ADMIN_SECTIONS.filter((section) => section !== 'home').map((section) => ({
+    params: { section },
+  }));
+
+const { section } = Astro.params as { section: (typeof ADMIN_SECTIONS)[number] };
+---
+
+<Base
+  {...itemMetadata('Admin dashboard', 'Where the people who run NODE manage the site.')}
+  content={seedPage({})}
+  noindex
+>
+  <AdminPage section={section} client:load />
+</Base>

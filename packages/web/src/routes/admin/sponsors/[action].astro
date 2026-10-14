@@ -1,0 +1,18 @@
+---
+import { itemMetadata } from '../../../data/metadata';
+import { seedPage } from '../../../data/page';
+import Base from '../../../layouts/base.astro';
+import { AdminPage } from '../../../views/admin-page';
+
+export const getStaticPaths = () => [{ params: { action: 'new' } }, { params: { action: 'edit' } }];
+
+const { action } = Astro.params as { action: 'new' | 'edit' };
+---
+
+<Base
+  {...itemMetadata('Admin dashboard', 'Where the people who run NODE manage the site.')}
+  content={seedPage({})}
+  noindex
+>
+  <AdminPage section="sponsors" action={action} client:load />
+</Base>

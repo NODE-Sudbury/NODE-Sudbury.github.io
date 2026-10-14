@@ -1,0 +1,1900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="pages.admin.action-insert">
+  <source>Added</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-update">
+  <source>Changed</source>
+</trans-unit>
+<trans-unit id="pages.admin.action-delete">
+  <source>Deleted</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-admins">
+  <source>Team access</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-board">
+  <source>Board card</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-partners">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-sponsors">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-members">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.table-subscribers">
+  <source>Subscriber</source>
+</trans-unit>
+<trans-unit id="pages.admin.empty-value">
+  <source>(empty)</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-search">
+  <source>Search the activity</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-table">
+  <source>What</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-all">
+  <source>Everything</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-action">
+  <source>Action</source>
+</trans-unit>
+<trans-unit id="pages.admin.filter-any">
+  <source>Any action</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-failed">
+  <source>The activity could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-count">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.entries.length}"/> entries</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-note">
+  <source>The log shows the latest entries. Nobody can change or delete it.</source>
+</trans-unit>
+<trans-unit id="pages.admin.activity-none">
+  <source>Nothing has been logged yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-when">
+  <source>When</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-who">
+  <source>Who</source>
+</trans-unit>
+<trans-unit id="pages.admin.system">
+  <source>The system</source>
+</trans-unit>
+<trans-unit id="pages.admin.details">
+  <source>Details</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-today">
+  <source>Today</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-7">
+  <source>7 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-30">
+  <source>30 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range-90">
+  <source>90 days</source>
+</trans-unit>
+<trans-unit id="pages.admin.range">
+  <source>Range</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-failed">
+  <source>The numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-views">
+  <source>Page views</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-pages">
+  <source>Pages opened</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-top">
+  <source>Most viewed</source>
+</trans-unit>
+<trans-unit id="pages.admin.top-pages">
+  <source>Most viewed pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-note">
+  <source>Only the address of each page and the day are counted. No cookies, no visitor addresses, and nothing about who looked. Visitors who ask not to be tracked are not counted.</source>
+</trans-unit>
+<trans-unit id="pages.admin.chart-label">
+  <source>Views per day, from <x id="0" equiv-text="${dayLabel(first.day)}"/> to <x id="1" equiv-text="${dayLabel(last.day)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-none">
+  <source>Nothing has been counted in this range yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.analytics-search">
+  <source>Search pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-page">
+  <source>Page</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-views">
+  <source>Views</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-share">
+  <source>Share</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-none-match">
+  <source>Nothing matches your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-failed">
+  <source>The board could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${cards.length}"/> board members</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-total">
+  <source><x id="0" equiv-text="${cards.length}"/> board members</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-member">
+  <source>Add board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-note">
+  <source>These cards are not on the home page yet. The home page keeps its own board for now.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-search">
+  <source>Search the board</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-none-match">
+  <source>Nobody matches your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.boards-none">
+  <source>There are no board members yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-title">
+  <source>Title</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-account">
+  <source>Account</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-actions">
+  <source>Actions</source>
+</trans-unit>
+<trans-unit id="pages.admin.linked">
+  <source>Linked</source>
+</trans-unit>
+<trans-unit id="pages.admin.not-linked">
+  <source>Not linked</source>
+</trans-unit>
+<trans-unit id="pages.admin.edit-board-title">
+  <source>Edit a board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-member-title">
+  <source>Add a board member</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-photo">
+  <source>No photo</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-choose">
+  <source>Choose photo</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-type">
+  <source>Choose a JPG, PNG or WebP photo.</source>
+</trans-unit>
+<trans-unit id="pages.admin.photo-size">
+  <source>That photo is over 2 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.admin.link-taken">
+  <source>That member already has a card. Choose someone else.</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-card-body">
+  <source>The card and its photo are deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-search">
+  <source>Search members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-total">
+  <source><x id="0" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none-match">
+  <source>No members match your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none">
+  <source>There are no members yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-member">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-email">
+  <source>Email</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-type">
+  <source>Type</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-profile">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-joined">
+  <source>Joined</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-name">
+  <source>No name yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.inactive">
+  <source>Inactive</source>
+</trans-unit>
+<trans-unit id="pages.members.student">
+  <source>Student</source>
+</trans-unit>
+<trans-unit id="pages.members.professional">
+  <source>Professional</source>
+</trans-unit>
+<trans-unit id="pages.admin.public-no-handle">
+  <source>Public, no handle</source>
+</trans-unit>
+<trans-unit id="pages.admin.private">
+  <source>Private</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-platinum">
+  <source>Platinum</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-gold">
+  <source>Gold</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-silver">
+  <source>Silver</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-bronze">
+  <source>Bronze</source>
+</trans-unit>
+<trans-unit id="pages.admin.tier-community">
+  <source>Community</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-missing">
+  <source>That sponsor or partner could not be found.</source>
+</trans-unit>
+<trans-unit id="pages.admin.back-sponsors">
+  <source>Back to sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor-title">
+  <source>Sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-partner-title">
+  <source>Partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-tier">
+  <source>Tier</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-logo">
+  <source>Logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-logo">
+  <source>No logo yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-change">
+  <source>Change logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-choose">
+  <source>Choose logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-input">
+  <source>Choose a logo</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-note">
+  <source>JPG, PNG or WebP, up to 2 MB.</source>
+</trans-unit>
+<trans-unit id="pages.admin.save-changes">
+  <source>Save changes</source>
+</trans-unit>
+<trans-unit id="pages.admin.add">
+  <source>Add</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-type">
+  <source>Choose a JPG, PNG or WebP logo.</source>
+</trans-unit>
+<trans-unit id="pages.admin.logo-size">
+  <source>That logo is over 2 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.admin.name-needed">
+  <source>Add a name.</source>
+</trans-unit>
+<trans-unit id="pages.admin.saved">
+  <source>Saved.</source>
+</trans-unit>
+<trans-unit id="pages.admin.rows-per-page">
+  <source>Rows per page</source>
+</trans-unit>
+<trans-unit id="pages.admin.pages">
+  <source>Pages</source>
+</trans-unit>
+<trans-unit id="pages.admin.previous">
+  <source>Previous page</source>
+</trans-unit>
+<trans-unit id="pages.admin.page-of">
+  <source><x id="0" equiv-text="${page}"/> of <x id="1" equiv-text="${pageCount}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.next">
+  <source>Next page</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-sponsor">
+  <source>sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-partners">
+  <source>Partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.kind-partner">
+  <source>partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.tabs">
+  <source>Sponsors and partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-failed">
+  <source>The list could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.org-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.org-total">
+  <source><x id="0" equiv-text="${list.length} ${this.label(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.add-sponsor">
+  <source>Add sponsor</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-partner">
+  <source>Add partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-sponsors">
+  <source>Search sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.search-partners">
+  <source>Search partners</source>
+</trans-unit>
+<trans-unit id="pages.admin.sponsors-none">
+  <source>There are no sponsors yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.partners-none">
+  <source>There are no partners yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete">
+  <source>Delete</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-title">
+  <source>Delete <x id="0" equiv-text="${deleting.name}"/>?</source>
+</trans-unit>
+<trans-unit id="pages.admin.delete-body">
+  <source>It is removed from the list and its logo is deleted. This cannot be undone.</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleting">
+  <source>Deleting...</source>
+</trans-unit>
+<trans-unit id="pages.admin.deleted">
+  <source>Deleted.</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-super">
+  <source>Super admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-board">
+  <source>Dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-volunteer-short">
+  <source>Volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-boards">
+  <source>Boards</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-activity">
+  <source>Activity</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-board">
+  <source>Dashboard admins</source>
+</trans-unit>
+<trans-unit id="pages.admin.tab-volunteers">
+  <source>Volunteers</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-tabs">
+  <source>Boards, dashboard admins and volunteers</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-failed">
+  <source>The team could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${all.length} ${this.tabLabel(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.team-total">
+  <source><x id="0" equiv-text="${all.length} ${this.tabLabel(tab)}"/></source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board">
+  <source>Add dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-volunteer">
+  <source>Add volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.board-note">
+  <source>Only the super admin can add or remove dashboard admins.</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-search">
+  <source>Search the team</source>
+</trans-unit>
+<trans-unit id="pages.admin.board-none">
+  <source>There are no dashboard admins yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.volunteers-none">
+  <source>There are no volunteers yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-role">
+  <source>Role</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-added">
+  <source>Added</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove">
+  <source>Remove</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-board-title">
+  <source>Add a dashboard admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-volunteer-title">
+  <source>Add a volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.pick-search">
+  <source>Search members by name or email</source>
+</trans-unit>
+<trans-unit id="pages.admin.pick-none">
+  <source>No members to add. Someone has to sign in to the site once first.</source>
+</trans-unit>
+<trans-unit id="pages.admin.close">
+  <source>Close</source>
+</trans-unit>
+<trans-unit id="pages.admin.team-added">
+  <source><x id="0" equiv-text="${member.fullName || member.email}"/> was added.</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove-title">
+  <source>Remove <x id="0" equiv-text="${removing.fullName || removing.email}"/>?</source>
+</trans-unit>
+<trans-unit id="pages.admin.remove-body">
+  <source>They lose their access straight away. They stay a member of NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.removing">
+  <source>Removing...</source>
+</trans-unit>
+<trans-unit id="pages.admin.removed">
+  <source>Removed.</source>
+</trans-unit>
+<trans-unit id="attending.accommodation.book">
+  <source>Book</source>
+</trans-unit>
+<trans-unit id="attending.accommodation.code">
+  <source>Discount code</source>
+</trans-unit>
+<trans-unit id="attending.accommodation.copy">
+  <source>Copy <x id="0" equiv-text="${code}"/></source>
+</trans-unit>
+<trans-unit id="attending.accommodation.copied">
+  <source>Copied <x id="0" equiv-text="${code}"/>.</source>
+</trans-unit>
+<trans-unit id="attending.accommodation.copy-failed">
+  <source>Could not copy the code. Select it to copy it.</source>
+</trans-unit>
+<trans-unit id="attending.topic.wifi">
+  <source>Wi-Fi</source>
+</trans-unit>
+<trans-unit id="attending.topic.food">
+  <source>Food and drink</source>
+</trans-unit>
+<trans-unit id="attending.topic.cloakroom">
+  <source>Cloakroom</source>
+</trans-unit>
+<trans-unit id="attending.topic.first-aid">
+  <source>First aid</source>
+</trans-unit>
+<trans-unit id="attending.topic.quiet-room">
+  <source>Quiet room</source>
+</trans-unit>
+<trans-unit id="attending.topic.lost-and-found">
+  <source>Lost and found</source>
+</trans-unit>
+<trans-unit id="attending.topic.childcare">
+  <source>Childcare</source>
+</trans-unit>
+<trans-unit id="attending.doors.time-zone">
+  <source>Times are at the venue, in <x id="0" equiv-text="${timeZone.replaceAll('_', ' ')}"/>.</source>
+</trans-unit>
+<trans-unit id="attending.floor-plan.open">
+  <source>Open full size</source>
+</trans-unit>
+<trans-unit id="attending.mode.train">
+  <source>By train</source>
+</trans-unit>
+<trans-unit id="attending.mode.plane">
+  <source>By plane</source>
+</trans-unit>
+<trans-unit id="attending.mode.bus">
+  <source>By bus</source>
+</trans-unit>
+<trans-unit id="attending.mode.tram">
+  <source>By tram</source>
+</trans-unit>
+<trans-unit id="attending.mode.metro">
+  <source>By metro</source>
+</trans-unit>
+<trans-unit id="attending.mode.car">
+  <source>By car</source>
+</trans-unit>
+<trans-unit id="attending.mode.parking">
+  <source>Parking</source>
+</trans-unit>
+<trans-unit id="attending.mode.bike">
+  <source>By bike</source>
+</trans-unit>
+<trans-unit id="attending.mode.walk">
+  <source>On foot</source>
+</trans-unit>
+<trans-unit id="pages.session.watch-live">
+  <source>Watch live</source>
+</trans-unit>
+<trans-unit id="attending.online.your-time">
+  <source>Times on this site are in your time zone.</source>
+</trans-unit>
+<trans-unit id="attending.online.event-time">
+  <source>Times on this site are in <x id="0" equiv-text="${timeZone.replaceAll('_', ' ')}"/>.</source>
+</trans-unit>
+<trans-unit id="home.map-block.directions">
+  <source>Directions</source>
+</trans-unit>
+<trans-unit id="home.map-block.map-note">
+  <source>The map loads from Google Maps.</source>
+</trans-unit>
+<trans-unit id="home.map-block.loading">
+  <source>Loading map…</source>
+</trans-unit>
+<trans-unit id="home.map-block.show-map">
+  <source>Show map</source>
+</trans-unit>
+<trans-unit id="home.map-block.error">
+  <source>The map did not load. Try again.</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.link-sent">
+  <source>Check your email. We sent a sign-in link to <x id="0" equiv-text="&lt;b&gt;${email}&lt;/b&gt;"/>.</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.email">
+  <source>Email</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.send-link">
+  <source>Email me a sign-in link</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.send-error">
+  <source>Could not send the link. Please try again.</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.thanks">
+  <source>Thanks for your feedback.</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.content-rating">
+  <source>Content quality:</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.style-rating">
+  <source>Presentation style:</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.comment">
+  <source>Comment</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.helper">
+  <source>Comments will be anonymously provided to speakers</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.save-signed-out">
+  <source>Sign in to leave feedback</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.saved">
+  <source>Feedback saved</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.delete-signed-out">
+  <source>Sign in to delete feedback</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.deleted">
+  <source>Feedback deleted</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.error">
+  <source>Something went wrong</source>
+</trans-unit>
+<trans-unit id="dialogs.feedback.retry">
+  <source>Retry</source>
+</trans-unit>
+<trans-unit id="dialogs.subscribe.field-required">
+  <source>Field required.</source>
+</trans-unit>
+<trans-unit id="home.partners-block.full-name">
+  <source>Full Name</source>
+</trans-unit>
+<trans-unit id="home.partners-block.company-name">
+  <source>Company Name</source>
+</trans-unit>
+<trans-unit id="dialogs.subscribe.email">
+  <source>Email Address</source>
+</trans-unit>
+<trans-unit id="common.email-invalid">
+  <source>Please enter a valid email address.</source>
+</trans-unit>
+<trans-unit id="home.partners-block.added">
+  <source>We will contact you soon!</source>
+</trans-unit>
+<trans-unit id="home.partners-block.form-title">
+  <source>Become a partner!</source>
+</trans-unit>
+<trans-unit id="home.partners-block.submit">
+  <source>Submit</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.heading">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.intro-photo">
+  <source>Your name and photo show to everyone with your reactions.</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.intro">
+  <source>Your name shows to everyone with your reactions.</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.name">
+  <source>Name</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.name-required">
+  <source>Enter the name to show.</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.show-photo">
+  <source>Show my photo</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.save">
+  <source>Save</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.delete">
+  <source>Delete profile</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.delete-confirm">
+  <source>Delete your profile and all your reactions? Others won't see your name anymore.</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.delete-offline">
+  <source>Connect to the internet to find all your reactions first.</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.delete-yes">
+  <source>Delete</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.delete-no">
+  <source>Cancel</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.saved">
+  <source>Profile saved</source>
+</trans-unit>
+<trans-unit id="dialogs.profile.deleted">
+  <source>Profile deleted</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.sign-in-with">
+  <source>Sign in with <x id="0" equiv-text="${provider}"/></source>
+</trans-unit>
+<trans-unit id="dialogs.signin.offline">
+  <source>Connect to the internet to sign in.</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.unavailable">
+  <source>Sign-in is not available on this site yet.</source>
+</trans-unit>
+<trans-unit id="footer.color-scheme.system">
+  <source>System</source>
+</trans-unit>
+<trans-unit id="footer.color-scheme.light">
+  <source>Light</source>
+</trans-unit>
+<trans-unit id="footer.color-scheme.dark">
+  <source>Dark</source>
+</trans-unit>
+<trans-unit id="footer.block.back-to-top">
+  <source>Back to top</source>
+</trans-unit>
+<trans-unit id="footer.block.subscribe">
+  <source>Get updates by email</source>
+</trans-unit>
+<trans-unit id="footer.block.fork-me">
+  <source>Fork me on GitHub</source>
+</trans-unit>
+<trans-unit id="footer.social.email-us">
+  <source>Email us</source>
+</trans-unit>
+<trans-unit id="footer.social.follow-us">
+  <source>Follow us</source>
+</trans-unit>
+<trans-unit id="footer.social.share-title">
+  <source>Share</source>
+</trans-unit>
+<trans-unit id="footer.social.follow-blog">
+  <source>Follow our <x id="0" equiv-text="&lt;a href=&quot;${blog}&quot; target=&quot;${target}&quot; rel=&quot;${rel}&quot;&gt;"/>Blog<x id="1" equiv-text="&lt;/a&gt;"/></source>
+</trans-unit>
+<trans-unit id="footer.social.share">
+  <source>Share on <x id="0" equiv-text="${network}"/></source>
+</trans-unit>
+<trans-unit id="footer.locale-picker.label">
+  <source>Language</source>
+</trans-unit>
+<trans-unit id="home.about-block.members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="home.about-block.title">
+  <source>About</source>
+</trans-unit>
+<trans-unit id="home.about-organizer-block.photo-alt">
+  <source>Organizer</source>
+</trans-unit>
+<trans-unit id="home.board-block.title">
+  <source>Board Members</source>
+</trans-unit>
+<trans-unit id="home.board-block.cta">
+  <source>Meet the Board</source>
+</trans-unit>
+<trans-unit id="home.featured-videos.previous">
+  <source>Previous videos</source>
+</trans-unit>
+<trans-unit id="home.featured-videos.next">
+  <source>Next videos</source>
+</trans-unit>
+<trans-unit id="home.featured-videos.error">
+  <source>Error loading videos.</source>
+</trans-unit>
+<trans-unit id="home.featured-videos.cta">
+  <source>See all videos</source>
+</trans-unit>
+<trans-unit id="home.gallery-block.cta">
+  <source>See all photos</source>
+</trans-unit>
+<trans-unit id="home.gallery-block.error">
+  <source>Error loading gallery.</source>
+</trans-unit>
+<trans-unit id="home.gallery-block.photo-alt">
+  <source>Gallery photo</source>
+</trans-unit>
+<trans-unit id="home.hero.live">
+  <source>Live now</source>
+</trans-unit>
+<trans-unit id="home.hero.over">
+  <source>Thanks for coming!</source>
+</trans-unit>
+<trans-unit id="home.hero.tomorrow">
+  <source>Starts tomorrow</source>
+</trans-unit>
+<trans-unit id="home.hero.days-to-go">
+  <source><x id="0" equiv-text="${this.daysToGo}"/> days to go</source>
+</trans-unit>
+<trans-unit id="home.hero.coming-soon">
+  <source>Coming soon</source>
+</trans-unit>
+<trans-unit id="pages.home.view-highlights">
+  <source>View Highlights</source>
+</trans-unit>
+<trans-unit id="home.hero.ocn-details">
+  <source>View OCN details</source>
+</trans-unit>
+<trans-unit id="home.hero.discord">
+  <source>Join Discord</source>
+</trans-unit>
+<trans-unit id="home.hero.our-events">
+  <source>Our events</source>
+</trans-unit>
+<trans-unit id="home.latest-posts-block.title">
+  <source>The latest news</source>
+</trans-unit>
+<trans-unit id="home.latest-posts-block.cta">
+  <source>View all stories</source>
+</trans-unit>
+<trans-unit id="home.map-block.title">
+  <source>Location</source>
+</trans-unit>
+<trans-unit id="home.map-block.attending">
+  <source>More about attending</source>
+</trans-unit>
+<trans-unit id="home.on-now.title">
+  <source>On now</source>
+</trans-unit>
+<trans-unit id="home.on-now.until">
+  <source>Until <x id="0" equiv-text="${this.time(session, session.endTime!)}"/></source>
+</trans-unit>
+<trans-unit id="home.on-now.next">
+  <source>Up next</source>
+</trans-unit>
+<trans-unit id="home.partners-block.title">
+  <source>Partners</source>
+</trans-unit>
+<trans-unit id="home.partners-block.cta">
+  <source>Become a partner</source>
+</trans-unit>
+<trans-unit id="home.partners-block.error">
+  <source>Error loading partners.</source>
+</trans-unit>
+<trans-unit id="home.past-editions">
+  <source>From past editions</source>
+</trans-unit>
+<trans-unit id="home.speakers-block.title">
+  <source>Speakers</source>
+</trans-unit>
+<trans-unit id="home.speakers-block.cta">
+  <source>View all speakers</source>
+</trans-unit>
+<trans-unit id="home.subscribe-block.description">
+  <source>Get notified about the important conference updates</source>
+</trans-unit>
+<trans-unit id="common.subscribed">
+  <source>Subscribed</source>
+</trans-unit>
+<trans-unit id="home.subscribe-block.email">
+  <source>Your email</source>
+</trans-unit>
+<trans-unit id="home.subscribe-block.error">
+  <source>Could not subscribe. Please try again.</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.sold-out-sticker">
+  <source>Sold out</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.in-demand">
+  <source>Popular</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.sales-closed">
+  <source>Sales closed</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.not-available">
+  <source>Not available yet</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.save">
+  <source>Save <x id="0" equiv-text="${discount}"/> today</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.title">
+  <source>Membership Plans - Join the Network</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.all-sold-out">
+  <source>All tickets are sold out.</source>
+</trans-unit>
+<trans-unit id="home.tickets-block.error">
+  <source>Error loading tickets</source>
+</trans-unit>
+<trans-unit id="markdown.remote-markdown.error">
+  <source>Error loading content</source>
+</trans-unit>
+<trans-unit id="markdown.toc.title">
+  <source>On this page</source>
+</trans-unit>
+<trans-unit id="pages.session.saved">
+  <source>Saved</source>
+</trans-unit>
+<trans-unit id="pages.session.save">
+  <source>Save</source>
+</trans-unit>
+<trans-unit id="schedule.session.save">
+  <source>Save <x id="0" equiv-text="${session.title}"/></source>
+</trans-unit>
+<trans-unit id="common.save-sessions-signed-out">
+  <source>Sign in to save sessions</source>
+</trans-unit>
+<trans-unit id="schedule.tabs.label">
+  <source>Schedule days</source>
+</trans-unit>
+<trans-unit id="schedule.tabs.day">
+  <source>Day <x id="0" equiv-text="${index + 1}"/></source>
+</trans-unit>
+<trans-unit id="schedule.session.live">
+  <source>Live</source>
+</trans-unit>
+<trans-unit id="schedule.session.rate">
+  <source>Rate <x id="0" equiv-text="${session.title}"/></source>
+</trans-unit>
+<trans-unit id="pages.session.sponsored-by">
+  <source>Sponsored by <x id="0" equiv-text="${sponsor}"/></source>
+</trans-unit>
+<trans-unit id="schedule.session.sponsored">
+  <source>Sponsored</source>
+</trans-unit>
+<trans-unit id="reactions.applause">
+  <source>Applause</source>
+</trans-unit>
+<trans-unit id="reactions.love">
+  <source>Love</source>
+</trans-unit>
+<trans-unit id="reactions.insightful">
+  <source>Insightful</source>
+</trans-unit>
+<trans-unit id="reactions.mind-blown">
+  <source>Mind blown</source>
+</trans-unit>
+<trans-unit id="reactions.funny">
+  <source>Funny</source>
+</trans-unit>
+<trans-unit id="reactions.count-one">
+  <source>1 person reacted with <x id="0" equiv-text="${label}"/></source>
+</trans-unit>
+<trans-unit id="reactions.count-many">
+  <source><x id="0" equiv-text="${count}"/> people reacted with <x id="1" equiv-text="${label}"/></source>
+</trans-unit>
+<trans-unit id="reactions.others-one">
+  <source>1 other</source>
+</trans-unit>
+<trans-unit id="reactions.others-many">
+  <source><x id="0" equiv-text="${others}"/> others</source>
+</trans-unit>
+<trans-unit id="reactions.who">
+  <source><x id="0" equiv-text="${who}"/> reacted with <x id="1" equiv-text="${label}"/></source>
+</trans-unit>
+<trans-unit id="reactions.add">
+  <source>Add a reaction</source>
+</trans-unit>
+<trans-unit id="reactions.label">
+  <source>Reactions</source>
+</trans-unit>
+<trans-unit id="reactions.signed-out">
+  <source>Sign in to react to sessions</source>
+</trans-unit>
+<trans-unit id="shared.add-to-calendar.label">
+  <source>Add to calendar</source>
+</trans-unit>
+<trans-unit id="shared.add-to-calendar.google">
+  <source>Google Calendar</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.tags">
+  <source>Tags</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.tracks">
+  <source>Tracks</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.complexity">
+  <source>Complexity</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.results.one">
+  <source><x id="0" equiv-text="${count}"/> result</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.results.other">
+  <source><x id="0" equiv-text="${count}"/> results</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.title">
+  <source>Filters</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.selected">
+  <source>Selected filters</source>
+</trans-unit>
+<trans-unit id="shared.filter-menu.clear">
+  <source>Clear all</source>
+</trans-unit>
+<trans-unit id="common.submit-talk">
+  <source>Submit a talk</source>
+</trans-unit>
+<trans-unit id="common.buy-ticket">
+  <source>Become a member</source>
+</trans-unit>
+<trans-unit id="common.watch-live">
+  <source>Watch live</source>
+</trans-unit>
+<trans-unit id="home.hero.live-schedule">
+  <source>See what's on now</source>
+</trans-unit>
+<trans-unit id="common.get-updates">
+  <source>Get updates</source>
+</trans-unit>
+<trans-unit id="home.hero.videos">
+  <source>Watch the videos</source>
+</trans-unit>
+<trans-unit id="home.hero.photos">
+  <source>See the photos</source>
+</trans-unit>
+<trans-unit id="schedule.day.clear-filters">
+  <source>Clear filters</source>
+</trans-unit>
+<trans-unit id="shared.previous-speakers-block.title">
+  <source>Previous speakers</source>
+</trans-unit>
+<trans-unit id="shared.previous-speakers-block.view-all">
+  <source>View all</source>
+</trans-unit>
+<trans-unit id="shared.previous-speakers-block.error">
+  <source>Error loading previous speakers.</source>
+</trans-unit>
+<trans-unit id="common.view-video">
+  <source>View video</source>
+</trans-unit>
+<trans-unit id="common.view-presentation">
+  <source>View presentation</source>
+</trans-unit>
+<trans-unit id="shared.report-mistake.link">
+  <source>Report a mistake</source>
+</trans-unit>
+<trans-unit id="shared.report-mistake.text">
+  <source>Speaking here? <x id="0" equiv-text="${link}"/></source>
+</trans-unit>
+<trans-unit id="pages.speaker.badges">
+  <source>Badges</source>
+</trans-unit>
+<trans-unit id="shared.speaker-card.linkedin">
+  <source><x id="0" equiv-text="${speaker.name}"/> on LinkedIn</source>
+</trans-unit>
+<trans-unit id="shared.star-rating.rate">
+  <source>Rate <x id="0" equiv-text="${value}"/> out of <x id="1" equiv-text="${this.maxRating}"/></source>
+</trans-unit>
+<trans-unit id="shared.star-rating.label">
+  <source><x id="0" equiv-text="${this.rating}"/> out of <x id="1" equiv-text="${this.maxRating}"/> stars</source>
+</trans-unit>
+<trans-unit id="shared.star-rating.votes.none">
+  <source>(No votes)</source>
+</trans-unit>
+<trans-unit id="shared.star-rating.votes.one">
+  <source>(<x id="0" equiv-text="${votes}"/> vote)</source>
+</trans-unit>
+<trans-unit id="shared.star-rating.votes.other">
+  <source>(<x id="0" equiv-text="${votes}"/> votes)</source>
+</trans-unit>
+<trans-unit id="shell.account-menu.label">
+  <source>Account of <x id="0" equiv-text="${name}"/></source>
+</trans-unit>
+<trans-unit id="shell.account-menu.profile">
+  <source>My profile</source>
+</trans-unit>
+<trans-unit id="shell.account-menu.admin">
+  <source>Admin Dashboard</source>
+</trans-unit>
+<trans-unit id="shell.header.sign-out">
+  <source>Sign out</source>
+</trans-unit>
+<trans-unit id="shell.header.skip-link">
+  <source>Skip to content</source>
+</trans-unit>
+<trans-unit id="shell.header.menu">
+  <source>Menu</source>
+</trans-unit>
+<trans-unit id="shell.app-install.cta">
+  <source>Add to Home Screen</source>
+</trans-unit>
+<trans-unit id="shell.archive-banner.text">
+  <source>This is the <x id="0" equiv-text="${year}"/> edition.</source>
+</trans-unit>
+<trans-unit id="shell.archive-banner.link">
+  <source>See the current edition</source>
+</trans-unit>
+<trans-unit id="shell.demo.density.compact">
+  <source>Compact</source>
+</trans-unit>
+<trans-unit id="shell.demo.density.default">
+  <source>Default</source>
+</trans-unit>
+<trans-unit id="shell.demo.density.roomy">
+  <source>Roomy</source>
+</trans-unit>
+<trans-unit id="shell.demo.attendance.in-person">
+  <source>In person</source>
+</trans-unit>
+<trans-unit id="shell.demo.attendance.hybrid">
+  <source>Hybrid</source>
+</trans-unit>
+<trans-unit id="shell.demo.label-dev">
+  <source>Development</source>
+</trans-unit>
+<trans-unit id="shell.demo.label">
+  <source>Demo</source>
+</trans-unit>
+<trans-unit id="shell.demo.badge">
+  <source>DEMO</source>
+</trans-unit>
+<trans-unit id="shell.demo.theme">
+  <source>Theme</source>
+</trans-unit>
+<trans-unit id="shell.demo.density">
+  <source>Spacing</source>
+</trans-unit>
+<trans-unit id="shell.demo.decorations">
+  <source>Decorations</source>
+</trans-unit>
+<trans-unit id="shell.demo.attendance">
+  <source>How people attend</source>
+</trans-unit>
+<trans-unit id="shell.demo.time">
+  <source>When</source>
+</trans-unit>
+<trans-unit id="shell.demo.time.input">
+  <source>Time at the event, <x id="0" equiv-text="${timeZone}"/></source>
+</trans-unit>
+<trans-unit id="shell.demo.time.now">
+  <source>Now</source>
+</trans-unit>
+<trans-unit id="shell.demo.time.set">
+  <source>Set time</source>
+</trans-unit>
+<trans-unit id="shell.nav.home">
+  <source>Home</source>
+</trans-unit>
+<trans-unit id="shell.nav.attending">
+  <source>Attending</source>
+</trans-unit>
+<trans-unit id="shell.nav.blog">
+  <source>Blog</source>
+</trans-unit>
+<trans-unit id="shell.nav.code-of-conduct">
+  <source>Code of Conduct</source>
+</trans-unit>
+<trans-unit id="shell.nav.faq">
+  <source>FAQs</source>
+</trans-unit>
+<trans-unit id="shell.nav.my-schedule">
+  <source>My Schedule</source>
+</trans-unit>
+<trans-unit id="shell.nav.open-source">
+  <source>Open Source</source>
+</trans-unit>
+<trans-unit id="shell.nav.previous-speakers">
+  <source>Previous Speakers</source>
+</trans-unit>
+<trans-unit id="shell.nav.schedule">
+  <source>Events</source>
+</trans-unit>
+<trans-unit id="shell.nav.speakers">
+  <source>Speakers</source>
+</trans-unit>
+<trans-unit id="shell.nav.team">
+  <source>Board</source>
+</trans-unit>
+<trans-unit id="shell.notifications.blocked">
+  <source>Please enable notifications in your browser</source>
+</trans-unit>
+<trans-unit id="shell.notifications.unsupported">
+  <source>Notifications are not supported on this device</source>
+</trans-unit>
+<trans-unit id="shell.notifications.error">
+  <source>Unknown error occurred</source>
+</trans-unit>
+<trans-unit id="shell.notifications.prompt">
+  <source>Enable notifications</source>
+</trans-unit>
+<trans-unit id="shell.notifications.offline">
+  <source>Connect to the internet to turn on notifications.</source>
+</trans-unit>
+<trans-unit id="shell.notifications.enable">
+  <source>Enable</source>
+</trans-unit>
+<trans-unit id="shell.notifications.enabled">
+  <source>Get notified of general announcements and sessions starting</source>
+</trans-unit>
+<trans-unit id="shell.notifications.general">
+  <source>General notifications</source>
+</trans-unit>
+<trans-unit id="shell.notifications.general-offline">
+  <source>Connect to the internet to change general notifications.</source>
+</trans-unit>
+<trans-unit id="shell.notifications.sign-in">
+  <source>Sign in to get personalized session notifications</source>
+</trans-unit>
+<trans-unit id="shell.notifications.my-schedule">
+  <source>My Schedule notifications</source>
+</trans-unit>
+<trans-unit id="shell.notifications.toggle">
+  <source>Notifications</source>
+</trans-unit>
+<trans-unit id="shell.snack-bar.dismiss">
+  <source>Dismiss</source>
+</trans-unit>
+<trans-unit id="shell.sync.help-reactions">
+  <source>Saved sessions, feedback, reminders, reactions and your profile are kept on this device, and sync when you are online. Signing in, subscribing and turning on notifications need the internet.</source>
+</trans-unit>
+<trans-unit id="shell.sync.help">
+  <source>Saved sessions, feedback and reminders are kept on this device, and sync when you are online. Signing in, subscribing and turning on notifications need the internet.</source>
+</trans-unit>
+<trans-unit id="common.close">
+  <source>Close</source>
+</trans-unit>
+<trans-unit id="common.loading">
+  <source>Loading...</source>
+</trans-unit>
+<trans-unit id="social-image.session.alt">
+  <source><x id="0" equiv-text="${title}"/>, by <x id="1" equiv-text="${by}"/></source>
+</trans-unit>
+<trans-unit id="social-image.speaker.alt">
+  <source>Speaker at <x id="0" equiv-text="${shortName}"/></source>
+</trans-unit>
+<trans-unit id="shell.service-worker.available">
+  <source>A new version of this app is available.</source>
+</trans-unit>
+<trans-unit id="shell.service-worker.refresh">
+  <source>Refresh</source>
+</trans-unit>
+<trans-unit id="shell.service-worker.error">
+  <source>Error caching for offline use.</source>
+</trans-unit>
+<trans-unit id="store.featured-sessions.failed">
+  <source>Couldn't save your schedule. Try again.</source>
+</trans-unit>
+<trans-unit id="store.featured-sessions.added">
+  <source>Session saved to My Schedule</source>
+</trans-unit>
+<trans-unit id="store.featured-sessions.removed">
+  <source>Session removed from My Schedule</source>
+</trans-unit>
+<trans-unit id="store.profiles.failed">
+  <source>Couldn't save your profile. Try again.</source>
+</trans-unit>
+<trans-unit id="store.reactions.failed">
+  <source>Couldn't save your reaction. Try again.</source>
+</trans-unit>
+<trans-unit id="store.subscribe.success">
+  <source>Successfully subscribed!</source>
+</trans-unit>
+<trans-unit id="shell.sync.syncing">
+  <source>Syncing…</source>
+</trans-unit>
+<trans-unit id="shell.sync.offline">
+  <source>Offline</source>
+</trans-unit>
+<trans-unit id="shell.sync.offline-one">
+  <source>Offline · 1 change to sync</source>
+</trans-unit>
+<trans-unit id="shell.sync.offline-many">
+  <source>Offline · <x id="0" equiv-text="${pending}"/> changes to sync</source>
+</trans-unit>
+<trans-unit id="store.offline.needs-network">
+  <source>Connect to the internet to send this.</source>
+</trans-unit>
+<trans-unit id="shell.sync.available-online">
+  <source>Available when you're online.</source>
+</trans-unit>
+<trans-unit id="shell.sync.saved">
+  <source>Back online. Your changes are saved.</source>
+</trans-unit>
+<trans-unit id="shell.sync.online">
+  <source>Back online.</source>
+</trans-unit>
+<trans-unit id="store.notifications.general-enabled">
+  <source>General notifications enabled</source>
+</trans-unit>
+<trans-unit id="store.notifications.general-disabled">
+  <source>General notifications disabled</source>
+</trans-unit>
+<trans-unit id="store.notifications.my-schedule-enabled">
+  <source>My Schedule notifications enabled</source>
+</trans-unit>
+<trans-unit id="store.notifications.my-schedule-disabled">
+  <source>My Schedule notifications disabled</source>
+</trans-unit>
+<trans-unit id="calendar.watch-online">
+  <source>Watch online: <x id="0" equiv-text="${link}"/></source>
+</trans-unit>
+<trans-unit id="pages.attending.title">
+  <source>Attending</source>
+</trans-unit>
+<trans-unit id="pages.attending.description">
+  <source>How to get to the event, and how to join online</source>
+</trans-unit>
+<trans-unit id="pages.blog.title">
+  <source>Blog</source>
+</trans-unit>
+<trans-unit id="pages.blog.description">
+  <source>News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.</source>
+</trans-unit>
+<trans-unit id="pages.coc.title">
+  <source>Code of Conduct</source>
+</trans-unit>
+<trans-unit id="pages.coc.description">
+  <source>The NODE code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.</source>
+</trans-unit>
+<trans-unit id="pages.faq.title">
+  <source>FAQs</source>
+</trans-unit>
+<trans-unit id="pages.faq.description">
+  <source>Answers about NODE: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.</source>
+</trans-unit>
+<trans-unit id="pages.not-found.title">
+  <source>Not Found</source>
+</trans-unit>
+<trans-unit id="pages.not-found.description">
+  <source>Page not found</source>
+</trans-unit>
+<trans-unit id="pages.offline.title">
+  <source>Offline</source>
+</trans-unit>
+<trans-unit id="pages.offline.description">
+  <source>This page is not available offline</source>
+</trans-unit>
+<trans-unit id="pages.open-source.title">
+  <source>Open Source</source>
+</trans-unit>
+<trans-unit id="pages.open-source.description">
+  <source>Open source projects built by the NODE community in Sudbury. Browse the code, see who contributes and how active each project is.</source>
+</trans-unit>
+<trans-unit id="pages.previous-speakers.title">
+  <source>Previous Speakers</source>
+</trans-unit>
+<trans-unit id="pages.previous-speakers.description">
+  <source>The speakers who have presented at NODE events across Northern Ontario.</source>
+</trans-unit>
+<trans-unit id="pages.schedule.title">
+  <source>Events</source>
+</trans-unit>
+<trans-unit id="pages.schedule.description">
+  <source>Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.</source>
+</trans-unit>
+<trans-unit id="pages.speakers.title">
+  <source>Speakers</source>
+</trans-unit>
+<trans-unit id="pages.speakers.description">
+  <source>Meet the developers, founders and employers speaking at the monthly NODE speaker series at the Norcat Innovation Hub in Sudbury.</source>
+</trans-unit>
+<trans-unit id="pages.team.title">
+  <source>Board</source>
+</trans-unit>
+<trans-unit id="pages.team.description">
+  <source>Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.</source>
+</trans-unit>
+<trans-unit id="event.online">
+  <source>Online</source>
+</trans-unit>
+<trans-unit id="common.your-time">
+  <source><x id="0" equiv-text="${time}"/> (your time)</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-short">
+  <source>Use at least 3 characters.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-long">
+  <source>Use at most 30 characters.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-characters">
+  <source>Use only lowercase letters, numbers and hyphens.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-edges">
+  <source>Start and end with a letter or number.</source>
+</trans-unit>
+<trans-unit id="pages.account.title">
+  <source>My profile</source>
+</trans-unit>
+<trans-unit id="pages.account.description">
+  <source>Your NODE member profile and public profile.</source>
+</trans-unit>
+<trans-unit id="common.general-error">
+  <source>An error has occurred. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.account.lede">
+  <source>Tell other members who you are, and choose your public profile.</source>
+</trans-unit>
+<trans-unit id="pages.account.sign-in-needed">
+  <source>Sign in to edit your profile.</source>
+</trans-unit>
+<trans-unit id="common.sign-in">
+  <source>Sign in</source>
+</trans-unit>
+<trans-unit id="pages.account.website">
+  <source>Website</source>
+</trans-unit>
+<trans-unit id="pages.account.profile">
+  <source>Profile</source>
+</trans-unit>
+<trans-unit id="pages.account.name">
+  <source>Name</source>
+</trans-unit>
+<trans-unit id="pages.account.pronouns">
+  <source>Pronouns</source>
+</trans-unit>
+<trans-unit id="pages.account.school">
+  <source>School</source>
+</trans-unit>
+<trans-unit id="pages.account.work">
+  <source>Work</source>
+</trans-unit>
+<trans-unit id="pages.account.bio">
+  <source>About</source>
+</trans-unit>
+<trans-unit id="pages.account.links">
+  <source>Links</source>
+</trans-unit>
+<trans-unit id="pages.account.discord-hint">
+  <source>Shown only to you for now.</source>
+</trans-unit>
+<trans-unit id="pages.account.public">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="pages.account.handle">
+  <source>Handle</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility">
+  <source>Visibility</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility-public">
+  <source>Public: anyone with the link can see it.</source>
+</trans-unit>
+<trans-unit id="pages.account.visibility-private">
+  <source>Private: only you can see it.</source>
+</trans-unit>
+<trans-unit id="pages.account.visible">
+  <source>Show my profile to everyone</source>
+</trans-unit>
+<trans-unit id="pages.account.membership">
+  <source>Membership</source>
+</trans-unit>
+<trans-unit id="pages.account.status">
+  <source>Status</source>
+</trans-unit>
+<trans-unit id="pages.account.member-since">
+  <source>Member since <x id="0" equiv-text="${memberSince(saved.createdAt)}"/></source>
+</trans-unit>
+<trans-unit id="pages.account.exclusive">
+  <source>Exclusive member</source>
+</trans-unit>
+<trans-unit id="pages.account.student">
+  <source>I'm a student</source>
+</trans-unit>
+<trans-unit id="pages.account.program">
+  <source>Program</source>
+</trans-unit>
+<trans-unit id="pages.account.job-title">
+  <source>Job title</source>
+</trans-unit>
+<trans-unit id="pages.account.company">
+  <source>Company</source>
+</trans-unit>
+<trans-unit id="pages.account.saving">
+  <source>Saving...</source>
+</trans-unit>
+<trans-unit id="pages.account.save">
+  <source>Save</source>
+</trans-unit>
+<trans-unit id="pages.account.cancel">
+  <source>Cancel</source>
+</trans-unit>
+<trans-unit id="pages.account.not-set">
+  <source>Not set</source>
+</trans-unit>
+<trans-unit id="pages.account.edit">
+  <source>Edit</source>
+</trans-unit>
+<trans-unit id="pages.account.photo">
+  <source>Photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-choose">
+  <source>Choose a photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-saving">
+  <source>Saving photo...</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-change">
+  <source>Change photo</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-remove">
+  <source>Remove photo</source>
+</trans-unit>
+<trans-unit id="pages.account.share-private">
+  <source>Your profile is private</source>
+</trans-unit>
+<trans-unit id="pages.account.share-private-body">
+  <source>Only you can see it right now. Under Public profile, set visibility to public and add a handle to get a link you can share.</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live">
+  <source>Your public profile is live</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live-body">
+  <source>Share this link on your CV, your LinkedIn or at an event. Anyone can see your photo, name, role, links and bio. Your email stays private.</source>
+</trans-unit>
+<trans-unit id="pages.account.share-live-body-id">
+  <source>Add a handle under Public profile to get a short link like /members/your-name. Until then this link works.</source>
+</trans-unit>
+<trans-unit id="pages.account.copied">
+  <source>Copied</source>
+</trans-unit>
+<trans-unit id="pages.account.copy">
+  <source>Copy link</source>
+</trans-unit>
+<trans-unit id="pages.account.open-page">
+  <source>Open your public profile in a new tab</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-needed">
+  <source>Choose a handle to show your profile to everyone.</source>
+</trans-unit>
+<trans-unit id="pages.account.name-needed">
+  <source>Add your name to show your profile to everyone.</source>
+</trans-unit>
+<trans-unit id="pages.account.link-host">
+  <source>This link is for a different site.</source>
+</trans-unit>
+<trans-unit id="pages.account.link-invalid">
+  <source>Enter a web address, such as example.com.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-checking">
+  <source>Checking if it is free...</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-available">
+  <source><x id="0" equiv-text="${handle}"/> is available.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-hint">
+  <source>Your profile will be at /members/ followed by this.</source>
+</trans-unit>
+<trans-unit id="pages.account.handle-taken">
+  <source>The handle <x id="0" equiv-text="${this.form.handle.trim().toLowerCase()}"/> is taken. Try another.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-type">
+  <source>Choose a JPG, PNG or WebP photo.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-size">
+  <source>That photo is over 5 MB. Choose a smaller one.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-saved">
+  <source>Photo saved.</source>
+</trans-unit>
+<trans-unit id="pages.account.photo-removed">
+  <source>Photo removed.</source>
+</trans-unit>
+<trans-unit id="pages.account.saved">
+  <source>Profile saved.</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-home">
+  <source>Home</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-analytics">
+  <source>Analytics</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-events">
+  <source>Events</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-emails">
+  <source>Emails</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-settings">
+  <source>Settings</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-analytics">
+  <source>See how the community and the site are growing.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-events">
+  <source>Create events and see who signed up.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-emails">
+  <source>Write to subscribers and members.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-members">
+  <source>Everyone who has joined NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-settings">
+  <source>Who helps run NODE: the board, dashboard admins and volunteers.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-sponsors">
+  <source>Keep track of the sponsors and partners of NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-admin">
+  <source>Admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-volunteer">
+  <source>Check-in volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.title">
+  <source>Admin dashboard</source>
+</trans-unit>
+<trans-unit id="pages.admin.description">
+  <source>Where the people who run NODE manage the site.</source>
+</trans-unit>
+<trans-unit id="pages.admin.sign-in">
+  <source>Sign in to open the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.denied">
+  <source>You do not have access to the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.home">
+  <source>Back to the home page</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav">
+  <source>Admin sections</source>
+</trans-unit>
+<trans-unit id="pages.admin.view-site">
+  <source>View site</source>
+</trans-unit>
+<trans-unit id="pages.admin.load-failed">
+  <source>Some numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.add-title">
+  <source>Add a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.edit-title">
+  <source>Edit a sponsor or partner</source>
+</trans-unit>
+<trans-unit id="pages.admin.home-title">
+  <source>NODE</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-public">
+  <source>Public profiles</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-exclusive">
+  <source>Exclusive members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-subscribers">
+  <source>Subscribers</source>
+</trans-unit>
+<trans-unit id="pages.admin.overview">
+  <source>Overview</source>
+</trans-unit>
+<trans-unit id="pages.admin.jump">
+  <source>Jump to</source>
+</trans-unit>
+<trans-unit id="pages.admin.upcoming">
+  <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon">
+  <source>Coming soon</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon-body">
+  <source>This part of the dashboard is on its way.</source>
+</trans-unit>
+<trans-unit id="attending.where">
+  <source>Where it is</source>
+</trans-unit>
+<trans-unit id="attending.online">
+  <source>Joining online</source>
+</trans-unit>
+<trans-unit id="attending.floor-plan">
+  <source>Floor plan</source>
+</trans-unit>
+<trans-unit id="attending.getting-there">
+  <source>Getting there</source>
+</trans-unit>
+<trans-unit id="attending.doors">
+  <source>Doors</source>
+</trans-unit>
+<trans-unit id="attending.accessibility">
+  <source>Accessibility</source>
+</trans-unit>
+<trans-unit id="attending.accommodation">
+  <source>Accommodation</source>
+</trans-unit>
+<trans-unit id="attending.at-venue">
+  <source>At the venue</source>
+</trans-unit>
+<trans-unit id="home.hero.details">
+  <source>Event details</source>
+</trans-unit>
+<trans-unit id="attending.toc">
+  <source>On this page</source>
+</trans-unit>
+<trans-unit id="pages.blog-list.error">
+  <source>Error loading posts.</source>
+</trans-unit>
+<trans-unit id="events.page.column-empty">
+  <source>Nothing planned yet.</source>
+</trans-unit>
+<trans-unit id="events.page.upcoming">
+  <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="schedule.page.time-zone">
+  <source>Times in <x id="0" equiv-text="&lt;strong&gt;${zoneName(shownZone)}&lt;/strong&gt;"/></source>
+</trans-unit>
+<trans-unit id="schedule.page.local-time">
+  <source>Show my time zone, <x id="0" equiv-text="${zoneName(visitorZone)}"/></source>
+</trans-unit>
+<trans-unit id="events.page.past">
+  <source>Past events</source>
+</trans-unit>
+<trans-unit id="pages.home.scroll-error">
+  <source>Error scrolling to section.</source>
+</trans-unit>
+<trans-unit id="pages.member.default-bio">
+  <source><x id="0" equiv-text="${member.name}"/> is <x id="1" equiv-text="${member.title}"/> of the NODE board of directors.</source>
+</trans-unit>
+<trans-unit id="pages.member.all-members">
+  <source>All board members</source>
+</trans-unit>
+<trans-unit id="pages.member.socials">
+  <source>Social links</source>
+</trans-unit>
+<trans-unit id="pages.not-found.joke">
+  <source>This session was moved to another room.</source>
+</trans-unit>
+<trans-unit id="pages.not-found.message">
+  <source>The page you are looking for is not here. It may have moved, or the link is wrong.</source>
+</trans-unit>
+<trans-unit id="pages.offline.home-link">
+  <source>Go to the home page</source>
+</trans-unit>
+<trans-unit id="pages.not-found.schedule-link">
+  <source>See the schedule</source>
+</trans-unit>
+<trans-unit id="pages.offline.not-saved">
+  <source>You are offline, and this page was not saved on this device yet.</source>
+</trans-unit>
+<trans-unit id="pages.offline.works-title">
+  <source>What works offline</source>
+</trans-unit>
+<trans-unit id="pages.offline.visited">
+  <source>Pages you have visited before</source>
+</trans-unit>
+<trans-unit id="pages.offline.saved">
+  <source>Your saved sessions, in My Schedule</source>
+</trans-unit>
+<trans-unit id="pages.post.all-posts">
+  <source>All posts</source>
+</trans-unit>
+<trans-unit id="pages.post.published">
+  <source>Published: <x id="0" equiv-text="${published}"/></source>
+</trans-unit>
+<trans-unit id="pages.post.up-next">
+  <source>Up next</source>
+</trans-unit>
+<trans-unit id="pages.previous-speaker.all">
+  <source>All previous speakers</source>
+</trans-unit>
+<trans-unit id="pages.speaker.socials">
+  <source>Social links</source>
+</trans-unit>
+<trans-unit id="pages.previous-speaker.talks">
+  <source>Talks</source>
+</trans-unit>
+<trans-unit id="pages.members.back">
+  <source>NODE members</source>
+</trans-unit>
+<trans-unit id="pages.members.not-found">
+  <source>Profile not found</source>
+</trans-unit>
+<trans-unit id="pages.members.missing">
+  <source>This profile is private, or there is no member with this handle.</source>
+</trans-unit>
+<trans-unit id="schedule.page.coming-soon">
+  <source>The schedule is coming soon.</source>
+</trans-unit>
+<trans-unit id="schedule.my-schedule.export">
+  <source>Add my sessions to calendar</source>
+</trans-unit>
+<trans-unit id="schedule.my-schedule.export-hint">
+  <source>Downloads your sessions as they are now. Your calendar won't follow later changes to the schedule.</source>
+</trans-unit>
+<trans-unit id="schedule.my-schedule.empty">
+  <source>Save sessions in the schedule to see them here.</source>
+</trans-unit>
+<trans-unit id="schedule.day.no-results">
+  <source>No sessions match these filters.</source>
+</trans-unit>
+<trans-unit id="schedule.day.scroll-hint">
+  <source><x id="0" equiv-text="${tracks}"/> tracks. Scroll sideways to see them all.</source>
+</trans-unit>
+<trans-unit id="schedule.day.previous-track">
+  <source>Previous track</source>
+</trans-unit>
+<trans-unit id="schedule.day.next-track">
+  <source>Next track</source>
+</trans-unit>
+<trans-unit id="schedule.day.label">
+  <source>Schedule for <x id="0" equiv-text="${getScheduleDay(day.date)}"/></source>
+</trans-unit>
+<trans-unit id="schedule.day.now">
+  <source>Now · <x id="0" equiv-text="${now.label}"/></source>
+</trans-unit>
+<trans-unit id="schedule.day.browse-sessions">
+  <source>Browse sessions</source>
+</trans-unit>
+<trans-unit id="pages.session.back-to-schedule">
+  <source>Back to schedule</source>
+</trans-unit>
+<trans-unit id="pages.session.details">
+  <source>Session details</source>
+</trans-unit>
+<trans-unit id="pages.session.speakers">
+  <source>Speakers</source>
+</trans-unit>
+<trans-unit id="common.review-session">
+  <source>Review session</source>
+</trans-unit>
+<trans-unit id="pages.speaker.all-speakers">
+  <source>All speakers</source>
+</trans-unit>
+<trans-unit id="common.sessions">
+  <source>Sessions</source>
+</trans-unit>
+<trans-unit id="pages.speaker.previous-talks">
+  <source>Talks in earlier years</source>
+</trans-unit>
+<trans-unit id="pages.speakers.coming-soon">
+  <source>Speakers are coming soon.</source>
+</trans-unit>
+<trans-unit id="pages.speakers.no-results">
+  <source>No speakers match these filters.</source>
+</trans-unit>
+<trans-unit id="pages.team.photo-alt">
+  <source>The team</source>
+</trans-unit>
+<trans-unit id="pages.team.error">
+  <source>Error loading teams.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.title">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.description">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.lede">
+  <source>Stop getting updates from NODE by email.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.done">
+  <source>If that email was on our list, it has been removed. You can subscribe again any time from the home page.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.error">
+  <source>Could not unsubscribe. Please try again.</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.sending">
+  <source>Unsubscribing...</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.button">
+  <source>Unsubscribe</source>
+</trans-unit>
+<trans-unit id="pages.unsubscribe.note">
+  <source>Use the same email you subscribed with.</source>
+</trans-unit>
+<trans-unit id="dialogs.signin.or">
+  <source>or</source>
+  <note from="lit-localize">Between signing in by email and signing in with another account.</note>
+</trans-unit>
+<trans-unit id="common.subscribe">
+  <source>Subscribe</source>
+  <note from="lit-localize">Button that submits a subscription.</note>
+</trans-unit>
+<trans-unit id="dialogs.feedback.delete">
+  <source>Delete</source>
+  <note from="lit-localize">Deletes the session review.</note>
+</trans-unit>
+<trans-unit id="shared.add-to-calendar.apple">
+  <source>Apple Calendar</source>
+  <note from="lit-localize">Downloads an .ics file for Apple Calendar and other calendar apps.</note>
+</trans-unit>
+<trans-unit id="pages.session.leave-feedback">
+  <source>to leave feedback</source>
+  <note from="lit-localize">Follows a Sign in button: "Sign in to leave feedback".</note>
+</trans-unit>
+<trans-unit id="common.attending-info">
+  <source>Info for attendees</source>
+  <note from="lit-localize">Links to the doors, Wi-Fi and other details for people at the venue.</note>
+</trans-unit>
+<trans-unit id="shell.header.nav-label">
+  <source>Main</source>
+  <note from="lit-localize">Names the main navigation.</note>
+</trans-unit>
+<trans-unit id="shell.notifications.unsupported-help">
+  <source>Details</source>
+  <note from="lit-localize">Opens a list of browsers that support notifications.</note>
+</trans-unit>
+<trans-unit id="shell.notifications.blocked-help">
+  <source>Enable</source>
+  <note from="lit-localize">Opens help on allowing notifications in the browser.</note>
+</trans-unit>
+<trans-unit id="footer.color-scheme.legend">
+  <source>Appearance</source>
+  <note from="lit-localize">Picks the light or dark colors, or follows the device.</note>
+</trans-unit>
+<trans-unit id="shared.share.x-text">
+  <source>Check out <x id="0" equiv-text="${title}"/> at #<x id="1" equiv-text="${hashtag}"/>: <x id="2" equiv-text="${shareUrl}"/></source>
+  <note from="lit-localize">Post text. Followed by a page title, the event hashtag and a link.</note>
+</trans-unit>
+<trans-unit id="dialogs.feedback.save">
+  <source>Save</source>
+  <note from="lit-localize">Saves the session review.</note>
+</trans-unit>
+<trans-unit id="shared.share-button.label">
+  <source>Share</source>
+  <note from="lit-localize">Shares the session.</note>
+</trans-unit>
+<trans-unit id="home.tickets-block.sold-out">
+  <source>You missed it!</source>
+  <note from="lit-localize">Shown on a sold-out ticket.</note>
+</trans-unit>
+<trans-unit id="shell.demo.badge-dev">
+  <source>DEV</source>
+  <note from="lit-localize">Shown on the local emulators.</note>
+</trans-unit>
+<trans-unit id="home.tickets-block.on-sale">
+  <source>On sale <x id="0" equiv-text="${date}"/></source>
+  <note from="lit-localize">The day a ticket goes on sale, such as "On sale July 1".</note>
+</trans-unit>
+<trans-unit id="home.hero.tickets-on-sale">
+  <source>Tickets on sale <x id="0" equiv-text="${day}"/></source>
+  <note from="lit-localize">The day the first tickets go on sale, such as "Tickets on sale July 1".</note>
+</trans-unit>
+<trans-unit id="shared.report-mistake.subject">
+  <source>Correction: <x id="0" equiv-text="${this.subject}"/></source>
+  <note from="lit-localize">The subject of the email, with the speaker's name or the session's title.</note>
+</trans-unit>
+</body>
+</file>
+</xliff>

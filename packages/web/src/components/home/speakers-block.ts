@@ -1,0 +1,116 @@
+import { Success } from '@abraham/remotedata';
+import { msg } from '@lit/localize';
+import { css, html } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+import { fromStore } from '../../controllers/from-store';
+import type { Speaker } from '../../models/speaker';
+import { type RawSpeakersState, selectRawSpeakersState } from '../../store/speakers';
+import { band } from '../../styles/band';
+import { randomOrder } from '../../utils/arrays';
+import '../shared/node-icon';
+import '../shared/speaker-card';
+import { ThemedComponent } from '../themed-component';
+import '../ui/hb-button';
+
+/**
+ * Up to four featured speakers, and a link to all of them. Speakers with an `order` come first in
+ * that order. Without any, the speakers shuffle.
+ */
+@customElement('speakers-block')
+export class SpeakersBlock extends ThemedComponent {
+  static override styles = [
+    band,
+    css`
+      .speakers {
+        container-type: inline-size;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(calc(14rem * var(--hb-card-scale, 1)), 1fr)
+        );
+        gap: var(--hb-space-5);
+      }
+
+      /* Moved, not reordered, so reading order stays the grid's. */
+      @container (width >= 480px) {
+        .grid {
+          padding-block-end: var(--hb-card-stagger, 0px);
+        }
+
+        .grid > :nth-child(even) {
+          translate: 0 var(--hb-card-stagger, 0px);
+        }
+      }
+
+      @container (width < 480px) {
+        .grid {
+          grid-template-columns: minmax(0, 1fr);
+          gap: var(--hb-space-3);
+        }
+      }
+
+      speaker-card {
+        block-size: 100%;
+      }
+    `,
+  ];
+
+  @fromStore((state) => selectRawSpeakersState(state))
+  accessor speakers!: RawSpeakersState;
+
+  // The first render follows the stored order, as on the server, so hydration matches.
+  @state()
+  private accessor shuffled = false;
+
+  override firstUpdated() {
+    this.shuffled = true;
+  }
+
+  override render() {
+    return html`
+      <div class="inner">
+        <div class="band-header">
+          <h2 class="band-title">${msg('Speakers', { id: 'home.speakers-block.title' })}</h2>
+          <hb-button variant="outlined" class="cta-button" href="/speakers" trailing-icon>
+            ${msg('View all speakers', { id: 'home.speakers-block.cta' })}
+            <node-icon slot="icon" name="arrow-right-circle"></node-icon>
+          </hb-button>
+        </div>
+
+        <div class="speakers">
+          <ul class="grid plain">
+            ${this.featuredSpeakers.map(
+              (speaker) => html`<li><speaker-card .speaker="${speaker}"></speaker-card></li>`,
+            )}
+          </ul>
+        </div>
+      </div>
+    `;
+  }
+
+  get featuredSpeakers(): Speaker[] {
+    if (this.speakers instanceof Success) {
+      const { data } = this.speakers;
+      const filteredSpeakers = data.filter((speaker) => speaker.featured);
+      const speakers = filteredSpeakers.length ? filteredSpeakers : data;
+      const ordered = speakers
+        .filter(({ order }) => order !== undefined)
+        .sort((a, b) => a.order! - b.order!);
+      if (ordered.length) {
+        return [...ordered, ...speakers.filter(({ order }) => order === undefined)].slice(0, 4);
+      }
+      return (this.shuffled ? randomOrder(speakers) : speakers).slice(0, 4);
+    }
+
+    return [];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'speakers-block': SpeakersBlock;
+  }
+}

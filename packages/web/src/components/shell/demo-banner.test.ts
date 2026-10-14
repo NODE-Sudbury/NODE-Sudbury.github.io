@@ -1,0 +1,255 @@
+import { fireEvent } from '@testing-library/dom';
+import { html, render as litRender, nothing } from 'lit';
+import {
+  deepQuerySelector,
+  deepQuerySelectorAll,
+  screen,
+  within,
+} from 'shadow-dom-testing-library';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { fixture } from '../../../__tests__/helpers/fixtures';
+import { expectNoAxeViolations } from '../../../__tests__/helpers/axe';
+import { decorations, density, siteAttendance, themeName, timeZone } from '../../config/site';
+import { COLOR_SCHEME_KEY } from '../../utils/color-scheme';
+import {
+  chooseDemoAttendance,
+  chooseDemoTime,
+  DEMO_ATTENDANCE_KEY,
+  DEMO_DECORATIONS_KEY,
+  DEMO_DENSITY_KEY,
+  DEMO_THEME_KEY,
+  DEMO_TIME_KEY,
+} from '../../utils/demo';
+import { zonedTime } from '../../utils/time-zone';
+import type { ColorSchemeToggle } from '../footer/color-scheme-toggle';
+import type { HbPopover } from '../ui/hb-popover';
+import type { DemoBanner } from './demo-banner';
+import './demo-banner';
+
+// It reloads the page, which jsdom can't.
+vi.mock('../../utils/demo', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../utils/demo')>()),
+  chooseDemoAttendance: vi.fn(),
+  chooseDemoTime: vi.fn(),
+}));
+
+const firebase = vi.hoisted(() => ({ isDemoProject: false }));
+vi.mock('../../firebase', async () => ({
+  ...(await import('../../__mocks__/firebase')),
+  get isDemoProject() {
+    return firebase.isDemoProject;
+  },
+}));
+
+const root = document.documentElement;
+
+const render = async () => {
+  const { element, shadowRoot, shadowRootForWithin } = await fixture<DemoBanner>(
+    html`<demo-banner></demo-banner>`,
+  );
+  await element.updateComplete;
+  return { element, shadowRoot, container: shadowRootForWithin };
+};
+
+describe('demo-banner', () => {
+  afterEach(() => {
+    litRender(nothing, document.body);
+    localStorage.clear();
+    firebase.isDemoProject = false;
+    for (const name of ['data-theme', 'data-density', 'data-color-scheme', 'data-decorations']) {
+      root.removeAttribute(name);
+    }
+  });
+
+  it("starts from the site's theme", async () => {
+    const { container } = await render();
+
+    expect(within(container).getByRole('complementary', { name: 'Demo' })).toBeInTheDocument();
+    expect(within(container).getByText('DEMO')).toBeInTheDocument();
+    expect(within(container).getByText('Theme')).toHaveClass('visually-hidden');
+    expect(within(container).getByRole('combobox', { name: 'Theme' })).toHaveValue(themeName);
+    expect(
+      within(within(container).getByRole('combobox', { name: 'Theme' }))
+        .getAllByRole('option')
+        .map((option) => (option as HTMLOptionElement).value),
+    ).toEqual(['festival', 'spotlight', 'paper', 'glass', 'minimalist']);
+  });
+
+  it('says DEV on the emulators', async () => {
+    firebase.isDemoProject = true;
+    const { container } = await render();
+
+    expect(
+      within(container).getByRole('complementary', { name: 'Development' }),
+    ).toBeInTheDocument();
+    expect(within(container).getByText('DEV')).toBeInTheDocument();
+    expect(within(container).queryByText('DEMO')).not.toBeInTheDocument();
+  });
+
+  it("starts from the site's spacing, with the brightness toggle", async () => {
+    const { shadowRoot, container } = await render();
+
+    expect(within(container).getByText('Spacing')).toHaveClass('visually-hidden');
+    const spacing = within(container).getByRole('group', { name: 'Spacing' });
+    expect(
+      within(spacing)
+        .getAllByRole('radio')
+        .map((radio) => radio.getAttribute('value')),
+    ).toEqual(['compact', 'default', 'roomy']);
+    expect(within(spacing).getByRole('radio', { checked: true })).toHaveAttribute('value', density);
+    expect(
+      // Only the spacing icons, not those of the nested brightness toggle.
+      deepQuerySelectorAll(shadowRoot, '.controls > fieldset node-icon').map((icon) =>
+        icon.getAttribute('name'),
+      ),
+    ).toEqual(['density-small', 'density-medium', 'density-large']);
+    expect(within(container).getByText('Compact')).toHaveClass('visually-hidden');
+    expect(deepQuerySelector(shadowRoot, 'color-scheme-toggle')).toHaveAttribute('compact');
+  });
+
+  it('switches the theme, and forgets the choice for the site theme', async () => {
+    const { container } = await render();
+    const select = within(container).getByRole('combobox', { name: 'Theme' });
+    const other = themeName === 'festival' ? 'spotlight' : 'festival';
+
+    fireEvent.change(select, { target: { value: other } });
+    expect(root).toHaveAttribute('data-theme', other);
+    expect(localStorage.getItem(DEMO_THEME_KEY)).toBe(other);
+
+    fireEvent.change(select, { target: { value: themeName } });
+    expect(root).not.toHaveAttribute('data-theme');
+    expect(localStorage.getItem(DEMO_THEME_KEY)).toBeNull();
+  });
+
+  it('switches the spacing', async () => {
+    const { container } = await render();
+
+    fireEvent.click(within(container).getByRole('radio', { name: 'Roomy' }));
+
+    expect(root).toHaveAttribute('data-density', 'roomy');
+    expect(localStorage.getItem(DEMO_DENSITY_KEY)).toBe('roomy');
+  });
+
+  it('switches the decorations', async () => {
+    await render();
+    const input = await screen.findByShadowRole('switch', { name: 'Decorations' });
+    expect(input).toBeChecked();
+    expect(decorations).toBe(true);
+
+    fireEvent.click(input);
+
+    expect(root).toHaveAttribute('data-decorations', 'off');
+    expect(localStorage.getItem(DEMO_DECORATIONS_KEY)).toBe('off');
+  });
+
+  it('shows the stored choices after the first render, and ignores unknown ones', async () => {
+    localStorage.setItem(DEMO_THEME_KEY, 'spotlight');
+    localStorage.setItem(DEMO_DENSITY_KEY, 'huge');
+    const { element, container } = await render();
+    await element.updateComplete;
+
+    expect(within(container).getByRole('combobox', { name: 'Theme' })).toHaveValue('spotlight');
+    expect(within(container).getByRole('radio', { name: 'Default' })).toBeChecked();
+  });
+
+  it("offers in person, hybrid and online, starting from the site's", async () => {
+    const { container } = await render();
+    const select = within(container).getByRole('combobox', { name: 'How people attend' });
+
+    expect(select).toHaveValue(siteAttendance);
+    expect(
+      within(select)
+        .getAllByRole('option')
+        .map((option) => option.textContent?.trim()),
+    ).toEqual(['In person', 'Hybrid', 'Online']);
+  });
+
+  it('switches how people attend, and forgets the choice for the site', async () => {
+    const { container } = await render();
+    const select = within(container).getByRole('combobox', { name: 'How people attend' });
+    const other = siteAttendance === 'online' ? 'inPerson' : 'online';
+
+    fireEvent.change(select, { target: { value: other } });
+    expect(chooseDemoAttendance).toHaveBeenLastCalledWith(other);
+
+    fireEvent.change(select, { target: { value: siteAttendance } });
+    expect(chooseDemoAttendance).toHaveBeenLastCalledWith(null);
+  });
+
+  it('shows the stored attendance after the first render', async () => {
+    localStorage.setItem(DEMO_ATTENDANCE_KEY, 'hybrid');
+    const { element, container } = await render();
+    await element.updateComplete;
+
+    expect(within(container).getByRole('combobox', { name: 'How people attend' })).toHaveValue(
+      'hybrid',
+    );
+  });
+
+  it('picks any time at the event from the clock, or now again', async () => {
+    const { element, container } = await render();
+    const clock = within(container).getByShadowRole('button', { name: 'When' });
+    const popover = deepQuerySelector<HbPopover>(container, 'hb-popover')!;
+
+    expect(popover.open).toBe(false);
+    fireEvent.click(clock);
+    expect(popover.open).toBe(true);
+    await popover.updateComplete;
+    await expectNoAxeViolations(element);
+
+    const input = within(container).getByLabelText(`Time at the event, ${timeZone}`);
+    expect(input).toHaveAttribute('type', 'datetime-local');
+    // It starts at the time the site shows.
+    expect((input as HTMLInputElement).value).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/);
+
+    fireEvent.input(input, { target: { value: '2017-10-13T11:00' } });
+    fireEvent.click(within(container).getByShadowRole('button', { name: 'Set time' }));
+    expect(chooseDemoTime).toHaveBeenLastCalledWith(
+      zonedTime('2017-10-13', '11:00', timeZone).getTime(),
+    );
+
+    fireEvent.click(within(container).getByShadowRole('button', { name: 'Now' }));
+    expect(chooseDemoTime).toHaveBeenLastCalledWith(null);
+  });
+
+  it('shows the picked time after the first render', async () => {
+    localStorage.setItem(DEMO_TIME_KEY, '2017-10-13T08:00:00.000Z');
+    const { element, container } = await render();
+    await element.updateComplete;
+
+    expect(
+      within(container).getByText(
+        new Intl.DateTimeFormat('en', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+          timeZone,
+        }).format(Date.parse('2017-10-13T08:00:00.000Z')),
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it('shows no picked time with the real time', async () => {
+    const { shadowRoot } = await render();
+
+    expect(deepQuerySelector(shadowRoot, '.picked')).toBeNull();
+  });
+
+  it('keeps its brightness toggle in sync with the one in the footer', async () => {
+    const { shadowRoot } = await render();
+    const footer = document.createElement('color-scheme-toggle');
+    document.body.append(footer);
+    await footer.updateComplete;
+
+    fireEvent.click(
+      within(footer.shadowRoot as unknown as HTMLElement).getByRole('radio', { name: 'Dark' }),
+    );
+    const banner = deepQuerySelector<ColorSchemeToggle>(shadowRoot, 'color-scheme-toggle')!;
+    await banner.updateComplete;
+
+    expect(localStorage.getItem(COLOR_SCHEME_KEY)).toBe('dark');
+    expect(
+      within(banner.shadowRoot as unknown as HTMLElement).getByRole('radio', { name: 'Dark' }),
+    ).toBeChecked();
+    footer.remove();
+  });
+});

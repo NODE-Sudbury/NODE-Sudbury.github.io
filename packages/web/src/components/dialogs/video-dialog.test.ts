@@ -1,0 +1,70 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { html } from 'lit';
+import { fixture } from '../../../__tests__/helpers/fixtures';
+import { closeVideoDialog } from '../../store/ui';
+import type { VideoDialog } from './video-dialog';
+import './video-dialog';
+
+vi.mock('../../store/ui', async (importOriginal) => ({
+  __esModule: true,
+  ...(await importOriginal<typeof import('../../store/ui')>()),
+  closeVideoDialog: vi.fn(),
+}));
+
+const mockCloseVideoDialog = vi.mocked(closeVideoDialog);
+
+describe('video-dialog', () => {
+  // <lite-youtube autoload> (rendered inside video-dialog) schedules setTimeouts
+  // internally (a 100ms poster-image check and, for shorts, a 2000ms autoplay
+  // attempt) that it never clears on disconnect. Using fake timers keeps those
+  // leaked timers from becoming real, pending timers that fire after jsdom
+  // teardown and throw (e.g. `Image is not defined`), which Vitest reports as
+  // an unhandled error even though no assertion fails.
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+  });
+
+  it('defines a component', () => {
+    expect(customElements.get('video-dialog')).toBeDefined();
+  });
+
+  it('renders a closed dialog by default', async () => {
+    const { shadowRoot } = await fixture<VideoDialog>(html`<video-dialog></video-dialog>`);
+
+    expect(shadowRoot.querySelector('hb-dialog')).not.toHaveAttribute('open');
+  });
+
+  it('renders the video title and id when opened', async () => {
+    const { element, shadowRoot } = await fixture<VideoDialog>(html`<video-dialog></video-dialog>`);
+    element['video'] = { open: true, youtubeId: 'abc123', title: 'A great talk' };
+    await element.updateComplete;
+
+    expect(shadowRoot.querySelector('hb-dialog')).toHaveAttribute('open');
+    expect(shadowRoot.querySelector('hb-dialog')).toHaveAttribute('heading', 'A great talk');
+    expect(shadowRoot.querySelector('lite-youtube')).toHaveAttribute('videoid', 'abc123');
+    expect(shadowRoot.querySelector('lite-youtube')).toHaveAttribute('videotitle', 'A great talk');
+  });
+
+  it('says the video is available online instead of loading it offline', async () => {
+    const { element, shadowRoot } = await fixture<VideoDialog>(html`<video-dialog></video-dialog>`);
+    element['video'] = { open: true, youtubeId: 'abc123', title: 'A great talk' };
+    element['online'] = false;
+    await element.updateComplete;
+
+    expect(shadowRoot.querySelector('lite-youtube')).toBeNull();
+    expect(shadowRoot.querySelector('.offline')).toHaveTextContent("Available when you're online.");
+  });
+
+  it('dispatches closeVideoDialog when the dialog is closed', async () => {
+    const { shadowRoot } = await fixture<VideoDialog>(html`<video-dialog></video-dialog>`);
+
+    shadowRoot.querySelector('hb-dialog')!.dispatchEvent(new Event('close'));
+
+    expect(mockCloseVideoDialog).toHaveBeenCalled();
+  });
+});
