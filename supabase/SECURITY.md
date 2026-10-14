@@ -12,6 +12,7 @@ The site talks to Supabase from the browser with the public (`anon`) key, which 
 - **The activity log** (`audit_log`) records every add, change and delete in the admin tables, with who did it, their role and their address. Triggers write it, nobody can edit or delete it, and only the super admin can read it.
 - **Public data** is limited to what the site shows: partners, sponsors and the board's cards. A public profile is returned one at a time by `get_public_profile()`, never as a list, and the view behind it is not readable directly.
 - **Rate limits** cut off callers who ask too often: 60 profile lookups a minute per address, 30 handle checks a minute per member, and 10 subscribes or unsubscribes an hour per address. Over the limit, the answer is quietly empty, because an error would undo the count.
+- **Page views** keep only a page's address and the day as a count: no cookies, no visitor addresses. Every page reports itself from the shared layout. A report is dropped unless the address looks like a page of the site, a caller can send only 120 a minute, and a day keeps at most 2000 different addresses, so made-up addresses cannot fill the table. Visitors who send Do Not Track or Global Privacy Control are not counted, and neither are the admin and account pages.
 - **Storage**: the buckets are public by link but nobody can list them. Only admins write to the logo and photo buckets, a member writes only to their own folder in `avatars`, and SVG files are not accepted.
 
 ## Checking it

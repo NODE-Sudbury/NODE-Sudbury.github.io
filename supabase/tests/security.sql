@@ -171,6 +171,17 @@ begin
   perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$delete from public.audit_log$q$), 'the activity log cannot be emptied');
   perform pg_temp.check_that(not pg_temp.can('authenticated', boss, $q$insert into public.audit_log(action, target_table) values ('insert', 'forged')$q$), 'nobody can write a log entry by hand');
 
+  -- Page view counts -----------------------------------------------------------------------------
+  perform pg_temp.check_that(pg_temp.seen('anon', null, 'select 1 from public.page_views') = -1, 'visitor cannot read the page view table');
+  perform pg_temp.check_that(pg_temp.seen('authenticated', boss, 'select 1 from public.page_views') = -1, 'even the super admin reads page views only through the functions');
+  perform pg_temp.check_that(pg_temp.can('anon', null, $q$select public.record_page_view('/check')$q$), 'visitor can report a page view');
+  perform pg_temp.check_that(not pg_temp.can('anon', null, $q$select * from public.analytics_pages(7)$q$), 'visitor cannot read the page view numbers');
+  perform pg_temp.check_that(not pg_temp.can('anon', null, $q$select * from public.analytics_daily(7)$q$), 'visitor cannot read the daily numbers');
+  if other is not null then
+    perform pg_temp.check_that(pg_temp.seen('authenticated', other, 'select * from public.analytics_pages(7)') = 0, 'a member gets no page view numbers');
+  end if;
+  perform pg_temp.check_that(not pg_temp.can('anon', null, $q$insert into public.page_views(path, views) values ('/forged', 999)$q$), 'visitor cannot write page views by hand');
+
   -- Rate limits ---------------------------------------------------------------------------------
   perform pg_temp.check_that(
     public.rate_limit_ok('check', 'a', 2, 60) and public.rate_limit_ok('check', 'a', 2, 60)
