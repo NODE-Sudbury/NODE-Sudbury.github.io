@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ThemedComponent } from '../themed-component';
 
@@ -82,6 +82,7 @@ export class SpeakerPhoto extends ThemedComponent {
     return html`<img
       src="${this.src}"
       alt="${this.alt}"
+      aria-hidden="${this.alt ? nothing : 'true'}"
       loading="${this.loading}"
       decoding="async"
       width="${pixels}"
