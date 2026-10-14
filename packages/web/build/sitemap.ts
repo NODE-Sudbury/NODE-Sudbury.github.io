@@ -9,6 +9,12 @@ export const NOINDEX_PATHS = [
   '/members',
   '/profile',
   '/admin',
+  '/admin/analytics',
+  '/admin/events',
+  '/admin/emails',
+  '/admin/members',
+  '/admin/settings',
+  '/admin/sponsors',
 ] as const;
 
 const pathOf = (page: string) => new URL(page).pathname.replace(/\/$/, '') || '/';

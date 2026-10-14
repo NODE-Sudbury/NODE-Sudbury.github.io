@@ -21,12 +21,13 @@ describe('routes', () => {
 
   it('names the content collection of every page with a path parameter', () => {
     // The open source projects and the events come from syncs, not from a Firestore collection.
+    // The admin sections are a fixed list in the code.
     expect(
       ROUTES.filter(
         ({ pattern, content }) =>
           pattern.includes('[') &&
           !content &&
-          !['/open-source/[id]', '/events/[id]'].includes(pattern),
+          !['/open-source/[id]', '/events/[id]', '/admin/[section]'].includes(pattern),
       ),
     ).toEqual([]);
   });
@@ -42,6 +43,7 @@ describe('routes', () => {
       '/members',
       '/profile',
       '/admin',
+      '/admin/[section]',
     ]);
   });
 
@@ -78,7 +80,8 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
-      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
+      [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -94,7 +97,8 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
-      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
+      [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
     ]);
 
     injectRoute.mockClear();
@@ -104,7 +108,8 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
-      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin/index.astro' }],
+      [{ pattern: '/admin/[section]', entrypoint: './src/routes/admin/[section].astro' }],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });

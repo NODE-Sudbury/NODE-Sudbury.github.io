@@ -2,6 +2,54 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file source-language="en" original="lit-localize-inputs" datatype="plaintext">
 <body>
+<trans-unit id="pages.admin.members-search">
+  <source>Search members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-filtered">
+  <source><x id="0" equiv-text="${shown.length}"/> of <x id="1" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-total">
+  <source><x id="0" equiv-text="${this.members.length}"/> members</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none-match">
+  <source>No members match your search.</source>
+</trans-unit>
+<trans-unit id="pages.admin.members-none">
+  <source>There are no members yet.</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-member">
+  <source>Member</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-email">
+  <source>Email</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-type">
+  <source>Type</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-profile">
+  <source>Public profile</source>
+</trans-unit>
+<trans-unit id="pages.admin.col-joined">
+  <source>Joined</source>
+</trans-unit>
+<trans-unit id="pages.admin.no-name">
+  <source>No name yet</source>
+</trans-unit>
+<trans-unit id="pages.admin.inactive">
+  <source>Inactive</source>
+</trans-unit>
+<trans-unit id="pages.members.student">
+  <source>Student</source>
+</trans-unit>
+<trans-unit id="pages.members.professional">
+  <source>Professional</source>
+</trans-unit>
+<trans-unit id="pages.admin.public-no-handle">
+  <source>Public, no handle</source>
+</trans-unit>
+<trans-unit id="pages.admin.private">
+  <source>Private</source>
+</trans-unit>
 <trans-unit id="attending.accommodation.book">
   <source>Book</source>
 </trans-unit>
@@ -1055,6 +1103,45 @@
 <trans-unit id="pages.account.saved">
   <source>Profile saved.</source>
 </trans-unit>
+<trans-unit id="pages.admin.nav-home">
+  <source>Home</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-analytics">
+  <source>Analytics</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-events">
+  <source>Events</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-emails">
+  <source>Emails</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-settings">
+  <source>Settings</source>
+</trans-unit>
+<trans-unit id="pages.admin.nav-sponsors">
+  <source>Sponsors</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-analytics">
+  <source>See how the community and the site are growing.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-events">
+  <source>Create events and see who signed up.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-emails">
+  <source>Write to subscribers and members.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-members">
+  <source>Everyone who has joined NODE.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-settings">
+  <source>Settings for the site and the team.</source>
+</trans-unit>
+<trans-unit id="pages.admin.about-sponsors">
+  <source>Keep track of the sponsors and partners of NODE.</source>
+</trans-unit>
 <trans-unit id="pages.admin.role-super">
   <source>Super admin</source>
 </trans-unit>
@@ -1070,9 +1157,6 @@
 <trans-unit id="pages.admin.description">
   <source>Where the people who run NODE manage the site.</source>
 </trans-unit>
-<trans-unit id="pages.admin.lede">
-  <source>Where the people who run NODE manage the site.</source>
-</trans-unit>
 <trans-unit id="pages.admin.sign-in">
   <source>Sign in to open the admin dashboard.</source>
 </trans-unit>
@@ -1082,8 +1166,44 @@
 <trans-unit id="pages.admin.home">
   <source>Back to the home page</source>
 </trans-unit>
-<trans-unit id="pages.admin.welcome">
-  <source>You are signed in with admin access. The admin tools will appear here.</source>
+<trans-unit id="pages.admin.nav">
+  <source>Admin sections</source>
+</trans-unit>
+<trans-unit id="pages.admin.home-title">
+  <source>NODE</source>
+</trans-unit>
+<trans-unit id="pages.admin.view-site">
+  <source>View site</source>
+</trans-unit>
+<trans-unit id="pages.admin.load-failed">
+  <source>Some numbers could not be loaded. Please, try again later.</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-members">
+  <source>Members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-public">
+  <source>Public profiles</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-exclusive">
+  <source>Exclusive members</source>
+</trans-unit>
+<trans-unit id="pages.admin.stat-subscribers">
+  <source>Subscribers</source>
+</trans-unit>
+<trans-unit id="pages.admin.overview">
+  <source>Overview</source>
+</trans-unit>
+<trans-unit id="pages.admin.jump">
+  <source>Jump to</source>
+</trans-unit>
+<trans-unit id="pages.admin.upcoming">
+  <source>Upcoming events</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon">
+  <source>Coming soon</source>
+</trans-unit>
+<trans-unit id="pages.admin.soon-body">
+  <source>This part of the dashboard is on its way.</source>
 </trans-unit>
 <trans-unit id="attending.where">
   <source>Where it is</source>
@@ -1195,12 +1315,6 @@
 </trans-unit>
 <trans-unit id="pages.members.missing">
   <source>This profile is private, or there is no member with this handle.</source>
-</trans-unit>
-<trans-unit id="pages.members.student">
-  <source>Student</source>
-</trans-unit>
-<trans-unit id="pages.members.professional">
-  <source>Professional</source>
 </trans-unit>
 <trans-unit id="schedule.page.coming-soon">
   <source>The schedule is coming soon.</source>

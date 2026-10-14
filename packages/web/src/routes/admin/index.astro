@@ -1,0 +1,14 @@
+---
+import { itemMetadata } from '../../data/metadata';
+import { seedPage } from '../../data/page';
+import Base from '../../layouts/base.astro';
+import { AdminPage } from '../../views/admin-page';
+---
+
+<Base
+  {...itemMetadata('Admin dashboard', 'Where the people who run NODE manage the site.')}
+  content={seedPage({})}
+  noindex
+>
+  <AdminPage section="home" client:load />
+</Base>

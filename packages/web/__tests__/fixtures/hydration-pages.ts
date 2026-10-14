@@ -239,7 +239,7 @@ export const HYDRATION_PAGES: Record<string, HydrationPage> = {
   'admin page': {
     content: {},
     load: () => import('../../src/views/admin-page'),
-    template: () => html`<admin-page></admin-page>`,
+    template: () => html`<admin-page section="members"></admin-page>`,
   },
   'public profile page': {
     content: {},
