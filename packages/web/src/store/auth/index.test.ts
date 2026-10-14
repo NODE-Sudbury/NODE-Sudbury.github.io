@@ -15,6 +15,7 @@ import reducer, {
   selectAuthFailure,
   sendSignInLink,
   signIn,
+  signInWithGoogleToken,
   signOut,
 } from '.';
 import type { RootState } from '..';
@@ -33,6 +34,7 @@ vi.mock('../user', () => ({ removeUser: vi.fn(), setUser: vi.fn() }));
 
 const auth = {
   signInWithOAuth: vi.fn(),
+  signInWithIdToken: vi.fn(),
   signInWithOtp: vi.fn(),
   signOut: vi.fn(),
   onAuthStateChange: vi.fn(),
@@ -66,6 +68,36 @@ describe('selectAuthFailure', () => {
       message: 'No',
     });
     expect(selectAuthFailure({ auth: new Initialized() } as RootState)).toBeUndefined();
+  });
+});
+
+describe('signInWithGoogleToken', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("gives Supabase Google's token with the raw nonce", async () => {
+    auth.signInWithIdToken.mockResolvedValueOnce({ error: null });
+
+    await signInWithGoogleToken('signed-token', 'raw-nonce');
+
+    expect(auth.signInWithIdToken).toHaveBeenCalledWith({
+      provider: 'google',
+      token: 'signed-token',
+      nonce: 'raw-nonce',
+    });
+    expect(actionTypes()).toEqual(['auth/pending']);
+  });
+
+  it('records why the sign-in failed', async () => {
+    auth.signInWithIdToken.mockResolvedValueOnce({ error: { message: 'Nonce mismatch' } });
+
+    await signInWithGoogleToken('signed-token', 'wrong');
+
+    expect(dispatch).toHaveBeenLastCalledWith({
+      type: 'auth/failure',
+      payload: { message: 'Nonce mismatch' },
+    });
   });
 });
 
