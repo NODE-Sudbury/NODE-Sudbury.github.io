@@ -40,7 +40,7 @@ Dates are still to be announced. Check the [events page](/events) for updates.
 
 ### How do I stay informed?
 
-Follow NODE on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram.com/nodesudbury), [Facebook](https://www.facebook.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node-northern-ontario-dev-exchange), or use the subscribe form on the home page.
+{% if site.social.follow | length %}Follow NODE on {% for network in site.social.follow %}[{{ {'x': 'X', 'instagram': 'Instagram', 'facebook': 'Facebook', 'linkedin': 'LinkedIn'}[network.name] or network.name }}]({{ network.url }}){% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}, or use the subscribe form on the home page.{% else %}Use the subscribe form on the home page.{% endif %}
 
 ## Contact
 
