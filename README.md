@@ -49,13 +49,15 @@ Copy `packages/web/.env.example` to both files and fill in each project's URL an
 
 ## Open source data
 
-The Open Source page lists the public repositories of the organization, with contributors and activity. Refresh it with:
+The Open Source page lists the public repositories of the organization, with contributors and activity. The numbers come from GitHub, and count the commits on each repository's default branch (`main`), so work on `dev` counts once it is released.
+
+Every day a workflow reads them with its own GitHub token, publishes them on the `open-source-data` branch and asks the host for a new build. The build also asks GitHub itself, and when GitHub refuses (a build has no token), it takes the published data instead. Refresh it by hand with:
 
 ```console
 npm --prefix packages/web run sync:github
 ```
 
-Set `GITHUB_TOKEN` for a higher rate limit. Building with `SYNC_GITHUB=1` refreshes it first, and a daily workflow can rebuild the site on a schedule.
+Set `GITHUB_TOKEN` for a higher rate limit. Building with `SYNC_GITHUB=1` refreshes it first.
 
 ## Events
 
