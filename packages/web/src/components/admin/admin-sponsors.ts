@@ -68,6 +68,12 @@ export class AdminSponsors extends ThemedComponent {
       color: var(--hb-color-primary);
     }
 
+    /* The bar, the search box and the table, with room between them. */
+    [role='tabpanel'] {
+      display: grid;
+      gap: var(--hb-space-4);
+    }
+
     .count {
       margin-inline-start: var(--hb-space-2);
       color: var(--hb-color-on-surface-variant);
