@@ -41,6 +41,7 @@ describe('routes', () => {
       '/account',
       '/members',
       '/profile',
+      '/admin',
     ]);
   });
 
@@ -77,6 +78,7 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
       [{ pattern: '/team', entrypoint: './src/routes/team.astro' }],
       [{ pattern: '/team/[id]', entrypoint: './src/routes/team/[id].astro' }],
     ]);
@@ -92,6 +94,7 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
     ]);
 
     injectRoute.mockClear();
@@ -101,6 +104,7 @@ describe('routes', () => {
       [{ pattern: '/account', entrypoint: './src/routes/account.astro' }],
       [{ pattern: '/members', entrypoint: './src/routes/members/index.astro' }],
       [{ pattern: '/profile', entrypoint: './src/routes/profile/index.astro' }],
+      [{ pattern: '/admin', entrypoint: './src/routes/admin.astro' }],
       [{ pattern: '/design', entrypoint: './src/routes/design.astro' }],
     ]);
   });

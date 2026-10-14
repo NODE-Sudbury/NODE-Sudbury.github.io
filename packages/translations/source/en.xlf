@@ -566,6 +566,9 @@
 <trans-unit id="shell.account-menu.profile">
   <source>My profile</source>
 </trans-unit>
+<trans-unit id="shell.account-menu.admin">
+  <source>Admin Dashboard</source>
+</trans-unit>
 <trans-unit id="shell.header.sign-out">
   <source>Sign out</source>
 </trans-unit>
@@ -1051,6 +1054,36 @@
 </trans-unit>
 <trans-unit id="pages.account.saved">
   <source>Profile saved.</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-super">
+  <source>Super admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-admin">
+  <source>Admin</source>
+</trans-unit>
+<trans-unit id="pages.admin.role-volunteer">
+  <source>Check-in volunteer</source>
+</trans-unit>
+<trans-unit id="pages.admin.title">
+  <source>Admin dashboard</source>
+</trans-unit>
+<trans-unit id="pages.admin.description">
+  <source>Where the people who run NODE manage the site.</source>
+</trans-unit>
+<trans-unit id="pages.admin.lede">
+  <source>Where the people who run NODE manage the site.</source>
+</trans-unit>
+<trans-unit id="pages.admin.sign-in">
+  <source>Sign in to open the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.denied">
+  <source>You do not have access to the admin dashboard.</source>
+</trans-unit>
+<trans-unit id="pages.admin.home">
+  <source>Back to the home page</source>
+</trans-unit>
+<trans-unit id="pages.admin.welcome">
+  <source>You are signed in with admin access. The admin tools will appear here.</source>
 </trans-unit>
 <trans-unit id="attending.where">
   <source>Where it is</source>
