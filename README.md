@@ -63,7 +63,7 @@ The Events page and each event's own page come from the event links in `packages
 
 ## License
 
-Free to use and contribute to. Commercial use is not permitted. See [LICENSE](./LICENSE) for details. Parts of this project are used under the MIT License, see [LICENSE.md](./LICENSE.md).
+Free to use and contribute to. Commercial use is not permitted. See [LICENSE](./LICENSE) for details.
 
 ## Search engines and sharing
 
