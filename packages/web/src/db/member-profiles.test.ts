@@ -130,13 +130,19 @@ describe('saveOwnProfile', () => {
 });
 
 describe('fetchPublicProfile', () => {
-  it('reads the public view by handle', async () => {
+  const lookup = { maybeSingle: query.maybeSingle };
+
+  beforeEach(() => {
+    rpc.mockReturnValue(lookup);
+  });
+
+  it('asks for one profile by handle, and never lists them', async () => {
     query.maybeSingle.mockResolvedValue({ data: { handle: 'ada', full_name: 'Ada' }, error: null });
 
     const found = await fetchPublicProfile({ handle: 'ada' });
 
-    expect(from).toHaveBeenCalledWith('public_profiles');
-    expect(query.eq).toHaveBeenCalledWith('handle', 'ada');
+    expect(rpc).toHaveBeenCalledWith('get_public_profile', { p_handle: 'ada' });
+    expect(from).not.toHaveBeenCalledWith('public_profiles');
     expect(found).toMatchObject({ handle: 'ada', fullName: 'Ada' });
     expect(found).not.toHaveProperty('discordTag');
   });
@@ -149,7 +155,7 @@ describe('fetchPublicProfile', () => {
 
     const found = await fetchPublicProfile({ id: 'user-1' });
 
-    expect(query.eq).toHaveBeenCalledWith('id', 'user-1');
+    expect(rpc).toHaveBeenCalledWith('get_public_profile', { p_id: 'user-1' });
     expect(found).toMatchObject({ id: 'user-1', handle: '', isExclusiveMember: true });
   });
 
@@ -157,6 +163,12 @@ describe('fetchPublicProfile', () => {
     query.maybeSingle.mockResolvedValue({ data: null, error: null });
 
     await expect(fetchPublicProfile({ handle: 'nobody' })).resolves.toBeUndefined();
+  });
+
+  it('throws when the lookup fails', async () => {
+    query.maybeSingle.mockResolvedValue({ data: null, error: { message: 'down' } });
+
+    await expect(fetchPublicProfile({ handle: 'ada' })).rejects.toMatchObject({ message: 'down' });
   });
 });
 

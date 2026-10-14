@@ -8,9 +8,6 @@ const text = (value: unknown): string => (typeof value === 'string' ? value : ''
 const OWN_COLUMNS =
   'id, created_at, is_exclusive_member, handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url, discord_tag, is_public';
 
-const PUBLIC_COLUMNS =
-  'id, created_at, is_exclusive_member, handle, full_name, avatar_url, member_type, job_title, company, school, program, bio, pronouns, linkedin_url, github_url, twitter_url, website_url';
-
 const toPublic = (row: Row): PublicProfile => ({
   id: text(row['id']),
   createdAt: text(row['created_at']),
@@ -88,14 +85,14 @@ export const saveOwnProfile = async (uid: string, profile: MemberProfile): Promi
 export type ProfileKey = { handle: string } | { id: string };
 
 /**
- * A public profile, from a view that never has the email or the role. Gone when the member made
- * it private or there is no such member.
+ * A public profile, which never has the email or the role. The database hands over one profile at
+ * a time, by its handle or id, so the list of members cannot be pulled out in one request. Gone
+ * when the member made it private or there is no such member.
  */
 export const fetchPublicProfile = async (key: ProfileKey): Promise<PublicProfile | undefined> => {
-  const query = getSupabase().from('public_profiles').select(PUBLIC_COLUMNS);
-  const { data, error } = await (
-    'handle' in key ? query.eq('handle', key.handle) : query.eq('id', key.id)
-  ).maybeSingle();
+  const { data, error } = await getSupabase()
+    .rpc('get_public_profile', 'handle' in key ? { p_handle: key.handle } : { p_id: key.id })
+    .maybeSingle();
   if (error) throw error;
   return data ? toPublic(data as Row) : undefined;
 };
