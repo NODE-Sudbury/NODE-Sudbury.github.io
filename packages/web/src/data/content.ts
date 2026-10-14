@@ -13,6 +13,7 @@ import type { Feature } from '../config/features';
 import { scheduleTracks } from '../config/site';
 import { scheduleErrors } from '../schedule/build-schedule';
 import type { Content } from '../store/content';
+import { withSupabaseBoard } from './board';
 import { connectFirestore } from './firestore';
 import { sampleFirestore } from './sample';
 
@@ -151,7 +152,9 @@ export const loadContent = async (): Promise<Partial<Content>> => {
   if (env['FIRESTORE_TARGET'] === 'none') return emptyContent();
   const connect = async () =>
     env['FIRESTORE_TARGET'] === 'sample' ? sampleFirestore() : connectFirestore();
-  if (import.meta.env.DEV) return readContent(await connect());
-  content ??= connect().then(readContent);
+  // The board is kept in Supabase, so its cards, photos and links are the ones the admins edit.
+  const read = async () => withSupabaseBoard(await readContent(await connect()));
+  if (import.meta.env.DEV) return read();
+  content ??= read();
   return content;
 };
