@@ -26,7 +26,9 @@ Run it after every migration, and on production after a launch. It needs a super
 
 ## Production
 
-`supabase/hotfixes/20261014_lock_down_members.sql` closes the worst holes on a database that only has the early schema. After the other migrations are run there, the full security hardening migration applies on top of it.
+`supabase/hotfixes/20261014_lock_down_members.sql` closes the worst holes on a database that only has the early schema. It was run on production on 2026-10-14, after a backup and a dry run that was rolled back. It also creates the `avatars` bucket and its rules, which were set up by hand on development and are in no other migration.
+
+At launch, run migrations 0006 to 0016 on production in order, then the security script. Migration 0015 can run on top of the hotfix, because it is safe to run twice.
 
 ## Settings only the dashboard can change
 
