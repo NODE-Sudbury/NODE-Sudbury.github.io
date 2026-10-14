@@ -121,7 +121,7 @@ export class AdminGeneral extends ThemedComponent {
       <h2>${msg('Follow us links', { id: 'pages.admin.general-title' })}</h2>
       <p class="note">
         ${msg(
-          'These are the links under "Follow us" in the footer of every page. Leave a box empty to hide that network from the footer. Changes show on the public site after the next deploy.',
+          'These are the links under "Follow us" in the footer of every page. Leave a box empty to hide that network from the footer. Saving rebuilds the public site, and the footer shows the change in about two minutes.',
           { id: 'pages.admin.general-note' },
         )}
       </p>
@@ -209,9 +209,12 @@ export class AdminGeneral extends ThemedComponent {
       this.links = clean;
       store.dispatch(
         queueSnackbar(
-          msg('Saved. The footer shows the new links after the next deploy.', {
-            id: 'pages.admin.general-saved',
-          }),
+          msg(
+            'Saved. The footer shows the new links in about two minutes, once the site has rebuilt.',
+            {
+              id: 'pages.admin.general-saved',
+            },
+          ),
         ),
       );
     } catch {

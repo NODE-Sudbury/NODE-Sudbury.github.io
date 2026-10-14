@@ -97,7 +97,8 @@ describe('admin-general', () => {
     await vi.waitFor(() =>
       expect(dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          payload: 'Saved. The footer shows the new links after the next deploy.',
+          payload:
+            'Saved. The footer shows the new links in about two minutes, once the site has rebuilt.',
         }),
       ),
     );

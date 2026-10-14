@@ -185,6 +185,12 @@ begin
     delete from public.admins where user_id = other;
   end if;
 
+  -- Automatic rebuilds ----------------------------------------------------------------------------
+  perform pg_temp.check_that(not pg_temp.can('anon', null, 'select public.request_site_rebuild()'), 'visitor cannot ask for a rebuild');
+  perform pg_temp.check_that(not pg_temp.can('authenticated', boss, 'select public.request_site_rebuild()'), 'not even the super admin can call the rebuild function');
+  perform pg_temp.check_that(pg_temp.seen('authenticated', boss, 'select 1 from vault.decrypted_secrets') = -1, 'a signed-in member cannot read the rebuild secret');
+  perform pg_temp.check_that(pg_temp.seen('anon', null, 'select 1 from vault.decrypted_secrets') = -1, 'a visitor cannot read the rebuild secret');
+
   -- Page view counts -----------------------------------------------------------------------------
   perform pg_temp.check_that(pg_temp.seen('anon', null, 'select 1 from public.page_views') = -1, 'visitor cannot read the page view table');
   perform pg_temp.check_that(pg_temp.seen('authenticated', boss, 'select 1 from public.page_views') = -1, 'even the super admin reads page views only through the functions');
