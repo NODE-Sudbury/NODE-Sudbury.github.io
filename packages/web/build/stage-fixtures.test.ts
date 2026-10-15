@@ -11,7 +11,7 @@ import { buildSchedule } from '../src/schedule/build-schedule';
 import { siteStages } from '../src/utils/stages';
 import { configPaths, loadConfig } from './resolve-config';
 
-// The fixtures describe the demo event of 2017, so they read the demo's sample data, not NODE's.
+// The fixtures describe the demo event of 2017, so they read the demo's sample data, not N.O.D.E.'s.
 const demoSampleData = join(import.meta.dirname, '../../../docs/sample-data');
 const demo = configPaths(join(import.meta.dirname, '..'), { demo: true });
 const readJson = (path: string) =>

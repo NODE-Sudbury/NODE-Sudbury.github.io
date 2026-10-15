@@ -1,6 +1,6 @@
-# Contributing to NODE Sudbury
+# Contributing to N.O.D.E. Sudbury
 
-Thanks for wanting to contribute. NODE is a community-driven org and the site is open to everyone - no experience level required.
+Thanks for wanting to contribute. N.O.D.E. is a community-driven org and the site is open to everyone - no experience level required.
 
 ---
 
@@ -19,7 +19,7 @@ Thanks for wanting to contribute. NODE is a community-driven org and the site is
 
 ## Community contributors (fork-based)
 
-You don't need to be a NODE member to contribute.
+You don't need to be a N.O.D.E. member to contribute.
 
 ### 1. Fork the repo
 
@@ -130,4 +130,4 @@ Found a bug or have a feature idea? Open an issue:
 
 ## Questions?
 
-Open an issue and tag a maintainer, or reach out through the NODE community channels. You can also write to admin@nodesudbury.com.
+Open an issue and tag a maintainer, or reach out through the N.O.D.E. community channels. You can also write to admin@nodesudbury.com.

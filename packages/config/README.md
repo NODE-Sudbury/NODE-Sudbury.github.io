@@ -1,6 +1,6 @@
 # Your site's config
 
-This folder holds your site's own config and content. NODE site never changes it, so upgrades don't conflict here.
+This folder holds your site's own config and content. N.O.D.E. site never changes it, so upgrades don't conflict here.
 
 Run `./hb init` to create it. It copies the demo site from `packages/demo-config`, replaces the demo's text with starter text, then asks for your event's details and images:
 

@@ -47,7 +47,7 @@ describe('faq-page', () => {
     expect(mockUpdateMetadata).toHaveBeenCalledTimes(1);
     expect(mockUpdateMetadata).toHaveBeenCalledWith(
       'FAQs',
-      'Answers about NODE: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.',
+      'Answers about N.O.D.E.: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.',
     );
   });
 });

@@ -67,11 +67,11 @@ const about = (section: AdminSection) =>
     }),
     events: msg('Create events and see who signed up.', { id: 'pages.admin.about-events' }),
     emails: msg('Write to subscribers and members.', { id: 'pages.admin.about-emails' }),
-    members: msg('Everyone who has joined NODE.', { id: 'pages.admin.about-members' }),
-    settings: msg('Who helps run NODE: the board, dashboard admins and volunteers.', {
+    members: msg('Everyone who has joined N.O.D.E.', { id: 'pages.admin.about-members' }),
+    settings: msg('Who helps run N.O.D.E.: the board, dashboard admins and volunteers.', {
       id: 'pages.admin.about-settings',
     }),
-    sponsors: msg('Keep track of the sponsors and partners of NODE.', {
+    sponsors: msg('Keep track of the sponsors and partners of N.O.D.E.', {
       id: 'pages.admin.about-sponsors',
     }),
   })[section];
@@ -314,7 +314,7 @@ export class AdminPage extends ThemedComponent {
   override async firstUpdated() {
     updateTextMetadata(
       msg('Admin dashboard', { id: 'pages.admin.title' }),
-      msg('Where the people who run NODE manage the site.', { id: 'pages.admin.description' }),
+      msg('Where the people who run N.O.D.E. manage the site.', { id: 'pages.admin.description' }),
     );
     await sessionRestored;
     this.ready = true;
@@ -456,7 +456,7 @@ export class AdminPage extends ThemedComponent {
     if (section === 'sponsors' && action === 'edit') {
       return msg('Edit a sponsor or partner', { id: 'pages.admin.edit-title' });
     }
-    return section === 'home' ? msg('NODE', { id: 'pages.admin.home-title' }) : label(section);
+    return section === 'home' ? msg('N.O.D.E.', { id: 'pages.admin.home-title' }) : label(section);
   }
 
   private lede() {

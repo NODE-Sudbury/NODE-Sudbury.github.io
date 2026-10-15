@@ -29,7 +29,7 @@ declare global {
 }
 
 /**
- * What Firebase starts with when the site has no Firebase project, as NODE does not. Nothing
+ * What Firebase starts with when the site has no Firebase project, as N.O.D.E. does not. Nothing
  * reaches the network until a Firestore feature is used, and those features are off.
  */
 const INERT_CONFIG: FirebaseOptions = {

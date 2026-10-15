@@ -17,7 +17,7 @@ describe('PageMetadataController', () => {
     controller.hostConnected();
     expect(updateMetadata).toHaveBeenCalledWith(
       'Board',
-      'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
+      'Meet the volunteer board of directors and volunteers of N.O.D.E., the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
     );
 
     localeStatus('loading');

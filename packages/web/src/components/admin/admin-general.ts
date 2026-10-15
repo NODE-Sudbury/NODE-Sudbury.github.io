@@ -29,7 +29,7 @@ const NETWORKS: Record<SocialKey, { name: string; icon: string; hosts: readonly 
 type Errors = Partial<Record<SocialKey, string>>;
 
 /**
- * The General tab of Settings: NODE's social links, which the footer shows under "Follow us". A box
+ * The General tab of Settings: N.O.D.E.'s social links, which the footer shows under "Follow us". A box
  * left empty hides that network from the footer.
  */
 @customElement('admin-general')

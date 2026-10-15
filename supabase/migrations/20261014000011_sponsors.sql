@@ -1,4 +1,4 @@
--- The sponsors of NODE, and where their logos live. Like partners: anyone can read them, because
+-- The sponsors of N.O.D.E., and where their logos live. Like partners: anyone can read them, because
 -- the public site shows them, and only the super admin and admins add, change or remove them.
 -- A sponsor also has a tier. Each logo is a file in the public `sponsor-logos` storage bucket.
 

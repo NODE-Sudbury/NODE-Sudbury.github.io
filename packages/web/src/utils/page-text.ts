@@ -35,21 +35,21 @@ const PAGES: Record<Page, () => PageText> = {
   blog: () => ({
     title: msg('Blog', { id: 'pages.blog.title' }),
     metaDescription: msg(
-      'News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.',
+      'News, event recaps and announcements from N.O.D.E., the Northern Ontario Dev Exchange in Sudbury.',
       { id: 'pages.blog.description' },
     ),
   }),
   coc: () => ({
     title: msg('Code of Conduct', { id: 'pages.coc.title' }),
     metaDescription: msg(
-      'The NODE code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.',
+      'The N.O.D.E. code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.',
       { id: 'pages.coc.description' },
     ),
   }),
   faq: () => ({
     title: msg('FAQs', { id: 'pages.faq.title' }),
     metaDescription: msg(
-      'Answers about NODE: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.',
+      'Answers about N.O.D.E.: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.',
       { id: 'pages.faq.description' },
     ),
   }),
@@ -66,7 +66,7 @@ const PAGES: Record<Page, () => PageText> = {
   openSource: () => ({
     title: msg('Open Source', { id: 'pages.open-source.title' }),
     metaDescription: msg(
-      'Open source projects built by the NODE community in Sudbury. Browse the code, see who contributes and how active each project is.',
+      'Open source projects built by the N.O.D.E. community in Sudbury. Browse the code, see who contributes and how active each project is.',
       {
         id: 'pages.open-source.description',
       },
@@ -75,7 +75,7 @@ const PAGES: Record<Page, () => PageText> = {
   previousSpeakers: () => ({
     title: msg('Previous Speakers', { id: 'pages.previous-speakers.title' }),
     metaDescription: msg(
-      'The speakers who have presented at NODE events across Northern Ontario.',
+      'The speakers who have presented at N.O.D.E. events across Northern Ontario.',
       {
         id: 'pages.previous-speakers.description',
       },
@@ -84,7 +84,7 @@ const PAGES: Record<Page, () => PageText> = {
   schedule: () => ({
     title: msg('Events', { id: 'pages.schedule.title' }),
     metaDescription: msg(
-      'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
+      'Upcoming and past N.O.D.E. events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
       {
         id: 'pages.schedule.description',
       },
@@ -93,14 +93,14 @@ const PAGES: Record<Page, () => PageText> = {
   speakers: () => ({
     title: msg('Speakers', { id: 'pages.speakers.title' }),
     metaDescription: msg(
-      'Meet the developers, founders and employers speaking at the monthly NODE speaker series at the Norcat Innovation Hub in Sudbury.',
+      'Meet the developers, founders and employers speaking at the monthly N.O.D.E. speaker series at the Norcat Innovation Hub in Sudbury.',
       { id: 'pages.speakers.description' },
     ),
   }),
   team: () => ({
     title: msg('Board', { id: 'pages.team.title' }),
     metaDescription: msg(
-      'Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
+      'Meet the volunteer board of directors and volunteers of N.O.D.E., the Northern Ontario Dev Exchange not-for-profit in Sudbury.',
       { id: 'pages.team.description' },
     ),
   }),

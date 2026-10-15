@@ -99,3 +99,6 @@ scratch/
 
 # The private project that supabase/local/reset.sh builds
 supabase/.local-stack/
+
+# A draft of the GitHub organization page, not part of the site
+org-profile/

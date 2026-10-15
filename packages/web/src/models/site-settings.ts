@@ -7,7 +7,7 @@ export const SOCIAL_KEYS = [
 ] as const;
 export type SocialKey = (typeof SOCIAL_KEYS)[number];
 
-/** NODE's social links, by network. An empty link is left out of the footer. */
+/** N.O.D.E.'s social links, by network. An empty link is left out of the footer. */
 export type SocialLinks = Record<SocialKey, string>;
 
 export const EMPTY_SOCIAL_LINKS: SocialLinks = {

@@ -1,4 +1,4 @@
--- Settings for the whole site that the admins can change: for now, NODE's social links.
+-- Settings for the whole site that the admins can change: for now, N.O.D.E.'s social links.
 --
 -- Anyone can read them, because the public footer shows them. Only the super admin and admins change
 -- them. The site reads them when it is built, so a change shows after the next deploy. A link that is

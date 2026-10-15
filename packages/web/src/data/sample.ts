@@ -15,7 +15,7 @@ interface Manifest {
   collections: Record<string, { file: string }>;
 }
 
-/** NODE's `packages/config/sample-data` when it exists, else `docs/sample-data`. */
+/** N.O.D.E.'s `packages/config/sample-data` when it exists, else `docs/sample-data`. */
 const sampleFolder = () => {
   for (let dir = cwd(); ; dir = dirname(dir)) {
     const own = join(dir, 'packages', 'config', 'sample-data');

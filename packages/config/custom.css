@@ -1,9 +1,11 @@
-/* NODE header: show the NODE name next to the logo in every color scheme. */
+/* N.O.D.E. header: show the N.O.D.E. name next to the logo in every color scheme. */
 :root,
 :root[data-color-scheme='light'],
 :root[data-color-scheme='dark'],
 :root:not([data-color-scheme='light']) {
   --hb-logo-name-display: block;
+  /* The dark scheme reads this one, so without it the name disappears in dark mode. */
+  --hb-logo-dark-name-display: block;
   --hb-logo-width: 56px;
   --hb-logo-name-gap: 12px;
 }
