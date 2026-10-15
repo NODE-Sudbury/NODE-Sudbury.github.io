@@ -43,7 +43,7 @@ import { DISCORD_URL } from '../../utils/discord';
 import '../ui/hb-chip';
 import '../ui/hb-sticker';
 
-/** NODE's community on Discord. */
+/** N.O.D.E.'s community on Discord. */
 
 /**
  * The top of the home page: the event state, the event name, dates and place, and the calls to
@@ -239,7 +239,7 @@ export class HomeHero extends ThemedComponent {
             <hb-sticker class="state" tilt="-4" accent="${this.stickerAccent}"
               >${this.stateLabel}</hb-sticker
             >
-            <h1 id="hero-title" class="title">${title.replace(/^NODE\s+-\s+/, '')}</h1>
+            <h1 id="hero-title" class="title">${title.replace(/^N\.O\.D\.E\.\s+-\s+/, '')}</h1>
             <ul class="details" aria-label="${msg('Event details', { id: 'home.hero.details' })}">
               <li>
                 <hb-chip>
@@ -268,7 +268,12 @@ export class HomeHero extends ThemedComponent {
             // The demo banner can turn decorations on, so a demo site always has the drawing.
             decorations || __HB_FEATURES__.demo
               ? html`<div class="art" aria-hidden="true">
-                  <img src="/images/node/node-logo.svg" alt="NODE logo" width="187" height="103" />
+                  <img
+                    src="/images/node/node-logo.svg"
+                    alt="N.O.D.E. logo"
+                    width="187"
+                    height="103"
+                  />
                 </div>`
               : nothing
           }
@@ -277,7 +282,7 @@ export class HomeHero extends ThemedComponent {
     `;
   }
 
-  /** NODE shows its short name in the badge, not the event countdown. */
+  /** N.O.D.E. shows its short name in the badge, not the event countdown. */
   private get stateLabel(): string {
     return 'N.O.D.E.';
   }

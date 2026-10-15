@@ -33,7 +33,7 @@ export class MemberPage extends ThemedComponent {
   private bio(member: Member): string {
     return (
       member.bio ??
-      msg(str`${member.name} is ${member.title} of the NODE board of directors.`, {
+      msg(str`${member.name} is ${member.title} of the N.O.D.E. board of directors.`, {
         id: 'pages.member.default-bio',
       })
     );
@@ -54,7 +54,7 @@ export class MemberPage extends ThemedComponent {
             name: member.name,
             photoUrl: member.photoUrl,
             title: member.title,
-            company: 'NODE',
+            company: 'N.O.D.E.',
             country: '',
           }}"
         ></speaker-profile>

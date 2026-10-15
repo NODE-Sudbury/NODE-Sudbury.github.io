@@ -170,7 +170,7 @@ export class PublicProfilePage extends ThemedComponent {
       <hero-block tone="${PAGE_TONES.team}">
         <a class="back" href="/team">
           <node-icon name="arrow-left"></node-icon>
-          ${msg('NODE members', { id: 'pages.members.back' })}
+          ${msg('N.O.D.E. members', { id: 'pages.members.back' })}
         </a>
         ${
           member

@@ -18,13 +18,13 @@ const CONTACT = 'admin@nodesudbury.com';
 
 export const privacy: LegalDocument = {
   title: 'Privacy policy',
-  description: 'What the NODE website collects, why, who sees it and how to have it removed.',
+  description: 'What the N.O.D.E. website collects, why, who sees it and how to have it removed.',
   updated: 'October 14, 2026',
   sections: [
     {
       heading: 'Who we are',
       paragraphs: [
-        'NODE (Northern Ontario Dev Exchange) is a community of developers in Greater Sudbury, Ontario, Canada. This policy covers nodesudbury.com. For questions or requests, write to ' +
+        'N.O.D.E. (Northern Ontario Dev Exchange) is a community of developers in Greater Sudbury, Ontario, Canada. This policy covers nodesudbury.com. For questions or requests, write to ' +
           CONTACT +
           '.',
       ],
@@ -51,7 +51,7 @@ export const privacy: LegalDocument = {
     {
       heading: 'The updates list',
       paragraphs: [
-        'If you subscribe on the home page, we keep your email address to send you news about NODE. Every message and the page nodesudbury.com/unsubscribe let you take it off the list at any time.',
+        'If you subscribe on the home page, we keep your email address to send you news about N.O.D.E. Every message and the page nodesudbury.com/unsubscribe let you take it off the list at any time.',
       ],
     },
     {
@@ -100,13 +100,13 @@ export const privacy: LegalDocument = {
 
 export const terms: LegalDocument = {
   title: 'Terms of use',
-  description: 'The rules for using the NODE website and its member accounts.',
+  description: 'The rules for using the N.O.D.E. website and its member accounts.',
   updated: 'October 14, 2026',
   sections: [
     {
       heading: 'Using the site',
       paragraphs: [
-        'By using nodesudbury.com you agree to these terms. If you do not agree, please do not use the site. NODE is run by volunteers, and the site is offered as it is, without promises that it will always work or be free of mistakes.',
+        'By using nodesudbury.com you agree to these terms. If you do not agree, please do not use the site. N.O.D.E. is run by volunteers, and the site is offered as it is, without promises that it will always work or be free of mistakes.',
       ],
     },
     {
@@ -120,7 +120,7 @@ export const terms: LegalDocument = {
     {
       heading: 'How we expect you to behave',
       paragraphs: [
-        'Our Code of Conduct at nodesudbury.com/coc applies on this site and at NODE events and spaces. We may hide a profile or close an account that breaks it.',
+        'Our Code of Conduct at nodesudbury.com/coc applies on this site and at N.O.D.E. events and spaces. We may hide a profile or close an account that breaks it.',
       ],
       items: [
         'Do not harass, threaten or impersonate anyone.',
@@ -137,13 +137,13 @@ export const terms: LegalDocument = {
     {
       heading: 'Our content and open source',
       paragraphs: [
-        'The NODE name, logo and the text of the site belong to NODE. The code of the site is open source on GitHub (github.com/NODE-Sudbury), under the license shown there.',
+        'The N.O.D.E. name, logo and the text of the site belong to N.O.D.E. The code of the site is open source on GitHub (github.com/NODE-Sudbury), under the license shown there.',
       ],
     },
     {
       heading: 'Limits',
       paragraphs: [
-        'To the fullest extent the law of Ontario, Canada allows, NODE and its volunteers are not liable for losses from using the site. Nothing here limits rights that cannot be limited by law.',
+        'To the fullest extent the law of Ontario, Canada allows, N.O.D.E. and its volunteers are not liable for losses from using the site. Nothing here limits rights that cannot be limited by law.',
       ],
     },
     {

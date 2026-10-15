@@ -11,11 +11,11 @@ const column = [
 
 const config = (follow: { name: string; url: string }[]) =>
   ({
-    site: { url: 'https://nodesudbury.com/', social: { hashtag: 'NODE', follow } },
+    site: { url: 'https://nodesudbury.com/', social: { hashtag: 'N.O.D.E.', follow } },
     resources: {
       footerRelBlock: [
-        { title: 'About', links: [{ name: 'NODE', url: '/', newTab: false }] },
-        { title: 'Follow NODE', links: column },
+        { title: 'About', links: [{ name: 'N.O.D.E.', url: '/', newTab: false }] },
+        { title: 'Follow N.O.D.E.', links: column },
       ],
     },
   }) as unknown as SiteConfig;
@@ -26,7 +26,7 @@ const footerColumn = (result: SiteConfig) =>
       footerRelBlock: { title: string; links: { name: string; url: string }[] }[];
     }
   ).footerRelBlock
-    .find(({ title }) => title === 'Follow NODE')
+    .find(({ title }) => title === 'Follow N.O.D.E.')
     ?.links.map(({ name, url }) => `${name} ${url}`);
 
 const original = [
@@ -97,7 +97,7 @@ describe('withSiteSettings', () => {
     expect(follow(result)).toEqual(original.map(({ name, url }) => `${name} ${url}`));
   });
 
-  it('uses the same links in the Follow NODE column of the footer', () => {
+  it('uses the same links in the Follow N.O.D.E. column of the footer', () => {
     const result = withSiteSettings(config(original), [
       { key: 'social_x', value: 'https://x.com/new' },
       { key: 'social_instagram', value: '' },
@@ -110,7 +110,7 @@ describe('withSiteSettings', () => {
     ]);
   });
 
-  it('drops the whole Follow NODE column when every network is empty, and keeps the other columns', () => {
+  it('drops the whole Follow N.O.D.E. column when every network is empty, and keeps the other columns', () => {
     const result = withSiteSettings(
       config(original),
       ['social_x', 'social_instagram', 'social_facebook', 'social_linkedin'].map((key) => ({
@@ -134,7 +134,7 @@ describe('withSiteSettings', () => {
     const result = withSiteSettings(base, [{ key: 'social_x', value: '' }]);
 
     expect(result.site.url).toBe(base.site.url);
-    expect(result.site.social.hashtag).toBe('NODE');
+    expect(result.site.social.hashtag).toBe('N.O.D.E.');
     expect(follow(base)).toHaveLength(4);
   });
 

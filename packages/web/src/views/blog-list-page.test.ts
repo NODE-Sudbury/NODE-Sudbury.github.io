@@ -67,7 +67,7 @@ describe('blog-list-page', () => {
     expect(element.posts).toBeInstanceOf(Pending);
     expect(mockUpdateMetadata).toHaveBeenCalledWith(
       'Blog',
-      'News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.',
+      'News, event recaps and announcements from N.O.D.E., the Northern Ontario Dev Exchange in Sudbury.',
     );
   });
 

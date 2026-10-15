@@ -1,4 +1,4 @@
--- The organizations NODE works with, and where their logos live.
+-- The organizations N.O.D.E. works with, and where their logos live.
 --
 -- Anyone can read the partners, because the public site shows them. Only the super admin and
 -- admins add, change or remove them. Each logo is a file in the public `partner-logos` storage

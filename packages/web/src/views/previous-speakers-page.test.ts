@@ -72,7 +72,7 @@ describe('previous-speakers-page', () => {
 
     expect(updateMetadata).toHaveBeenCalledWith(
       'Previous Speakers',
-      'The speakers who have presented at NODE events across Northern Ontario.',
+      'The speakers who have presented at N.O.D.E. events across Northern Ontario.',
     );
     element.previousSpeakers = new Pending();
     await element.updateComplete;

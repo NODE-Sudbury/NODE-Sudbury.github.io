@@ -25,7 +25,7 @@ const config = {
   resources: {},
 } as unknown as SiteConfig;
 
-/** The "How do I stay informed?" answer, for NODE's social links set as given. */
+/** The "How do I stay informed?" answer, for N.O.D.E.'s social links set as given. */
 const answer = (rows: { key: string; value: string }[]) => {
   const rendered = templateRenderer(withSiteSettings(config, rows))(faq);
   const [, text] = /### How do I stay informed\?\n\n(.*)\n/.exec(rendered) ?? [];
@@ -42,7 +42,7 @@ describe('the FAQ answer about staying informed', () => {
         { key: 'social_linkedin', value: 'https://www.linkedin.com/company/node' },
       ]),
     ).toBe(
-      'Follow NODE on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram.com/nodesudbury), [Facebook](https://www.facebook.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
+      'Follow N.O.D.E. on [X](https://x.com/nodesudbury), [Instagram](https://www.instagram.com/nodesudbury), [Facebook](https://www.facebook.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
     );
   });
 
@@ -55,7 +55,7 @@ describe('the FAQ answer about staying informed', () => {
     ]);
 
     expect(text).toBe(
-      'Follow NODE on [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
+      'Follow N.O.D.E. on [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
     );
     expect(text).not.toMatch(/x\.com|instagram|facebook/i);
   });
@@ -69,7 +69,7 @@ describe('the FAQ answer about staying informed', () => {
         { key: 'social_linkedin', value: 'https://www.linkedin.com/company/node' },
       ]),
     ).toBe(
-      'Follow NODE on [X](https://x.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
+      'Follow N.O.D.E. on [X](https://x.com/nodesudbury) and [LinkedIn](https://www.linkedin.com/company/node), or use the subscribe form on the home page.',
     );
   });
 

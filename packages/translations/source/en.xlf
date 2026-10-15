@@ -477,7 +477,7 @@
   <source>Remove <x id="0" equiv-text="${removing.fullName || removing.email}"/>?</source>
 </trans-unit>
 <trans-unit id="pages.admin.remove-body">
-  <source>They lose their access straight away. They stay a member of NODE.</source>
+  <source>They lose their access straight away. They stay a member of N.O.D.E.</source>
 </trans-unit>
 <trans-unit id="pages.admin.removing">
   <source>Removing...</source>
@@ -1284,19 +1284,19 @@
   <source>Blog</source>
 </trans-unit>
 <trans-unit id="pages.blog.description">
-  <source>News, event recaps and announcements from NODE, the Northern Ontario Dev Exchange in Sudbury.</source>
+  <source>News, event recaps and announcements from N.O.D.E., the Northern Ontario Dev Exchange in Sudbury.</source>
 </trans-unit>
 <trans-unit id="pages.coc.title">
   <source>Code of Conduct</source>
 </trans-unit>
 <trans-unit id="pages.coc.description">
-  <source>The NODE code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.</source>
+  <source>The N.O.D.E. code of conduct: a harassment-free, inclusive experience at every event and online space, and how to report an incident.</source>
 </trans-unit>
 <trans-unit id="pages.faq.title">
   <source>FAQs</source>
 </trans-unit>
 <trans-unit id="pages.faq.description">
-  <source>Answers about NODE: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.</source>
+  <source>Answers about N.O.D.E.: who can join, what membership costs, our hackathons and speaker series, where events are held and how to reach us.</source>
 </trans-unit>
 <trans-unit id="pages.not-found.title">
   <source>Not Found</source>
@@ -1314,31 +1314,31 @@
   <source>Open Source</source>
 </trans-unit>
 <trans-unit id="pages.open-source.description">
-  <source>Open source projects built by the NODE community in Sudbury. Browse the code, see who contributes and how active each project is.</source>
+  <source>Open source projects built by the N.O.D.E. community in Sudbury. Browse the code, see who contributes and how active each project is.</source>
 </trans-unit>
 <trans-unit id="pages.previous-speakers.title">
   <source>Previous Speakers</source>
 </trans-unit>
 <trans-unit id="pages.previous-speakers.description">
-  <source>The speakers who have presented at NODE events across Northern Ontario.</source>
+  <source>The speakers who have presented at N.O.D.E. events across Northern Ontario.</source>
 </trans-unit>
 <trans-unit id="pages.schedule.title">
   <source>Events</source>
 </trans-unit>
 <trans-unit id="pages.schedule.description">
-  <source>Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.</source>
+  <source>Upcoming and past N.O.D.E. events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.</source>
 </trans-unit>
 <trans-unit id="pages.speakers.title">
   <source>Speakers</source>
 </trans-unit>
 <trans-unit id="pages.speakers.description">
-  <source>Meet the developers, founders and employers speaking at the monthly NODE speaker series at the Norcat Innovation Hub in Sudbury.</source>
+  <source>Meet the developers, founders and employers speaking at the monthly N.O.D.E. speaker series at the Norcat Innovation Hub in Sudbury.</source>
 </trans-unit>
 <trans-unit id="pages.team.title">
   <source>Board</source>
 </trans-unit>
 <trans-unit id="pages.team.description">
-  <source>Meet the volunteer board of directors and volunteers of NODE, the Northern Ontario Dev Exchange not-for-profit in Sudbury.</source>
+  <source>Meet the volunteer board of directors and volunteers of N.O.D.E., the Northern Ontario Dev Exchange not-for-profit in Sudbury.</source>
 </trans-unit>
 <trans-unit id="event.online">
   <source>Online</source>
@@ -1362,7 +1362,7 @@
   <source>My profile</source>
 </trans-unit>
 <trans-unit id="pages.account.description">
-  <source>Your NODE member profile and public profile.</source>
+  <source>Your N.O.D.E. member profile and public profile.</source>
 </trans-unit>
 <trans-unit id="common.general-error">
   <source>An error has occurred. Please, try again later.</source>
@@ -1569,13 +1569,13 @@
   <source>Write to subscribers and members.</source>
 </trans-unit>
 <trans-unit id="pages.admin.about-members">
-  <source>Everyone who has joined NODE.</source>
+  <source>Everyone who has joined N.O.D.E.</source>
 </trans-unit>
 <trans-unit id="pages.admin.about-settings">
-  <source>Who helps run NODE: the board, dashboard admins and volunteers.</source>
+  <source>Who helps run N.O.D.E.: the board, dashboard admins and volunteers.</source>
 </trans-unit>
 <trans-unit id="pages.admin.about-sponsors">
-  <source>Keep track of the sponsors and partners of NODE.</source>
+  <source>Keep track of the sponsors and partners of N.O.D.E.</source>
 </trans-unit>
 <trans-unit id="pages.admin.role-admin">
   <source>Admin</source>
@@ -1587,7 +1587,7 @@
   <source>Admin dashboard</source>
 </trans-unit>
 <trans-unit id="pages.admin.description">
-  <source>Where the people who run NODE manage the site.</source>
+  <source>Where the people who run N.O.D.E. manage the site.</source>
 </trans-unit>
 <trans-unit id="pages.admin.sign-in">
   <source>Sign in to open the admin dashboard.</source>
@@ -1614,7 +1614,7 @@
   <source>Edit a sponsor or partner</source>
 </trans-unit>
 <trans-unit id="pages.admin.home-title">
-  <source>NODE</source>
+  <source>N.O.D.E.</source>
 </trans-unit>
 <trans-unit id="pages.admin.stat-members">
   <source>Members</source>
@@ -1695,7 +1695,7 @@
   <source>Error scrolling to section.</source>
 </trans-unit>
 <trans-unit id="pages.member.default-bio">
-  <source><x id="0" equiv-text="${member.name}"/> is <x id="1" equiv-text="${member.title}"/> of the NODE board of directors.</source>
+  <source><x id="0" equiv-text="${member.name}"/> is <x id="1" equiv-text="${member.title}"/> of the N.O.D.E. board of directors.</source>
 </trans-unit>
 <trans-unit id="pages.member.all-members">
   <source>All board members</source>
@@ -1746,7 +1746,7 @@
   <source>Talks</source>
 </trans-unit>
 <trans-unit id="pages.members.back">
-  <source>NODE members</source>
+  <source>N.O.D.E. members</source>
 </trans-unit>
 <trans-unit id="pages.members.not-found">
   <source>Profile not found</source>
@@ -1824,10 +1824,10 @@
   <source>Unsubscribe</source>
 </trans-unit>
 <trans-unit id="pages.unsubscribe.description">
-  <source>Stop getting updates from NODE by email.</source>
+  <source>Stop getting updates from N.O.D.E. by email.</source>
 </trans-unit>
 <trans-unit id="pages.unsubscribe.lede">
-  <source>Stop getting updates from NODE by email.</source>
+  <source>Stop getting updates from N.O.D.E. by email.</source>
 </trans-unit>
 <trans-unit id="pages.unsubscribe.done">
   <source>If that email was on our list, it has been removed. You can subscribe again any time from the home page.</source>

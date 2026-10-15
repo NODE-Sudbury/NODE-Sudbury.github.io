@@ -1,12 +1,12 @@
 {
   "gallery/000": {
     "url": "/images/node/community/gallery-1.jpg",
-    "alt": "Attendees of the Grok Bot Sudbury meetup, the first event hosted by NODE, posing together in front of the presentation screen.",
+    "alt": "Attendees of the Grok Bot Sudbury meetup, the first event hosted by N.O.D.E., posing together in front of the presentation screen.",
     "order": "0"
   },
   "gallery/001": {
     "url": "/images/node/community/gallery-2.jpg",
-    "alt": "The opening slide of the Grok Bot Sudbury meetup: Welcome, the first event officially hosted by NODE.",
+    "alt": "The opening slide of the Grok Bot Sudbury meetup: Welcome, the first event officially hosted by N.O.D.E.",
     "order": "1"
   },
   "gallery/002": {
