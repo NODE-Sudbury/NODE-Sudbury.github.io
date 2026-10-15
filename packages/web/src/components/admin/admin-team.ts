@@ -566,7 +566,7 @@ export class AdminTeam extends ThemedComponent {
     >
       <div class="confirm">
         <p>
-          ${msg('They lose their access straight away. They stay a member of NODE.', {
+          ${msg('They lose their access straight away. They stay a member of N.O.D.E.', {
             id: 'pages.admin.remove-body',
           })}
         </p>

@@ -194,7 +194,7 @@ describe('home-hero', () => {
     expect(closed.querySelector('.submit-talk')).toBeNull();
   });
 
-  it('shows the short name of NODE in the sticker, before, during and after the event', async () => {
+  it('shows the short name of N.O.D.E. in the sticker, before, during and after the event', async () => {
     for (const date of ['2017-10-01T12:00:00Z', '2017-10-13T12:00:00Z', '2017-10-20T12:00:00Z']) {
       const { shadowRoot } = await renderOn(date);
 
@@ -316,7 +316,7 @@ describe('home-hero', () => {
     expect(discord).toHaveAttribute('target', '_blank');
   });
 
-  it('shows the NODE logo on the dotted band', async () => {
+  it('shows the N.O.D.E. logo on the dotted band', async () => {
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
 
     expect(shadowRoot.querySelector('.hero')).toHaveClass('pattern');

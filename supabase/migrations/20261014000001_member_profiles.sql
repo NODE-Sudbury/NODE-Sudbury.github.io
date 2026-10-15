@@ -1,4 +1,4 @@
--- Public member profiles for the NODE website.
+-- Public member profiles for the N.O.D.E. website.
 --
 -- Additive and safe to run again: it adds columns, a view, a policy and a guard trigger, and does
 -- not change or drop anything that exists. It works on the development project, which has the

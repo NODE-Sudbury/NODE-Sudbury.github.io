@@ -327,7 +327,7 @@ export class AccountPage extends ThemedComponent {
   override async firstUpdated() {
     updateTextMetadata(
       msg('My profile', { id: 'pages.account.title' }),
-      msg('Your NODE member profile and public profile.', { id: 'pages.account.description' }),
+      msg('Your N.O.D.E. member profile and public profile.', { id: 'pages.account.description' }),
     );
     await sessionRestored;
     this.ready = true;

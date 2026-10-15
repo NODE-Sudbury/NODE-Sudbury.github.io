@@ -1,4 +1,4 @@
-/** The permanent invite to the NODE Discord server. */
+/** The permanent invite to the N.O.D.E. Discord server. */
 export const DISCORD_INVITE_CODE = 'MtBcHMbkgB';
 export const DISCORD_URL = `https://discord.gg/${DISCORD_INVITE_CODE}`;
 

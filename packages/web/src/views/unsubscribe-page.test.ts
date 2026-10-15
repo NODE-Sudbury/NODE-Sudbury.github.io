@@ -42,7 +42,7 @@ describe('unsubscribe-page', () => {
   it('asks for the email, with no sign-in', async () => {
     const { shadowRoot } = await render();
 
-    expect(shadowRoot).toHaveTextContent('Stop getting updates from NODE by email.');
+    expect(shadowRoot).toHaveTextContent('Stop getting updates from N.O.D.E. by email.');
     expect(field(shadowRoot)).toHaveAttribute('required');
     expect(screen.getByShadowRole('button', { name: 'Unsubscribe' })).toBeInTheDocument();
   });

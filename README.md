@@ -1,6 +1,6 @@
-# NODE - Northern Ontario Dev Exchange
+# N.O.D.E. - Northern Ontario Dev Exchange
 
-Official website for NODE Sudbury - a community-driven tech org based in Greater Sudbury, Ontario: events, board, blog, membership, partners and the open source projects of the NODE-Sudbury organization.
+Official website for N.O.D.E. Sudbury - a community-driven tech org based in Greater Sudbury, Ontario: events, board, blog, membership, partners and the open source projects of the NODE-Sudbury organization.
 
 **Live site:** [nodesudbury.com](https://nodesudbury.com)
 **Dev site:** [dev.nodesudbury.com](https://dev.nodesudbury.com)
@@ -13,7 +13,7 @@ Official website for NODE Sudbury - a community-driven tech org based in Greater
 
 ## Contributing
 
-NODE is open to everyone - no experience level required. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get started.
+N.O.D.E. is open to everyone - no experience level required. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get started.
 
 ## Run it
 

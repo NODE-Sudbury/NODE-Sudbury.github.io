@@ -15,7 +15,7 @@ import { updateTextMetadata } from '../utils/metadata';
 
 type Status = 'idle' | 'sending' | 'done' | 'failed';
 
-/** Where anyone can take their email off the NODE updates list, without signing in. */
+/** Where anyone can take their email off the N.O.D.E. updates list, without signing in. */
 @customElement('unsubscribe-page')
 export class UnsubscribePage extends ThemedComponent {
   static override styles = [
@@ -67,7 +67,7 @@ export class UnsubscribePage extends ThemedComponent {
   override firstUpdated() {
     updateTextMetadata(
       msg('Unsubscribe', { id: 'pages.unsubscribe.title' }),
-      msg('Stop getting updates from NODE by email.', { id: 'pages.unsubscribe.description' }),
+      msg('Stop getting updates from N.O.D.E. by email.', { id: 'pages.unsubscribe.description' }),
     );
     // A link in an email can carry the address, so the person only has to confirm.
     this.email = new URLSearchParams(window.location.search).get('email') ?? '';
@@ -78,7 +78,7 @@ export class UnsubscribePage extends ThemedComponent {
       <hero-block tone="${PAGE_TONES.team}">
         <h1 class="hero-title">${msg('Unsubscribe', { id: 'pages.unsubscribe.title' })}</h1>
         <p class="hero-description">
-          ${msg('Stop getting updates from NODE by email.', {
+          ${msg('Stop getting updates from N.O.D.E. by email.', {
             id: 'pages.unsubscribe.lede',
           })}
         </p>

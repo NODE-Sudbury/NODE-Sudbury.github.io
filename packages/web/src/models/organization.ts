@@ -1,4 +1,4 @@
-/** The two kinds of organization the admin dashboard keeps: who pays NODE, and who works with it. */
+/** The two kinds of organization the admin dashboard keeps: who pays N.O.D.E., and who works with it. */
 export type OrganizationKind = 'sponsor' | 'partner';
 
 /** How much a sponsor gives, from the most to the least. */

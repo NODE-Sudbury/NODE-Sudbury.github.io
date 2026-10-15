@@ -25,12 +25,12 @@ interface FooterBlock {
   links: FooterLink[];
 }
 
-/** The footer column that lists NODE's networks again, next to the icons. */
-const FOLLOW_COLUMN = 'Follow NODE';
+/** The footer column that lists N.O.D.E.'s networks again, next to the icons. */
+const FOLLOW_COLUMN = 'Follow N.O.D.E.';
 
 /**
  * The config with the "Follow us" links taken from the site settings, in the icons and in the
- * "Follow NODE" column of the footer. A network with a link uses it, a network with an empty link
+ * "Follow N.O.D.E." column of the footer. A network with a link uses it, a network with an empty link
  * is left out, and a network with no row keeps the link from the site file. Networks the admins
  * cannot set stay where they were.
  */

@@ -4,7 +4,7 @@
 
 Report vulnerabilities privately by emailing **admin@nodesudbury.com**. Do not open a public issue or pull request.
 
-Include what is affected, how to reproduce it, and the impact you expect. NODE is run by volunteers, so replies can take a few days.
+Include what is affected, how to reproduce it, and the impact you expect. N.O.D.E. is run by volunteers, so replies can take a few days.
 
 ## Secrets
 

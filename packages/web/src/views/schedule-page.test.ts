@@ -54,7 +54,7 @@ describe('schedule-page', () => {
 
     expect(updateMetadata).toHaveBeenCalledWith(
       'Events',
-      'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
+      'Upcoming and past N.O.D.E. events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
     );
     expect(shadowRoot.querySelector('simple-hero')).toHaveAttribute('page', 'schedule');
   });
@@ -67,7 +67,7 @@ describe('schedule-page', () => {
 
     expect(updateMetadata).toHaveBeenLastCalledWith(
       title,
-      'Upcoming and past NODE events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
+      'Upcoming and past N.O.D.E. events in Sudbury: hackathons, community meetups with GDG and Cursor, and the monthly speaker series at Norcat.',
     );
   });
 

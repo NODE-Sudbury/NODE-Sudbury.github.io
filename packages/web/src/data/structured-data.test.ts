@@ -163,7 +163,7 @@ describe('organizationStructuredData', () => {
 
   it('leaves out what the site does not say', () => {
     const data = organizationStructuredData(
-      { url: site.url, organizer: { name: 'NODE' } },
+      { url: site.url, organizer: { name: 'N.O.D.E.' } },
       [],
       'logo',
     );
@@ -177,7 +177,7 @@ describe('organizationStructuredData', () => {
 describe('websiteStructuredData', () => {
   it('points at the organization as its publisher', () => {
     expect(
-      websiteStructuredData({ url: 'https://nodesudbury.com/' }, 'NODE', 'About').publisher,
+      websiteStructuredData({ url: 'https://nodesudbury.com/' }, 'N.O.D.E.', 'About').publisher,
     ).toEqual({
       '@id': 'https://nodesudbury.com/#organization',
     });
@@ -329,7 +329,7 @@ describe('faqStructuredData', () => {
   const faq = [
     '## General',
     '',
-    '### What is NODE?',
+    '### What is N.O.D.E.?',
     '',
     'A **not-for-profit** in [Sudbury](https://nodesudbury.com).',
     '',
@@ -340,7 +340,7 @@ describe('faqStructuredData', () => {
     '',
     '## Contact',
     '',
-    '### How do I reach NODE?',
+    '### How do I reach N.O.D.E.?',
     '',
     'Email admin@nodesudbury.com.',
   ].join('\n');
@@ -350,9 +350,9 @@ describe('faqStructuredData', () => {
 
     expect(data['@type']).toBe('FAQPage');
     expect(data.mainEntity.map(({ name }) => name)).toEqual([
-      'What is NODE?',
+      'What is N.O.D.E.?',
       'What do we run?',
-      'How do I reach NODE?',
+      'How do I reach N.O.D.E.?',
     ]);
     expect(data.mainEntity[0]!.acceptedAnswer.text).toBe('A not-for-profit in Sudbury.');
     expect(data.mainEntity[1]!.acceptedAnswer.text).toBe('Hackathons. A speaker series.');

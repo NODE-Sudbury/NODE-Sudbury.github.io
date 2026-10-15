@@ -1,4 +1,4 @@
--- The board members NODE shows as cards: name, title, photo and links. They are not the same as
+-- The board members N.O.D.E. shows as cards: name, title, photo and links. They are not the same as
 -- the dashboard admins. A card can optionally be linked to a member account, so a person's card
 -- and their account are tied together. The home page still reads its own board data for now.
 --

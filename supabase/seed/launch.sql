@@ -46,10 +46,10 @@ from (values
     ('Dean Lupini', 'President', 'dean.jpg', 'https://www.linkedin.com/in/dean-lupini-67608a22/', '', '', '', null, 0),
     ('Heather Dufour', 'Treasurer', 'heather.jpg', 'https://www.linkedin.com/in/heather-dufour/', '', '', '', null, 1),
     ('Hannan Max', 'Technical Lead', 'hannan.jpg', 'https://www.linkedin.com/in/hannanmax/', 'https://github.com/hannanmax/', '', 'https://hannanmax.com/', 'hannanmaxdev@gmail.com', 2),
-    ('Athif', 'Secretary', 'athif.jpg', 'https://www.linkedin.com/in/athif-shaffy/', '', '', '', null, 3),
-    ('Karan', 'Marketing', 'karan.jpg', 'https://www.linkedin.com/in/karan-tutlani/', '', '', '', 'karan@nodesudbury.com', 4),
-    ('Cheick', 'Promotion / Sponsorship', 'cheick.jpg', 'https://www.linkedin.com/in/cheickismaelmaiga/', '', '', '', null, 5),
-    ('Baljinder', 'Membership Leader', 'baljinder.jpg', 'https://www.linkedin.com/in/baljinder-maan/', '', '', '', null, 6),
-    ('Hassan', 'AI and Emerging Technologies', 'hassan.jpg', 'https://www.linkedin.com/in/mshahriar/', '', '', '', null, 7)
+    ('Athif Shaffy', 'Secretary', 'athif.jpg', 'https://www.linkedin.com/in/athif-shaffy/', '', '', '', null, 3),
+    ('Karan Tutlani', 'Marketing', 'karan.jpg', 'https://www.linkedin.com/in/karan-tutlani/', '', '', '', 'karan@nodesudbury.com', 4),
+    ('Cheick Ismael Maiga', 'Promotion / Sponsorship', 'cheick.jpg', 'https://www.linkedin.com/in/cheickismaelmaiga/', '', '', '', null, 5),
+    ('Baljinder Maan', 'Membership Leader', 'baljinder.jpg', 'https://www.linkedin.com/in/baljinder-maan/', '', '', '', null, 6),
+    ('Md Hasan Shahriar', 'AI and Emerging Technologies', 'hassan.jpg', 'https://www.linkedin.com/in/mshahriar/', '', '', '', null, 7)
 ) as seed (name, title, photo_path, linkedin_url, github_url, twitter_url, website_url, email, sort_order)
 where not exists (select 1 from public.board_members);

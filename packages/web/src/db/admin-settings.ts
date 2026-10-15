@@ -10,7 +10,7 @@ type Row = Record<string, unknown>;
 
 const isSocialKey = (key: unknown): key is SocialKey => SOCIAL_KEYS.some((known) => known === key);
 
-/** NODE's social links as they are saved. A network with no row yet has an empty link. */
+/** N.O.D.E.'s social links as they are saved. A network with no row yet has an empty link. */
 export const fetchSocialLinks = async (): Promise<SocialLinks> => {
   const { data, error } = await getSupabase().from('site_settings').select('key, value');
   if (error) throw new Error(error.message);
