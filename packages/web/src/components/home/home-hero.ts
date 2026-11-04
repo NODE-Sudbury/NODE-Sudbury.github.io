@@ -325,12 +325,6 @@ export class HomeHero extends ThemedComponent {
       `);
     }
     actions.push(html`
-      <hb-button variant="outlined" size="l" href="/#organization">
-        <node-icon slot="icon" name="registration"></node-icon>
-        ${msg('View OCN details', { id: 'home.hero.ocn-details' })}
-      </hb-button>
-    `);
-    actions.push(html`
       <hb-button variant="outlined" size="l" href="${DISCORD_URL}" target="_blank">
         <node-icon slot="icon" name="discord"></node-icon>
         ${msg('Join Discord', { id: 'home.hero.discord' })}
