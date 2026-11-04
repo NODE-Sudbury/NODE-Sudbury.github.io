@@ -316,6 +316,12 @@ describe('home-hero', () => {
     expect(discord).toHaveAttribute('target', '_blank');
   });
 
+  it('has no button for the OCN details, which the hero already shows', async () => {
+    const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
+
+    expect(shadowRoot.textContent).not.toContain('View OCN details');
+  });
+
   it('shows the N.O.D.E. logo on the dotted band', async () => {
     const { shadowRoot } = await renderOn('2017-10-01T12:00:00Z');
 
