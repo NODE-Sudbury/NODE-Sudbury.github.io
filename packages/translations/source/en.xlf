@@ -788,9 +788,6 @@
 <trans-unit id="pages.home.view-highlights">
   <source>View Highlights</source>
 </trans-unit>
-<trans-unit id="home.hero.ocn-details">
-  <source>View OCN details</source>
-</trans-unit>
 <trans-unit id="home.hero.discord">
   <source>Join Discord</source>
 </trans-unit>

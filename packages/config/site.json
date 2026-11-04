@@ -105,6 +105,8 @@
   },
   "features": {
     "demo": false,
+    "map": false,
+    "videos": false,
     "notifications": false,
     "forkMe": false,
     "mySchedule": false,
